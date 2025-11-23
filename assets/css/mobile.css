@@ -1,0 +1,243 @@
+/**
+ * Ohio Beer Path - Mobile Optimizations
+ * 
+ * This file contains mobile-specific styles and optimizations
+ */
+
+/* Mobile-first approach for base elements */
+body {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Improved touch targets for mobile */
+.btn, 
+.nav-link,
+.form-control,
+.card-link,
+select,
+input[type="checkbox"],
+input[type="radio"] {
+    min-height: 44px; /* Minimum recommended touch target size */
+}
+
+/* Adjust button padding for better touch targets */
+.btn {
+    padding: 0.5rem 1rem;
+}
+
+/* Make sure small buttons are still accessible */
+.btn-sm {
+    min-height: 38px;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Improve form controls for touch */
+.form-control, 
+.form-select {
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* Adjust spacing for mobile */
+@media (max-width: 767.98px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Increase vertical spacing on mobile */
+    .my-5 {
+        margin-top: 2rem !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    .my-4 {
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    /* Adjust card layouts for mobile */
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    /* Adjust hero section for mobile */
+    .hero-section {
+        padding: 2rem 0 !important;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem !important;
+    }
+    
+    /* Improve filter section on mobile */
+    #amenityFilters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    #amenityFilters .form-check {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Ensure map is usable on mobile */
+    #map {
+        height: 350px !important;
+    }
+    
+    /* Improve brewery cards on mobile */
+    .brewery-card .card-img-top {
+        height: 150px !important;
+    }
+    
+    /* Adjust footer for mobile */
+    footer .col-md-4 {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Improve modal display on mobile */
+@media (max-width: 575.98px) {
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+}
+
+/* Optimize navigation for mobile */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Improve touch feedback */
+.btn:active,
+.nav-link:active,
+.card:active {
+    transform: scale(0.98);
+}
+
+/* Add pull-to-refresh visual indicator */
+.ptr-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    z-index: 10;
+    text-align: center;
+    height: 50px;
+}
+
+/* Improve mobile search experience */
+.search-container {
+    position: sticky;
+    top: 56px; /* Height of navbar */
+    z-index: 100;
+    background: #fff;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Optimize image display for mobile */
+.img-fluid {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Improve mobile scrolling */
+.scroll-container {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+}
+
+/* Optimize mobile brewery details */
+.brewery-details-mobile {
+    padding: 0;
+}
+
+.brewery-details-mobile .card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+}
+
+/* Mobile-friendly itinerary */
+.itinerary-item-mobile {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.itinerary-item-mobile .brewery-info {
+    flex: 1;
+}
+
+.itinerary-item-mobile .brewery-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Mobile-friendly drag handle */
+.drag-handle {
+    cursor: move;
+    padding: 10px;
+    color: #aaa;
+}
+
+/* Mobile bottom navigation */
+.mobile-bottom-nav {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .mobile-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+    
+    .mobile-bottom-nav a {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+        color: #495057;
+        text-decoration: none;
+        font-size: 0.8rem;
+    }
+    
+    .mobile-bottom-nav a.active {
+        color: #007bff;
+    }
+    
+    .mobile-bottom-nav i {
+        display: block;
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+    }
+    
+    /* Add padding to body to account for fixed bottom nav */
+    body {
+        padding-bottom: 60px;
+    }
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Ohio Beer Path</title>
+    <meta name="theme-color" content="#007bff">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/mobile.css">
+    
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        
+        .offline-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .offline-icon {
+            font-size: 5rem;
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+        
+        .offline-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .offline-message {
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+        
+        .cached-content {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .cached-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #007bff;
+        }
+        
+        .cached-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+        }
+        
+        .cached-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cached-item i {
+            margin-right: 0.75rem;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <i class="bi bi-wifi-off"></i>
+        </div>
+        
+        <h1 class="offline-title">You're offline</h1>
+        
+        <p class="offline-message">
+            It looks like you've lost your internet connection. 
+            Don't worry, you can still access some features of Ohio Beer Path while offline.
+        </p>
+        
+        <button class="btn btn-primary" onclick="tryReconnect()">
+            <i class="bi bi-arrow-clockwise me-2"></i> Try Again
+        </button>
+        
+        <div class="cached-content">
+            <h2 class="cached-title">Available Offline</h2>
+            
+            <div class="cached-item">
+                <i class="bi bi-map"></i>
+                <div>Your saved brewery itinerary</div>
+            </div>
+            
+            <div class="cached-item">
+                <i class="bi bi-building"></i>
+                <div>Previously viewed breweries</div>
+            </div>
+            
+            <div class="cached-item">
+                <i class="bi bi-info-circle"></i>
+                <div>Basic brewery information</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check connection status periodically
+        function tryReconnect() {
+            // Show reconnecting message
+            document.querySelector('.offline-message').innerHTML = 
+                'Checking your connection... <div class="spinner-border spinner-border-sm text-primary ms-2" role="status"></div>';
+            
+            // Try to fetch the main page
+            fetch('/')
+                .then(response => {
+                    if (response.status === 200) {
+                        // If successful, redirect to home page
+                        window.location.href = '/';
+                    } else {
+                        // If not successful, show error message
+                        document.querySelector('.offline-message').textContent = 
+                            'Still offline. Please check your internet connection and try again.';
+                    }
+                })
+                .catch(error => {
+                    // If fetch fails, show error message
+                    document.querySelector('.offline-message').textContent = 
+                        'Still offline. Please check your internet connection and try again.';
+                });
+        }
+        
+        // Check if we're back online
+        window.addEventListener('online', () => {
+            window.location.reload();
+        });
+    </script>
+</body>
+</html>

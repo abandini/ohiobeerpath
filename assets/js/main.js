@@ -6,17 +6,61 @@ let markers = [];
 // Load brewery data from JSON file
 async function loadBreweryData() {
     try {
-        const response = await fetch('assets/data/breweries.json');
-        console.log('Response status:', response.status);
+        // Show loading indicator
+        const loadingElement = document.getElementById('loadingSpinner');
+        if (loadingElement) loadingElement.classList.remove('d-none');
+        
+        // Try primary data source first
+        let response = await fetch('assets/data/breweries.json');
+        
+        // If primary source fails, try fallback location
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.warn('Primary brewery data source failed, trying fallback...');
+            response = await fetch('breweries.json');
+            
+            if (!response.ok) {
+                throw new Error(`Failed to load brewery data from all sources. Status: ${response.status}`);
+            }
         }
+        
         breweriesData = await response.json();
-        console.log('Loaded', breweriesData.length, 'breweries');
+        console.log('Successfully loaded', breweriesData.length, 'breweries');
+        
+        // Initialize UI components that depend on brewery data
         initializeCarousel();
+        
+        // Dispatch custom event that brewery data is loaded
+        document.dispatchEvent(new CustomEvent('breweriesLoaded', { detail: breweriesData }));
+        
+        return breweriesData;
     } catch (error) {
-        console.error('Detailed error loading brewery data:', error);
-        alert(`Error loading brewery data: ${error.message}`);
+        console.error('Error loading brewery data:', error);
+        
+        // Display user-friendly error message on the page instead of using alert
+        const errorContainer = document.createElement('div');
+        errorContainer.className = 'alert alert-danger';
+        errorContainer.innerHTML = `
+            <h4>Unable to load brewery data</h4>
+            <p>We're having trouble loading the brewery information. Please try again later.</p>
+            <p><small>Technical details: ${error.message}</small></p>
+            <button class="btn btn-sm btn-outline-danger mt-2" onclick="location.reload()">Retry</button>
+        `;
+        
+        // Find an appropriate container to show the error
+        const container = document.querySelector('#breweriesList') || 
+                          document.querySelector('#featuredBreweries') || 
+                          document.querySelector('.container');
+                          
+        if (container) {
+            container.prepend(errorContainer);
+        }
+        
+        // Return empty array as fallback
+        return [];
+    } finally {
+        // Hide loading indicator
+        const loadingElement = document.getElementById('loadingSpinner');
+        if (loadingElement) loadingElement.classList.add('d-none');
     }
 }
 
@@ -48,16 +92,66 @@ function initializeCarousel() {
 
 // Initialize the map
 function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 40.4173, lng: -82.9071 }, // Center of Ohio
-        zoom: 7,
-        styles: [
-            {
-                featureType: "poi.business",
-                stylers: [{ visibility: "off" }]
-            }
-        ]
-    });
+    try {
+        const mapElement = document.getElementById('map');
+        
+        // Check if map element exists on the page
+        if (!mapElement) {
+            console.log('Map element not found on this page, skipping map initialization');
+            return;
+        }
+        
+        // Check if Google Maps API is loaded
+        if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+            throw new Error('Google Maps API not loaded');
+        }
+        
+        // Initialize the map
+        map = new google.maps.Map(mapElement, {
+            center: { lat: 40.4173, lng: -82.9071 }, // Center of Ohio
+            zoom: 7,
+            styles: [
+                {
+                    featureType: "poi.business",
+                    stylers: [{ visibility: "off" }]
+                }
+            ]
+        });
+        
+        // Add event listener for map load errors
+        google.maps.event.addListenerOnce(map, 'idle', () => {
+            console.log('Map loaded successfully');
+        });
+        
+        // Add event listener for map load errors
+        google.maps.event.addListenerOnce(map, 'error', () => {
+            console.error('Error loading Google Maps');
+            handleMapError('There was an error loading the map');
+        });
+        
+        return map;
+    } catch (error) {
+        console.error('Error initializing map:', error);
+        handleMapError(error.message);
+        return null;
+    }
+}
+
+// Handle map errors gracefully
+function handleMapError(errorMessage) {
+    const mapElement = document.getElementById('map');
+    if (mapElement) {
+        mapElement.innerHTML = `
+            <div class="alert alert-warning text-center p-5">
+                <i class="bi bi-exclamation-triangle-fill fs-1 mb-3"></i>
+                <h4>Map Unavailable</h4>
+                <p>We're having trouble loading the map. You can still browse breweries below.</p>
+                <p><small>${errorMessage}</small></p>
+                <button class="btn btn-sm btn-outline-primary mt-2" onclick="location.reload()">Retry</button>
+            </div>
+        `;
+        mapElement.style.height = 'auto';
+    }
 }
 
 // Calculate distance between two points using Haversine formula

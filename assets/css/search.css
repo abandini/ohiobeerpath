@@ -1,0 +1,248 @@
+/**
+ * Ohio Beer Path - Search Component Styles
+ * 
+ * This file contains styles for the search component and autocomplete functionality
+ */
+
+/* Search component container */
+.search-component {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+/* Autocomplete results container */
+.autocomplete-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Autocomplete result item */
+.autocomplete-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.active {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Autocomplete item content */
+.autocomplete-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.autocomplete-item-left {
+    flex: 1;
+}
+
+.autocomplete-item-right {
+    flex-shrink: 0;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+/* Highlight matching text */
+.autocomplete-highlight {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* No results message */
+.autocomplete-no-results {
+    padding: 1rem;
+    text-align: center;
+    color: #6c757d;
+}
+
+/* Search filters */
+.search-filters {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+}
+
+/* Mobile optimizations */
+@media (max-width: 767.98px) {
+    .autocomplete-results {
+        max-height: 250px;
+    }
+    
+    .autocomplete-item {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .search-filters .row {
+        row-gap: 0.75rem !important;
+    }
+}
+
+/* Sticky search bar for mobile */
+@media (max-width: 991.98px) {
+    .search-component.sticky {
+        position: sticky;
+        top: 56px; /* Height of navbar */
+        z-index: 100;
+        background-color: white;
+        padding: 0.5rem 0;
+        margin: 0 -15px 1rem;
+        padding: 0.5rem 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .search-component.sticky .card {
+        margin-bottom: 0;
+        border: none;
+        box-shadow: none;
+    }
+    
+    .search-component.sticky .card-body {
+        padding: 0;
+    }
+}
+
+/* Search animation */
+@keyframes search-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 123, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+}
+
+.search-pulse {
+    animation: search-pulse 1.5s infinite;
+}
+
+/* Recent searches */
+.recent-searches {
+    margin-top: 0.5rem;
+}
+
+.recent-searches-title {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.recent-search-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.recent-search-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    color: #495057;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.recent-search-tag:hover {
+    background-color: #e9ecef;
+}
+
+.recent-search-tag i {
+    margin-right: 0.25rem;
+}
+
+/* Voice search button */
+.voice-search-btn {
+    background-color: transparent;
+    border: none;
+    color: #6c757d;
+    padding: 0;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+.voice-search-btn:hover {
+    color: #007bff;
+}
+
+.voice-search-btn.listening {
+    color: #dc3545;
+    animation: pulse 1s infinite;
+}
+
+/* Search suggestions */
+.search-suggestions {
+    margin-top: 0.5rem;
+}
+
+.search-suggestions-title {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.search-suggestion {
+    display: inline-block;
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.search-suggestion:hover {
+    text-decoration: underline;
+}
+
+/* Filter badge */
+.filter-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.filter-badge .close {
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+/* Active filters container */
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Clear all filters button */
+.clear-filters {
+    font-size: 0.75rem;
+    color: #6c757d;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.clear-filters:hover {
+    color: #dc3545;
+    text-decoration: underline;
+}

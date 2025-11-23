@@ -1,0 +1,70 @@
+{
+  "name": "Ohio Beer Path",
+  "short_name": "OhioBeer",
+  "description": "Discover Ohio's finest breweries and plan your ultimate brewery tour",
+  "start_url": "/index.php",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007bff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/images/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Find Breweries",
+      "short_name": "Breweries",
+      "description": "View all breweries",
+      "url": "/breweries.php",
+      "icons": [
+        {
+          "src": "/assets/images/shortcuts/breweries.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "My Itinerary",
+      "short_name": "Itinerary",
+      "description": "View your saved brewery tour",
+      "url": "/itinerary.php",
+      "icons": [
+        {
+          "src": "/assets/images/shortcuts/itinerary.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "categories": ["food", "travel", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "/assets/images/screenshots/home.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/assets/images/screenshots/breweries.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/assets/images/screenshots/itinerary.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg"
+    }
+  ]
+}

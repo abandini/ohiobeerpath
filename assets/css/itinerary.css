@@ -1,0 +1,218 @@
+/**
+ * Ohio Beer Path - Itinerary Styles
+ * 
+ * This file contains styles for the itinerary component including:
+ * - Itinerary list items
+ * - Drag and drop functionality
+ * - Map view
+ * - Summary section
+ */
+
+/* Itinerary List Item */
+.itinerary-list-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.itinerary-list-item:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    border-left-color: #007bff;
+}
+
+.drag-handle {
+    cursor: grab;
+    color: #adb5bd;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.drag-handle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #6c757d;
+}
+
+.itinerary-item-order {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 0.875rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.itinerary-item-details {
+    flex: 1;
+    min-width: 0;
+    padding-right: 1rem;
+}
+
+.itinerary-item-name {
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.itinerary-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Drag and Drop Styles */
+.sortable-ghost {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-left-color: #007bff;
+    opacity: 0.8;
+}
+
+.sortable-drag {
+    background-color: #fff;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    opacity: 0.9;
+}
+
+/* Map View */
+#itineraryMapPreview {
+    border-radius: 0.25rem;
+    overflow: hidden;
+    box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.map-info-window {
+    padding: 0.5rem;
+    max-width: 200px;
+}
+
+.map-info-window h6 {
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+/* Itinerary Summary */
+#itinerarySummary {
+    background-color: #f8f9fa;
+    border-left: 3px solid #007bff;
+}
+
+/* Recent Searches */
+.recent-search-tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    margin: 0.25rem;
+    background-color: #f1f3f5;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.recent-search-tag:hover {
+    background-color: #e9ecef;
+}
+
+/* Options Tab */
+#itineraryOptionsForm .form-check {
+    margin-bottom: 0.5rem;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .itinerary-list-item {
+        flex-wrap: wrap;
+    }
+    
+    .itinerary-item-details {
+        width: calc(100% - 80px);
+        padding-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .itinerary-item-actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+        padding-left: 2.5rem;
+    }
+    
+    #itineraryMapPreview {
+        height: 300px !important;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-footer .btn,
+    .modal-footer .dropdown {
+        width: 100%;
+        margin: 0.25rem 0 !important;
+    }
+}
+
+/* Itinerary Buttons */
+.itinerary-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.itinerary-btn .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.75rem;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.itinerary-btn .badge.empty {
+    opacity: 0;
+    transform: scale(0);
+}
+
+/* Animation for adding/removing items */
+@keyframes highlight {
+    0% { background-color: rgba(0, 123, 255, 0.2); }
+    100% { background-color: transparent; }
+}
+
+.highlight-animation {
+    animation: highlight 1.5s ease;
+}
+
+/* Print Styles */
+@media print {
+    .itinerary-list-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .drag-handle,
+    .itinerary-item-actions {
+        display: none;
+    }
+    
+    #itineraryMapPreview {
+        height: 400px !important;
+        page-break-after: always;
+    }
+}
