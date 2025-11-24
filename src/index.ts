@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from './middleware/cors';
 import type { Env } from './types';
+import apiRoutes from './routes/api';
 
 // Create Hono app
 const app = new Hono<{ Bindings: Env }>();
@@ -36,17 +37,8 @@ app.get('/', async (c) => {
   `);
 });
 
-// API Routes (will be added in next tasks)
-app.get('/api/breweries', async (c) => {
-  const result = await c.env.DB.prepare(
-    'SELECT COUNT(*) as count FROM breweries'
-  ).first<{ count: number }>();
-
-  return c.json({
-    message: 'Breweries API endpoint',
-    count: result?.count || 0
-  });
-});
+// Mount API routes
+app.route('/api', apiRoutes);
 
 // 404 handler
 app.notFound((c) => {
