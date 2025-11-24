@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { cors } from './middleware/cors';
+import { serveAssets } from './middleware/assets';
 import type { Env } from './types';
 import apiRoutes from './routes/api';
 import pageRoutes from './routes/pages';
@@ -9,6 +10,9 @@ const app = new Hono<{ Bindings: Env }>();
 
 // Apply CORS middleware
 app.use('*', cors());
+
+// Serve static assets
+app.use('*', serveAssets());
 
 // Health check endpoint
 app.get('/health', (c) => {
