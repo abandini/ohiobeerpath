@@ -10,9 +10,17 @@
     "typecheck": "tsc --noEmit",
     "db:create": "wrangler d1 create ohio-beer-path-db",
     "db:migrate": "wrangler d1 migrations apply ohio-beer-path-db",
-    "db:migrate:local": "wrangler d1 migrations apply ohio-beer-path-db --local"
+    "db:migrate:local": "wrangler d1 migrations apply ohio-beer-path-db --local",
+    "db:import": "tsx scripts/import-to-d1.ts",
+    "db:import:apply": "npm run db:import && wrangler d1 migrations apply ohio-beer-path-db --local"
   },
-  "keywords": ["cloudflare", "workers", "beer", "breweries", "pwa"],
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "beer",
+    "breweries",
+    "pwa"
+  ],
   "author": "Bill Burkey",
   "license": "MIT",
   "dependencies": {
@@ -21,6 +29,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241127.0",
     "@types/node": "^20.10.0",
+    "tsx": "^4.20.6",
     "typescript": "^5.3.0",
     "vitest": "^1.0.0",
     "wrangler": "^3.80.0"
