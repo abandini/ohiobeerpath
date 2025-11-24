@@ -17,10 +17,10 @@ database_id = "707e2a1f-3415-43e0-bd68-4de1bb89a66b"
 binding = "IMAGES"
 bucket_name = "ohio-beer-path-images"
 
-# KV namespace for caching - will be added after creation
-# [[kv_namespaces]]
-# binding = "CACHE"
-# id = ""
+# KV namespace for caching
+[[kv_namespaces]]
+binding = "CACHE"
+id = "276245328e284f3e8dbc4aba8355d12a"
 
 # Environment variables
 [vars]

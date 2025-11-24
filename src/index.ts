@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from './middleware/cors';
 import { serveAssets } from './middleware/assets';
+import { cacheMiddleware } from './middleware/cache';
 import type { Env } from './types';
 import apiRoutes from './routes/api';
 import pageRoutes from './routes/pages';
@@ -13,6 +14,9 @@ app.use('*', cors());
 
 // Serve static assets
 app.use('*', serveAssets());
+
+// Apply caching middleware (before routes)
+app.use('*', cacheMiddleware());
 
 // Health check endpoint
 app.get('/health', (c) => {
