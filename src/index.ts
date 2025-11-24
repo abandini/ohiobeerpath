@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from './middleware/cors';
 import type { Env } from './types';
 import apiRoutes from './routes/api';
+import pageRoutes from './routes/pages';
 
 // Create Hono app
 const app = new Hono<{ Bindings: Env }>();
@@ -18,27 +19,11 @@ app.get('/health', (c) => {
   });
 });
 
-// Root route - serve homepage
-app.get('/', async (c) => {
-  return c.html(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Ohio Beer Path</title>
-    </head>
-    <body>
-      <h1>Ohio Beer Path</h1>
-      <p>Cloudflare Workers + D1 + R2 + KV</p>
-      <p>Status: Running on Cloudflare Edge Network</p>
-    </body>
-    </html>
-  `);
-});
-
 // Mount API routes
 app.route('/api', apiRoutes);
+
+// Mount page routes (after API routes to avoid conflicts)
+app.route('/', pageRoutes);
 
 // 404 handler
 app.notFound((c) => {
