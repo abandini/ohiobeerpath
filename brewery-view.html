@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brewery Details - Ohio Beer Path</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <style>
+        .brewery-header {
+            background-color: #343a40;
+            color: white;
+            padding: 2rem 0;
+        }
+        .brewery-image {
+            max-height: 300px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 0.25rem;
+        }
+        .map-container {
+            height: 300px;
+            width: 100%;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">Ohio Beer Path</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="breweries.php">Breweries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="regions.php">Regions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="itinerary.php">My Tour</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="brewery-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 id="breweryName">Brewery Name</h1>
+                    <p class="lead mb-0">
+                        <i class="bi bi-geo-alt me-2"></i>
+                        <span id="breweryLocation">City, OH</span>
+                    </p>
+                    
+                    <div class="mt-3">
+                        <span class="badge bg-primary" id="breweryRegion">Region</span>
+                        <span class="badge bg-secondary ms-2" id="breweryType">Type</span>
+                    </div>
+                    
+                    <div class="brewery-actions mt-4">
+                        <button class="btn btn-light" id="addToTourBtn">
+                            <i class="bi bi-plus-circle me-2"></i> Add to Tour
+                        </button>
+                        
+                        <a href="#" class="btn btn-outline-light" target="_blank" id="websiteBtn">
+                            <i class="bi bi-globe me-2"></i> Visit Website
+                        </a>
+                        
+                        <a href="#" class="btn btn-outline-light" target="_blank" id="directionsBtn">
+                            <i class="bi bi-map me-2"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-4 mt-md-0">
+                    <img src="assets/images/breweries/placeholder.jpg" alt="Brewery" class="brewery-image" id="breweryImage">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="h4 mb-0">About</h2>
+                    </div>
+                    <div class="card-body">
+                        <p id="breweryDescription">Loading brewery details...</p>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="h4 mb-0">Location</h2>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="breweryMap" class="map-container"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="h4 mb-0">Contact Information</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled" id="contactInfo">
+                            <li class="mb-3">
+                                <i class="bi bi-geo-alt text-primary me-2"></i>
+                                <span id="breweryAddress">Address loading...</span>
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-telephone text-primary me-2"></i>
+                                <a href="#" id="breweryPhone">Phone loading...</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="h4 mb-0">Hours</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush" id="hoursContainer">
+                            <li class="list-group-item d-flex justify-content-between px-0">
+                                <span>Loading hours...</span>
+                                <span></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="h5">Ohio Beer Path</h3>
+                    <p>Discover Ohio's finest breweries and plan your ultimate brewery tour.</p>
+                </div>
+                <div class="col-md-3">
+                    <h4 class="h6">Quick Links</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="index.php" class="text-white">Home</a></li>
+                        <li><a href="breweries.php" class="text-white">Breweries</a></li>
+                        <li><a href="regions.php" class="text-white">Regions</a></li>
+                        <li><a href="itinerary.php" class="text-white">My Tour</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h4 class="h6">Connect</h4>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Ohio Beer Path. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/maps-config.js"></script>
+    
+    <script>
+    // Parse URL parameters
+    function getUrlParams() {
+        const params = {};
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        
+        for (const [key, value] of urlParams.entries()) {
+            params[key] = value;
+        }
+        
+        return params;
+    }
+    
+    // Load brewery data
+    async function loadBreweryData() {
+        const params = getUrlParams();
+        const breweryId = params.id;
+        const breweryName = params.name;
+        
+        if (!breweryId && !breweryName) {
+            showError('No brewery specified');
+            return;
+        }
+        
+        try {
+            // Load breweries data
+            const response = await fetch('breweries.json');
+            if (!response.ok) {
+                throw new Error('Failed to load brewery data');
+            }
+            
+            const breweries = await response.json();
+            let brewery = null;
+            
+            // Find brewery by ID or name
+            if (breweryId) {
+                brewery = breweries.find(b => b.id == breweryId);
+            } else if (breweryName) {
+                brewery = breweries.find(b => b.name.toLowerCase() === breweryName.toLowerCase());
+            }
+            
+            if (!brewery) {
+                showError('Brewery not found');
+                return;
+            }
+            
+            // Display brewery data
+            renderBrewery(brewery);
+            
+            // Initialize map if coordinates available
+            if (brewery.latitude && brewery.longitude) {
+                showBreweryMap(brewery);
+            } else {
+                document.getElementById('breweryMap').innerHTML = '<div class="alert alert-warning m-3">Location coordinates not available</div>';
+            }
+        } catch (error) {
+            console.error('Error loading brewery data:', error);
+            showError(error.message);
+        }
+    }
+    
+    // Render brewery details
+    function renderBrewery(brewery) {
+        // Update page title
+        document.title = `${brewery.name} - Ohio Beer Path`;
+        
+        // Basic info
+        document.getElementById('breweryName').textContent = brewery.name;
+        document.getElementById('breweryLocation').textContent = `${brewery.city || ''}, OH`;
+        
+        // Region and type
+        if (brewery.region) {
+            document.getElementById('breweryRegion').textContent = brewery.region;
+        } else {
+            document.getElementById('breweryRegion').style.display = 'none';
+        }
+        
+        if (brewery.brewery_type) {
+            document.getElementById('breweryType').textContent = brewery.brewery_type;
+        } else {
+            document.getElementById('breweryType').style.display = 'none';
+        }
+        
+        // Description
+        if (brewery.description) {
+            document.getElementById('breweryDescription').textContent = brewery.description;
+        } else {
+            document.getElementById('breweryDescription').textContent = `${brewery.name} is a brewery located in ${brewery.city || 'Ohio'}. Visit this brewery to explore their unique craft beers and brewery experience.`;
+        }
+        
+        // Contact info
+        const contactInfo = document.getElementById('contactInfo');
+        contactInfo.innerHTML = '';
+        
+        // Address
+        if (brewery.address || brewery.street_address) {
+            const addressElem = document.createElement('li');
+            addressElem.className = 'mb-3';
+            addressElem.innerHTML = `
+                <i class="bi bi-geo-alt text-primary me-2"></i>
+                <span>${brewery.address || brewery.street_address}${brewery.city ? ', ' + brewery.city : ''}, OH${brewery.zipcode ? ' ' + brewery.zipcode : ''}</span>
+            `;
+            contactInfo.appendChild(addressElem);
+        }
+        
+        // Phone
+        if (brewery.phone) {
+            const phoneElem = document.createElement('li');
+            phoneElem.className = 'mb-3';
+            phoneElem.innerHTML = `
+                <i class="bi bi-telephone text-primary me-2"></i>
+                <a href="tel:${brewery.phone}">${brewery.phone}</a>
+            `;
+            contactInfo.appendChild(phoneElem);
+        }
+        
+        // Email
+        if (brewery.email) {
+            const emailElem = document.createElement('li');
+            emailElem.className = 'mb-3';
+            emailElem.innerHTML = `
+                <i class="bi bi-envelope text-primary me-2"></i>
+                <a href="mailto:${brewery.email}">${brewery.email}</a>
+            `;
+            contactInfo.appendChild(emailElem);
+        }
+        
+        // Website
+        if (brewery.website) {
+            const websiteElem = document.createElement('li');
+            websiteElem.className = 'mb-3';
+            websiteElem.innerHTML = `
+                <i class="bi bi-globe text-primary me-2"></i>
+                <a href="${brewery.website}" target="_blank">${brewery.website.replace(/^https?:\/\//, '')}</a>
+            `;
+            contactInfo.appendChild(websiteElem);
+            
+            // Update website button
+            const websiteBtn = document.getElementById('websiteBtn');
+            websiteBtn.href = brewery.website;
+        } else {
+            document.getElementById('websiteBtn').style.display = 'none';
+        }
+        
+        // Directions button
+        if (brewery.latitude && brewery.longitude) {
+            const directionsBtn = document.getElementById('directionsBtn');
+            directionsBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${brewery.latitude},${brewery.longitude}`;
+        } else {
+            document.getElementById('directionsBtn').style.display = 'none';
+        }
+        
+        // Hours
+        const hoursContainer = document.getElementById('hoursContainer');
+        hoursContainer.innerHTML = '';
+        
+        if (brewery.hours && Object.keys(brewery.hours).length > 0) {
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            
+            days.forEach(day => {
+                const hours = brewery.hours[day] || 'Closed';
+                const hourElem = document.createElement('li');
+                hourElem.className = 'list-group-item d-flex justify-content-between px-0';
+                hourElem.innerHTML = `
+                    <span>${day}</span>
+                    <span>${hours}</span>
+                `;
+                hoursContainer.appendChild(hourElem);
+            });
+        } else {
+            const noHours = document.createElement('li');
+            noHours.className = 'list-group-item px-0';
+            noHours.textContent = 'Hours not available';
+            hoursContainer.appendChild(noHours);
+        }
+        
+        // Add to tour button
+        const addToTourBtn = document.getElementById('addToTourBtn');
+        addToTourBtn.addEventListener('click', function() {
+            // Get existing tour from localStorage
+            let tour = JSON.parse(localStorage.getItem('breweryTour') || '[]');
+            
+            // Check if brewery is already in tour
+            const exists = tour.some(item => item.id === brewery.id);
+            
+            if (!exists) {
+                // Add brewery to tour
+                tour.push({
+                    id: brewery.id,
+                    name: brewery.name,
+                    city: brewery.city
+                });
+                localStorage.setItem('breweryTour', JSON.stringify(tour));
+                
+                // Update button
+                addToTourBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i> Added to Tour';
+                addToTourBtn.classList.remove('btn-light');
+                addToTourBtn.classList.add('btn-success');
+                
+                // Show success message
+                alert(`${brewery.name} has been added to your tour!`);
+            } else {
+                // Already in tour
+                alert(`${brewery.name} is already in your tour.`);
+            }
+        });
+    }
+    
+    // Initialize map using OhioMaps module
+    function showBreweryMap(brewery) {
+        try {
+            // Ensure we have valid coordinates
+            const lat = parseFloat(brewery.latitude);
+            const lng = parseFloat(brewery.longitude);
+            
+            if (isNaN(lat) || isNaN(lng)) {
+                throw new Error('Invalid brewery coordinates');
+            }
+            
+            // Wait for Google Maps API to be loaded by OhioMaps
+            function placeMarker() {
+                try {
+                    // Initialize the map
+                    const mapInitialized = OhioMaps.initMap('breweryMap', {
+                        center: { lat: lat, lng: lng },
+                        zoom: 15,
+                        mapTypeControl: false,
+                        fullscreenControl: true
+                    });
+                    
+                    // If map initialization failed, don't proceed
+                    if (!mapInitialized || !OhioMaps.mapInstance) {
+                        return;
+                    }
+                    
+                    // Add marker and info window
+                    if (window.google && window.google.maps) {
+                        const marker = new google.maps.Marker({
+                            position: { lat: lat, lng: lng },
+                            map: OhioMaps.mapInstance,
+                            title: brewery.name
+                        });
+                        
+                        const infoWindow = new google.maps.InfoWindow({
+                            content: `
+                                <div style="max-width: 200px;">
+                                    <h6 style="margin-bottom: 5px;">${brewery.name}</h6>
+                                    <p style="margin-bottom: 5px; color: #666;">${brewery.city || ''}, OH</p>
+                                    <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" 
+                                       target="_blank" style="font-size: 0.9rem;">Get Directions</a>
+                                </div>
+                            `
+                        });
+                        
+                        marker.addListener('click', () => {
+                            infoWindow.open(OhioMaps.mapInstance, marker);
+                        });
+                        
+                        infoWindow.open(OhioMaps.mapInstance, marker);
+                    }
+                } catch (error) {
+                    console.error('Error placing marker:', error);
+                    OhioMaps.showMapError('breweryMap', 'Error displaying brewery location: ' + error.message);
+                }
+            }
+            
+            // If Google Maps API is not loaded, OhioMaps will load it and call the callback
+            if (!window.google || !window.google.maps) {
+                OhioMaps.loadGoogleMapsAPI(placeMarker);
+            } else {
+                placeMarker();
+            }
+        } catch (error) {
+            console.error('Error initializing brewery map:', error);
+            OhioMaps.showMapError('breweryMap', 'Error initializing map: ' + error.message);
+        }
+    }
+    
+    // Show error message
+    function showError(message) {
+        const container = document.querySelector('.container');
+        const errorAlert = document.createElement('div');
+        errorAlert.className = 'alert alert-danger mt-4';
+        errorAlert.innerHTML = `
+            <h4 class="alert-heading">Error</h4>
+            <p>${message}</p>
+            <hr>
+            <p class="mb-0">
+                <a href="index.php" class="alert-link">Return to homepage</a> or 
+                <a href="breweries.php" class="alert-link">browse all breweries</a>.
+            </p>
+        `;
+        
+        // Insert after header
+        const header = document.querySelector('header');
+        header.insertAdjacentElement('afterend', errorAlert);
+    }
+    
+    // Load data when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        loadBreweryData();
+    });
+    </script>
+</body>
+</html>
