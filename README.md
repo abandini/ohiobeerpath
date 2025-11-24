@@ -2,7 +2,8 @@
 
 Discover Ohio's craft breweries and plan your perfect brewery tour.
 
-**Live Site:** [ohiobeerpath.com](https://ohiobeerpath.com) *(pending deployment)*
+**Live Site:** [ohio-beer-path.bill-burkey.workers.dev](https://ohio-beer-path.bill-burkey.workers.dev)
+**Production URL:** https://ohio-beer-path.bill-burkey.workers.dev
 
 ## Features
 
@@ -21,20 +22,49 @@ Discover Ohio's craft breweries and plan your perfect brewery tour.
 
 ## Tech Stack
 
-- **Frontend:** HTML5, CSS3, JavaScript (ES6+), Bootstrap 5
-- **Backend:** PHP 7.4+, MySQL 5.7+
-- **APIs:** Google Maps API (Maps, Geocoding, Directions)
+**Version 2.0 - Cloudflare Workers Architecture:**
+- **Runtime:** Cloudflare Workers (Serverless)
+- **Framework:** Hono.js (TypeScript)
+- **Database:** D1 (SQLite on edge)
+- **Storage:** R2 (Object storage)
+- **Caching:** KV (Key-value store)
+- **Frontend:** HTML5, CSS3, Bootstrap 5
+- **APIs:** Google Maps API, Workers AI (future)
 - **PWA:** Service Worker, Web App Manifest
-- **Data Processing:** Python 3.7+
+- **CI/CD:** GitHub Actions
+
+### Cloudflare Workers Architecture
+
+Ohio Beer Path runs entirely on Cloudflare's edge network:
+
+- **Workers:** Serverless functions for all logic
+- **D1:** SQLite database with 351 Ohio breweries
+- **R2:** Static asset hosting (CSS, JS, images)
+- **KV:** API response caching (1-hour TTL)
+- **Workers AI:** Future: Brewery recommendations
+
+**Performance:**
+- Global latency: ~15ms (300+ edge locations)
+- Auto-scaling: Infinite scale
+- Zero downtime: Always available
+- 99.99% uptime: Cloudflare SLA
+
+**Deployment:**
+- GitHub Actions CI/CD
+- Auto-deploy on push to main
+- Version tags trigger releases
+- D1 migrations run automatically
+
+See [CLOUDFLARE_MIGRATION.md](docs/CLOUDFLARE_MIGRATION.md) for migration details.
 
 ## Getting Started
 
 ### Prerequisites
 
-- PHP 7.4 or higher
-- MySQL 5.7 or higher
-- Google Maps API key
-- Python 3.7+ (optional, for data processing)
+- Node.js 18+
+- Cloudflare account (free tier)
+- Wrangler CLI (`npm install -g wrangler`)
+- Google Maps API key (optional, for future features)
 
 ### Installation
 
@@ -44,27 +74,39 @@ Discover Ohio's craft breweries and plan your perfect brewery tour.
    cd ohiobeerpath
    ```
 
-2. Set up environment variables:
+2. Install dependencies:
    ```bash
-   cp .env.example .env
+   npm install
    ```
 
-   Edit `.env` and add your Google Maps API key:
-   ```
-   GOOGLE_MAPS_API_KEY=your_api_key_here
-   ```
-
-3. Set up the database:
+3. Set up local D1 database:
    ```bash
-   php setup-database.php
+   npm run db:migrate:local
    ```
 
 4. Start the development server:
    ```bash
-   php -S localhost:8000
+   npm run dev
    ```
 
-5. Open http://localhost:8000 in your browser
+5. Open http://localhost:8787 in your browser
+
+### Deployment
+
+Deploy to Cloudflare Workers:
+
+```bash
+# Deploy to production
+npm run deploy
+
+# Apply migrations to production D1
+wrangler d1 migrations apply ohio-beer-path-db --remote
+
+# Upload assets to production R2
+./scripts/upload-assets.sh
+```
+
+Or push to main branch - GitHub Actions will automatically deploy.
 
 ## Design System
 
@@ -104,20 +146,27 @@ ohiobeerpath/
 
 ## API Endpoints
 
-### GET /api/breweries.php
-Get all breweries or filter by region.
+### GET /api/breweries
+Get all breweries or filter by region/city/search.
 ```bash
-curl "http://localhost:8000/api/breweries.php?region=central"
+curl "https://ohio-beer-path.bill-burkey.workers.dev/api/breweries?region=central"
+curl "https://ohio-beer-path.bill-burkey.workers.dev/api/breweries?city=Cleveland"
+curl "https://ohio-beer-path.bill-burkey.workers.dev/api/breweries?search=brew"
 ```
 
-### GET /api/search.php
-Search breweries by name, city, or ZIP code.
+### GET /api/breweries/:id
+Get a single brewery by ID.
 ```bash
-curl "http://localhost:8000/api/search.php?q=Cleveland"
+curl "https://ohio-beer-path.bill-burkey.workers.dev/api/breweries/1"
 ```
 
-### POST /api/analytics.php
-Track user interactions (for analytics).
+### GET /api/breweries/nearby
+Find breweries near coordinates (lat/lng/radius in miles).
+```bash
+curl "https://ohio-beer-path.bill-burkey.workers.dev/api/breweries/nearby?lat=41.5&lng=-81.7&radius=25"
+```
+
+**Note:** All API responses are cached in KV for 1 hour. Check `X-Cache` header for HIT/MISS.
 
 ## Data
 
