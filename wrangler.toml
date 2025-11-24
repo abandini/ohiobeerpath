@@ -1,0 +1,31 @@
+name = "ohio-beer-path"
+main = "src/index.ts"
+compatibility_date = "2024-11-24"
+node_compat = true
+
+[observability]
+enabled = true
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "ohio-beer-path-db"
+database_id = "" # Will be filled after creation
+
+# R2 bucket for images
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "ohio-beer-path-images"
+
+# KV namespace for caching
+[[kv_namespaces]]
+binding = "CACHE"
+id = "" # Will be filled after creation
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+
+# Secrets (set via wrangler secret put)
+# GOOGLE_MAPS_API_KEY
+# WORKERS_AI_API_KEY

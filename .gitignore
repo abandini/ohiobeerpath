@@ -35,3 +35,13 @@ yarn-error.log
 *.tmp
 *~
 *.backup
+
+# Cloudflare Workers
+node_modules/
+.wrangler/
+.dev.vars
+dist/
+wrangler.toml.local
+
+# TypeScript
+*.tsbuildinfo
