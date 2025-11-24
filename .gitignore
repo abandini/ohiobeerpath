@@ -45,3 +45,6 @@ wrangler.toml.local
 
 # TypeScript
 *.tsbuildinfo
+
+# Data exports (regenerated from MySQL)
+data/breweries-export.json

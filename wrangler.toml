@@ -1,7 +1,7 @@
 name = "ohio-beer-path"
 main = "src/index.ts"
 compatibility_date = "2024-11-24"
-node_compat = true
+compatibility_flags = ["nodejs_compat"]
 
 [observability]
 enabled = true
@@ -10,17 +10,17 @@ enabled = true
 [[d1_databases]]
 binding = "DB"
 database_name = "ohio-beer-path-db"
-database_id = "" # Will be filled after creation
+database_id = "707e2a1f-3415-43e0-bd68-4de1bb89a66b"
 
 # R2 bucket for images
 [[r2_buckets]]
 binding = "IMAGES"
 bucket_name = "ohio-beer-path-images"
 
-# KV namespace for caching
-[[kv_namespaces]]
-binding = "CACHE"
-id = "" # Will be filled after creation
+# KV namespace for caching - will be added after creation
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = ""
 
 # Environment variables
 [vars]
