@@ -66,8 +66,21 @@ Discover Ohio's craft breweries and plan your perfect brewery tour.
 
 5. Open http://localhost:8000 in your browser
 
+## Design System
+
+Ohio Beer Path features a modern craft beer aesthetic with:
+
+- **Color Palette:** Amber (#d97706) and Hops Green (#16a34a)
+- **Typography:** Outfit (headings) + Inter (body)
+- **Components:** Glass-morphism effects, subtle textures
+- **Mobile-First:** Bottom navigation, 44px+ touch targets
+- **Accessibility:** WCAG AA compliant, keyboard navigation
+
+See [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) for complete design documentation.
+
 ## Documentation
 
+- [Design System](docs/DESIGN_SYSTEM.md) - Color palette, typography, components
 - [Development Guide](docs/DEVELOPMENT.md) - Local development setup
 - [Deployment Guide](docs/DEPLOYMENT.md) - Production deployment
 - [Testing Guide](docs/TESTING.md) - QA checklist
