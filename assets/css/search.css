@@ -62,7 +62,7 @@
 /* Highlight matching text */
 .autocomplete-highlight {
     font-weight: bold;
-    color: #007bff;
+    color: var(--color-primary, #d97706);
 }
 
 /* No results message */
@@ -177,7 +177,7 @@
 }
 
 .voice-search-btn:hover {
-    color: #007bff;
+    color: var(--color-primary, #d97706);
 }
 
 .voice-search-btn.listening {
@@ -200,7 +200,7 @@
     display: inline-block;
     margin-right: 1rem;
     margin-bottom: 0.5rem;
-    color: #007bff;
+    color: var(--color-primary, #d97706);
     cursor: pointer;
 }
 

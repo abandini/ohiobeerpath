@@ -18,8 +18,8 @@
 }
 
 .itinerary-list-item:hover {
-    background-color: rgba(0, 123, 255, 0.05);
-    border-left-color: #007bff;
+    background-color: rgba(217, 119, 6, 0.05);
+    border-left-color: var(--color-primary, #d97706);
 }
 
 .drag-handle {
@@ -42,7 +42,7 @@
     align-items: center;
     width: 28px;
     height: 28px;
-    background-color: #007bff;
+    background-color: var(--color-primary, #d97706);
     color: white;
     border-radius: 50%;
     font-weight: bold;
@@ -72,7 +72,7 @@
 /* Drag and Drop Styles */
 .sortable-ghost {
     background-color: rgba(0, 123, 255, 0.1);
-    border-left-color: #007bff;
+    border-left-color: var(--color-primary, #d97706);
     opacity: 0.8;
 }
 
@@ -103,7 +103,7 @@
 /* Itinerary Summary */
 #itinerarySummary {
     background-color: #f8f9fa;
-    border-left: 3px solid #007bff;
+    border-left: 3px solid var(--color-primary, #d97706);
 }
 
 /* Recent Searches */

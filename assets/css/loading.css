@@ -131,7 +131,7 @@
     top: 0;
     left: 0;
     height: 3px;
-    background-color: #007bff;
+    background-color: var(--color-primary, #d97706);
     z-index: 2001;
     width: 0;
     transition: width 0.3s ease-out;
