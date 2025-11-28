@@ -2,13 +2,12 @@ import { MiddlewareHandler } from 'hono';
 import type { Env } from '../types';
 
 // Map of static asset paths to content types
+// Note: robots.txt and sitemap.xml are now generated dynamically
 const ASSETS: Record<string, string> = {
   '/assets/css/styles.css': 'text/css',
   '/assets/css/mobile.css': 'text/css',
   '/service-worker.js': 'application/javascript',
   '/site.webmanifest': 'application/manifest+json',
-  '/robots.txt': 'text/plain',
-  '/sitemap.xml': 'application/xml',
   '/offline.html': 'text/html'
 };
 

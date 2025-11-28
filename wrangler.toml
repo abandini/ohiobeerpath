@@ -22,10 +22,35 @@ bucket_name = "ohio-beer-path-images"
 binding = "CACHE"
 id = "276245328e284f3e8dbc4aba8355d12a"
 
+# Workers AI binding
+[ai]
+binding = "AI"
+
+# Vectorize for semantic search
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "brewery-embeddings"
+
+# Cron trigger for batch AI processing (3 AM UTC daily)
+[triggers]
+crons = ["0 3 * * *"]
+
+# Custom domain routes for brewerytrip.com
+[[routes]]
+pattern = "brewerytrip.com/*"
+zone_name = "brewerytrip.com"
+
+[[routes]]
+pattern = "*.brewerytrip.com/*"
+zone_name = "brewerytrip.com"
+
 # Environment variables
 [vars]
 ENVIRONMENT = "production"
+ADMIN_USER = "admin"
+ADMIN_PASS = "ohiobeer2024"
 
 # Secrets (set via wrangler secret put)
 # GOOGLE_MAPS_API_KEY
-# WORKERS_AI_API_KEY
+# Note: ADMIN_PASS should be moved to secrets for production:
+# wrangler secret put ADMIN_PASS
