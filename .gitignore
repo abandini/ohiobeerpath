@@ -48,3 +48,6 @@ wrangler.toml.local
 
 # Data exports (regenerated from MySQL)
 data/breweries-export.json
+
+# Git worktrees
+.worktrees/
