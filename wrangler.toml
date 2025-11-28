@@ -22,10 +22,10 @@ bucket_name = "ohio-beer-path-images"
 binding = "CACHE"
 id = "276245328e284f3e8dbc4aba8355d12a"
 
-# KV namespace for sessions (needs to be created: wrangler kv:namespace create SESSIONS)
+# KV namespace for sessions
 [[kv_namespaces]]
 binding = "SESSIONS"
-id = "SESSIONS_KV_ID_PLACEHOLDER"
+id = "23a662e50f1c4997a3ab5fee3e045924"
 
 # Workers AI binding
 [ai]
