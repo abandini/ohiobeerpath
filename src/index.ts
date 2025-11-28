@@ -10,6 +10,9 @@ import pageRoutes from './routes/pages';
 import adminRoutes from './routes/admin';
 import authRoutes from './routes/auth';
 import ratingsRoutes from './routes/ratings';
+import usersRoutes from './routes/users';
+import shareRoutes from './routes/share';
+import imagesRoutes from './routes/images';
 
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -168,6 +171,15 @@ app.route('/api/auth', authRoutes);
 
 // Mount ratings routes
 app.route('/api/ratings', ratingsRoutes);
+
+// Mount users routes
+app.route('/api/users', usersRoutes);
+
+// Mount share routes (public rating pages)
+app.route('/', shareRoutes);
+
+// Mount images routes (R2 proxy)
+app.route('/images', imagesRoutes);
 
 // Mount admin routes (password protected)
 app.route('/admin', adminRoutes);

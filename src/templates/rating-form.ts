@@ -561,7 +561,12 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
         <i class="bi bi-three-dots"></i> More
       </button>
     </div>
-    <button class="close-success" onclick="closeSuccess()">Done</button>
+    <div style="display: flex; gap: 12px; margin-top: 20px;">
+      <button class="share-btn more" onclick="viewRating()" style="background: #10b981;">
+        <i class="bi bi-eye"></i> View Rating
+      </button>
+      <button class="close-success" onclick="closeSuccess()" style="margin: 0;">Done</button>
+    </div>
   </div>
 
   <input type="file" accept="image/*" capture="environment" class="file-input" id="cameraInput">
@@ -780,12 +785,28 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
     }
 
     function shareMore() {
+      const shareUrl = ratingId ? \`${baseUrl}/rating/\${ratingId}\` : \`${baseUrl}/brewery/${brewery.id}\`;
+
       if (navigator.share) {
         navigator.share({
-          title: 'Check out this beer!',
+          title: 'Check out my beer rating!',
           text: \`I just rated a beer at ${brewery.name} on Brewery Trip!\`,
-          url: \`${baseUrl}/brewery/${brewery.id}\`
+          url: shareUrl
         });
+      } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          const btn = document.querySelector('.share-btn.more');
+          const originalHtml = btn.innerHTML;
+          btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+          setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
+        });
+      }
+    }
+
+    function viewRating() {
+      if (ratingId) {
+        window.location.href = \`${baseUrl}/rating/\${ratingId}\`;
       }
     }
   </script>

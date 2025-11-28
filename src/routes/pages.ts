@@ -13,6 +13,10 @@ import { aboutPage, privacyPage, termsPage } from '../templates/static';
 import { blogListPage, blogPostPage, BlogPost, sampleBlogPosts } from '../templates/blog';
 import { eventsPage } from '../templates/events';
 import { renderRatingForm } from '../templates/rating-form';
+import { userProfilePage, settingsPage } from '../templates/user-profile';
+import { getUserById } from '../db/users';
+import { getUserRatings, getUserStats } from '../db/ratings';
+import { getCurrentUser, requireAuth } from '../middleware/auth';
 
 const pages = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
@@ -381,6 +385,86 @@ pages.get('/events', async (c) => {
     const html = eventsPage([]);
     return c.html(html);
   }
+});
+
+// User profile page (own profile)
+pages.get('/profile', async (c) => {
+  const subdomain = c.get('subdomain');
+  const user = getCurrentUser(c);
+
+  if (!user) {
+    return c.redirect('/api/auth/untappd');
+  }
+
+  try {
+    const [ratings, stats] = await Promise.all([
+      getUserRatings(c.env.DB, user.id, 20, 0),
+      getUserStats(c.env.DB, user.id)
+    ]);
+
+    const html = userProfilePage({
+      user,
+      stats,
+      ratings,
+      isOwnProfile: true,
+      subdomain: { baseUrl: subdomain.baseUrl, stateName: subdomain.stateName }
+    });
+
+    return c.html(html);
+  } catch (error) {
+    console.error('Profile page error:', error);
+    return c.html('<h1>Error loading profile</h1>', 500);
+  }
+});
+
+// Public user profile
+pages.get('/user/:id', async (c) => {
+  const subdomain = c.get('subdomain');
+  const userId = c.req.param('id');
+  const currentUser = getCurrentUser(c);
+
+  try {
+    const profileUser = await getUserById(c.env.DB, userId);
+
+    if (!profileUser) {
+      return c.html('<h1>User not found</h1>', 404);
+    }
+
+    const [ratings, stats] = await Promise.all([
+      getUserRatings(c.env.DB, userId, 20, 0, true), // publicOnly = true
+      getUserStats(c.env.DB, userId)
+    ]);
+
+    const html = userProfilePage({
+      user: profileUser,
+      stats,
+      ratings,
+      isOwnProfile: currentUser?.id === userId,
+      subdomain: { baseUrl: subdomain.baseUrl, stateName: subdomain.stateName }
+    });
+
+    return c.html(html);
+  } catch (error) {
+    console.error('User profile page error:', error);
+    return c.html('<h1>Error loading profile</h1>', 500);
+  }
+});
+
+// Settings page
+pages.get('/settings', async (c) => {
+  const subdomain = c.get('subdomain');
+  const user = getCurrentUser(c);
+
+  if (!user) {
+    return c.redirect('/api/auth/untappd');
+  }
+
+  const html = settingsPage(user, {
+    baseUrl: subdomain.baseUrl,
+    stateName: subdomain.stateName
+  });
+
+  return c.html(html);
 });
 
 // Static pages

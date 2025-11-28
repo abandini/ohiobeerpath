@@ -1,5 +1,6 @@
 // Base HTML layout using template literals
 import type { SubdomainContext } from '../types';
+import { animationStyles, animationScripts } from './components/animations';
 
 interface LayoutOptions {
   description?: string;
@@ -122,6 +123,9 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="stylesheet" href="/assets/css/mobile.css">
 
+  <!-- Animation Utilities -->
+  <style>${animationStyles}</style>
+
   <!-- PWA Manifest -->
   <link rel="manifest" href="/site.webmanifest">
 
@@ -184,6 +188,9 @@ export function layout(title: string, content: string, options: LayoutOptions = 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js');
     }
+
+    // Animation utilities
+    ${animationScripts}
   </script>
 </body>
 </html>`;

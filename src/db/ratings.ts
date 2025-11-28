@@ -153,13 +153,15 @@ export async function getUserRatings(
   db: D1Database,
   userId: string,
   limit = 20,
-  offset = 0
+  offset = 0,
+  publicOnly = false
 ): Promise<BeerRating[]> {
+  const whereClause = publicOnly ? 'AND r.is_public = 1' : '';
   const results = await db.prepare(`
     SELECT r.*, b.name as brewery_name, b.city, b.state
     FROM beer_ratings r
     JOIN breweries b ON r.brewery_id = b.id
-    WHERE r.user_id = ?
+    WHERE r.user_id = ? ${whereClause}
     ORDER BY r.created_at DESC
     LIMIT ? OFFSET ?
   `).bind(userId, limit, offset).all();

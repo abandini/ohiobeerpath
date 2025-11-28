@@ -18,6 +18,7 @@ import {
   deletePhoto
 } from '../db/ratings';
 import { BEER_STYLES_SIMPLE } from '../types';
+import { uploadPhoto as uploadPhotoToR2 } from '../services/image';
 
 const ratings = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
@@ -295,23 +296,28 @@ ratings.post('/:id/photos', requireAuth, async (c) => {
         continue;
       }
 
-      // Generate unique filename
-      const ext = photo.name?.split('.').pop() || 'jpg';
-      const filename = `ratings/${user.id}/${ratingId}/${crypto.randomUUID()}.${ext}`;
+      // Upload to R2 with automatic resizing support
+      const uploadResult = await uploadPhotoToR2(
+        c.env,
+        photo,
+        user.id,
+        ratingId,
+        contentType
+      );
 
-      // Upload to R2
-      const arrayBuffer = await photo.arrayBuffer();
-      await c.env.IMAGES.put(filename, arrayBuffer, {
-        httpMetadata: {
-          contentType
-        }
-      });
+      if (!uploadResult.success || !uploadResult.urls) {
+        console.error('Photo upload failed:', uploadResult.error);
+        continue;
+      }
 
-      // Generate URLs (assuming R2 bucket is public or using signed URLs)
-      const photoUrl = `/images/${filename}`;
-
-      // Add to database
-      const photoRecord = await addPhoto(c.env.DB, ratingId, photoUrl);
+      // Add to database with all URL variants
+      const photoRecord = await addPhoto(
+        c.env.DB,
+        ratingId,
+        uploadResult.urls.display,      // Main display URL (1200px)
+        uploadResult.urls.original,     // Original full-res
+        uploadResult.urls.thumbnail     // Thumbnail (400px)
+      );
       uploadedPhotos.push(photoRecord);
     }
 
