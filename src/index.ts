@@ -3,10 +3,13 @@ import { cors } from './middleware/cors';
 import { serveAssets } from './middleware/assets';
 import { cacheMiddleware } from './middleware/cache';
 import { subdomainMiddleware } from './middleware/subdomain';
+import { optionalAuth } from './middleware/auth';
 import type { Env, Brewery, AppVariables } from './types';
 import apiRoutes from './routes/api';
 import pageRoutes from './routes/pages';
 import adminRoutes from './routes/admin';
+import authRoutes from './routes/auth';
+import ratingsRoutes from './routes/ratings';
 
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -22,6 +25,9 @@ app.use('*', serveAssets());
 
 // Apply caching middleware (before routes)
 app.use('*', cacheMiddleware());
+
+// Apply optional auth middleware (populates user if logged in)
+app.use('*', optionalAuth);
 
 // Health check endpoint
 app.get('/health', (c) => {
@@ -156,6 +162,12 @@ app.post('/api/admin/enrich-descriptions', async (c) => {
 
 // Mount API routes
 app.route('/api', apiRoutes);
+
+// Mount auth routes
+app.route('/api/auth', authRoutes);
+
+// Mount ratings routes
+app.route('/api/ratings', ratingsRoutes);
 
 // Mount admin routes (password protected)
 app.route('/admin', adminRoutes);

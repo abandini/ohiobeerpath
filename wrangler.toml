@@ -22,6 +22,11 @@ bucket_name = "ohio-beer-path-images"
 binding = "CACHE"
 id = "276245328e284f3e8dbc4aba8355d12a"
 
+# KV namespace for sessions (needs to be created: wrangler kv:namespace create SESSIONS)
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "SESSIONS_KV_ID_PLACEHOLDER"
+
 # Workers AI binding
 [ai]
 binding = "AI"
@@ -52,5 +57,14 @@ ADMIN_PASS = "ohiobeer2024"
 
 # Secrets (set via wrangler secret put)
 # GOOGLE_MAPS_API_KEY
+# UNTAPPD_CLIENT_ID - Get from https://untappd.com/api/dashboard
+# UNTAPPD_CLIENT_SECRET - Get from https://untappd.com/api/dashboard
+# UNTAPPD_REDIRECT_URI - Set to https://brewerytrip.com/api/auth/untappd/callback
+#
+# To set Untappd secrets:
+# wrangler secret put UNTAPPD_CLIENT_ID
+# wrangler secret put UNTAPPD_CLIENT_SECRET
+# wrangler secret put UNTAPPD_REDIRECT_URI
+#
 # Note: ADMIN_PASS should be moved to secrets for production:
 # wrangler secret put ADMIN_PASS

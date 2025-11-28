@@ -120,6 +120,9 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
           <button class="btn btn-warning btn-lg" onclick="addToTour(${brewery.id})">
             <i class="bi bi-plus-circle"></i> Add to Tour
           </button>
+          <a href="/brewery/${brewery.id}/rate" class="btn btn-success btn-lg">
+            <i class="bi bi-star-fill"></i> Rate a Beer
+          </a>
           ${brewery.latitude && brewery.longitude ? `
             <a href="https://www.google.com/maps/dir/?api=1&destination=${brewery.latitude},${brewery.longitude}"
                target="_blank" rel="noopener" class="btn btn-outline-light btn-lg">

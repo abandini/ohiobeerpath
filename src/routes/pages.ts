@@ -12,6 +12,7 @@ import { trailsPage, trailDetailPage, Trail } from '../templates/trails';
 import { aboutPage, privacyPage, termsPage } from '../templates/static';
 import { blogListPage, blogPostPage, BlogPost, sampleBlogPosts } from '../templates/blog';
 import { eventsPage } from '../templates/events';
+import { renderRatingForm } from '../templates/rating-form';
 
 const pages = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
@@ -134,6 +135,32 @@ pages.get('/brewery/:id', async (c) => {
   }
 
   const html = breweryPage(brewery, c.env.GOOGLE_MAPS_API_KEY, nearbyBreweries, reviews);
+  return c.html(html);
+});
+
+// Rate a beer at a brewery
+pages.get('/brewery/:id/rate', async (c) => {
+  const subdomain = c.get('subdomain');
+  const id = parseInt(c.req.param('id'));
+  const brewery = await breweriesDB.getBreweryById(c.env, id);
+
+  if (!brewery) {
+    return c.html('<h1>Brewery not found</h1>', 404);
+  }
+
+  // Get itinerary ID from query if present
+  const itineraryId = c.req.query('itinerary');
+
+  // Get current user from context (set by auth middleware)
+  const user = c.get('user') || null;
+
+  const html = renderRatingForm({
+    brewery,
+    user,
+    itineraryId,
+    baseUrl: subdomain.baseUrl
+  });
+
   return c.html(html);
 });
 
