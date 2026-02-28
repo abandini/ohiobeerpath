@@ -23,7 +23,7 @@ export function trailsPage(trails: Trail[], subdomain?: SubdomainContext): strin
   <div class="trails-hero">
     <div class="container">
       <h1><i class="bi bi-signpost-2"></i> Brewery Trails</h1>
-      <p>Curated routes through Ohio's best breweries. Pick a trail and start your adventure!</p>
+      <p>Curated routes through ${subdomain?.isMultiState ? "America's" : (subdomain?.stateName ? subdomain.stateName + "'s" : "America's")} best breweries. Pick a trail and start your adventure!</p>
     </div>
   </div>
 
@@ -147,7 +147,7 @@ export function trailDetailPage(trail: Trail, breweries: Brewery[], subdomain?: 
             <div class="stop-info">
               <h4><a href="/brewery/${brewery.id}" class="text-dark">${brewery.name}</a></h4>
               <p class="stop-meta">
-                <i class="bi bi-geo-alt"></i> ${brewery.city || 'Ohio'}
+                <i class="bi bi-geo-alt"></i> ${brewery.city || 'Unknown'}
                 ${brewery.brewery_type ? ` • ${brewery.brewery_type}` : ''}
               </p>
             </div>

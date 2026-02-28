@@ -227,7 +227,8 @@ pages.get('/nearby', (c) => {
 
 // Itinerary/Tour page
 pages.get('/itinerary', (c) => {
-  const html = itineraryPage();
+  const subdomain = c.get('subdomain');
+  const html = itineraryPage(subdomain);
   return c.html(html);
 });
 

@@ -1,15 +1,19 @@
 // Itinerary/Tour planning page template
 import { layout } from './layout';
-import type { Brewery } from '../types';
+import type { Brewery, SubdomainContext } from '../types';
 
-export function itineraryPage(): string {
+export function itineraryPage(subdomain?: SubdomainContext): string {
+  const stateName = subdomain?.stateName || 'craft brewery';
+  const isMultiState = subdomain?.isMultiState ?? true;
+  const adventureLabel = isMultiState ? 'craft brewery adventure' : `${stateName} brewery adventure`;
+
   const content = `
   <main class="container py-5">
     <div class="text-center mb-5">
       <h1 class="display-4 fw-bold">
         <i class="bi bi-journal-text text-warning"></i> My Brewery Tour
       </h1>
-      <p class="lead text-muted">Plan your perfect Ohio brewery adventure</p>
+      <p class="lead text-muted">Plan your perfect ${adventureLabel}</p>
     </div>
 
     <div id="empty-tour" class="text-center py-5">
@@ -20,7 +24,7 @@ export function itineraryPage(): string {
             <span role="img" aria-hidden="true">🗺️</span>
           </div>
           <h3 class="fw-bold mb-2">Plan Your Brewery Adventure</h3>
-          <p class="mb-4" style="color: #92400e;">Browse Ohio's 351 breweries and build your perfect tour. We'll help you optimize the route.</p>
+          <p class="mb-4" style="color: #92400e;">Browse our breweries and build your perfect tour. We'll help you optimize the route.</p>
           <div class="d-flex gap-3 justify-content-center flex-wrap">
             <a href="/breweries" class="btn btn-lg" style="background: #d97706; color: white; border-radius: 12px; padding: 0.75rem 1.5rem;">
               <i class="bi bi-cup-straw"></i> Browse Breweries
@@ -255,7 +259,7 @@ export function itineraryPage(): string {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             brewery_ids: breweries.map(b => b.id),
-            name: 'My Ohio Brewery Tour'
+            name: 'My Brewery Tour'
           })
         });
         const data = await response.json();
