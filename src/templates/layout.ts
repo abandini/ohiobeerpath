@@ -7,6 +7,7 @@ interface LayoutOptions {
   image?: string;
   url?: string;
   subdomain?: SubdomainContext;
+  extraCss?: string[];
 }
 
 // Site branding based on subdomain - exported for use by other templates
@@ -111,7 +112,7 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <!-- Google Fonts: Outfit (headings) + Inter (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -122,6 +123,8 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="stylesheet" href="/assets/css/mobile.css">
+  <link rel="stylesheet" href="/assets/css/pages/pages.css">
+  ${(options.extraCss || []).map(href => `<link rel="stylesheet" href="${href}">`).join('\n  ')}
 
   <!-- Animation Utilities -->
   <style>${animationStyles}</style>
@@ -134,11 +137,38 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAw0lEQVRYhe2XQRKCMAxFU4eRm9Qj4hHgiHgT2OiqjtW2Jk3SFMe/67TwH/kMJADGcjUXrdP5ntu7LDvpnujDJVMODAqgxhwLUdzkGGNBsgCS5iWIJICGeQ7iA0DTPAVx0jb7pqgCLZ4+KFThCdDS/BXCPIKBctjPW7S+XUc2gAPAl9/PW2T6vq7RsSIAiGOQiIAM8HMRmAOYvwP/L6E5QD9/w5YQ/TYkQaY9oSYEuivWgCDPBVIgrMmICyE2G1JgqNPxAxe0XeKSPO89AAAAAElFTkSuQmCC">
 </head>
 <body>
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
   ${navigation(branding)}
 
+  <main id="main-content">
   ${content}
+  </main>
 
   ${footer(branding)}
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav d-lg-none" aria-label="Mobile navigation">
+    <a href="/" class="bottom-nav-item">
+      <i class="bi bi-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/breweries" class="bottom-nav-item">
+      <i class="bi bi-cup-straw"></i>
+      <span>Breweries</span>
+    </a>
+    <a href="/nearby" class="bottom-nav-item">
+      <i class="bi bi-geo-alt"></i>
+      <span>Nearby</span>
+    </a>
+    <a href="/trails" class="bottom-nav-item">
+      <i class="bi bi-signpost-2"></i>
+      <span>Trails</span>
+    </a>
+    <a href="/itinerary" class="bottom-nav-item">
+      <i class="bi bi-map"></i>
+      <span>My Tour</span>
+    </a>
+  </nav>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -162,8 +192,10 @@ export function layout(title: string, content: string, options: LayoutOptions = 
         tour.push(breweryId);
         localStorage.setItem('brewery_tour', JSON.stringify(tour));
         updateTourBadge();
+        if (typeof showToast === 'function') showToast('Added to your tour!', 'success');
         return true;
       }
+      if (typeof showToast === 'function') showToast('Already in your tour', 'info');
       return false;
     };
 
@@ -206,7 +238,7 @@ interface Branding {
 }
 
 // Custom pint glass SVG icon
-const pintGlassIcon = `<svg class="pint-icon" viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+const pintGlassIcon = `<svg class="pint-icon" viewBox="0 0 24 24" fill="currentColor" width="28" height="28" aria-hidden="true">
   <path d="M5 2C4.45 2 4 2.45 4 3v1.5c0 .28.11.53.29.71L6 7v12c0 1.66 1.34 3 3 3h6c1.66 0 3-1.34 3-3V7l1.71-1.79c.18-.18.29-.43.29-.71V3c0-.55-.45-1-1-1H5zm1 2h12v.5l-2 2.1V19c0 .55-.45 1-1 1H9c-.55 0-1-.45-1-1V6.6L6 4.5V4zm2 3v2h8V7H8zm0 4v1.5h8V11H8z" opacity="0.9"/>
   <path d="M8 7h8v2H8zM8 11h8v1.5H8z" fill="#fbbf24" opacity="0.6"/>
 </svg>`;
@@ -217,103 +249,6 @@ function navigation(branding: Branding): string {
     : '';
 
   return `
-  <style>
-    .navbar {
-      background: linear-gradient(135deg, rgba(26, 26, 46, 0.97) 0%, rgba(22, 33, 62, 0.97) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-      padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(251, 191, 36, 0.1);
-    }
-    .navbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 700;
-      font-size: 1.35rem;
-      color: #fff !important;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-    .navbar-brand:hover {
-      color: #fbbf24 !important;
-      transform: translateY(-1px);
-    }
-    .navbar-brand .pint-icon {
-      filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.3));
-      transition: transform 0.3s ease;
-    }
-    .navbar-brand:hover .pint-icon {
-      transform: rotate(-10deg) scale(1.1);
-    }
-    .state-badge {
-      background: linear-gradient(135deg, #d97706, #b45309);
-      color: white;
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.4);
-    }
-    .navbar-nav {
-      gap: 0.25rem;
-    }
-    .navbar-nav .nav-link {
-      color: rgba(255, 255, 255, 0.85) !important;
-      font-weight: 500;
-      font-size: 0.9rem;
-      padding: 0.5rem 0.9rem !important;
-      border-radius: 8px;
-      transition: all 0.25s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    .navbar-nav .nav-link:hover {
-      color: #fbbf24 !important;
-      background: rgba(251, 191, 36, 0.1);
-      transform: translateY(-2px);
-    }
-    .navbar-nav .nav-link i {
-      font-size: 1rem;
-      opacity: 0.8;
-    }
-    .navbar-nav .nav-link:hover i {
-      opacity: 1;
-    }
-    .navbar-toggler {
-      border: 1px solid rgba(251, 191, 36, 0.3);
-      padding: 0.4rem 0.6rem;
-    }
-    .navbar-toggler:focus {
-      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25);
-    }
-    .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28251, 191, 36, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-    #tour-badge {
-      font-size: 0.7rem;
-      padding: 0.2rem 0.45rem;
-      margin-left: 0.25rem;
-      background: linear-gradient(135deg, #22c55e, #16a34a) !important;
-      box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
-    }
-    @media (max-width: 991px) {
-      .navbar-collapse {
-        background: rgba(26, 26, 46, 0.98);
-        margin-top: 0.75rem;
-        padding: 1rem;
-        border-radius: 12px;
-        border: 1px solid rgba(251, 191, 36, 0.1);
-      }
-      .navbar-nav .nav-link {
-        padding: 0.75rem 1rem !important;
-      }
-    }
-  </style>
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
       <a class="navbar-brand" href="/">
@@ -363,7 +298,7 @@ function navigation(branding: Branding): string {
           <li class="nav-item">
             <a class="nav-link" href="/itinerary">
               <i class="bi bi-compass"></i> My Tour
-              <span id="tour-badge" class="badge" style="display: none;">0</span>
+              <span id="tour-badge" class="badge" style="display: none;" aria-label="Tour stops count">0</span>
             </a>
           </li>
         </ul>
@@ -432,81 +367,10 @@ function footer(branding: Branding): string {
         </div>
       </div>
       <div class="footer-bottom">
-        <small>&copy; 2025 ${branding.siteName}. All rights reserved.</small>
+        <small>&copy; ${new Date().getFullYear()} ${branding.siteName}. All rights reserved.</small>
       </div>
     </div>
   </footer>
-
-  <style>
-    .site-footer {
-      background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
-      color: white;
-      padding: 3rem 0 1.5rem;
-    }
-
-    .footer-heading {
-      color: #fbbf24;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .footer-heading .pint-icon {
-      width: 22px;
-      height: 22px;
-    }
-
-    .footer-text {
-      color: rgba(255,255,255,0.7);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    .footer-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-links li {
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-links a {
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      transition: color 0.2s ease;
-      font-size: 0.95rem;
-    }
-
-    .footer-links a:hover {
-      color: #fbbf24;
-    }
-
-    .footer-bottom {
-      text-align: center;
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.5);
-    }
-  </style>
-
-  <style>
-    .pwa-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(135deg, #D97706, #B45309);
-      color: white;
-      padding: 1rem 0;
-      z-index: 1050;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
-    }
-  </style>
 
   <script>
     // PWA Install Prompt

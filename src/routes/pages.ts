@@ -89,7 +89,23 @@ pages.get('/breweries', async (c) => {
     });
   }
 
-  const html = breweriesPage(breweries, { region, amenity, search, subdomain });
+  // Pagination: 24 breweries per page
+  const BREWERIES_PER_PAGE = 24;
+  const totalItems = breweries.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / BREWERIES_PER_PAGE));
+  let page = parseInt(c.req.query('page') || '1', 10);
+  if (isNaN(page) || page < 1) page = 1;
+  if (page > totalPages) page = totalPages;
+
+  const startIndex = (page - 1) * BREWERIES_PER_PAGE;
+  const paginatedBreweries = breweries.slice(startIndex, startIndex + BREWERIES_PER_PAGE);
+
+  const html = breweriesPage(paginatedBreweries, { region, amenity, search, subdomain }, {
+    page,
+    totalPages,
+    totalItems,
+    perPage: BREWERIES_PER_PAGE
+  });
   return c.html(html);
 });
 

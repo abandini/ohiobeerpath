@@ -1,86 +1,168 @@
-const CACHE_NAME = 'ohio-beer-path-v1';
+// Ohio Beer Path Service Worker
+// Version 1.0.0
+
+const CACHE_NAME = 'ohio-beer-path-v2.0.0';
+const RUNTIME_CACHE = 'ohio-beer-path-runtime-v2';
+
+// Assets to cache on install
 const urlsToCache = [
   '/',
-  '/index.php',
-  '/breweries.php',
-  '/regions.php',
-  '/nearby.php',
-  '/itinerary.php',
-  '/about.php',
-  '/offline.html',
+  '/breweries',
+  '/regions',
+  '/trails',
+  '/nearby',
+  '/itinerary',
   '/assets/css/styles.css',
   '/assets/css/mobile.css',
-  '/assets/js/main.js',
-  '/assets/js/core.js',
-  '/assets/js/map-loader.js',
-  '/assets/js/breweries.js',
-  '/assets/js/search.js',
-  '/assets/js/itinerary.js',
-  '/assets/js/pwa.js',
-  '/breweries.json',
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js',
-  'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css'
+  '/offline.html',
+  '/api/breweries' // Cache all breweries for offline browsing
 ];
 
-// Install event - cache assets
+// Install event - cache core assets
 self.addEventListener('install', (event) => {
+  console.log('[Service Worker] Installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Opened cache');
+        console.log('[Service Worker] Caching app shell');
         return cache.addAll(urlsToCache);
       })
-  );
-});
-
-// Fetch event - serve from cache, fallback to network
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-
-        return fetch(event.request).then(
-          (response) => {
-            // Don't cache non-successful responses
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        ).catch(() => {
-          // Network failed, return offline page
-          return caches.match('/offline.html');
-        });
-      })
+      .then(() => self.skipWaiting())
   );
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
+  console.log('[Service Worker] Activating...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
+            console.log('[Service Worker] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
+});
+
+// Fetch event - serve from cache, fallback to network
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // Skip cross-origin requests
+  if (url.origin !== location.origin) {
+    return;
+  }
+
+  // API requests - network first, cache fallback
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          // Cache successful API responses
+          if (response.ok) {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          // Return cached API data if available
+          return caches.match(request);
+        })
+    );
+    return;
+  }
+
+  // HTML pages - cache first, network fallback
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      caches.match(request)
+        .then((cachedResponse) => {
+          if (cachedResponse) {
+            // Return cached version and update in background
+            fetch(request).then((response) => {
+              if (response.ok) {
+                caches.open(CACHE_NAME).then((cache) => {
+                  cache.put(request, response);
+                });
+              }
+            });
+            return cachedResponse;
+          }
+
+          // Not in cache, fetch from network
+          return fetch(request)
+            .then((response) => {
+              if (response.ok) {
+                const responseClone = response.clone();
+                caches.open(CACHE_NAME).then((cache) => {
+                  cache.put(request, responseClone);
+                });
+              }
+              return response;
+            })
+            .catch(() => {
+              // Offline fallback
+              return caches.match('/offline.html');
+            });
+        })
+    );
+    return;
+  }
+
+  // Static assets - cache first
+  event.respondWith(
+    caches.match(request)
+      .then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+
+        return fetch(request).then((response) => {
+          // Cache successful responses
+          if (response.ok && (
+            request.destination === 'style' ||
+            request.destination === 'script' ||
+            request.destination === 'image'
+          )) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        });
+      })
+  );
+});
+
+// Background sync for adding breweries to tour
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-tour') {
+    console.log('[Service Worker] Syncing tour data...');
+    // Future: sync tour data with server
+  }
+});
+
+// Push notifications (future feature)
+self.addEventListener('push', (event) => {
+  if (event.data) {
+    const data = event.data.json();
+    const options = {
+      body: data.body,
+      icon: '/assets/images/icon-192.png',
+      badge: '/assets/images/badge-72.png',
+      vibrate: [200, 100, 200]
+    };
+    event.waitUntil(
+      self.registration.showNotification(data.title, options)
+    );
+  }
 });

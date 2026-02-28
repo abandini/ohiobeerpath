@@ -3,6 +3,7 @@ import type { Env } from '../types';
 import * as breweriesDB from '../db/breweries';
 import type { StateFilter } from '../db/breweries';
 import type { SubdomainContext } from '../middleware/subdomain';
+import { hashCode } from '../templates/utils';
 
 const api = new Hono<{ Bindings: Env; Variables: { subdomain: SubdomainContext } }>();
 
@@ -530,52 +531,6 @@ api.get('/check-ins/:user_id', async (c) => {
   });
 });
 
-// POST /api/reviews - Submit a brewery review
-api.post('/reviews', async (c) => {
-  try {
-    const body = await c.req.json();
-    const { user_id, brewery_id, rating, title, content, visit_date } = body;
-
-    if (!user_id || !brewery_id || !rating) {
-      return c.json({ error: 'user_id, brewery_id, and rating required' }, 400);
-    }
-
-    if (rating < 1 || rating > 5) {
-      return c.json({ error: 'Rating must be between 1 and 5' }, 400);
-    }
-
-    await c.env.DB.prepare(
-      `INSERT INTO reviews (user_id, brewery_id, rating, title, content, visit_date, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`
-    ).bind(user_id, brewery_id, rating, title || null, content || null, visit_date || null).run();
-
-    return c.json({ success: true });
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 500);
-  }
-});
-
-// GET /api/reviews/:brewery_id - Get reviews for a brewery
-api.get('/reviews/:brewery_id', async (c) => {
-  const breweryId = c.req.param('brewery_id');
-
-  const { results: reviews } = await c.env.DB.prepare(
-    `SELECT * FROM reviews WHERE brewery_id = ? ORDER BY created_at DESC LIMIT 50`
-  ).bind(breweryId).all<any>();
-
-  // Calculate average rating
-  const avgRating = reviews?.length
-    ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-    : 0;
-
-  return c.json({
-    success: true,
-    average_rating: Math.round(avgRating * 10) / 10,
-    review_count: reviews?.length || 0,
-    reviews: reviews || []
-  });
-});
-
 // POST /api/subscribe - Email newsletter signup
 api.post('/subscribe', async (c) => {
   try {
@@ -661,14 +616,6 @@ api.get('/og/:brewery_id', async (c) => {
   }
 
   // Generate consistent color based on brewery name
-  const hashCode = (str: string) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return hash;
-  };
-
   const hue = Math.abs(hashCode(brewery.name)) % 360;
   const hue2 = (hue + 40) % 360;
 

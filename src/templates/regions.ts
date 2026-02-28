@@ -80,27 +80,6 @@ export function regionsPage(regions: Region[], options: RegionPageOptions = {}):
     </div>
   </main>
 
-  <style>
-    .region-card {
-      transition: transform 0.2s, box-shadow 0.2s;
-      border: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .region-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    }
-    .region-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-    }
-  </style>
   `;
 
   return layout('Regions', content, { subdomain });
@@ -163,25 +142,6 @@ export function regionDetailPage(region: string, breweries: Brewery[], options: 
     ` : ''}
   </main>
 
-  <style>
-    .region-icon {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .brewery-card {
-      transition: transform 0.2s;
-      border: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .brewery-card:hover {
-      transform: translateY(-3px);
-    }
-  </style>
 
   <script>
     document.querySelectorAll('.add-to-tour').forEach(btn => {

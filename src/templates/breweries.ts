@@ -1,16 +1,6 @@
 import { layout } from './layout';
 import type { Brewery, SubdomainContext } from '../types';
-
-// Generate consistent color from string
-const hashCode = (str: string) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return hash;
-};
+import { hashCode } from './utils';
 
 interface FilterOptions {
   region?: string;
@@ -19,7 +9,72 @@ interface FilterOptions {
   subdomain?: SubdomainContext;
 }
 
-export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {}): string {
+interface PaginationInfo {
+  page: number;
+  totalPages: number;
+  totalItems: number;
+  perPage: number;
+}
+
+// Build a query string preserving current filters with a given page number
+function buildPageUrl(page: number, filters: FilterOptions): string {
+  const params = new URLSearchParams();
+  if (filters.region) params.set('region', filters.region);
+  if (filters.amenity) params.set('amenity', filters.amenity);
+  if (filters.search) params.set('search', filters.search);
+  if (page > 1) params.set('page', String(page));
+  const qs = params.toString();
+  return `/breweries${qs ? '?' + qs : ''}`;
+}
+
+// Render pagination controls with Previous, page numbers, Next
+function renderPagination(pagination: PaginationInfo, filters: FilterOptions): string {
+  const { page, totalPages } = pagination;
+  if (totalPages <= 1) return '';
+
+  // Determine which page numbers to show (max 7 with ellipsis)
+  const pages: (number | '...')[] = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (page > 3) pages.push('...');
+    const start = Math.max(2, page - 1);
+    const end = Math.min(totalPages - 1, page + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (page < totalPages - 2) pages.push('...');
+    pages.push(totalPages);
+  }
+
+  return `
+    <nav aria-label="Brewery listing pages" class="d-flex justify-content-center mt-4 mb-3">
+      <ul class="pagination" style="gap: 4px;">
+        <li class="page-item ${page <= 1 ? 'disabled' : ''}">
+          <a class="page-link" href="${page > 1 ? buildPageUrl(page - 1, filters) : '#'}"
+             ${page <= 1 ? 'tabindex="-1" aria-disabled="true"' : ''}
+             style="border-radius: 8px;">&laquo; Prev</a>
+        </li>
+        ${pages.map(p => {
+          if (p === '...') {
+            return '<li class="page-item disabled"><span class="page-link" style="border-radius: 8px;">&hellip;</span></li>';
+          }
+          return `<li class="page-item ${p === page ? 'active' : ''}">
+            <a class="page-link" href="${buildPageUrl(p, filters)}"
+               ${p === page ? 'aria-current="page"' : ''}
+               style="border-radius: 8px; ${p === page ? 'background: #D97706; border-color: #D97706;' : ''}">${p}</a>
+          </li>`;
+        }).join('')}
+        <li class="page-item ${page >= totalPages ? 'disabled' : ''}">
+          <a class="page-link" href="${page < totalPages ? buildPageUrl(page + 1, filters) : '#'}"
+             ${page >= totalPages ? 'tabindex="-1" aria-disabled="true"' : ''}
+             style="border-radius: 8px;">Next &raquo;</a>
+        </li>
+      </ul>
+    </nav>
+  `;
+}
+
+export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {}, pagination?: PaginationInfo): string {
   const { region, amenity, search, subdomain } = filters;
 
   // Get state name for heading (default to "All" for multi-state)
@@ -37,146 +92,11 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {})
   ];
 
   const content = `
-  <style>
-    .brewery-grid-card {
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      background: white;
-      height: 100%;
-    }
-    .brewery-grid-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    .brewery-card-header {
-      height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .brewery-card-header .beer-icon {
-      font-size: 3rem;
-      opacity: 0.9;
-    }
-    .brewery-card-header .region-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .brewery-card-body {
-      padding: 1.25rem;
-    }
-    .brewery-card-body h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-bottom: 0.25rem;
-    }
-    .brewery-card-body .meta {
-      color: #666;
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-    }
-    .brewery-card-body .description {
-      font-size: 0.85rem;
-      color: #555;
-      line-height: 1.5;
-      margin-bottom: 1rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .view-btn {
-      display: block;
-      width: 100%;
-      padding: 0.75rem;
-      background: linear-gradient(135deg, #D97706, #B45309);
-      color: white;
-      text-decoration: none;
-      text-align: center;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-    .view-btn:hover {
-      background: linear-gradient(135deg, #B45309, #92400E);
-      color: white;
-    }
-    .filter-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      margin-bottom: 2rem;
-    }
-    .amenity-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    .amenity-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      border: 2px solid #e5e7eb;
-      background: white;
-      color: #374151;
-    }
-    .amenity-tag:hover {
-      border-color: #D97706;
-      color: #D97706;
-    }
-    .amenity-tag.active {
-      background: #D97706;
-      border-color: #D97706;
-      color: white;
-    }
-    .active-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .active-filter {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.35rem 0.75rem;
-      background: #fef3c7;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      color: #92400e;
-    }
-    .clear-filter {
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
 
   <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 style="font-weight: 800; color: #1a1a2e;">${stateLabel}Breweries</h1>
-      <span class="badge" style="background: #D97706; font-size: 0.9rem; padding: 8px 16px;">${breweries.length} breweries</span>
+      <span class="badge" style="background: #D97706; font-size: 0.9rem; padding: 8px 16px;">${pagination ? pagination.totalItems : breweries.length} breweries</span>
     </div>
 
     ${(region || amenity || search) ? `
@@ -212,6 +132,7 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {})
               class="form-control"
               placeholder="Search by name, city, or type..."
               value="${search || ''}"
+              aria-label="Search breweries by name, city, or type"
             >
           </div>
         </div>
@@ -222,12 +143,19 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {})
       <div class="amenity-tags">
         ${amenityFilters.map(a => `
           <a href="/breweries?${region ? 'region=' + region + '&' : ''}amenity=${a.value}${search ? '&search=' + search : ''}"
-             class="amenity-tag ${amenity === a.value ? 'active' : ''}">
+             class="amenity-tag ${amenity === a.value ? 'active' : ''}"
+             role="button" aria-pressed="${amenity === a.value ? 'true' : 'false'}">
             ${a.icon} ${a.label}
           </a>
         `).join('')}
       </div>
     </div>
+
+    ${pagination && pagination.totalPages > 1 ? `
+    <p class="text-muted mb-3" style="font-size: 0.9rem;">
+      Showing ${(pagination.page - 1) * pagination.perPage + 1}&ndash;${Math.min(pagination.page * pagination.perPage, pagination.totalItems)} of ${pagination.totalItems} breweries
+    </p>
+    ` : ''}
 
     <!-- Brewery Grid -->
     <div class="row g-4">
@@ -238,9 +166,29 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {})
         </div>
       `}
     </div>
+
+    ${pagination ? renderPagination(pagination, filters) : ''}
   </div>`;
 
-  return layout('Breweries', content, { subdomain: filters.subdomain });
+  // Schema.org ItemList for brewery listing SEO
+  const itemListJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${stateLabel}Breweries`,
+    numberOfItems: pagination ? pagination.totalItems : breweries.length,
+    itemListElement: breweries.slice(0, 50).map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: b.name,
+      url: `https://ohio-beer-path.bill-burkey.workers.dev/brewery/${b.id}`
+    }))
+  });
+
+  const contentWithSchema = content + `
+    <script type="application/ld+json">${itemListJsonLd}</script>
+  `;
+
+  return layout('Breweries', contentWithSchema, { subdomain: filters.subdomain });
 }
 
 function breweryCard(brewery: Brewery): string {
@@ -265,7 +213,7 @@ function breweryCard(brewery: Brewery): string {
         <span class="region-badge">${regionFallback}</span>
       </div>
       <div class="brewery-card-body">
-        <h3>${brewery.name}</h3>
+        <h2>${brewery.name}</h2>
         <p class="meta">${brewery.brewery_type || 'Brewery'} • ${cityFallback}</p>
         <p class="description">${desc}</p>
         <a href="/brewery/${brewery.id}" class="view-btn">View Details</a>

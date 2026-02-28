@@ -17,6 +17,24 @@ import imagesRoutes from './routes/images';
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
+// Redirect HTTP to HTTPS (check CF-Visitor header)
+app.use('*', async (c, next) => {
+  const cfVisitor = c.req.header('cf-visitor');
+  if (cfVisitor) {
+    try {
+      const visitor = JSON.parse(cfVisitor);
+      if (visitor.scheme === 'http') {
+        const url = new URL(c.req.url);
+        url.protocol = 'https:';
+        return c.redirect(url.toString(), 301);
+      }
+    } catch (_e) {
+      // ignore parse errors
+    }
+  }
+  await next();
+});
+
 // Apply CORS middleware
 app.use('*', cors());
 

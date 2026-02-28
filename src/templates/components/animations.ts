@@ -484,7 +484,9 @@ export const animationScripts = `
 
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
-    toast.innerHTML = message;
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'polite');
+    toast.textContent = message;
     container.appendChild(toast);
 
     setTimeout(() => {

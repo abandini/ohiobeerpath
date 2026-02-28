@@ -22,97 +22,7 @@ export function adminLayout(title: string, content: string): string {
   <title>${title} | Ohio Beer Path Admin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-  <style>
-    :root {
-      --primary: #d97706;
-      --dark: #1a1a2e;
-    }
-    body {
-      background: #f8f9fa;
-      min-height: 100vh;
-    }
-    .admin-sidebar {
-      width: 250px;
-      background: var(--dark);
-      min-height: 100vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      padding: 1rem;
-    }
-    .admin-sidebar .brand {
-      color: white;
-      font-size: 1.25rem;
-      font-weight: bold;
-      padding: 1rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 1rem;
-    }
-    .admin-sidebar .nav-link {
-      color: rgba(255,255,255,0.7);
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      margin-bottom: 0.25rem;
-    }
-    .admin-sidebar .nav-link:hover,
-    .admin-sidebar .nav-link.active {
-      background: rgba(217, 119, 6, 0.2);
-      color: var(--primary);
-    }
-    .admin-sidebar .nav-link i {
-      width: 24px;
-    }
-    .admin-content {
-      margin-left: 250px;
-      padding: 2rem;
-    }
-    .stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .stat-card .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-    .stat-card .stat-value {
-      font-size: 2rem;
-      font-weight: bold;
-    }
-    .stat-card .stat-label {
-      color: #6c757d;
-      font-size: 0.875rem;
-    }
-    .data-table {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .data-table th {
-      background: #f8f9fa;
-      font-weight: 600;
-      border-bottom: 2px solid #dee2e6;
-    }
-    .badge-warning-soft {
-      background: rgba(217, 119, 6, 0.15);
-      color: #b45309;
-    }
-    .badge-success-soft {
-      background: rgba(22, 163, 74, 0.15);
-      color: #15803d;
-    }
-    .badge-info-soft {
-      background: rgba(59, 130, 246, 0.15);
-      color: #1d4ed8;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body>
   <aside class="admin-sidebar">
@@ -171,7 +81,7 @@ export function adminDashboard(stats: AdminStats): string {
     <!-- Stats Cards -->
     <div class="row g-4 mb-4">
       <div class="col-md-6 col-lg-3">
-        <div class="stat-card">
+        <div class="admin-stat-card">
           <div class="d-flex align-items-center">
             <div class="stat-icon bg-warning bg-opacity-10 text-warning me-3">
               <i class="bi bi-building"></i>
@@ -184,7 +94,7 @@ export function adminDashboard(stats: AdminStats): string {
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="stat-card">
+        <div class="admin-stat-card">
           <div class="d-flex align-items-center">
             <div class="stat-icon bg-success bg-opacity-10 text-success me-3">
               <i class="bi bi-check-circle"></i>
@@ -197,7 +107,7 @@ export function adminDashboard(stats: AdminStats): string {
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="stat-card">
+        <div class="admin-stat-card">
           <div class="d-flex align-items-center">
             <div class="stat-icon bg-info bg-opacity-10 text-info me-3">
               <i class="bi bi-star"></i>
@@ -210,7 +120,7 @@ export function adminDashboard(stats: AdminStats): string {
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="stat-card">
+        <div class="admin-stat-card">
           <div class="d-flex align-items-center">
             <div class="stat-icon bg-primary bg-opacity-10 text-primary me-3">
               <i class="bi bi-envelope"></i>

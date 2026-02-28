@@ -128,18 +128,6 @@ input[type="radio"] {
     transform: scale(0.98);
 }
 
-/* Add pull-to-refresh visual indicator */
-.ptr-element {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    color: #fff;
-    z-index: 10;
-    text-align: center;
-    height: 50px;
-}
-
 /* Improve mobile search experience */
 .search-container {
     position: sticky;
@@ -163,34 +151,6 @@ input[type="radio"] {
     overflow-x: auto;
     white-space: nowrap;
     padding-bottom: 10px;
-}
-
-/* Optimize mobile brewery details */
-.brewery-details-mobile {
-    padding: 0;
-}
-
-.brewery-details-mobile .card {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-}
-
-/* Mobile-friendly itinerary */
-.itinerary-item-mobile {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-}
-
-.itinerary-item-mobile .brewery-info {
-    flex: 1;
-}
-
-.itinerary-item-mobile .brewery-actions {
-    display: flex;
-    gap: 10px;
 }
 
 /* Mobile-friendly drag handle */
@@ -237,7 +197,7 @@ input[type="radio"] {
     border: none;
     background: transparent;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: color var(--transition-fast), transform var(--transition-fast);
     min-height: 56px;
     position: relative;
   }
@@ -288,8 +248,50 @@ input[type="radio"] {
     padding-bottom: 70px;
   }
 
-  /* Hide regular nav on mobile when bottom nav is active */
-  .navbar-nav {
-    display: none !important;
-  }
+}
+
+/* ============================================
+   MOBILE BOTTOM NAVIGATION
+   ============================================ */
+
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 56px;
+  z-index: 1050;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.65rem;
+  gap: 2px;
+  min-width: 56px;
+  min-height: 44px;
+  transition: color 0.2s;
+}
+
+.bottom-nav-item i {
+  font-size: 1.2rem;
+}
+
+.bottom-nav-item.active,
+.bottom-nav-item:hover {
+  color: #d97706;
+}
+
+.bottom-nav-item.active i {
+  color: #fbbf24;
 }

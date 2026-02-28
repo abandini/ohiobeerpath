@@ -1,0 +1,1483 @@
+/**
+ * Ohio Beer Path - Pages Styles
+ * 
+ * Combined CSS for all page templates:
+ * - Home page
+ * - Events page
+ * - Breweries listing page
+ * - Trails pages (detail + listing)
+ * - Blog pages (listing + post)
+ * - Regions pages (listing + detail)
+ * - Nearby page
+ * - User Profile page
+ * - Itinerary page
+ */
+
+/* ============================================
+   HOME PAGE
+   ============================================ */
+    .hero-subtitle {
+      font-size: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      max-height: 400px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+    }
+
+    .search-results.active {
+      display: block;
+    }
+
+    .search-result-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+
+    .search-result-item:hover {
+      background: #fef3c7;
+    }
+
+    .search-result-item:last-child {
+      border-bottom: none;
+    }
+
+    .region-quick-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .region-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 25px;
+      color: #374151;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .region-chip:hover {
+      border-color: #d97706;
+      color: #d97706;
+      transform: translateY(-2px);
+    }
+
+    .region-chip.highlight {
+      background: #d97706;
+      border-color: #d97706;
+      color: white;
+    }
+
+    .region-chip.highlight:hover {
+      background: #b45309;
+      border-color: #b45309;
+      color: white;
+    }
+
+    .featured-spotlight {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-radius: 20px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spotlight-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #d97706;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .spotlight-region {
+      display: inline-block;
+      background: rgba(0,0,0,0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .spotlight-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #92400e;
+      margin-bottom: 0.5rem;
+    }
+
+    .spotlight-location {
+      color: #78350f;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .spotlight-description {
+      color: #92400e;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+    }
+
+    .spotlight-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .view-all-link {
+      color: #d97706;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .view-all-link:hover {
+      color: #b45309;
+    }
+
+    .brewery-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brewery-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .card-img-placeholder {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3rem;
+      position: relative;
+    }
+
+    .card-img-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%);
+    }
+
+    .brewery-region-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 15px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-subtitle {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .amenity-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: auto;
+    }
+
+    .amenity-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: #f3f4f6;
+      color: #6b7280;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      padding: 4rem 0;
+      margin-top: 3rem;
+    }
+
+    .cta-content {
+      text-align: center;
+      color: white;
+    }
+
+    .cta-content h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .cta-content p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .how-it-works-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      height: 100%;
+    }
+
+    .how-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      color: #92400e;
+    }
+
+    .how-it-works-card h3 {
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .how-it-works-card p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .spotlight-title {
+        font-size: 1.75rem;
+      }
+
+      .cta-content h2 {
+        font-size: 1.75rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .cta-buttons .btn {
+        width: 100%;
+      }
+    }
+
+/* ============================================
+   EVENTS PAGE
+   ============================================ */
+      .events-hero {
+        background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+      }
+
+      .events-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .events-hero p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+      }
+
+      .events-content {
+        padding: 2rem 0 4rem;
+      }
+
+      .event-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1rem;
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #374151;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .filter-btn:hover {
+        border-color: #7c3aed;
+        color: #7c3aed;
+      }
+
+      .filter-btn.active {
+        background: #7c3aed;
+        border-color: #7c3aed;
+        color: white;
+      }
+
+      .no-events {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: #f9fafb;
+        border-radius: 16px;
+      }
+
+      .no-events i {
+        font-size: 4rem;
+        color: #d1d5db;
+        margin-bottom: 1rem;
+      }
+
+      .no-events h3 {
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+      }
+
+      .no-events p {
+        color: #9ca3af;
+      }
+
+      .month-section {
+        margin-bottom: 3rem;
+      }
+
+      .month-header {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
+      .events-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .event-card {
+        display: flex;
+        gap: 1.5rem;
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border: 1px solid #e5e7eb;
+        transition: all 0.2s;
+      }
+
+      .event-card:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+      }
+
+      .event-card.hidden {
+        display: none;
+      }
+
+      .event-date-badge {
+        flex-shrink: 0;
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+
+      .event-day {
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .event-weekday {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        opacity: 0.9;
+      }
+
+      .event-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .event-type-tag {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+      }
+
+      .event-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #1f2937;
+      }
+
+      .event-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.9rem;
+        color: #6b7280;
+      }
+
+      .event-meta span,
+      .event-meta a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+      }
+
+      .event-venue {
+        color: #d97706;
+        text-decoration: none;
+      }
+
+      .event-venue:hover {
+        text-decoration: underline;
+      }
+
+      .event-description {
+        color: #6b7280;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+
+      .event-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .calendar-cta {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-radius: 16px;
+        padding: 2.5rem;
+        text-align: center;
+        margin-top: 3rem;
+      }
+
+      .calendar-cta h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #92400e;
+        margin-bottom: 0.5rem;
+      }
+
+      .calendar-cta p {
+        color: #78350f;
+        margin-bottom: 1.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .event-card {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .event-date-badge {
+          width: 100%;
+          height: auto;
+          padding: 0.75rem;
+          flex-direction: row;
+          gap: 0.5rem;
+        }
+
+        .event-day {
+          font-size: 1.25rem;
+        }
+
+        .event-filters {
+          justify-content: center;
+        }
+      }
+
+/* ============================================
+   BREWERIES LISTING PAGE
+   ============================================ */
+    .brewery-grid-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      background: white;
+      height: 100%;
+    }
+    .brewery-grid-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .brewery-card-header {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .brewery-card-header .beer-icon {
+      font-size: 3rem;
+      opacity: 0.9;
+    }
+    .brewery-card-header .region-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .brewery-card-body {
+      padding: 1.25rem;
+    }
+    .brewery-card-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.25rem;
+    }
+    .brewery-card-body .meta {
+      color: #666;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .brewery-card-body .description {
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .view-btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      background: linear-gradient(135deg, #D97706, #B45309);
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .view-btn:hover {
+      background: linear-gradient(135deg, #B45309, #92400E);
+      color: white;
+    }
+    .filter-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+    .amenity-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .amenity-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      border: 2px solid #e5e7eb;
+      background: white;
+      color: #374151;
+    }
+    .amenity-tag:hover {
+      border-color: #D97706;
+      color: #D97706;
+    }
+    .amenity-tag.active {
+      background: #D97706;
+      border-color: #D97706;
+      color: white;
+    }
+    .active-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .active-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      background: #fef3c7;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #92400e;
+    }
+    .clear-filter {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+/* ============================================
+   TRAILS DETAIL PAGE
+   ============================================ */
+    .trails-hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 4rem 0;
+      color: white;
+      text-align: center;
+    }
+    .trails-hero h1 {
+      font-weight: 800;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .trails-hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .trail-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      background: white;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+    .trail-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    .trail-card-header {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .trail-card-header.featured {
+      height: 200px;
+    }
+    .trail-card-header .trail-icon {
+      font-size: 4rem;
+    }
+    .trail-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-easy { background: #10b981; color: white; }
+    .badge-moderate { background: #f59e0b; color: white; }
+    .badge-challenging { background: #ef4444; color: white; }
+    .featured-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #D97706;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .trail-card-body {
+      padding: 1.5rem;
+    }
+    .trail-card-body h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.5rem;
+    }
+    .trail-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+    .trail-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .trail-description {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .start-trail-btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      background: linear-gradient(135deg, #D97706, #B45309);
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .start-trail-btn:hover {
+      background: linear-gradient(135deg, #B45309, #92400E);
+      color: white;
+    }
+
+/* ============================================
+   TRAILS LISTING PAGE
+   ============================================ */
+    .trail-hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 3rem 0;
+      color: white;
+    }
+    .trail-hero h1 {
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .trail-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    .trail-stat {
+      text-align: center;
+    }
+    .trail-stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #D97706;
+    }
+    .trail-stat-label {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    .trail-stop {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .trail-stop::before {
+      content: '';
+      position: absolute;
+      left: 35px;
+      top: 100%;
+      width: 3px;
+      height: 1rem;
+      background: #D97706;
+    }
+    .trail-stop:last-child::before {
+      display: none;
+    }
+    .stop-number {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #D97706, #B45309);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .stop-info h4 {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .stop-meta {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    .start-tour-btn {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #D97706, #B45309);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .start-tour-btn:hover {
+      background: linear-gradient(135deg, #B45309, #92400E);
+    }
+
+/* ============================================
+   BLOG LISTING PAGE
+   ============================================ */
+    .featured-post .card-title {
+      font-size: 1.75rem;
+    }
+    .card {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    }
+
+/* ============================================
+   BLOG POST PAGE
+   ============================================ */
+    .blog-content {
+      font-size: 1.125rem;
+      line-height: 1.8;
+    }
+    .blog-content p {
+      margin-bottom: 1.5rem;
+    }
+    .blog-content h2, .blog-content h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    .blog-content img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+    .blog-content blockquote {
+      border-left: 4px solid #d97706;
+      padding-left: 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: #6c757d;
+    }
+    .blog-content ul, .blog-content ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .blog-content li {
+      margin-bottom: 0.5rem;
+    }
+
+/* ============================================
+   REGIONS LISTING PAGE
+   ============================================ */
+    .region-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .region-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+    .region-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+/* ============================================
+   REGION DETAIL PAGE
+   ============================================ */
+    .region-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brewery-card {
+      transition: transform 0.2s;
+      border: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .brewery-card:hover {
+      transform: translateY(-3px);
+    }
+
+/* ============================================
+   NEARBY PAGE
+   ============================================ */
+    .brewery-card {
+      transition: transform 0.2s;
+      border: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .brewery-card:hover {
+      transform: translateY(-3px);
+    }
+    .distance-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+/* ============================================
+   USER PROFILE PAGE
+   ============================================ */
+      .profile-header {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 48px 0 32px;
+        color: #fff;
+        margin-top: -20px;
+      }
+
+      .profile-card {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .profile-avatar {
+        flex-shrink: 0;
+      }
+
+      .avatar-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid rgba(255,255,255,0.2);
+      }
+
+      .avatar-placeholder {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: rgba(255,255,255,0.5);
+      }
+
+      .profile-name {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .untappd-link {
+        color: #ffc107;
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .untappd-link:hover {
+        text-decoration: underline;
+      }
+
+      .edit-profile-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: rgba(255,255,255,0.7);
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 16px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        background: rgba(255,255,255,0.1);
+        transition: background 0.2s;
+      }
+
+      .edit-profile-btn:hover {
+        background: rgba(255,255,255,0.2);
+        color: #fff;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+
+      @media (max-width: 768px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .profile-card {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .edit-profile-btn {
+          margin-left: 0;
+          margin-top: 12px;
+        }
+      }
+
+      .stat-card {
+        background: rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .stat-card:hover {
+        transform: scale(1.05);
+        background: rgba(255,255,255,0.15);
+      }
+
+      .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #fbbf24;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: rgba(255,255,255,0.7);
+        margin-top: 4px;
+      }
+
+      .favorite-style {
+        margin-top: 24px;
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 8px;
+        font-size: 14px;
+        color: rgba(255,255,255,0.8);
+      }
+
+      .favorite-style i {
+        color: #ef4444;
+      }
+
+      .profile-content {
+        padding: 32px 0;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      .section-header h2 {
+        font-size: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .section-header .badge {
+        background: #10b981;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .ratings-feed {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .rating-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+      }
+
+      .rating-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      }
+
+      .rating-card:active {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      }
+
+      .rating-card-inner {
+        display: flex;
+        gap: 16px;
+        padding: 16px;
+      }
+
+      .rating-photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+        object-fit: cover;
+        flex-shrink: 0;
+      }
+
+      .rating-photo-placeholder {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        font-size: 32px;
+        flex-shrink: 0;
+      }
+
+      .rating-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .rating-beer-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111;
+        margin-bottom: 4px;
+      }
+
+      .rating-brewery {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 8px;
+      }
+
+      .rating-brewery a {
+        color: #2563eb;
+        text-decoration: none;
+      }
+
+      .rating-brewery a:hover {
+        text-decoration: underline;
+      }
+
+      .rating-stars {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 8px;
+      }
+
+      .rating-stars i {
+        color: #fbbf24;
+        font-size: 16px;
+      }
+
+      .rating-stars i.empty {
+        color: #e5e7eb;
+      }
+
+      .rating-style {
+        display: inline-block;
+        background: #f3f4f6;
+        color: #374151;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        margin-right: 8px;
+      }
+
+      .rating-abv {
+        color: #6b7280;
+        font-size: 12px;
+      }
+
+      .rating-notes {
+        color: #4b5563;
+        font-size: 14px;
+        margin-top: 8px;
+        line-height: 1.5;
+      }
+
+      .rating-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: #9ca3af;
+      }
+
+      .rating-meta i {
+        margin-right: 4px;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 64px 24px;
+        background: #f9fafb;
+        border-radius: 16px;
+      }
+
+      .empty-state i {
+        font-size: 64px;
+        color: #d1d5db;
+        margin-bottom: 16px;
+      }
+
+      .empty-state h3 {
+        font-size: 20px;
+        color: #374151;
+        margin-bottom: 8px;
+      }
+
+      .empty-state p {
+        color: #6b7280;
+        margin-bottom: 24px;
+      }
+
+/* User Profile Settings Styles */
+      .settings-page {
+        padding: 32px 0;
+      }
+
+      .settings-page h1 {
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .settings-section {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      }
+
+      .settings-section h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #374151;
+      }
+
+      .form-group small {
+        display: block;
+        margin-top: 6px;
+        color: #6b7280;
+        font-size: 13px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.2s;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .settings-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 32px;
+      }
+
+      .danger-zone {
+        border: 1px solid #fecaca;
+        background: #fef2f2;
+      }
+
+      .danger-zone h2 {
+        color: #dc2626;
+        border-bottom-color: #fecaca;
+      }
+
+      .danger-zone p {
+        color: #991b1b;
+        margin-bottom: 16px;
+      }
+
+/* ============================================
+   ITINERARY PAGE
+   ============================================ */
+    .tour-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      background: white;
+      cursor: grab;
+    }
+    .tour-item:hover {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .tour-item .drag-handle {
+      color: #adb5bd;
+      margin-right: 1rem;
+      cursor: grab;
+    }
+    .tour-item .remove-btn {
+      margin-left: auto;
+    }
+    .tour-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #d97706;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      font-weight: bold;
+    }

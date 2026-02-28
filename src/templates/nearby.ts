@@ -54,21 +54,6 @@ export function nearbyPage(): string {
     </div>
   </main>
 
-  <style>
-    .brewery-card {
-      transition: transform 0.2s;
-      border: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .brewery-card:hover {
-      transform: translateY(-3px);
-    }
-    .distance-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-  </style>
 
   <script>
     const locationPrompt = document.getElementById('location-prompt');

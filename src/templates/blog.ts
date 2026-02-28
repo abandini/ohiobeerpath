@@ -1,6 +1,17 @@
 // Beer Blog templates
 import { layout } from './layout';
 
+// Safe date formatter that handles epoch dates and invalid strings
+function formatDate(dateStr: string, options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }): string {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  // Guard against epoch dates (before 2000) and invalid dates
+  if (isNaN(date.getTime()) || date.getFullYear() < 2000) {
+    return '';
+  }
+  return date.toLocaleDateString('en-US', options);
+}
+
 export interface BlogPost {
   id: number;
   slug: string;
@@ -72,7 +83,7 @@ export function blogListPage(posts: BlogPost[], category?: string): string {
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-auto">
                   <small class="text-muted">
-                    <i class="bi bi-calendar"></i> ${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    <i class="bi bi-calendar"></i> ${formatDate(post.created_at)}
                   </small>
                   ${post.author ? `
                     <small class="text-muted">
@@ -88,18 +99,6 @@ export function blogListPage(posts: BlogPost[], category?: string): string {
     `}
   </main>
 
-  <style>
-    .featured-post .card-title {
-      font-size: 1.75rem;
-    }
-    .card {
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
-    }
-  </style>
   `;
 
   return layout('Beer Blog', content, {
@@ -128,7 +127,7 @@ export function blogPostPage(post: BlogPost, relatedPosts: BlogPost[] = []): str
           ` : ''}
           <h1 class="display-5 fw-bold mb-3">${post.title}</h1>
           <div class="d-flex flex-wrap gap-3 text-muted">
-            <span><i class="bi bi-calendar"></i> ${new Date(post.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+            <span><i class="bi bi-calendar"></i> ${formatDate(post.created_at, { month: 'long', day: 'numeric', year: 'numeric' })}</span>
             ${post.author ? `<span><i class="bi bi-person"></i> ${post.author}</span>` : ''}
             <span><i class="bi bi-clock"></i> ${Math.ceil((post.content?.length || 0) / 1000)} min read</span>
           </div>
@@ -181,7 +180,7 @@ export function blogPostPage(post: BlogPost, relatedPosts: BlogPost[] = []): str
                       <div class="card-body">
                         <h6 class="text-dark">${rp.title}</h6>
                         <small class="text-muted">
-                          ${new Date(rp.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          ${formatDate(rp.created_at, { month: 'short', day: 'numeric' })}
                         </small>
                       </div>
                     </a>
@@ -201,38 +200,6 @@ export function blogPostPage(post: BlogPost, relatedPosts: BlogPost[] = []): str
     </div>
   </article>
 
-  <style>
-    .blog-content {
-      font-size: 1.125rem;
-      line-height: 1.8;
-    }
-    .blog-content p {
-      margin-bottom: 1.5rem;
-    }
-    .blog-content h2, .blog-content h3 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-    }
-    .blog-content img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin: 1.5rem 0;
-    }
-    .blog-content blockquote {
-      border-left: 4px solid #d97706;
-      padding-left: 1.5rem;
-      margin: 1.5rem 0;
-      font-style: italic;
-      color: #6c757d;
-    }
-    .blog-content ul, .blog-content ol {
-      margin-bottom: 1.5rem;
-      padding-left: 1.5rem;
-    }
-    .blog-content li {
-      margin-bottom: 0.5rem;
-    }
-  </style>
   `;
 
   return layout(post.title, content, {

@@ -1,5 +1,6 @@
 import { layout } from './layout';
 import type { Brewery } from '../types';
+import { hashCode } from './utils';
 
 interface Review {
   id: number;
@@ -13,17 +14,61 @@ interface Review {
   created_at: string;
 }
 
-export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyBreweries?: Brewery[], reviews?: Review[]): string {
-  // Generate a consistent color based on brewery name for placeholder
-  const hashCode = (str: string) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return hash;
+// Determine if brewery is currently open based on hours data
+function getOpenStatus(hours?: Record<string, string>): { isOpen: boolean; label: string; cssClass: string } | null {
+  if (!hours || typeof hours !== 'object' || Object.keys(hours).length === 0) return null;
+
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const now = new Date();
+  const todayName = dayNames[now.getDay()];
+  const todayHours = hours[todayName];
+
+  if (!todayHours) return null;
+
+  const trimmed = todayHours.trim();
+  if (trimmed.toLowerCase() === 'closed') {
+    return { isOpen: false, label: 'Closed Today', cssClass: 'status-closed' };
+  }
+
+  // Parse time range like "11:00 AM - 10:00 PM"
+  const parts = trimmed.split(/\s*[-\u2013]\s*/);
+  if (parts.length !== 2) return null;
+
+  const parseTime = (timeStr: string): number | null => {
+    const match = timeStr.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!match) return null;
+    let hour = parseInt(match[1], 10);
+    const minute = parseInt(match[2], 10);
+    const meridiem = match[3].toUpperCase();
+    if (meridiem === 'AM' && hour === 12) hour = 0;
+    if (meridiem === 'PM' && hour !== 12) hour += 12;
+    return hour * 60 + minute;
   };
 
+  const openTime = parseTime(parts[0]);
+  const closeTime = parseTime(parts[1]);
+  if (openTime === null || closeTime === null) return null;
+
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  let isOpen: boolean;
+  if (closeTime > openTime) {
+    isOpen = currentMinutes >= openTime && currentMinutes < closeTime;
+  } else {
+    // Overnight: open if after open OR before close
+    isOpen = currentMinutes >= openTime || currentMinutes < closeTime;
+  }
+
+  return {
+    isOpen,
+    label: isOpen ? 'Open Now' : 'Closed',
+    cssClass: isOpen ? 'status-open' : 'status-closed'
+  };
+}
+
+export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyBreweries?: Brewery[], reviews?: Review[]): string {
   const hue = Math.abs(hashCode(brewery.name)) % 360;
+  const openStatus = getOpenStatus(brewery.hours);
   const gradientColors = `hsl(${hue}, 70%, 35%), hsl(${(hue + 40) % 360}, 60%, 25%)`;
 
   // Support real brewery photos when available, fallback to gradient
@@ -108,8 +153,9 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
         <span class="region-pill">${(brewery.region || 'Ohio').toUpperCase()}</span>
         <h1 class="hero-title">${brewery.name}</h1>
         <p class="hero-location">
-          <i class="bi bi-geo-alt-fill"></i> ${brewery.city}, Ohio
+          <i class="bi bi-geo-alt-fill"></i> ${brewery.city || 'Ohio'}, Ohio
           ${brewery.brewery_type ? `<span class="mx-2">|</span><i class="bi bi-cup-straw"></i> ${brewery.brewery_type}` : ''}
+          ${openStatus ? `<span class="mx-2">|</span><span class="open-status ${openStatus.cssClass}"><i class="bi ${openStatus.isOpen ? 'bi-clock' : 'bi-clock-history'}"></i> ${openStatus.label}</span>` : ''}
         </p>
         <div class="hero-actions">
           ${brewery.website_url ? `
@@ -127,6 +173,10 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             <a href="https://www.google.com/maps/dir/?api=1&destination=${brewery.latitude},${brewery.longitude}"
                target="_blank" rel="noopener" class="btn btn-outline-light btn-lg">
               <i class="bi bi-signpost-2"></i> Directions
+            </a>
+            <a href="https://m.uber.com/ul/?action=setPickup&dropoff[latitude]=${brewery.latitude}&dropoff[longitude]=${brewery.longitude}&dropoff[nickname]=${encodeURIComponent(brewery.name)}"
+               target="_blank" rel="noopener" class="btn btn-outline-light btn-lg">
+              <i class="bi bi-car-front"></i> Uber
             </a>
           ` : ''}
         </div>
@@ -396,11 +446,11 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     </div>
 
     <!-- Claim Brewery Modal -->
-    <div class="claim-modal-overlay" id="claim-modal">
+    <div class="claim-modal-overlay" id="claim-modal" role="dialog" aria-modal="true" aria-labelledby="claim-modal-title">
       <div class="claim-modal">
         <div class="claim-modal-header">
-          <h3><i class="bi bi-shield-check text-warning"></i> Claim ${brewery.name}</h3>
-          <button class="claim-modal-close" onclick="hideClaimModal()">&times;</button>
+          <h3 id="claim-modal-title"><i class="bi bi-shield-check text-warning"></i> Claim ${brewery.name}</h3>
+          <button class="claim-modal-close" onclick="hideClaimModal()" aria-label="Close">&times;</button>
         </div>
         <div class="claim-modal-body">
           <div class="claim-benefits">
@@ -452,894 +502,6 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
       </div>
     </div>
 
-    <style>
-      /* Hero Section */
-      .brewery-hero {
-        position: relative;
-        padding: 80px 0 60px;
-        color: white;
-        margin-top: -1rem;
-      }
-
-      .hero-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg,
-          rgba(0,0,0,0.4) 0%,
-          rgba(0,0,0,0.5) 50%,
-          rgba(0,0,0,0.7) 100%);
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .breadcrumb-light {
-        background: transparent;
-        padding: 0;
-        margin-bottom: 1rem;
-      }
-
-      .breadcrumb-light .breadcrumb-item a {
-        color: rgba(255,255,255,0.8);
-        text-decoration: none;
-      }
-
-      .breadcrumb-light .breadcrumb-item.active {
-        color: rgba(255,255,255,0.6);
-      }
-
-      .breadcrumb-light .breadcrumb-item + .breadcrumb-item::before {
-        color: rgba(255,255,255,0.5);
-      }
-
-      .region-pill {
-        display: inline-block;
-        background: rgba(217, 119, 6, 0.9);
-        backdrop-filter: blur(10px);
-        padding: 8px 18px;
-        border-radius: 25px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        margin-bottom: 1rem;
-        color: white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      }
-
-      .hero-title {
-        font-size: clamp(2rem, 5vw, 3.5rem);
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        color: #ffffff !important;
-        text-shadow:
-          0 2px 4px rgba(0,0,0,0.5),
-          0 4px 16px rgba(0,0,0,0.4),
-          0 0 40px rgba(0,0,0,0.3);
-        letter-spacing: -0.02em;
-        line-height: 1.1;
-        font-family: 'Outfit', -apple-system, sans-serif;
-      }
-
-      .hero-location {
-        font-size: 1.25rem;
-        color: rgba(255,255,255,0.95);
-        margin-bottom: 1.5rem;
-        font-weight: 500;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-      }
-
-      .hero-actions {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .hero-actions .btn {
-        font-weight: 600;
-        padding: 0.875rem 1.5rem;
-        border-radius: 12px;
-        transition: all 0.2s ease;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      }
-
-      .hero-actions .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      }
-
-      .hero-actions .btn-warning {
-        background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-        border-color: #d97706;
-      }
-
-      .hero-actions .btn-light {
-        background: rgba(255,255,255,0.95);
-        backdrop-filter: blur(10px);
-      }
-
-      .hero-actions .btn-outline-light {
-        border-width: 2px;
-        backdrop-filter: blur(10px);
-      }
-
-      .hero-actions .btn-outline-light:hover {
-        background: rgba(255,255,255,0.2);
-      }
-
-      /* Main Content */
-      .brewery-content {
-        padding: 3rem 0;
-      }
-
-      .content-card {
-        background: white;
-        border-radius: 16px;
-        padding: 2rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.08);
-        border: 1px solid rgba(0,0,0,0.04);
-        transition: box-shadow 0.2s ease, transform 0.2s ease;
-      }
-
-      .content-card:hover {
-        box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.1);
-      }
-
-      .content-card h2 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .about-text {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: #444;
-      }
-
-      .contact-info {
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid #eee;
-      }
-
-      .contact-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: #d97706;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1.1rem;
-      }
-
-      .contact-link:hover {
-        color: #b45309;
-      }
-
-      /* Amenities */
-      .amenities-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-      }
-
-      .amenity-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        color: #92400e;
-        padding: 0.6rem 1rem;
-        border-radius: 25px;
-        font-size: 0.9rem;
-        font-weight: 500;
-      }
-
-      .amenity-tag i {
-        font-size: 1rem;
-      }
-
-      /* Hours */
-      .hours-container {
-        background: #f8fafc;
-        border-radius: 12px;
-        max-height: 280px;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: #d1d5db #f1f5f9;
-      }
-
-      .hours-container::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .hours-container::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 3px;
-      }
-
-      .hours-container::-webkit-scrollbar-thumb {
-        background: #d1d5db;
-        border-radius: 3px;
-      }
-
-      .hours-container::-webkit-scrollbar-thumb:hover {
-        background: #9ca3af;
-      }
-
-      .hours-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid #e2e8f0;
-      }
-
-      .hours-row:last-child {
-        border-bottom: none;
-      }
-
-      .hours-row.today {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        font-weight: 600;
-      }
-
-      .hours-row .day {
-        font-weight: 600;
-        color: #374151;
-      }
-
-      .hours-row .time {
-        color: #6b7280;
-      }
-
-      .hours-note {
-        font-size: 0.85rem;
-        color: #9ca3af;
-        margin-top: 1rem;
-        margin-bottom: 0;
-      }
-
-      /* Sidebar */
-      .sidebar-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.08);
-        border: 1px solid rgba(0,0,0,0.04);
-        transition: box-shadow 0.2s ease;
-      }
-
-      .sidebar-card:hover {
-        box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.1);
-      }
-
-      .sidebar-card h3 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .map-container {
-        margin-bottom: 1rem;
-        border-radius: 12px;
-        overflow: hidden;
-      }
-
-      .map-placeholder {
-        height: 200px;
-        background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
-        border-radius: 12px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: #9ca3af;
-      }
-
-      .map-placeholder i {
-        font-size: 3rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .brewery-address {
-        font-style: normal;
-        color: #6b7280;
-        margin-bottom: 1rem;
-        line-height: 1.6;
-      }
-
-      /* Quick Actions */
-      .quick-actions {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
-      }
-
-      .action-btn {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 1rem;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        color: #374151;
-        text-decoration: none;
-        font-size: 0.85rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .action-btn:hover {
-        background: #fef3c7;
-        border-color: #d97706;
-        color: #92400e;
-      }
-
-      .action-btn i {
-        font-size: 1.5rem;
-      }
-
-      /* Nearby Breweries */
-      .nearby-section {
-        margin-top: 3rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e5e7eb;
-      }
-
-      .nearby-section h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .nearby-card {
-        display: block;
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        text-decoration: none;
-        color: inherit;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-
-      .nearby-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-      }
-
-      .nearby-img {
-        height: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 2rem;
-      }
-
-      .nearby-info {
-        padding: 1rem;
-      }
-
-      .nearby-info h4 {
-        font-size: 1rem;
-        font-weight: 700;
-        margin: 0 0 0.25rem 0;
-        color: #1f2937;
-      }
-
-      .nearby-info p {
-        font-size: 0.85rem;
-        color: #6b7280;
-        margin: 0;
-      }
-
-      /* Back Link */
-      .back-link {
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e5e7eb;
-      }
-
-      .back-link a {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: #6b7280;
-        text-decoration: none;
-        font-weight: 500;
-      }
-
-      .back-link a:hover {
-        color: #d97706;
-      }
-
-      /* AI Recommendations */
-      .ai-recs-section {
-        margin-top: 3rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e5e7eb;
-      }
-
-      .ai-recs-section h2 {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .rec-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-      }
-
-      .rec-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1.25rem;
-        background: white;
-        border: 2px solid #e5e7eb;
-        border-radius: 30px;
-        font-weight: 600;
-        color: #374151;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .rec-btn:hover {
-        border-color: #d97706;
-        color: #d97706;
-      }
-
-      .rec-btn.active {
-        background: linear-gradient(135deg, #d97706, #b45309);
-        border-color: #d97706;
-        color: white;
-      }
-
-      .rec-card {
-        display: block;
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        text-decoration: none;
-        color: inherit;
-        transition: transform 0.2s;
-      }
-
-      .rec-card:hover {
-        transform: translateY(-4px);
-      }
-
-      .rec-card-img {
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.5rem;
-      }
-
-      .rec-card-body {
-        padding: 1rem;
-      }
-
-      .rec-card-body h5 {
-        font-size: 0.95rem;
-        font-weight: 700;
-        margin: 0 0 0.25rem;
-      }
-
-      .rec-card-body p {
-        font-size: 0.8rem;
-        color: #6b7280;
-        margin: 0;
-      }
-
-      /* Reviews Section */
-      .reviews-section {
-        margin-top: 3rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e5e7eb;
-      }
-
-      .reviews-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-bottom: 2rem;
-      }
-
-      .reviews-header h2 {
-        font-size: 1.5rem;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .rating-summary {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        background: #fef3c7;
-        padding: 0.75rem 1.25rem;
-        border-radius: 12px;
-      }
-
-      .avg-rating {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #92400e;
-      }
-
-      .rating-summary .stars {
-        color: #d97706;
-        font-size: 1.1rem;
-      }
-
-      .review-count {
-        color: #78350f;
-        font-size: 0.9rem;
-      }
-
-      .write-review-card {
-        background: white;
-        border-radius: 16px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        border: 2px dashed #e5e7eb;
-      }
-
-      .write-review-card h3 {
-        font-size: 1.25rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .rating-input {
-        margin-bottom: 1.5rem;
-      }
-
-      .rating-input label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-      }
-
-      .star-rating {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: flex-end;
-        gap: 0.25rem;
-      }
-
-      .star-rating input {
-        display: none;
-      }
-
-      .star-rating label {
-        cursor: pointer;
-        font-size: 2rem;
-        color: #d1d5db;
-        transition: color 0.15s;
-      }
-
-      .star-rating label:hover,
-      .star-rating label:hover ~ label,
-      .star-rating input:checked ~ label {
-        color: #d97706;
-      }
-
-      .reviews-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-
-      .review-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        border: 1px solid #e5e7eb;
-      }
-
-      .review-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1rem;
-      }
-
-      .reviewer-info {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .reviewer-avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        font-size: 1.1rem;
-      }
-
-      .reviewer-name {
-        display: block;
-        font-weight: 600;
-        color: #1f2937;
-      }
-
-      .review-date {
-        display: block;
-        font-size: 0.85rem;
-        color: #9ca3af;
-      }
-
-      .review-rating {
-        color: #d97706;
-        font-size: 1rem;
-      }
-
-      .review-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: #1f2937;
-      }
-
-      .review-content {
-        color: #4b5563;
-        line-height: 1.7;
-        margin-bottom: 1rem;
-      }
-
-      .visit-date {
-        font-size: 0.85rem;
-        color: #9ca3af;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-      }
-
-      .review-actions {
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid #f3f4f6;
-      }
-
-      .helpful-btn {
-        background: none;
-        border: 1px solid #e5e7eb;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        color: #6b7280;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .helpful-btn:hover {
-        border-color: #d97706;
-        color: #d97706;
-        background: #fef3c7;
-      }
-
-      .no-reviews {
-        text-align: center;
-        padding: 3rem 2rem;
-        background: #f9fafb;
-        border-radius: 16px;
-      }
-
-      .no-reviews i {
-        font-size: 3rem;
-        color: #d1d5db;
-        margin-bottom: 1rem;
-      }
-
-      .no-reviews h4 {
-        color: #6b7280;
-        margin-bottom: 0.5rem;
-      }
-
-      .no-reviews p {
-        color: #9ca3af;
-        margin: 0;
-      }
-
-      /* Claim Brewery CTA */
-      .claim-brewery-card {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        border: 2px dashed #d97706;
-        text-align: center;
-      }
-
-      .claim-brewery-card .claim-icon {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #d97706, #b45309);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1rem;
-      }
-
-      .claim-brewery-card .claim-icon i {
-        font-size: 1.75rem;
-        color: white;
-      }
-
-      .claim-brewery-card h3 {
-        color: #92400e;
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
-      }
-
-      .claim-brewery-card p {
-        color: #78350f;
-        font-size: 0.9rem;
-        line-height: 1.5;
-        margin-bottom: 1rem;
-      }
-
-      /* Claim Modal */
-      .claim-modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s;
-      }
-
-      .claim-modal-overlay.active {
-        opacity: 1;
-        visibility: visible;
-      }
-
-      .claim-modal {
-        background: white;
-        border-radius: 16px;
-        max-width: 500px;
-        width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
-        transform: translateY(20px);
-        transition: transform 0.3s;
-      }
-
-      .claim-modal-overlay.active .claim-modal {
-        transform: translateY(0);
-      }
-
-      .claim-modal-header {
-        padding: 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .claim-modal-header h3 {
-        margin: 0;
-        font-size: 1.25rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .claim-modal-close {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: #6b7280;
-        cursor: pointer;
-        padding: 0.25rem;
-      }
-
-      .claim-modal-close:hover {
-        color: #1f2937;
-      }
-
-      .claim-modal-body {
-        padding: 1.5rem;
-      }
-
-      .claim-modal-body .form-label {
-        font-weight: 600;
-        color: #374151;
-      }
-
-      .claim-modal-body .form-text {
-        font-size: 0.85rem;
-        color: #6b7280;
-      }
-
-      .claim-benefits {
-        background: #f0fdf4;
-        border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .claim-benefits h4 {
-        font-size: 0.9rem;
-        color: #166534;
-        margin-bottom: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .claim-benefits ul {
-        margin: 0;
-        padding-left: 1.25rem;
-        font-size: 0.85rem;
-        color: #15803d;
-      }
-
-      .claim-benefits li {
-        margin-bottom: 0.25rem;
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
-        .hero-title {
-          font-size: 2rem;
-        }
-
-        .hero-actions {
-          flex-direction: column;
-        }
-
-        .hero-actions .btn {
-          width: 100%;
-        }
-
-        .content-card {
-          padding: 1.5rem;
-        }
-      }
-    </style>
 
     <script>
       function addToTour(breweryId) {
@@ -1400,6 +562,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
           animation: slideIn 0.3s ease;
         \`;
         toast.textContent = message;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'polite');
         document.body.appendChild(toast);
         setTimeout(() => {
           toast.style.animation = 'slideOut 0.3s ease';
@@ -1654,14 +818,58 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
 
   const seoDescription = brewery.description && brewery.description !== 'N/A'
     ? brewery.description
-    : `Visit ${brewery.name} in ${brewery.city}, Ohio. Discover craft beers and plan your brewery tour.`;
+    : `Visit ${brewery.name} in ${brewery.city || 'Ohio'}, Ohio. Discover craft beers and plan your brewery tour.`;
 
   // Dynamic OG image for this brewery
   const ogImage = `https://ohio-beer-path.bill-burkey.workers.dev/api/og/${brewery.id}`;
 
-  return layout(`${brewery.name}`, content, {
+  // Schema.org LocalBusiness structured data for SEO
+  const schemaJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Brewery',
+    name: brewery.name,
+    description: seoDescription,
+    url: `https://ohio-beer-path.bill-burkey.workers.dev/brewery/${brewery.id}`,
+    ...(brewery.website_url && { sameAs: brewery.website_url }),
+    address: {
+      '@type': 'PostalAddress',
+      ...(brewery.street && { streetAddress: brewery.street }),
+      addressLocality: brewery.city || 'Ohio',
+      addressRegion: 'OH',
+      ...(brewery.postal_code && { postalCode: brewery.postal_code }),
+      addressCountry: 'US'
+    },
+    ...(brewery.latitude && brewery.longitude && {
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: brewery.latitude,
+        longitude: brewery.longitude
+      }
+    }),
+    ...(brewery.phone && { telephone: brewery.phone }),
+    ...(brewery.brewery_type && { additionalType: brewery.brewery_type })
+  });
+
+  // BreadcrumbList schema for navigation context
+  const breadcrumbJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ohio-beer-path.bill-burkey.workers.dev/' },
+      { '@type': 'ListItem', position: 2, name: 'Breweries', item: 'https://ohio-beer-path.bill-burkey.workers.dev/breweries' },
+      { '@type': 'ListItem', position: 3, name: brewery.name }
+    ]
+  });
+
+  const contentWithSchema = content + `
+    <script type="application/ld+json">${schemaJsonLd}</script>
+    <script type="application/ld+json">${breadcrumbJsonLd}</script>
+  `;
+
+  return layout(`${brewery.name}`, contentWithSchema, {
     description: seoDescription,
     image: ogImage,
-    url: `https://ohio-beer-path.bill-burkey.workers.dev/brewery/${brewery.id}`
+    url: `https://ohio-beer-path.bill-burkey.workers.dev/brewery/${brewery.id}`,
+    extraCss: ['/assets/css/pages/brewery.css'],
   });
 }

@@ -1,5 +1,6 @@
 import { layout, getSiteBranding } from './layout';
 import type { Brewery, SubdomainContext } from '../types';
+import { hashCode } from './utils';
 
 interface HomePageOptions {
   subdomain?: SubdomainContext;
@@ -40,6 +41,7 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
             class="search-input"
             placeholder="Search by name, city, or region..."
             id="searchInput"
+            aria-label="Search breweries by name, city, or region"
           >
           <i class="bi bi-search search-icon"></i>
         </div>
@@ -200,337 +202,6 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
     </div>
   </section>
 
-  <style>
-    .hero-subtitle {
-      font-size: 1.5rem;
-      opacity: 0.9;
-    }
-
-    .search-results {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      max-height: 400px;
-      overflow-y: auto;
-      z-index: 100;
-      display: none;
-    }
-
-    .search-results.active {
-      display: block;
-    }
-
-    .search-result-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
-      text-decoration: none;
-      color: inherit;
-      transition: background 0.2s;
-    }
-
-    .search-result-item:hover {
-      background: #fef3c7;
-    }
-
-    .search-result-item:last-child {
-      border-bottom: none;
-    }
-
-    .region-quick-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      justify-content: center;
-    }
-
-    .region-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 25px;
-      color: #374151;
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-
-    .region-chip:hover {
-      border-color: #d97706;
-      color: #d97706;
-      transform: translateY(-2px);
-    }
-
-    .region-chip.highlight {
-      background: #d97706;
-      border-color: #d97706;
-      color: white;
-    }
-
-    .region-chip.highlight:hover {
-      background: #b45309;
-      border-color: #b45309;
-      color: white;
-    }
-
-    .featured-spotlight {
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-radius: 20px;
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .spotlight-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: #d97706;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
-
-    .spotlight-region {
-      display: inline-block;
-      background: rgba(0,0,0,0.1);
-      padding: 0.25rem 0.75rem;
-      border-radius: 15px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 0.5rem;
-    }
-
-    .spotlight-title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #92400e;
-      margin-bottom: 0.5rem;
-    }
-
-    .spotlight-location {
-      color: #78350f;
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-    }
-
-    .spotlight-description {
-      color: #92400e;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      max-width: 600px;
-    }
-
-    .spotlight-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .section-header h2 {
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .view-all-link {
-      color: #d97706;
-      text-decoration: none;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .view-all-link:hover {
-      color: #b45309;
-    }
-
-    .brewery-card {
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      transition: transform 0.2s, box-shadow 0.2s;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brewery-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    }
-
-    .card-img-placeholder {
-      height: 160px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 3rem;
-      position: relative;
-    }
-
-    .card-img-placeholder::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%);
-    }
-
-    .brewery-region-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      padding: 0.25rem 0.75rem;
-      border-radius: 15px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      z-index: 1;
-    }
-
-    .card-body {
-      padding: 1.25rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .card-subtitle {
-      color: #6b7280;
-      font-size: 0.9rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .amenity-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: auto;
-    }
-
-    .amenity-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      background: #f3f4f6;
-      color: #6b7280;
-      padding: 0.25rem 0.5rem;
-      border-radius: 12px;
-      font-size: 0.75rem;
-    }
-
-    .cta-section {
-      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-      padding: 4rem 0;
-      margin-top: 3rem;
-    }
-
-    .cta-content {
-      text-align: center;
-      color: white;
-    }
-
-    .cta-content h2 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-    }
-
-    .cta-content p {
-      font-size: 1.25rem;
-      opacity: 0.9;
-      margin-bottom: 2rem;
-    }
-
-    .cta-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .how-it-works-card {
-      background: white;
-      border-radius: 16px;
-      padding: 2rem;
-      text-align: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      height: 100%;
-    }
-
-    .how-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.5rem;
-      font-size: 2rem;
-      color: #92400e;
-    }
-
-    .how-it-works-card h3 {
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-
-    .how-it-works-card p {
-      color: #6b7280;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 768px) {
-      .spotlight-title {
-        font-size: 1.75rem;
-      }
-
-      .cta-content h2 {
-        font-size: 1.75rem;
-      }
-
-      .cta-buttons {
-        flex-direction: column;
-      }
-
-      .cta-buttons .btn {
-        width: 100%;
-      }
-    }
-  </style>
 
   <script>
     // State context for dynamic content
@@ -588,49 +259,14 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
       }
     });
 
-    // Add to tour function
-    function addToTour(breweryId) {
-      try {
-        const tour = JSON.parse(localStorage.getItem('brewery_tour') || '[]');
-        if (!tour.includes(breweryId)) {
-          tour.push(breweryId);
-          localStorage.setItem('brewery_tour', JSON.stringify(tour));
-          showToast('Added to your tour!', 'success');
-          updateTourBadge();
-        } else {
-          showToast('Already in your tour', 'info');
-        }
-      } catch (error) {
-        console.error('Error adding to tour:', error);
-      }
-    }
-
-    function updateTourBadge() {
-      try {
-        const tour = JSON.parse(localStorage.getItem('brewery_tour') || '[]');
-        document.querySelectorAll('.badge').forEach(badge => {
-          badge.textContent = tour.length;
-        });
-      } catch (error) {}
-    }
-
-    function showToast(message, type = 'info') {
-      const colors = { success: '#10b981', error: '#ef4444', info: '#3b82f6' };
-      const toast = document.createElement('div');
-      toast.style.cssText =
-        'position: fixed; bottom: 20px; right: 20px; z-index: 9999;' +
-        'background: ' + (colors[type] || colors.info) + '; color: white;' +
-        'padding: 1rem 1.5rem; border-radius: 8px; font-weight: 500;' +
-        'box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
-      toast.textContent = message;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
-    }
-
-    document.addEventListener('DOMContentLoaded', updateTourBadge);
+    // Tour badge is updated by global updateTourBadge() from layout
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof updateTourBadge === 'function') updateTourBadge();
+    });
   </script>
   `;
 
+  // WebSite schema is already in layout.ts <head> for all pages
   return layout('Home', content, { subdomain });
 }
 
@@ -639,13 +275,6 @@ function breweryCard(brewery: Brewery, stateName: string = 'Ohio'): string {
   const remaining = (brewery.amenities?.length || 0) - 3;
 
   // Generate gradient based on brewery name
-  const hashCode = (str: string) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return hash;
-  };
   const hue = Math.abs(hashCode(brewery.name)) % 360;
   const gradient = `linear-gradient(135deg, hsl(${hue}, 70%, 40%) 0%, hsl(${(hue + 40) % 360}, 60%, 30%) 100%)`;
 

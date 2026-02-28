@@ -13,17 +13,30 @@ export function itineraryPage(): string {
     </div>
 
     <div id="empty-tour" class="text-center py-5">
-      <div class="card mx-auto" style="max-width: 500px;">
-        <div class="card-body py-5">
-          <i class="bi bi-journal-x fs-1 text-muted mb-3 d-block"></i>
-          <h3>Your Tour is Empty</h3>
-          <p class="text-muted">Start adding breweries to plan your tour</p>
-          <a href="/breweries" class="btn btn-warning btn-lg">
-            <i class="bi bi-search"></i> Browse Breweries
-          </a>
-          <a href="/nearby" class="btn btn-outline-warning btn-lg">
-            <i class="bi bi-geo-alt"></i> Find Nearby
-          </a>
+      <div class="card mx-auto border-0" style="max-width: 560px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%); border-radius: 16px;">
+        <div class="card-body py-5 px-4">
+          <div style="font-size: 3.5rem; margin-bottom: 1rem;">
+            <span role="img" aria-hidden="true">🍺</span>
+            <span role="img" aria-hidden="true">🗺️</span>
+          </div>
+          <h3 class="fw-bold mb-2">Plan Your Brewery Adventure</h3>
+          <p class="mb-4" style="color: #92400e;">Browse Ohio's 351 breweries and build your perfect tour. We'll help you optimize the route.</p>
+          <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="/breweries" class="btn btn-lg" style="background: #d97706; color: white; border-radius: 12px; padding: 0.75rem 1.5rem;">
+              <i class="bi bi-cup-straw"></i> Browse Breweries
+            </a>
+            <a href="/nearby" class="btn btn-lg" style="background: white; color: #d97706; border: 2px solid #d97706; border-radius: 12px; padding: 0.75rem 1.5rem;">
+              <i class="bi bi-geo-alt"></i> Find Nearby
+            </a>
+            <a href="/trails" class="btn btn-lg" style="background: white; color: #16a34a; border: 2px solid #16a34a; border-radius: 12px; padding: 0.75rem 1.5rem;">
+              <i class="bi bi-signpost-2"></i> Try a Trail
+            </a>
+          </div>
+          <div class="mt-4 pt-3" style="border-top: 1px solid rgba(146, 64, 14, 0.15);">
+            <p class="mb-0 small" style="color: #92400e;">
+              <strong>How it works:</strong> Browse or search, tap "Add to Tour" on any brewery, then come back here to reorder and optimize your route with AI.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -83,8 +96,11 @@ export function itineraryPage(): string {
               <button id="clear-tour" class="btn btn-outline-danger w-100 mb-2">
                 <i class="bi bi-trash"></i> Clear Tour
               </button>
-              <button id="share-tour" class="btn btn-outline-secondary w-100">
+              <button id="share-tour" class="btn btn-outline-secondary w-100 mb-2">
                 <i class="bi bi-share"></i> Share Tour
+              </button>
+              <button id="export-maps" class="btn btn-outline-success w-100">
+                <i class="bi bi-map"></i> Export to Google Maps
               </button>
             </div>
           </div>
@@ -93,41 +109,6 @@ export function itineraryPage(): string {
     </div>
   </main>
 
-  <style>
-    .tour-item {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-      background: white;
-      cursor: grab;
-    }
-    .tour-item:hover {
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .tour-item .drag-handle {
-      color: #adb5bd;
-      margin-right: 1rem;
-      cursor: grab;
-    }
-    .tour-item .remove-btn {
-      margin-left: auto;
-    }
-    .tour-number {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #d97706;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 1rem;
-      font-weight: bold;
-    }
-  </style>
 
   <script>
     const emptyTour = document.getElementById('empty-tour');
@@ -363,6 +344,22 @@ export function itineraryPage(): string {
 
     document.getElementById('dismiss-optimization')?.addEventListener('click', () => {
       optimizationResult.classList.add('d-none');
+    });
+
+    document.getElementById('export-maps')?.addEventListener('click', () => {
+      if (breweries.length === 0) {
+        alert('Add breweries to your tour first');
+        return;
+      }
+      const waypoints = breweries.filter(b => b.latitude && b.longitude);
+      if (waypoints.length === 0) return;
+      const origin = \`\${waypoints[0].latitude},\${waypoints[0].longitude}\`;
+      const destination = \`\${waypoints[waypoints.length - 1].latitude},\${waypoints[waypoints.length - 1].longitude}\`;
+      const middle = waypoints.slice(1, -1).map(b => \`\${b.latitude},\${b.longitude}\`).join('|');
+      let url = \`https://www.google.com/maps/dir/?api=1&origin=\${origin}&destination=\${destination}\`;
+      if (middle) url += \`&waypoints=\${encodeURIComponent(middle)}\`;
+      url += '&travelmode=driving';
+      window.open(url, '_blank');
     });
 
     // Check for shared tour in URL
