@@ -11,9 +11,14 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
   const branding = getSiteBranding(subdomain);
   const stateName = subdomain?.stateName || 'Ohio';
   const isMultiState = subdomain?.isMultiState ?? false;
+  const stateAbbrevToName: Record<string, string> = {
+    OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania',
+    IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
+  };
   // Generate a "Brewery of the Day" based on current date
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
   const breweryOfDay = featuredBreweries[dayOfYear % featuredBreweries.length];
+  const breweryOfDayState = breweryOfDay ? (stateAbbrevToName[breweryOfDay.state || ''] || stateName) : stateName;
 
   const content = `
   <!-- Hero Section -->
@@ -111,16 +116,16 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
       </div>
       <div class="spotlight-content">
         <div class="spotlight-info">
-          <span class="spotlight-region">${(breweryOfDay.region || stateName).toUpperCase()}</span>
+          <span class="spotlight-region">${(breweryOfDay.region || breweryOfDayState).toUpperCase()}</span>
           <h2 class="spotlight-title">${breweryOfDay.name}</h2>
           <p class="spotlight-location">
-            <i class="bi bi-geo-alt-fill"></i> ${breweryOfDay.city}, ${stateName}
+            <i class="bi bi-geo-alt-fill"></i> ${breweryOfDay.city}, ${breweryOfDayState}
             ${breweryOfDay.brewery_type ? `<span class="mx-2">•</span>${breweryOfDay.brewery_type}` : ''}
           </p>
           <p class="spotlight-description">
             ${breweryOfDay.description && breweryOfDay.description !== 'N/A'
               ? breweryOfDay.description.substring(0, 150) + '...'
-              : `Discover ${breweryOfDay.name}, a craft brewery in ${breweryOfDay.city}, ${stateName}. Experience their unique selection of handcrafted beers.`}
+              : `Discover ${breweryOfDay.name}, a craft brewery in ${breweryOfDay.city}, ${breweryOfDayState}. Experience their unique selection of handcrafted beers.`}
           </p>
           <div class="spotlight-actions">
             <a href="/brewery/${breweryOfDay.id}" class="btn btn-warning btn-lg">
@@ -283,7 +288,7 @@ function breweryCard(brewery: Brewery, stateName: string = 'Ohio'): string {
     <div class="brewery-card">
       <div class="card-img-placeholder" style="background: ${gradient};">
         <i class="bi bi-cup-straw"></i>
-        <span class="brewery-region-badge">${brewery.region || stateName}</span>
+        <span class="brewery-region-badge">${brewery.region || brewery.state_province || brewery.state || stateName}</span>
       </div>
 
       <div class="card-body">
