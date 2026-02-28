@@ -180,7 +180,7 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {},
       '@type': 'ListItem',
       position: i + 1,
       name: b.name,
-      url: `https://ohio-beer-path.bill-burkey.workers.dev/brewery/${b.id}`
+      url: `https://brewerytrip.com/brewery/${b.id}`
     }))
   });
 
@@ -188,7 +188,16 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {},
     <script type="application/ld+json">${itemListJsonLd}</script>
   `;
 
-  return layout('Breweries', contentWithSchema, { subdomain: filters.subdomain });
+  const stateNames = subdomain?.isMultiState
+    ? 'Ohio, Michigan, Indiana, Kentucky, Pennsylvania & West Virginia'
+    : (subdomain?.stateName || 'Ohio');
+  const pageTitle = `Craft Breweries in ${stateNames}`;
+  const pageDescription = `Browse ${breweries.length}+ craft breweries in ${stateNames}. Filter by region, amenities like dog-friendly patios and food trucks, and brewery type. Plan your perfect brewery tour.`;
+
+  return layout(pageTitle, contentWithSchema, {
+    subdomain: filters.subdomain,
+    description: pageDescription,
+  });
 }
 
 function breweryCard(brewery: Brewery): string {

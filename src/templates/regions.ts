@@ -82,7 +82,10 @@ export function regionsPage(regions: Region[], options: RegionPageOptions = {}):
 
   `;
 
-  return layout('Regions', content, { subdomain });
+  return layout('Brewery Regions & Areas', content, {
+    subdomain,
+    description: `Explore craft breweries by region across ${subdomain?.stateName || 'multiple states'}. Find breweries in Central, Northeast, Northwest, Southwest, and Southeast areas.`,
+  });
 }
 
 export function regionDetailPage(region: string, breweries: Brewery[], options: RegionPageOptions = {}): string {

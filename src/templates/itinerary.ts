@@ -376,5 +376,7 @@ export function itineraryPage(): string {
   </script>
   `;
 
-  return layout('My Tour', content);
+  return layout('My Brewery Tour Planner', content, {
+    description: 'Plan and optimize your brewery tour. Add breweries, reorder stops, and get AI-powered route optimization for the perfect craft beer road trip.',
+  });
 }

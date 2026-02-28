@@ -51,7 +51,9 @@ export function trailsPage(trails: Trail[]): string {
     </div>
   </div>`;
 
-  return layout('Brewery Trails', content);
+  return layout('Brewery Trails & Bar Crawls', content, {
+    description: 'Discover curated brewery trails and bar crawls. Follow themed routes through craft beer hotspots or build your own custom brewery tour.',
+  });
 }
 
 function trailCard(trail: Trail, featured: boolean): string {

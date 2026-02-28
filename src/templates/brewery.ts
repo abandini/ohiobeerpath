@@ -760,82 +760,95 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
       }
     </script>
 
-    <!-- JSON-LD Structured Data for SEO -->
-    <script type="application/ld+json">
-    ${JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Brewery",
-      "name": brewery.name,
-      "description": brewery.description || `Craft brewery in ${brewery.city}, Ohio`,
-      "url": `https://ohio-beer-path.bill-burkey.workers.dev/brewery/${brewery.id}`,
-      "image": `https://ohio-beer-path.bill-burkey.workers.dev/api/og/${brewery.id}`,
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": brewery.street || "",
-        "addressLocality": brewery.city || "",
-        "addressRegion": "OH",
-        "postalCode": brewery.postal_code || "",
-        "addressCountry": "US"
-      },
-      ...(brewery.latitude && brewery.longitude ? {
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": brewery.latitude,
-          "longitude": brewery.longitude
-        }
-      } : {}),
-      ...(brewery.phone ? { "telephone": brewery.phone } : {}),
-      ...(brewery.website_url ? { "sameAs": brewery.website_url } : {}),
-      "priceRange": "$$",
-      "servesCuisine": "Craft Beer",
-      ...(reviews && reviews.length > 0 ? {
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1),
-          "reviewCount": reviews.length,
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "review": reviews.slice(0, 3).map(review => ({
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": review.user_id
-          },
-          "datePublished": review.created_at.split(' ')[0],
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": review.rating,
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          ...(review.content ? { "reviewBody": review.content } : {})
-        }))
-      } : {})
-    }, null, 2)}
-    </script>
+    <!-- Schema injected via contentWithSchema below -->
   `;
+
+  const stateAbbrevToName: Record<string, string> = {
+    OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania',
+    IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
+  };
+  const breweryStateName = stateAbbrevToName[brewery.state || ''] || 'Ohio';
+  const breweryStateAbbr = brewery.state || 'OH';
+  const baseUrl = 'https://brewerytrip.com';
+  const pageUrl = `${baseUrl}/brewery/${brewery.id}`;
 
   const seoDescription = brewery.description && brewery.description !== 'N/A'
     ? brewery.description
-    : `Visit ${brewery.name} in ${brewery.city || 'Ohio'}, Ohio. Discover craft beers and plan your brewery tour.`;
+    : `Visit ${brewery.name} in ${brewery.city || breweryStateName}, ${breweryStateName}. Discover craft beers and plan your brewery tour.`;
 
   // Dynamic OG image for this brewery
-  const ogImage = `https://ohio-beer-path.bill-burkey.workers.dev/api/og/${brewery.id}`;
+  const ogImage = `${baseUrl}/api/og/${brewery.id}`;
 
-  // Schema.org LocalBusiness structured data for SEO
+  // Build enhanced schema properties
+  const schemaAmenities = (brewery.amenities || []).map(a => ({
+    '@type': 'LocationFeatureSpecification',
+    name: a,
+    value: true
+  }));
+
+  // Parse hours into structured format
+  const hoursSpecs: any[] = [];
+  if (brewery.hours && typeof brewery.hours === 'object') {
+    const dayMap: Record<string, string> = {
+      Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday',
+      Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday', Sunday: 'Sunday'
+    };
+    for (const [day, timeStr] of Object.entries(brewery.hours)) {
+      if (typeof timeStr !== 'string' || !dayMap[day]) continue;
+      const trimmed = timeStr.trim();
+      if (trimmed.toLowerCase() === 'closed') continue;
+      const parts = trimmed.split(/\s*[-\u2013]\s*/);
+      if (parts.length === 2) {
+        hoursSpecs.push({
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: dayMap[day],
+          opens: parts[0].trim(),
+          closes: parts[1].trim()
+        });
+      }
+    }
+  }
+
+  // Build aggregate rating from reviews
+  const reviewSchemas: any[] = [];
+  let aggregateRating: any = undefined;
+  if (reviews && reviews.length > 0) {
+    const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: avg.toFixed(1),
+      ratingCount: reviews.length,
+      bestRating: '5',
+      worstRating: '1'
+    };
+    reviewSchemas.push(...reviews.slice(0, 5).map(r => ({
+      '@type': 'Review',
+      ...(r.title && { name: r.title }),
+      ...(r.content && { reviewBody: r.content }),
+      datePublished: r.created_at,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: r.rating.toString(),
+        bestRating: '5',
+        worstRating: '1'
+      },
+      author: { '@type': 'Person', name: 'Beer Enthusiast' }
+    })));
+  }
+
+  // Schema.org Brewery structured data for SEO + AEO
   const schemaJsonLd = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'Brewery',
     name: brewery.name,
     description: seoDescription,
-    url: `https://ohio-beer-path.bill-burkey.workers.dev/brewery/${brewery.id}`,
+    url: pageUrl,
     ...(brewery.website_url && { sameAs: brewery.website_url }),
     address: {
       '@type': 'PostalAddress',
       ...(brewery.street && { streetAddress: brewery.street }),
-      addressLocality: brewery.city || 'Ohio',
-      addressRegion: 'OH',
+      addressLocality: brewery.city || breweryStateName,
+      addressRegion: breweryStateAbbr,
       ...(brewery.postal_code && { postalCode: brewery.postal_code }),
       addressCountry: 'US'
     },
@@ -847,7 +860,14 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
       }
     }),
     ...(brewery.phone && { telephone: brewery.phone }),
-    ...(brewery.brewery_type && { additionalType: brewery.brewery_type })
+    ...(brewery.brewery_type && { additionalType: brewery.brewery_type }),
+    servesCuisine: 'Beer',
+    priceRange: '$$',
+    isAccessibleForFree: true,
+    ...(hoursSpecs.length > 0 && { openingHoursSpecification: hoursSpecs }),
+    ...(schemaAmenities.length > 0 && { amenityFeature: schemaAmenities }),
+    ...(aggregateRating && { aggregateRating }),
+    ...(reviewSchemas.length > 0 && { review: reviewSchemas })
   });
 
   // BreadcrumbList schema for navigation context
@@ -855,8 +875,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ohio-beer-path.bill-burkey.workers.dev/' },
-      { '@type': 'ListItem', position: 2, name: 'Breweries', item: 'https://ohio-beer-path.bill-burkey.workers.dev/breweries' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${baseUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'Breweries', item: `${baseUrl}/breweries` },
       { '@type': 'ListItem', position: 3, name: brewery.name }
     ]
   });
@@ -869,7 +889,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
   return layout(`${brewery.name}`, contentWithSchema, {
     description: seoDescription,
     image: ogImage,
-    url: `https://ohio-beer-path.bill-burkey.workers.dev/brewery/${brewery.id}`,
+    url: pageUrl,
     extraCss: ['/assets/css/pages/brewery.css'],
   });
 }

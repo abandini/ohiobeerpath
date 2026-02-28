@@ -70,6 +70,31 @@ app.get('/robots.txt', (c) => {
 User-agent: *
 Allow: /
 
+# Allow AI answer engines for AEO (Answer Engine Optimization)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Disallow: /
+
 # Sitemaps
 Sitemap: ${subdomain.baseUrl}/sitemap.xml
 

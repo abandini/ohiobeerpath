@@ -271,8 +271,72 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
   </script>
   `;
 
-  // WebSite schema is already in layout.ts <head> for all pages
-  return layout('Home', content, { subdomain });
+  // HowTo schema for the "How It Works" section (AEO optimization)
+  const howToSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Plan Your Perfect Brewery Tour`,
+    description: `Plan an optimized craft brewery tour across ${isMultiState ? 'multiple states' : stateName} using Brewery Trip.`,
+    step: [
+      {
+        '@type': 'HowToStep',
+        position: 1,
+        name: 'Discover Breweries',
+        text: `Browse ${stats.total} craft breweries across ${stats.regions} ${isMultiState ? 'regions' : stateName + ' regions'}. Filter by location, amenities, and more.`
+      },
+      {
+        '@type': 'HowToStep',
+        position: 2,
+        name: 'Build Your Tour',
+        text: 'Add your favorite breweries to your personal tour list. Save as many as you want.'
+      },
+      {
+        '@type': 'HowToStep',
+        position: 3,
+        name: 'Optimize & Go',
+        text: 'Get AI-optimized routes to visit all your breweries efficiently. Happy trails!'
+      }
+    ]
+  });
+
+  // FAQ schema for common questions (AEO optimization)
+  const faqSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `How many craft breweries are there in ${isMultiState ? 'the region' : stateName}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `There are ${stats.total} craft breweries across ${stats.regions} regions listed on Brewery Trip. Browse them all at brewerytrip.com/breweries.`
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'How do I plan a brewery tour?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Use Brewery Trip to discover breweries, add your favorites to your tour list, then get AI-optimized routes to visit them all efficiently. You can filter by region, amenities like dog-friendly patios or food trucks, and brewery type.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I find breweries near my location?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes! Use the "Near Me" feature on Brewery Trip to find craft breweries close to your current location. The app uses your GPS to show nearby breweries sorted by distance.'
+        }
+      }
+    ]
+  });
+
+  const contentWithSchema = content + `
+    <script type="application/ld+json">${howToSchema}</script>
+    <script type="application/ld+json">${faqSchema}</script>
+  `;
+
+  return layout('Home', contentWithSchema, { subdomain });
 }
 
 function breweryCard(brewery: Brewery, stateName: string = 'Ohio'): string {

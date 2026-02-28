@@ -501,7 +501,7 @@ pages.get('/terms', (c) => {
 
 // SEO: Dynamic XML Sitemap
 pages.get('/sitemap.xml', async (c) => {
-  const baseUrl = 'https://ohio-beer-path.bill-burkey.workers.dev';
+  const baseUrl = 'https://brewerytrip.com';
   const today = new Date().toISOString().split('T')[0];
 
   // Get all breweries
@@ -567,31 +567,6 @@ pages.get('/sitemap.xml', async (c) => {
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/xml',
-      'Cache-Control': 'public, max-age=86400'
-    }
-  });
-});
-
-// SEO: robots.txt
-pages.get('/robots.txt', (c) => {
-  const robotsTxt = `# Ohio Beer Path - Robots.txt
-User-agent: *
-Allow: /
-
-# Sitemaps
-Sitemap: https://ohio-beer-path.bill-burkey.workers.dev/sitemap.xml
-
-# Disallow admin and API endpoints
-Disallow: /admin/
-Disallow: /api/
-
-# Crawl delay for polite crawling
-Crawl-delay: 1
-`;
-
-  return new Response(robotsTxt, {
-    headers: {
-      'Content-Type': 'text/plain',
       'Cache-Control': 'public, max-age=86400'
     }
   });

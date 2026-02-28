@@ -195,5 +195,7 @@ export function nearbyPage(): string {
   </script>
   `;
 
-  return layout('Nearby Breweries', content);
+  return layout('Find Breweries Near Me', content, {
+    description: 'Find craft breweries near your current location. Use GPS to discover nearby taprooms, brewpubs, and microbreweries for your next visit.',
+  });
 }

@@ -157,10 +157,10 @@ export function blogPostPage(post: BlogPost, relatedPosts: BlogPost[] = []): str
           <div class="card bg-light border-0 p-4 mb-5">
             <h5><i class="bi bi-share"></i> Share This Post</h5>
             <div class="d-flex gap-2 mt-2">
-              <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent('https://ohio-beer-path.bill-burkey.workers.dev/blog/' + post.slug)}" target="_blank" class="btn btn-outline-dark btn-sm">
+              <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent('https://brewerytrip.com/blog/' + post.slug)}" target="_blank" class="btn btn-outline-dark btn-sm">
                 <i class="bi bi-twitter-x"></i> Twitter
               </a>
-              <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://ohio-beer-path.bill-burkey.workers.dev/blog/' + post.slug)}" target="_blank" class="btn btn-outline-dark btn-sm">
+              <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://brewerytrip.com/blog/' + post.slug)}" target="_blank" class="btn btn-outline-dark btn-sm">
                 <i class="bi bi-facebook"></i> Facebook
               </a>
               <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied!')" class="btn btn-outline-dark btn-sm">
@@ -202,9 +202,52 @@ export function blogPostPage(post: BlogPost, relatedPosts: BlogPost[] = []): str
 
   `;
 
-  return layout(post.title, content, {
+  // Article schema for AEO/SEO
+  const articleSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt || post.content?.substring(0, 160) || '',
+    url: `https://brewerytrip.com/blog/${post.slug}`,
+    ...(post.featured_image && { image: post.featured_image }),
+    datePublished: post.created_at,
+    dateModified: post.updated_at || post.created_at,
+    author: {
+      '@type': 'Organization',
+      name: 'Brewery Trip',
+      url: 'https://brewerytrip.com'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Brewery Trip',
+      url: 'https://brewerytrip.com'
+    },
+    ...(post.category && { articleSection: post.category }),
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://brewerytrip.com/blog/${post.slug}`
+    }
+  });
+
+  const breadcrumbSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://brewerytrip.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://brewerytrip.com/blog' },
+      { '@type': 'ListItem', position: 3, name: post.title }
+    ]
+  });
+
+  const contentWithSchema = content + `
+    <script type="application/ld+json">${articleSchema}</script>
+    <script type="application/ld+json">${breadcrumbSchema}</script>
+  `;
+
+  return layout(post.title, contentWithSchema, {
     description: post.excerpt || post.content?.substring(0, 160),
-    image: post.featured_image
+    image: post.featured_image,
+    url: `https://brewerytrip.com/blog/${post.slug}`,
   });
 }
 

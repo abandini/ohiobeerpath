@@ -421,7 +421,7 @@ api.post('/tours/share', async (c) => {
     return c.json({
       success: true,
       share_id: id,
-      share_url: `https://ohio-beer-path.bill-burkey.workers.dev/tour/${id}`
+      share_url: `https://brewerytrip.com/tour/${id}`
     });
   } catch (error: any) {
     return c.json({ success: false, error: error.message }, 500);
