@@ -46,11 +46,16 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
             class="search-input"
             placeholder="Search by name, city, or region..."
             id="searchInput"
+            role="combobox"
             aria-label="Search breweries by name, city, or region"
+            aria-expanded="false"
+            aria-controls="searchResults"
+            aria-autocomplete="list"
+            autocomplete="off"
           >
           <i class="bi bi-search search-icon"></i>
         </div>
-        <div id="searchResults" class="search-results"></div>
+        <div id="searchResults" class="search-results" role="listbox" aria-label="Search results" aria-live="polite"></div>
       </div>
     </div>
   </section>
@@ -224,6 +229,7 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
 
       if (query.length < 2) {
         searchResults.classList.remove('active');
+        searchInput.setAttribute('aria-expanded', 'false');
         return;
       }
 
@@ -234,7 +240,7 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
 
           if (data.breweries && data.breweries.length > 0) {
             searchResults.innerHTML = data.breweries.slice(0, 8).map(b =>
-              '<a href="/brewery/' + b.id + '" class="search-result-item">' +
+              '<a href="/brewery/' + b.id + '" class="search-result-item" role="option">' +
                 '<i class="bi bi-cup-straw text-warning"></i>' +
                 '<div>' +
                   '<strong>' + b.name + '</strong>' +
@@ -243,9 +249,11 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
               '</a>'
             ).join('');
             searchResults.classList.add('active');
+            searchInput.setAttribute('aria-expanded', 'true');
           } else {
             searchResults.innerHTML = '<div class="p-3 text-muted">No breweries found</div>';
             searchResults.classList.add('active');
+            searchInput.setAttribute('aria-expanded', 'true');
           }
         } catch (err) {
           // Silently handle fetch errors (can happen during page navigation)
@@ -261,6 +269,7 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
     document.addEventListener('click', function(e) {
       if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
         searchResults.classList.remove('active');
+        searchInput.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -347,18 +356,23 @@ function breweryCard(brewery: Brewery, stateName: string = 'Ohio'): string {
   const hue = Math.abs(hashCode(brewery.name)) % 360;
   const gradient = `linear-gradient(135deg, hsl(${hue}, 70%, 40%) 0%, hsl(${(hue + 40) % 360}, 60%, 30%) 100%)`;
 
+  const stateNames: Record<string, string> = { OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania', IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia' };
+  const displayState = stateNames[brewery.state || ''] || brewery.state_province || stateName;
+  const regionLabel = brewery.region || displayState;
+
   return `
   <div class="col-md-6 col-lg-4">
     <div class="brewery-card">
       <div class="card-img-placeholder" style="background: ${gradient};">
         <i class="bi bi-cup-straw"></i>
-        <span class="brewery-region-badge">${brewery.region || brewery.state_province || brewery.state || stateName}</span>
+        <span class="brewery-region-badge">${regionLabel}</span>
       </div>
 
       <div class="card-body">
         <h3 class="card-title">${brewery.name}</h3>
         <p class="card-subtitle">
-          ${brewery.brewery_type || 'Brewery'} • ${brewery.city}
+          <span class="brewery-type-pill">${brewery.brewery_type || 'Brewery'}</span>
+          <span class="brewery-location"><i class="bi bi-geo-alt"></i> ${brewery.city}${displayState !== stateName ? ', ' + displayState : ''}</span>
         </p>
 
         ${amenities.length > 0 ? `

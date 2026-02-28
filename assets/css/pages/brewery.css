@@ -340,6 +340,11 @@
         color: #92400e;
       }
 
+      .action-btn:focus-visible {
+        outline: 2px solid #d97706;
+        outline-offset: 2px;
+      }
+
       .action-btn i {
         font-size: 1.5rem;
       }
@@ -459,6 +464,11 @@
       .rec-btn:hover {
         border-color: #d97706;
         color: #d97706;
+      }
+
+      .rec-btn:focus-visible {
+        outline: 2px solid #d97706;
+        outline-offset: 2px;
       }
 
       .rec-btn.active {
@@ -705,6 +715,11 @@
         border-color: #d97706;
         color: #d97706;
         background: #fef3c7;
+      }
+
+      .helpful-btn:focus-visible {
+        outline: 2px solid #d97706;
+        outline-offset: 2px;
       }
 
       .no-reviews {

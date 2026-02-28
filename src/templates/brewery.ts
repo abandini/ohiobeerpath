@@ -67,6 +67,13 @@ function getOpenStatus(hours?: Record<string, string>): { isOpen: boolean; label
 }
 
 export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyBreweries?: Brewery[], reviews?: Review[]): string {
+  const stateAbbrevToName: Record<string, string> = {
+    OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania',
+    IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
+  };
+  const breweryStateName = stateAbbrevToName[brewery.state || ''] || 'Ohio';
+  const breweryStateAbbr = brewery.state || 'OH';
+
   const hue = Math.abs(hashCode(brewery.name)) % 360;
   const openStatus = getOpenStatus(brewery.hours);
   const gradientColors = `hsl(${hue}, 70%, 35%), hsl(${(hue + 40) % 360}, 60%, 25%)`;
@@ -119,7 +126,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
   const addressParts = [
     brewery.street,
     brewery.city,
-    'OH',
+    breweryStateAbbr,
     brewery.postal_code
   ].filter(Boolean);
   const fullAddress = addressParts.join(', ');
@@ -150,10 +157,10 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             <li class="breadcrumb-item active">${brewery.name}</li>
           </ol>
         </nav>
-        <span class="region-pill">${(brewery.region || 'Ohio').toUpperCase()}</span>
+        <span class="region-pill">${(brewery.region || breweryStateName).toUpperCase()}</span>
         <h1 class="hero-title">${brewery.name}</h1>
         <p class="hero-location">
-          <i class="bi bi-geo-alt-fill"></i> ${brewery.city || 'Ohio'}, Ohio
+          <i class="bi bi-geo-alt-fill"></i> ${brewery.city || breweryStateName}, ${breweryStateName}
           ${brewery.brewery_type ? `<span class="mx-2">|</span><i class="bi bi-cup-straw"></i> ${brewery.brewery_type}` : ''}
           ${openStatus ? `<span class="mx-2">|</span><span class="open-status ${openStatus.cssClass}"><i class="bi ${openStatus.isOpen ? 'bi-clock' : 'bi-clock-history'}"></i> ${openStatus.label}</span>` : ''}
         </p>
@@ -194,7 +201,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             <p class="about-text">
               ${brewery.description && brewery.description !== 'N/A'
                 ? brewery.description
-                : `${brewery.name} is a craft brewery located in ${brewery.city}, Ohio. Visit their taproom to experience their unique selection of handcrafted beers and enjoy the local brewery atmosphere.`}
+                : `${brewery.name} is a craft brewery located in ${brewery.city}, ${breweryStateName}. Visit their taproom to experience their unique selection of handcrafted beers and enjoy the local brewery atmosphere.`}
             </p>
             ${brewery.phone ? `
               <div class="contact-info">
@@ -239,7 +246,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             ${brewery.street || brewery.city ? `
               <address class="brewery-address">
                 ${brewery.street ? `${brewery.street}<br>` : ''}
-                ${brewery.city}, OH ${brewery.postal_code || ''}
+                ${brewery.city}, ${breweryStateAbbr} ${brewery.postal_code || ''}
               </address>
             ` : ''}
             ${brewery.latitude && brewery.longitude ? `
@@ -278,9 +285,9 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
           <!-- Nearby Breweries Teaser -->
           <div class="sidebar-card">
             <h3><i class="bi bi-geo text-warning"></i> Explore More</h3>
-            <p class="text-muted">Discover other breweries in the ${brewery.region || 'Ohio'} region.</p>
+            <p class="text-muted">Discover other breweries in the ${brewery.region || breweryStateName} region.</p>
             <a href="/regions/${(brewery.region || 'central').toLowerCase()}" class="btn btn-warning w-100">
-              <i class="bi bi-compass"></i> Explore ${brewery.region || 'Ohio'} Region
+              <i class="bi bi-compass"></i> Explore ${brewery.region || breweryStateName} Region
             </a>
           </div>
 
@@ -301,7 +308,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
       ${nearbyBreweries && nearbyBreweries.length > 0 ? `
       <!-- Nearby Breweries Section -->
       <div class="nearby-section">
-        <h2><i class="bi bi-geo-alt text-warning"></i> More Breweries in ${brewery.region || 'Ohio'}</h2>
+        <h2><i class="bi bi-geo-alt text-warning"></i> More Breweries in ${brewery.region || breweryStateName}</h2>
         <div class="row g-3">
           ${nearbyBreweries.map(nb => {
             const nbHue = Math.abs(hashCode(nb.name)) % 360;
@@ -535,7 +542,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
         if (navigator.share) {
           navigator.share({
             title: '${brewery.name.replace(/'/g, "\\'")}',
-            text: 'Check out ${brewery.name.replace(/'/g, "\\'")} in ${brewery.city}, Ohio!',
+            text: 'Check out ${brewery.name.replace(/'/g, "\\'")} in ${brewery.city}, ${breweryStateName}!',
             url: window.location.href
           }).catch(() => {});
         } else {
@@ -763,12 +770,6 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     <!-- Schema injected via contentWithSchema below -->
   `;
 
-  const stateAbbrevToName: Record<string, string> = {
-    OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania',
-    IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
-  };
-  const breweryStateName = stateAbbrevToName[brewery.state || ''] || 'Ohio';
-  const breweryStateAbbr = brewery.state || 'OH';
   const baseUrl = 'https://brewerytrip.com';
   const pageUrl = `${baseUrl}/brewery/${brewery.id}`;
 

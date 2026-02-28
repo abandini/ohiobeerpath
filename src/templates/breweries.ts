@@ -48,26 +48,23 @@ function renderPagination(pagination: PaginationInfo, filters: FilterOptions): s
 
   return `
     <nav aria-label="Brewery listing pages" class="d-flex justify-content-center mt-4 mb-3">
-      <ul class="pagination" style="gap: 4px;">
+      <ul class="brewery-pagination">
         <li class="page-item ${page <= 1 ? 'disabled' : ''}">
           <a class="page-link" href="${page > 1 ? buildPageUrl(page - 1, filters) : '#'}"
-             ${page <= 1 ? 'tabindex="-1" aria-disabled="true"' : ''}
-             style="border-radius: 8px;">&laquo; Prev</a>
+             ${page <= 1 ? 'tabindex="-1" aria-disabled="true"' : ''}>&laquo; Prev</a>
         </li>
         ${pages.map(p => {
           if (p === '...') {
-            return '<li class="page-item disabled"><span class="page-link" style="border-radius: 8px;">&hellip;</span></li>';
+            return '<li class="page-item disabled"><span class="page-link">&hellip;</span></li>';
           }
           return `<li class="page-item ${p === page ? 'active' : ''}">
             <a class="page-link" href="${buildPageUrl(p, filters)}"
-               ${p === page ? 'aria-current="page"' : ''}
-               style="border-radius: 8px; ${p === page ? 'background: #D97706; border-color: #D97706;' : ''}">${p}</a>
+               ${p === page ? 'aria-current="page"' : ''}>${p}</a>
           </li>`;
         }).join('')}
         <li class="page-item ${page >= totalPages ? 'disabled' : ''}">
           <a class="page-link" href="${page < totalPages ? buildPageUrl(page + 1, filters) : '#'}"
-             ${page >= totalPages ? 'tabindex="-1" aria-disabled="true"' : ''}
-             style="border-radius: 8px;">Next &raquo;</a>
+             ${page >= totalPages ? 'tabindex="-1" aria-disabled="true"' : ''}>Next &raquo;</a>
         </li>
       </ul>
     </nav>
@@ -116,12 +113,21 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {},
             <label class="form-label fw-semibold">Region</label>
             <select name="region" class="form-select" onchange="this.form.submit()">
               <option value="">All Regions</option>
-              <option value="northeast" ${region === 'northeast' ? 'selected' : ''}>Northeast Ohio</option>
-              <option value="northwest" ${region === 'northwest' ? 'selected' : ''}>Northwest Ohio</option>
-              <option value="central" ${region === 'central' ? 'selected' : ''}>Central Ohio</option>
-              <option value="southeast" ${region === 'southeast' ? 'selected' : ''}>Southeast Ohio</option>
-              <option value="southwest" ${region === 'southwest' ? 'selected' : ''}>Southwest Ohio</option>
-              <option value="eastcentral" ${region === 'eastcentral' ? 'selected' : ''}>East Central Ohio</option>
+              ${subdomain?.isMultiState ? `
+              <option value="ohio" ${region === 'ohio' ? 'selected' : ''}>Ohio</option>
+              <option value="michigan" ${region === 'michigan' ? 'selected' : ''}>Michigan</option>
+              <option value="indiana" ${region === 'indiana' ? 'selected' : ''}>Indiana</option>
+              <option value="kentucky" ${region === 'kentucky' ? 'selected' : ''}>Kentucky</option>
+              <option value="pennsylvania" ${region === 'pennsylvania' ? 'selected' : ''}>Pennsylvania</option>
+              <option value="west-virginia" ${region === 'west-virginia' ? 'selected' : ''}>West Virginia</option>
+              ` : `
+              <option value="northeast" ${region === 'northeast' ? 'selected' : ''}>Northeast ${stateName}</option>
+              <option value="northwest" ${region === 'northwest' ? 'selected' : ''}>Northwest ${stateName}</option>
+              <option value="central" ${region === 'central' ? 'selected' : ''}>Central ${stateName}</option>
+              <option value="southeast" ${region === 'southeast' ? 'selected' : ''}>Southeast ${stateName}</option>
+              <option value="southwest" ${region === 'southwest' ? 'selected' : ''}>Southwest ${stateName}</option>
+              <option value="eastcentral" ${region === 'eastcentral' ? 'selected' : ''}>East Central ${stateName}</option>
+              `}
             </select>
           </div>
           <div class="col-md-8">
@@ -152,7 +158,7 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {},
     </div>
 
     ${pagination && pagination.totalPages > 1 ? `
-    <p class="text-muted mb-3" style="font-size: 0.9rem;">
+    <p class="text-muted mb-3 small">
       Showing ${(pagination.page - 1) * pagination.perPage + 1}&ndash;${Math.min(pagination.page * pagination.perPage, pagination.totalItems)} of ${pagination.totalItems} breweries
     </p>
     ` : ''}
@@ -206,13 +212,18 @@ function breweryCard(brewery: Brewery): string {
   const gradient = `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 55%, 35%))`;
 
   // Use state as fallback for city/region
-  const cityFallback = brewery.city || brewery.state_province || 'USA';
-  const regionFallback = brewery.region || brewery.state_province || brewery.state || 'USA';
+  const stateNames: Record<string, string> = { OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania', IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia' };
+  const stateName = stateNames[brewery.state || ''] || brewery.state_province || '';
+  const cityFallback = brewery.city || stateName || 'USA';
+  const regionFallback = brewery.region || stateName || 'USA';
 
-  // Truncate description
-  const desc = brewery.description && brewery.description !== 'N/A'
-    ? brewery.description
-    : `Discover craft beer at ${brewery.name} in ${cityFallback}.`;
+  // Better description: avoid generic text, keep it short
+  const desc = brewery.description && brewery.description !== 'N/A' && brewery.description.length > 10
+    ? (brewery.description.length > 120 ? brewery.description.substring(0, 117) + '...' : brewery.description)
+    : `${brewery.brewery_type || 'Craft brewery'} in ${cityFallback}${stateName ? ', ' + stateName : ''}.`;
+
+  // Amenity highlights (show top 2)
+  const topAmenities = (brewery.amenities || []).slice(0, 2);
 
   return `
   <div class="col-md-6 col-lg-4">
@@ -223,9 +234,20 @@ function breweryCard(brewery: Brewery): string {
       </div>
       <div class="brewery-card-body">
         <h2>${brewery.name}</h2>
-        <p class="meta">${brewery.brewery_type || 'Brewery'} • ${cityFallback}</p>
+        <p class="meta">
+          <span class="brewery-type-pill">${brewery.brewery_type || 'Brewery'}</span>
+          <span class="brewery-location"><i class="bi bi-geo-alt"></i> ${cityFallback}</span>
+        </p>
         <p class="description">${desc}</p>
-        <a href="/brewery/${brewery.id}" class="view-btn">View Details</a>
+        ${topAmenities.length > 0 ? `
+          <div class="card-amenities">
+            ${topAmenities.map(a => `<span class="card-amenity-tag">${a}</span>`).join('')}
+          </div>
+        ` : ''}
+        <div class="card-footer-row">
+          <a href="/brewery/${brewery.id}" class="view-btn">View Details</a>
+          ${brewery.website_url ? '<span class="has-website" title="Has website"><i class="bi bi-globe2"></i></span>' : ''}
+        </div>
       </div>
     </div>
   </div>`;

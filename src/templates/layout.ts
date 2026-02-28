@@ -328,8 +328,8 @@ function footer(branding: Branding): string {
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6 text-center">
-          <h4 class="text-white mb-3"><i class="bi bi-envelope-heart"></i> Get ${branding.geoPlace} Beer News</h4>
-          <p class="text-white-50 mb-4">New breweries, events, and exclusive tour recommendations</p>
+          <h4 class="text-white mb-3"><i class="bi bi-envelope-heart"></i> Get the Weekly Brewery Pick</h4>
+          <p class="text-white-50 mb-4">One hand-picked brewery each week + new openings, events, and insider tips. Free forever.</p>
           <form id="email-signup-form" class="d-flex gap-2 justify-content-center">
             <input type="email" id="signup-email" class="form-control" placeholder="your@email.com" style="max-width: 300px;" required>
             <button type="submit" class="btn btn-warning">
@@ -360,10 +360,15 @@ function footer(branding: Branding): string {
         </div>
         <div class="col-md-4">
           <h5 class="footer-heading">Connect</h5>
-          <p class="footer-text">
-            Built with love on Cloudflare Workers<br>
-            Powered by D1, R2, KV, Workers AI
-          </p>
+          <p class="footer-text">Have a brewery to suggest or feedback to share? We'd love to hear from you.</p>
+          <div class="footer-social">
+            <a href="mailto:hello@brewerytrip.com" class="footer-social-link" aria-label="Email us">
+              <i class="bi bi-envelope-fill"></i>
+            </a>
+            <a href="/blog" class="footer-social-link" aria-label="Read our blog">
+              <i class="bi bi-newspaper"></i>
+            </a>
+          </div>
         </div>
       </div>
       <div class="footer-bottom">
