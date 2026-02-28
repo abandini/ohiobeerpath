@@ -233,16 +233,18 @@ pages.get('/itinerary', (c) => {
 
 // Trails list page
 pages.get('/trails', async (c) => {
+  const subdomain = c.get('subdomain');
   const { results: trails } = await c.env.DB.prepare(
     'SELECT * FROM trails ORDER BY featured DESC, name ASC'
   ).all<Trail>();
 
-  const html = trailsPage(trails || []);
+  const html = trailsPage(trails || [], subdomain);
   return c.html(html);
 });
 
 // Single trail page
 pages.get('/trails/:slug', async (c) => {
+  const subdomain = c.get('subdomain');
   const slug = c.req.param('slug');
 
   const trail = await c.env.DB.prepare(
@@ -264,7 +266,7 @@ pages.get('/trails/:slug', async (c) => {
     }
   }
 
-  const html = trailDetailPage(trail, breweries);
+  const html = trailDetailPage(trail, breweries, subdomain);
   return c.html(html);
 });
 

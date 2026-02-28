@@ -1,5 +1,5 @@
 import { layout } from './layout';
-import type { Brewery } from '../types';
+import type { Brewery, SubdomainContext } from '../types';
 
 export interface Trail {
   id: number;
@@ -14,7 +14,7 @@ export interface Trail {
   featured?: number;
 }
 
-export function trailsPage(trails: Trail[]): string {
+export function trailsPage(trails: Trail[], subdomain?: SubdomainContext): string {
   const featuredTrails = trails.filter(t => t.featured);
   const otherTrails = trails.filter(t => !t.featured);
 
@@ -51,8 +51,11 @@ export function trailsPage(trails: Trail[]): string {
     </div>
   </div>`;
 
+  const baseUrl = subdomain?.baseUrl || 'https://brewerytrip.com';
   return layout('Brewery Trails & Bar Crawls', content, {
     description: 'Discover curated brewery trails and bar crawls. Follow themed routes through craft beer hotspots or build your own custom brewery tour.',
+    url: `${baseUrl}/trails`,
+    subdomain,
   });
 }
 
@@ -101,7 +104,7 @@ function getTrailEmoji(difficulty?: string): string {
   }
 }
 
-export function trailDetailPage(trail: Trail, breweries: Brewery[]): string {
+export function trailDetailPage(trail: Trail, breweries: Brewery[], subdomain?: SubdomainContext): string {
   const content = `
 
   <div class="trail-hero">
@@ -218,7 +221,11 @@ export function trailDetailPage(trail: Trail, breweries: Brewery[]): string {
     }
   </script>`;
 
-  return layout(trail.name, content);
+  const baseUrl = subdomain?.baseUrl || 'https://brewerytrip.com';
+  return layout(trail.name, content, {
+    url: `${baseUrl}/trails/${trail.slug}`,
+    subdomain,
+  });
 }
 
 function getDifficultyIcon(difficulty?: string): string {
