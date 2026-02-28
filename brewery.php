@@ -12,9 +12,12 @@ $brewery = null;
 $related_breweries = [];
 $brewery_beers = [];
 
+// Get database connection
+$pdo = db_connect();
+
 // Fetch brewery data from database
 try {
-    if ($brewery_id > 0) {
+    if ($brewery_id > 0 && $pdo) {
         $stmt = $pdo->prepare("SELECT * FROM breweries WHERE id = :id");
         $stmt->bindParam(':id', $brewery_id, PDO::PARAM_INT);
         $stmt->execute();

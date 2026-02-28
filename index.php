@@ -64,10 +64,10 @@ require_once 'includes/seo-utils.php';
     <meta name="theme-color" content="#007bff">
     
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
     
     <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -388,7 +388,7 @@ require_once 'includes/seo-utils.php';
                 <div class="col-md-4">
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="index.html" class="text-white">Home</a></li>
+                        <li><a href="index.php" class="text-white">Home</a></li>
                         <li><a href="nearby.php" class="text-white">Find Breweries</a></li>
                         <li><a href="breweries.php" class="text-white">All Breweries</a></li>
                         <li><a href="regions.php" class="text-white">Regions</a></li>
@@ -527,28 +527,5 @@ require_once 'includes/seo-utils.php';
     });
     </script>
     
-    <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-bottom-nav">
-        <a href="index.php" class="active">
-            <i class="bi bi-house-fill"></i>
-            <span>Home</span>
-        </a>
-        <a href="nearby.php">
-            <i class="bi bi-geo-alt"></i>
-            <span>Nearby</span>
-        </a>
-        <a href="breweries.php">
-            <i class="bi bi-cup-straw"></i>
-            <span>Breweries</span>
-        </a>
-        <a href="itinerary.php">
-            <i class="bi bi-map"></i>
-            <span>Tour</span>
-        </a>
-        <a href="#" id="mobileSearchBtn">
-            <i class="bi bi-search"></i>
-            <span>Search</span>
-        </a>
-    </nav>
 </body>
 </html>
