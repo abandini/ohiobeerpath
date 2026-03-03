@@ -52,19 +52,11 @@ zone_name = "brewerytrip.com"
 # Environment variables
 [vars]
 ENVIRONMENT = "production"
-ADMIN_USER = "admin"
-ADMIN_PASS = "ohiobeer2024"
 
-# Secrets (set via wrangler secret put)
-# GOOGLE_MAPS_API_KEY
-# UNTAPPD_CLIENT_ID - Get from https://untappd.com/api/dashboard
-# UNTAPPD_CLIENT_SECRET - Get from https://untappd.com/api/dashboard
-# UNTAPPD_REDIRECT_URI - Set to https://brewerytrip.com/api/auth/untappd/callback
-#
-# To set Untappd secrets:
+# Secrets (set via wrangler secret put — NEVER commit credentials)
+# wrangler secret put ADMIN_USER
+# wrangler secret put ADMIN_PASS
+# wrangler secret put GOOGLE_MAPS_API_KEY
 # wrangler secret put UNTAPPD_CLIENT_ID
 # wrangler secret put UNTAPPD_CLIENT_SECRET
 # wrangler secret put UNTAPPD_REDIRECT_URI
-#
-# Note: ADMIN_PASS should be moved to secrets for production:
-# wrangler secret put ADMIN_PASS

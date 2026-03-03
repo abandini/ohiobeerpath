@@ -29,7 +29,8 @@ Discover Ohio's craft breweries and plan your perfect brewery tour.
 - **Storage:** R2 (Object storage)
 - **Caching:** KV (Key-value store)
 - **Frontend:** HTML5, CSS3, Bootstrap 5
-- **APIs:** Google Maps API, Workers AI (future)
+- **APIs:** Google Maps API, Workers AI (embeddings + text generation)
+- **AI Search:** Vectorize (semantic search via embeddings)
 - **PWA:** Service Worker, Web App Manifest
 - **CI/CD:** GitHub Actions
 
@@ -38,10 +39,11 @@ Discover Ohio's craft breweries and plan your perfect brewery tour.
 Ohio Beer Path runs entirely on Cloudflare's edge network:
 
 - **Workers:** Serverless functions for all logic
-- **D1:** SQLite database with 351 Ohio breweries
+- **D1:** SQLite database with 351 Ohio breweries (+ neighboring states)
 - **R2:** Static asset hosting (CSS, JS, images)
 - **KV:** API response caching (1-hour TTL)
-- **Workers AI:** Future: Brewery recommendations
+- **Workers AI:** Brewery recommendations, vibe analysis, description generation
+- **Vectorize:** Semantic search via `@cf/baai/bge-base-en-v1.5` embeddings
 
 **Performance:**
 - Global latency: ~15ms (300+ edge locations)
@@ -64,7 +66,7 @@ See [CLOUDFLARE_MIGRATION.md](docs/CLOUDFLARE_MIGRATION.md) for migration detail
 - Node.js 18+
 - Cloudflare account (free tier)
 - Wrangler CLI (`npm install -g wrangler`)
-- Google Maps API key (optional, for future features)
+- Google Maps API key (for map features)
 
 ### Installation
 
@@ -132,15 +134,45 @@ See [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) for complete design documenta
 
 ```
 ohiobeerpath/
-├── index.php                # Homepage
-├── breweries.php            # All breweries listing
-├── regions.php              # Regional brewery view
-├── nearby.php               # Find nearby breweries
-├── itinerary.php            # Brewery tour builder
-├── api/                     # REST API endpoints
-├── includes/                # Reusable PHP components
-├── assets/                  # Static files (CSS, JS, images)
-├── breweries.json           # Brewery database (351 breweries)
+├── src/
+│   ├── index.ts             # Hono app entry point, middleware + route mounting
+│   ├── types.ts             # TypeScript types (Env, Brewery, etc.)
+│   ├── db/                  # Database layer (D1 queries)
+│   │   ├── breweries.ts     # Brewery CRUD + search + nearby
+│   │   ├── ratings.ts       # Beer rating queries
+│   │   ├── users.ts         # User management
+│   │   └── visits.ts        # Check-in tracking
+│   ├── middleware/           # Hono middleware
+│   │   ├── assets.ts        # Serve static files from R2
+│   │   ├── cache.ts         # KV cache for API responses
+│   │   ├── cors.ts          # CORS headers
+│   │   ├── auth.ts          # Authentication
+│   │   └── subdomain.ts     # Subdomain routing
+│   ├── routes/              # Route handlers
+│   │   ├── api.ts           # JSON API endpoints (/api/*)
+│   │   ├── pages.ts         # HTML page routes (/)
+│   │   ├── admin.ts         # Admin dashboard (/admin/*)
+│   │   ├── ratings.ts       # Rating endpoints
+│   │   └── ...
+│   ├── templates/           # Server-side HTML templates (TypeScript)
+│   │   ├── layout.ts        # Base layout wrapper
+│   │   ├── home.ts          # Homepage
+│   │   ├── breweries.ts     # Brewery listing
+│   │   ├── brewery.ts       # Brewery detail
+│   │   ├── trails.ts        # Curated brewery trails
+│   │   └── ...
+│   └── services/            # Business logic
+│       ├── session.ts       # Session management
+│       ├── untappd.ts       # Untappd API integration
+│       └── ...
+├── assets/                  # Static files (uploaded to R2)
+│   ├── css/                 # Stylesheets
+│   └── js/                  # Client-side JavaScript
+├── data/                    # Brewery data files (JSON)
+├── migrations/              # D1 database migrations
+├── scripts/                 # Build/deploy utilities
+├── tests/                   # Vitest test suite
+├── wrangler.toml            # Cloudflare Workers config
 └── docs/                    # Documentation
 ```
 
@@ -185,11 +217,12 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for deta
 
 ## Roadmap
 
-- [ ] User accounts and saved itineraries
-- [ ] Brewery reviews and ratings
-- [ ] Events calendar
+- [x] User accounts and saved itineraries
+- [x] Brewery reviews and ratings
+- [x] Events calendar
+- [x] AI-powered semantic search and recommendations
+- [x] Multi-state expansion (OH, IN, KY, MI, PA, WV)
 - [ ] Beer style filtering
-- [ ] Brewery check-ins
 - [ ] Social sharing features
 - [ ] Mobile app (iOS/Android)
 
