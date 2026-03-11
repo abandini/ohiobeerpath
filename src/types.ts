@@ -4,10 +4,13 @@ export interface Env {
   DB: D1Database;
   IMAGES: R2Bucket;
   CACHE: KVNamespace;
+  BEAST_SEO?: KVNamespace;
   SESSIONS: KVNamespace;
   AI: Ai;
   VECTORIZE: VectorizeIndex;
   GOOGLE_MAPS_API_KEY: string;
+  AI_GATEWAY_ENDPOINT?: string;
+  ANTHROPIC_API_KEY?: string;
   ENVIRONMENT: string;
   ADMIN_USER?: string;
   ADMIN_PASS?: string;
@@ -92,6 +95,7 @@ export interface SubdomainContext {
   stateAbbreviation: string | null; // e.g., "OH" or null for multi-state
   isMultiState: boolean;          // true if on main brewerytrip.com
   baseUrl: string;                // The full base URL for links
+  brandDomain: 'brewerytrip' | 'ohiobrewpath';  // Which brand to display
 }
 
 // Extended Hono context variables
@@ -201,3 +205,80 @@ export const BEER_STYLES_SIMPLE: BeerStyleSimple[] = [
   'Barleywine', 'Bock', 'Dunkel', 'Marzen', 'Schwarzbier',
   'Gose', 'Berliner Weisse', 'Fruit Beer', 'Cider', 'Mead', 'Other'
 ];
+
+// Trip Planner Types
+
+export interface TripPlan {
+  id: number;
+  slug: string;
+  title: string;
+  starting_city: string;
+  starting_lat: number | null;
+  starting_lng: number | null;
+  time_budget_minutes: number;
+  preferences: string[];
+  route_json: TripRoute;
+  created_at: string;
+  views: number;
+  shares: number;
+}
+
+export interface TripRoute {
+  stops: TripRouteStop[];
+  total_drive_minutes: number;
+  total_drive_miles: number;
+  total_brewery_time_minutes: number;
+}
+
+export interface TripRouteStop {
+  brewery_id: number;
+  name: string;
+  city: string;
+  state: string;
+  latitude: number;
+  longitude: number;
+  amenities: string[];
+  description?: string;
+  drive_minutes_from_prev: number;
+  drive_miles_from_prev: number;
+  stop_duration_minutes: number;
+}
+
+export interface TripStop {
+  id: number;
+  trip_id: number;
+  stop_order: number;
+  brewery_id: number;
+  drive_minutes: number;
+  drive_miles: number;
+}
+
+export interface PlanRequest {
+  starting_city: string;
+  starting_lat?: number;
+  starting_lng?: number;
+  time_budget_minutes: number;
+  preferences: string[];
+}
+
+export interface RefineRequest {
+  trip_slug: string;
+  message: string;
+}
+
+export interface PlanResponse {
+  success: boolean;
+  trip?: TripPlan;
+  error?: string;
+  note?: string;
+}
+
+export interface StreamEvent {
+  type: 'stop' | 'route_complete' | 'error';
+  index?: number;
+  stop?: TripRouteStop;
+  title?: string;
+  slug?: string;
+  route?: TripRoute;
+  message?: string;
+}

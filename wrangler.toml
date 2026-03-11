@@ -22,6 +22,10 @@ bucket_name = "ohio-beer-path-images"
 binding = "CACHE"
 id = "276245328e284f3e8dbc4aba8355d12a"
 
+[[kv_namespaces]]
+binding = "BEAST_SEO"
+id = "36c1eaef07ad4d049b0001a6a353fabc"
+
 # KV namespace for sessions
 [[kv_namespaces]]
 binding = "SESSIONS"
@@ -49,9 +53,15 @@ zone_name = "brewerytrip.com"
 pattern = "*.brewerytrip.com/*"
 zone_name = "brewerytrip.com"
 
+# Ohio Brew Path - "little brother" Ohio-focused brand
+[[routes]]
+pattern = "ohiobrewpath.com/*"
+zone_name = "ohiobrewpath.com"
+
 # Environment variables
 [vars]
 ENVIRONMENT = "production"
+AI_GATEWAY_ENDPOINT = "https://gateway.ai.cloudflare.com/v1"
 
 # Secrets (set via wrangler secret put — NEVER commit credentials)
 # wrangler secret put ADMIN_USER

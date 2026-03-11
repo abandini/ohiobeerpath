@@ -8,9 +8,10 @@ interface LayoutOptions {
   url?: string;
   subdomain?: SubdomainContext;
   extraCss?: string[];
+  extraJs?: string[];
 }
 
-// Site branding based on subdomain - exported for use by other templates
+// Site branding based on subdomain and brand domain - exported for use by other templates
 export function getSiteBranding(subdomain?: SubdomainContext) {
   if (!subdomain || subdomain.isMultiState) {
     return {
@@ -19,7 +20,24 @@ export function getSiteBranding(subdomain?: SubdomainContext) {
       heroTitle: "Discover America's Craft Beer Scene",
       stateBadge: null,
       geoRegion: 'US',
-      geoPlace: 'United States'
+      geoPlace: 'United States',
+      crossPromo: null as { text: string; url: string; cta: string } | null
+    };
+  }
+  // Ohio Brew Path — dedicated Ohio brand
+  if (subdomain.brandDomain === 'ohiobrewpath') {
+    return {
+      siteName: 'Ohio Brew Path',
+      tagline: "Your Guide to Ohio's Craft Breweries",
+      heroTitle: "Explore Ohio's Craft Beer Scene",
+      stateBadge: 'OHIO',
+      geoRegion: 'US-OH',
+      geoPlace: 'Ohio',
+      crossPromo: {
+        text: 'Planning a multi-state brewery trip?',
+        url: 'https://brewerytrip.com',
+        cta: 'Explore BreweryTrip.com'
+      }
     };
   }
   return {
@@ -28,7 +46,8 @@ export function getSiteBranding(subdomain?: SubdomainContext) {
     heroTitle: `Discover ${subdomain.stateName}'s Craft Beer Scene`,
     stateBadge: subdomain.stateName?.toUpperCase() || null,
     geoRegion: `US-${getStateAbbr(subdomain.stateName || '')}`,
-    geoPlace: subdomain.stateName || ''
+    geoPlace: subdomain.stateName || '',
+    crossPromo: null as { text: string; url: string; cta: string } | null
   };
 }
 
@@ -164,6 +183,10 @@ export function layout(title: string, content: string, options: LayoutOptions = 
       <i class="bi bi-signpost-2"></i>
       <span>Trails</span>
     </a>
+    <a href="/plan" class="bottom-nav-item">
+      <i class="bi bi-signpost-split"></i>
+      <span>Plan</span>
+    </a>
     <a href="/itinerary" class="bottom-nav-item">
       <i class="bi bi-map"></i>
       <span>My Tour</span>
@@ -224,6 +247,7 @@ export function layout(title: string, content: string, options: LayoutOptions = 
     // Animation utilities
     ${animationScripts}
   </script>
+  ${(options.extraJs || []).map(src => `<script src="${src}"></script>`).join('\n  ')}
 </body>
 </html>`;
 }
@@ -235,6 +259,7 @@ interface Branding {
   stateBadge: string | null;
   geoRegion: string;
   geoPlace: string;
+  crossPromo: { text: string; url: string; cta: string } | null;
 }
 
 // Custom pint glass SVG icon
@@ -293,6 +318,11 @@ function navigation(branding: Branding): string {
           <li class="nav-item">
             <a class="nav-link" href="/blog">
               <i class="bi bi-newspaper"></i> Blog
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/plan">
+              <i class="bi bi-signpost-split"></i> Plan Trip
             </a>
           </li>
           <li class="nav-item">
@@ -371,6 +401,12 @@ function footer(branding: Branding): string {
           </div>
         </div>
       </div>
+      ${branding.crossPromo ? `
+      <div class="cross-promo" style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.08)); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 0.75rem; text-align: center;">
+        <span style="color: #d4d4d8; font-size: 0.9rem;">${branding.crossPromo.text}</span>
+        <a href="${branding.crossPromo.url}" style="color: #fbbf24; font-weight: 600; margin-left: 0.5rem; text-decoration: none;" rel="noopener">${branding.crossPromo.cta} &rarr;</a>
+      </div>
+      ` : ''}
       <div class="footer-bottom">
         <small>&copy; ${new Date().getFullYear()} ${branding.siteName}. All rights reserved.</small>
       </div>

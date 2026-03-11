@@ -13,6 +13,7 @@ import ratingsRoutes from './routes/ratings';
 import usersRoutes from './routes/users';
 import shareRoutes from './routes/share';
 import imagesRoutes from './routes/images';
+import planRoutes from './routes/plan';
 
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -33,6 +34,28 @@ app.use('*', async (c, next) => {
     }
   }
   await next();
+});
+
+// BEAST SEO middleware (rewrite meta tags from KV mutations)
+app.use('*', async (c, next) => {
+  await next();
+  if (!c.env.BEAST_SEO) return;
+  const ct = c.res.headers.get('content-type') || '';
+  if (!ct.includes('text/html')) return;
+  const host = c.req.header('host') || '';
+  const path = new URL(c.req.url).pathname;
+  // Use domain-specific KV key prefix for SEO mutations
+  const seoPrefix = host.includes('ohiobrewpath.com') ? 'mutation:ohiobrewpath' : 'mutation:brewerytrip';
+  const raw = await c.env.BEAST_SEO.get(`${seoPrefix}:${path}`);
+  if (!raw) return;
+  const m = JSON.parse(raw) as { title: string; description: string };
+  let replaced = false;
+  c.res = new HTMLRewriter()
+    .on('title', { text(t) { if (!replaced) { t.replace(m.title); replaced = true; } else { t.remove(); } } })
+    .on('meta[name="description"]', { element(e) { e.setAttribute('content', m.description); } })
+    .on('meta[property="og:title"]', { element(e) { e.setAttribute('content', m.title); } })
+    .on('meta[property="og:description"]', { element(e) { e.setAttribute('content', m.description); } })
+    .transform(c.res);
 });
 
 // Apply CORS middleware
@@ -64,7 +87,7 @@ app.get('/health', (c) => {
 // SEO: robots.txt
 app.get('/robots.txt', (c) => {
   const subdomain = c.get('subdomain');
-  const siteName = subdomain.stateName ? `${subdomain.stateName} Brewery Trip` : 'Brewery Trip';
+  const siteName = subdomain.brandDomain === 'ohiobrewpath' ? 'Ohio Brew Path' : subdomain.stateName ? `${subdomain.stateName} Brewery Trip` : 'Brewery Trip';
 
   const robotsTxt = `# ${siteName} - Robots.txt
 User-agent: *
@@ -136,6 +159,7 @@ app.get('/sitemap.xml', async (c) => {
   const staticPages = [
     { url: '/', priority: '1.0', changefreq: 'daily' },
     { url: '/breweries', priority: '0.9', changefreq: 'daily' },
+    { url: '/plan', priority: '0.9', changefreq: 'daily' },
     { url: '/regions', priority: '0.8', changefreq: 'weekly' },
     { url: '/events', priority: '0.8', changefreq: 'daily' },
     { url: '/trails', priority: '0.7', changefreq: 'weekly' },
@@ -220,6 +244,9 @@ app.route('/api/users', usersRoutes);
 
 // Mount share routes (public rating pages)
 app.route('/', shareRoutes);
+
+// Mount trip planner routes
+app.route('/', planRoutes);
 
 // Mount images routes (R2 proxy)
 app.route('/images', imagesRoutes);

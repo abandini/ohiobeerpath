@@ -41,6 +41,7 @@ export interface SubdomainContext {
   stateAbbreviation: string | null; // e.g., "OH" or null for multi-state
   isMultiState: boolean;          // true if on main brewerytrip.com
   baseUrl: string;                // The full base URL for links
+  brandDomain: 'brewerytrip' | 'ohiobrewpath';  // Which brand to display
 }
 
 export const subdomainMiddleware = (): MiddlewareHandler<{ Bindings: Env; Variables: { subdomain: SubdomainContext } }> => {
@@ -57,19 +58,31 @@ export const subdomainMiddleware = (): MiddlewareHandler<{ Bindings: Env; Variab
     let stateAbbreviation: string | null = null;
     let isMultiState = true;
     let baseUrl = `https://${host}`;
+    let brandDomain: 'brewerytrip' | 'ohiobrewpath' = 'brewerytrip';
 
-    // Check if we're on a subdomain
-    const parts = host.split('.');
+    // Check if we're on ohiobrewpath.com — Ohio-focused "little brother" brand
+    if (host.includes('ohiobrewpath.com')) {
+      stateSubdomain = 'ohio';
+      stateName = 'Ohio';
+      stateAbbreviation = 'OH';
+      isMultiState = false;
+      brandDomain = 'ohiobrewpath';
+      baseUrl = `https://ohiobrewpath.com`;
+    }
+    // Check if we're on a brewerytrip.com subdomain
+    else {
+      const parts = host.split('.');
 
-    if (parts.length >= 3 && host.includes('brewerytrip.com')) {
-      // We have a subdomain like ohio.brewerytrip.com
-      const subdomain = parts[0].toLowerCase();
+      if (parts.length >= 3 && host.includes('brewerytrip.com')) {
+        // We have a subdomain like ohio.brewerytrip.com
+        const subdomain = parts[0].toLowerCase();
 
-      if (VALID_STATES[subdomain]) {
-        stateSubdomain = subdomain;
-        stateName = VALID_STATES[subdomain].name;
-        stateAbbreviation = VALID_STATES[subdomain].abbreviation;
-        isMultiState = false;
+        if (VALID_STATES[subdomain]) {
+          stateSubdomain = subdomain;
+          stateName = VALID_STATES[subdomain].name;
+          stateAbbreviation = VALID_STATES[subdomain].abbreviation;
+          isMultiState = false;
+        }
       }
     }
 
@@ -82,6 +95,14 @@ export const subdomainMiddleware = (): MiddlewareHandler<{ Bindings: Env; Variab
         stateAbbreviation = VALID_STATES[testState.toLowerCase()].abbreviation;
         isMultiState = false;
       }
+      // Allow testing ohiobrewpath brand locally via ?brand=ohiobrewpath
+      if (c.req.query('brand') === 'ohiobrewpath') {
+        brandDomain = 'ohiobrewpath';
+        stateSubdomain = 'ohio';
+        stateName = 'Ohio';
+        stateAbbreviation = 'OH';
+        isMultiState = false;
+      }
       baseUrl = `http://${host}`;
     }
 
@@ -91,7 +112,8 @@ export const subdomainMiddleware = (): MiddlewareHandler<{ Bindings: Env; Variab
       stateName,
       stateAbbreviation,
       isMultiState,
-      baseUrl
+      baseUrl,
+      brandDomain
     });
 
     await next();
