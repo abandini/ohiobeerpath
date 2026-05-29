@@ -36,6 +36,10 @@ app.use('*', async (c, next) => {
   await next();
 });
 
+// Redirect legacy /index.html to the canonical root (fixes GSC "Not found (404)"
+// on http://ohiobrewpath.com/index.html, an old indexed URL).
+app.get('/index.html', (c) => c.redirect('/', 301));
+
 // BEAST SEO middleware (rewrite meta tags from KV mutations)
 app.use('*', async (c, next) => {
   await next();
@@ -230,6 +234,27 @@ app.post('/api/admin/enrich-descriptions', async (c) => {
   return c.json(result);
 });
 
+// Admin endpoint to batch process vibe tags (larger batches than cron)
+app.post('/api/admin/tag-vibes', async (c) => {
+  const batchSize = parseInt(c.req.query('batch') || '25');
+  const result = await processVibeInference(c.env, batchSize);
+  return c.json(result);
+});
+
+// Admin endpoint to check vibe tagging progress
+app.get('/api/admin/vibe-status', async (c) => {
+  const [tagged, untagged, distribution] = await Promise.all([
+    c.env.DB.prepare('SELECT COUNT(DISTINCT brewery_id) as count FROM brewery_vibes').first<{ count: number }>(),
+    c.env.DB.prepare('SELECT COUNT(*) as count FROM breweries WHERE id NOT IN (SELECT DISTINCT brewery_id FROM brewery_vibes)').first<{ count: number }>(),
+    c.env.DB.prepare('SELECT crowd_type, COUNT(*) as count FROM brewery_vibes GROUP BY crowd_type ORDER BY count DESC').all<{ crowd_type: string; count: number }>(),
+  ]);
+  return c.json({
+    tagged: tagged?.count ?? 0,
+    untagged: untagged?.count ?? 0,
+    distribution: distribution.results,
+  });
+});
+
 // Mount API routes
 app.route('/api', apiRoutes);
 
@@ -339,21 +364,21 @@ async function seedEmbeddings(env: Env): Promise<{ success: boolean; processed: 
   }
 }
 
-// Batch vibe inference for cron
-async function processVibeInference(env: Env): Promise<{ processed: number; errors: string[] }> {
+// Batch vibe inference for cron or admin trigger
+async function processVibeInference(env: Env, batchSize: number = 10): Promise<{ processed: number; errors: string[] }> {
   const errors: string[] = [];
   let processed = 0;
 
   try {
     // Get breweries that haven't been processed recently (older than 7 days or never)
     const { results: breweries } = await env.DB.prepare(`
-      SELECT b.id, b.name, b.description, b.brewery_type, b.city
+      SELECT b.id, b.name, b.description, b.brewery_type, b.city, b.state
       FROM breweries b
       LEFT JOIN brewery_vibes v ON b.id = v.brewery_id
       WHERE v.brewery_id IS NULL
          OR v.last_updated < datetime('now', '-7 days')
-      LIMIT 10
-    `).all<Brewery>();
+      LIMIT ?
+    `).bind(batchSize).all<Brewery>();
 
     if (!breweries || breweries.length === 0) {
       return { processed: 0, errors: [] };
@@ -361,7 +386,8 @@ async function processVibeInference(env: Env): Promise<{ processed: number; erro
 
     for (const brewery of breweries) {
       try {
-        const prompt = `Analyze this Ohio brewery and return a JSON object with inferred attributes:
+        const stateName = (brewery as any).state || 'unknown state';
+        const prompt = `Analyze this ${stateName} brewery and return a JSON object with inferred attributes:
 
 Brewery: ${brewery.name}
 Type: ${brewery.brewery_type || 'unknown'}
