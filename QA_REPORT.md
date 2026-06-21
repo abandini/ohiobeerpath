@@ -49,6 +49,14 @@ Deployed versions: `fb584344` → `94d9f596` → `5a29eeab`. Worker: `ohio-beer-
 
 Round-2 deploy: `632b7308`. Data change: 336 `breweries.state_province` backfilled to "Ohio".
 
+### ✅ Round 3 — AI trip planner now fully AI-powered (authorized: Anthropic key provided)
+
+| Finding (introspection) | Fix | Proof |
+|---|---|---|
+| Even with `ANTHROPIC_API_KEY` set, the planner kept falling back to distance-sorting ("AI route optimization temporarily unavailable", 0 miles). Two root causes: (1) `claude.ts` used `claude-sonnet-4-20250514`, which **retired 2026-06-15** (would 404); (2) `AI_GATEWAY_ENDPOINT` was the incomplete `…/v1` (missing `/<account>/<gateway>`), so the gateway URL 404'd. | (1) Model → `claude-sonnet-4-6` (documented drop-in; opus-4-8 one-liner away); (2) `anthropicMessagesUrl()` helper calls Anthropic directly when the gateway base is incomplete. Key stored in vault (`ohiobrewpath` project) + Worker secret. | `POST /api/plan` → real route "Columbus Craft Crawl: Downtown & Beyond", 6 stops, optimized drive times, **no fallback note**. In-browser: "5 stops \| 3 miles \| 3h 57m", 0 console errors. |
+
+Round-3 deploy: `181d1e43`. Secret set: `ANTHROPIC_API_KEY` (vault + Worker). Still owner-gated: `UNTAPPD_*` for real login.
+
 ---
 
 ## Test Results

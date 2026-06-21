@@ -95,6 +95,23 @@ ${candidateList}
 Return the same JSON structure as before with the modified route. Keep stops the user didn't mention. Return ONLY the JSON object.`;
 }
 
+// Claude Sonnet 4.6 — balanced speed/intelligence for this per-request,
+// user-facing route. (Replaces claude-sonnet-4-20250514, which retired
+// 2026-06-15. For max quality switch to "claude-opus-4-8".)
+const CLAUDE_MODEL = 'claude-sonnet-4-6';
+
+/**
+ * Resolve the Anthropic Messages endpoint. A Cloudflare AI Gateway base must
+ * be complete (…/v1/<account>/<gateway>); the bare "…/v1" is incomplete and
+ * 404s, so we fall back to calling the Anthropic API directly.
+ */
+function anthropicMessagesUrl(gatewayEndpoint?: string): string {
+  if (gatewayEndpoint && /\/v1\/[^/]+\/[^/]+/.test(gatewayEndpoint)) {
+    return `${gatewayEndpoint.replace(/\/$/, '')}/anthropic/v1/messages`;
+  }
+  return 'https://api.anthropic.com/v1/messages';
+}
+
 /**
  * Call Claude API (non-streaming) to generate a trip route.
  */
@@ -103,7 +120,7 @@ export async function generateTripRoute(
   gatewayEndpoint: string,
   prompt: string
 ): Promise<{ title: string; route: TripRoute }> {
-  const response = await fetch(`${gatewayEndpoint}/anthropic/v1/messages`, {
+  const response = await fetch(anthropicMessagesUrl(gatewayEndpoint), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -111,7 +128,7 @@ export async function generateTripRoute(
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 2048,
       messages: [{ role: 'user', content: prompt }],
     }),
@@ -154,7 +171,7 @@ export function generateTripRouteStream(
   return new ReadableStream({
     async start(controller) {
       try {
-        const response = await fetch(`${gatewayEndpoint}/anthropic/v1/messages`, {
+        const response = await fetch(anthropicMessagesUrl(gatewayEndpoint), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -162,7 +179,7 @@ export function generateTripRouteStream(
             'anthropic-version': '2023-06-01',
           },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
+            model: CLAUDE_MODEL,
             max_tokens: 2048,
             stream: true,
             messages: [{ role: 'user', content: prompt }],
