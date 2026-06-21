@@ -20,7 +20,6 @@ const ASSETS: Record<string, string> = {
   '/assets/js/itinerary.js': 'application/javascript',
   '/assets/js/search.js': 'application/javascript',
   '/assets/js/pwa.js': 'application/javascript',
-  '/assets/js/analytics.js': 'application/javascript',
   '/assets/js/map-loader.js': 'application/javascript',
   '/assets/js/map-direct-fix.js': 'application/javascript',
   '/service-worker.js': 'application/javascript',

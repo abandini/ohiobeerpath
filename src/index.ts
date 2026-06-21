@@ -147,13 +147,17 @@ app.get('/sitemap.xml', async (c) => {
   const baseUrl = subdomain.baseUrl;
   const today = new Date().toISOString().split('T')[0];
 
-  // Get breweries - filter by state if on subdomain
-  let query = 'SELECT id, region, state FROM breweries';
-  if (subdomain.stateName) {
-    query += ` WHERE state = '${subdomain.stateName}' OR state_province = '${subdomain.stateName}'`;
-  }
+  // Get breweries - filter by state if on subdomain. Compare the abbreviation
+  // against the `state` column (which holds e.g. "OH") and the full name against
+  // `state_province`; the previous code compared the full name against BOTH,
+  // so `state = 'Ohio'` never matched and the Ohio sitemap dropped 336 of 486
+  // breweries. Parameterized to avoid interpolating values into SQL.
+  const stmt = subdomain.stateName
+    ? c.env.DB.prepare('SELECT id, region, state FROM breweries WHERE state = ? OR state_province = ?')
+        .bind(subdomain.stateAbbreviation, subdomain.stateName)
+    : c.env.DB.prepare('SELECT id, region, state FROM breweries');
 
-  const { results: allBreweries } = await c.env.DB.prepare(query)
+  const { results: allBreweries } = await stmt
     .all<{ id: number; region: string; state: string }>();
 
   // Get all regions

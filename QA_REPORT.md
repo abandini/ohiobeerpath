@@ -37,7 +37,17 @@ Deployed versions: `fb584344` → `94d9f596` → `5a29eeab`. Worker: `ohio-beer-
 - **`UNTAPPD_CLIENT_ID` / `UNTAPPD_CLIENT_SECRET`** → enables real login (else it stays graceful-redirect). `wrangler secret put ...`
 - Then re-verify: planner shows real miles; `/api/auth/untappd` → 302 to Untappd.
 
-> ⚠️ **Git now further ahead of production-as-source.** This session edited `src/index.ts`, `src/routes/api.ts`, `src/routes/auth.ts` (all deployed) plus the pre-existing uncommitted trip-planner feature. **Recommend committing** — say the word and I'll stage just these.
+### ✅ Round 2 — P1/P2/P3 (authorized "tackle the p1/p2 issues")
+
+| ID | Introspection finding | Fix | Proof |
+|----|----------------------|-----|-------|
+| P1-4 | **Diagnosis corrected.** App filtering uses the `state` col (`'OH'`), which the 336 rows *had* — so filtering was never broken. The real bug was the **`/sitemap.xml`** query (`index.ts:153`) comparing the full name `'Ohio'` against the `state` col → the Ohio sitemap dropped 336/486 breweries (69%). (Also: `stateName` is whitelisted, so the interpolation was not an exploitable injection — but it's now parameterized anyway.) | (a) Query parameterized + compares `stateAbbreviation` vs `state`, full name vs `state_province`; (b) backfilled `state_province='Ohio'` for the 336 (all proven inside OH bbox, 0 outside) | Ohio `sitemap.xml`: **150 → 486** brewery URLs; 0 NULL `state_province` remain |
+| P2-3 | `/api/plan` returned 404 for a city without coords (no server-side geocoding; only the browser geocoded) | Added geocoding fallback that derives a city centroid from our **own breweries table** (no external API); unknown cities still return empty | `POST /api/plan {"starting_city":"Cleveland"}` (no coords) → **200** trip; `"Nowheresville"` → 404 (no fake data) |
+| P3-3 | Dead `analytics.js` (old PHP beacon) — already 404 live, not in R2, unreferenced | Removed local file + `assets.ts` map entry | `/assets/js/analytics.js` → 404; not in code |
+| P2-1 | `/events`: 29 events, 0 upcoming | **No code bug** — page already renders a graceful "No upcoming events" empty state. **Not fabricating events.** | Tracked as content/ingestion need |
+| P2-2 | Local `migrations/` diverges from prod (`d1_migrations` has `0006`/`0007_day_optimizer` not in repo; repo had unapplied `0007_trip_planner`) | Documented; trip-planner & category migrations now committed. Full back-sync of prod-only migrations left as a follow-up (their SQL isn't in the repo to import). | `d1_migrations` enumerated in report |
+
+Round-2 deploy: `632b7308`. Data change: 336 `breweries.state_province` backfilled to "Ohio".
 
 ---
 
@@ -61,9 +71,11 @@ Deployed versions: `fb584344` → `94d9f596` → `5a29eeab`. Worker: `ohio-beer-
 | AI search / recommend | ✅ | 200; now on a current model |
 | Visitor analytics | ❌ | P1 — no working beacon; needs CF Web Analytics/PostHog (owner) |
 | AI route optimization quality | ⚠️ | P1 — distance-fallback until `ANTHROPIC_API_KEY` set (owner) |
-| Events content | ⚠️ | P2 — 29 events, **0 upcoming** (all stale) |
-| Brewery state data | ⚠️ | P1 — 336 breweries have NULL `state_province` |
-| Git ↔ production parity | ❌ | P1 — deployed code uncommitted; recommend committing |
+| Events content | ⚠️ | P2 — 0 upcoming; page degrades gracefully; needs content/ingestion |
+| Brewery state data / Ohio sitemap | ✅ | FIXED — sitemap 150→486; `state_province` backfilled; query parameterized |
+| Trip planner without coords | ✅ | FIXED — server-side geocoding from own data; city-only `/api/plan` → 200 |
+| Git ↔ production parity | ✅ | FIXED — committed + pushed to origin/main |
+| Dead `analytics.js` asset | ✅ | FIXED — removed from code; 404 live |
 
 ---
 

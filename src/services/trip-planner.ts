@@ -33,7 +33,29 @@ export async function selectCandidates(
   env: Env,
   request: PlanRequest
 ): Promise<BreweryCandidate[]> {
-  const { starting_lat, starting_lng, time_budget_minutes, preferences } = request;
+  let { starting_lat, starting_lng } = request;
+  const { time_budget_minutes, preferences } = request;
+
+  // Server-side geocoding fallback: if the caller didn't supply coordinates,
+  // derive a centroid from breweries in the named city using our own data
+  // (no external geocoder). Makes /api/plan robust for direct API callers,
+  // not just the browser (which geocodes client-side). Genuinely unknown
+  // cities still fall through to the empty result below.
+  if ((!starting_lat || !starting_lng) && request.starting_city) {
+    const cityOnly = request.starting_city.split(',')[0].trim();
+    const geo = await env.DB.prepare(
+      `SELECT AVG(latitude) AS lat, AVG(longitude) AS lng, COUNT(*) AS n
+       FROM breweries
+       WHERE latitude IS NOT NULL AND longitude IS NOT NULL AND LOWER(city) = LOWER(?)`
+    ).bind(cityOnly).first<{ lat: number; lng: number; n: number }>();
+    if (geo && geo.n > 0 && geo.lat && geo.lng) {
+      starting_lat = geo.lat;
+      starting_lng = geo.lng;
+      // Persist for downstream prompt/save consistency.
+      request.starting_lat = geo.lat;
+      request.starting_lng = geo.lng;
+    }
+  }
 
   if (!starting_lat || !starting_lng) return [];
 
