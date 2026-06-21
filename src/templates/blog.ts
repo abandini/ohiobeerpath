@@ -287,6 +287,78 @@ function formatBlogContent(content: string): string {
 // Sample blog posts for seeding
 export const sampleBlogPosts: Omit<BlogPost, 'id'>[] = [
   {
+    slug: 'buckeye-beer-engine-road-trip-ohio-passport-2026',
+    title: "Buckeye Beer Engine Launches 2026 Road Trip Around Ohio Passport",
+    excerpt: "Lakewood's Buckeye Beer Engine is pouring two beers from 20 Ohio breweries all summer long — a $20 passport celebrating the Buckeye State's independent brewing scene.",
+    content: `For years, Buckeye Beer Engine has been regarded as one of Ohio's premier destinations for craft beer lovers, earning a reputation for pouring some of the state's most sought-after beers and maintaining one of the deepest draft selections around.
+
+Now, the Lakewood institution is looking to reinforce that reputation while simultaneously shining a spotlight on Ohio's independent brewing scene and encouraging beer tourism across the Buckeye State.
+
+## A New Twist on an Old Idea
+
+Launching Monday, June 8, Buckeye Beer Engine's **2026 Road Trip Around Ohio Passport** will feature beers from 20 breweries representing every corner of the state. It's a new twist on an old idea, borrowing heavily from things like Winking Lizard Tavern's long-running World Tour of Beers, but giving it a distinctly local flavor.
+
+For **$20**, participants can sample two designated beers from each brewery throughout the summer, with a finisher T-shirt awaiting those who complete the passport and additional swag opportunities available for those who conquer all 40 featured beers.
+
+## Participating Breweries
+
+🍻 **Hoppin' Frog Brewery** (Akron)
+
+🍻 **Land-Grant Brewing Company** (Columbus)
+
+🍻 **Gemüt Biergarten** (Columbus)
+
+🍻 **Crooked Pecker Brewing Company** (Chagrin Falls)
+
+🍻 **Eleventhree Brewing** (Chardon)
+
+🍻 **The Phoenix Brewing Company** (Mansfield)
+
+🍻 **Sonder Brewing** (Mason)
+
+🍻 **Streetside Brewery** (Cincinnati)
+
+🍻 **Jackie O's Brewery** (Athens)
+
+🍻 **JAFB Wooster Brewery** (Wooster)
+
+🍻 **8th Day Brewing Co.** (Auburn Twp)
+
+🍻 **Darkroom Brewing Co.** (Geneva)
+
+🍻 **Branch & Bone Artisan Ales** (Dayton)
+
+🍻 **Three Tigers Brewing Company** (Granville)
+
+🍻 **Inside the Five Brewing Company** (Perrysburg/Sylvania)
+
+🍻 **Oncore Brewing** (Swanton)
+
+🍻 **HiHO Brewing Company** (Cuyahoga Falls)
+
+🍻 **Bell Tower Brewing Co.** (Kent)
+
+🍻 **Seventh Son Brewing** (Columbus)
+
+🍻 **Rockmill Brewery** (Lancaster)
+
+## First Five on Tap
+
+The first five breweries to hit the taps Monday will be **Hoppin' Frog, Streetside, HiHO, Three Tigers and Gemüt Biergarten**, with new beers rotating in as kegs are depleted throughout the summer.
+
+It's a unique opportunity to sample breweries from across Ohio in one location — and perhaps find inspiration for your next brewery road trip.
+
+> Which one of these breweries is new to you, and who are you trying first?
+
+Plan your own Road Trip Around Ohio with Ohio Beer Path — map out the participating breweries, build a route, and turn your passport stamps into a full-state adventure.`,
+    featured_image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=1200',
+    author: 'Ohio Beer Path',
+    category: 'Events',
+    tags: 'Events, Passport, Buckeye Beer Engine, Lakewood, Beer Tourism, 2026',
+    published: 1,
+    created_at: '2026-06-06T12:00:00.000Z'
+  },
+  {
     slug: 'best-ohio-ipa-breweries-2024',
     title: 'The 10 Best Ohio Breweries for IPA Lovers in 2024',
     excerpt: 'From hazy New England-style to crisp West Coast IPAs, these Ohio breweries are pushing the boundaries of hop-forward brewing.',
