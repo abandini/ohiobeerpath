@@ -403,7 +403,7 @@ Return ONLY a JSON object like:
 
 Base your analysis on the brewery name, type, and any available description. Return only valid JSON:`;
 
-        const aiResponse = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+        const aiResponse = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
           prompt,
           max_tokens: 150
         }) as any;
@@ -471,7 +471,7 @@ ${brewery.street ? `Location: ${brewery.street}` : ''}
 
 Write in third person, present tense. Be specific to Ohio and the local area. Do not include hours, prices, or contact info. Return ONLY the description text, no quotes or labels:`;
 
-        const aiResponse = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+        const aiResponse = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
           prompt,
           max_tokens: 150
         }) as any;

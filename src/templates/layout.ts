@@ -244,6 +244,17 @@ export function layout(title: string, content: string, options: LayoutOptions = 
       navigator.serviceWorker.register('/service-worker.js');
     }
 
+    // First-party human pageview beacon (real browsers only -> filters bots).
+    // sendBeacon is non-blocking and survives page unload; failures are ignored.
+    try {
+      var __pv = JSON.stringify({ path: location.pathname + location.search, ref: document.referrer || '' });
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/pageview', new Blob([__pv], { type: 'application/json' }));
+      } else {
+        fetch('/api/pageview', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: __pv, keepalive: true }).catch(function(){});
+      }
+    } catch (e) {}
+
     // Animation utilities
     ${animationScripts}
   </script>

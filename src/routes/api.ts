@@ -19,7 +19,7 @@ function getStateFilter(subdomain: SubdomainContext): StateFilter {
 api.get('/ai/test', async (c) => {
   try {
     // Test text generation with Llama 3
-    const textResponse = await c.env.AI.run('@cf/meta/llama-3-8b-instruct', {
+    const textResponse = await c.env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
       prompt: 'Say "Workers AI is working!" in exactly 5 words.',
       max_tokens: 20
     }) as any;
@@ -50,6 +50,34 @@ api.get('/ai/test', async (c) => {
       error: error.message
     }, 500);
   }
+});
+
+// POST /api/pageview - First-party human pageview beacon.
+// Fired client-side (real browsers only, so most scanners/bots are excluded),
+// written to the existing `analytics` table. Lets us answer "are we getting
+// visitors?" with a real human signal instead of bot-inflated edge totals.
+// Fire-and-forget: never blocks or errors the client.
+api.post('/pageview', async (c) => {
+  try {
+    let path = '/';
+    let referrer: string | null = null;
+    try {
+      const body = await c.req.json<{ path?: string; ref?: string }>();
+      if (typeof body.path === 'string') path = body.path.slice(0, 512);
+      if (typeof body.ref === 'string' && body.ref) referrer = body.ref.slice(0, 512);
+    } catch { /* empty/invalid body — record as root */ }
+
+    const ua = (c.req.header('user-agent') || '').slice(0, 512);
+    const ip = c.req.header('cf-connecting-ip') || null;
+    const country = (c.req.raw as any).cf?.country || null;
+
+    await c.env.DB.prepare(
+      `INSERT INTO analytics (event_type, data, user_agent, ip_address) VALUES ('pageview', ?, ?, ?)`
+    ).bind(JSON.stringify({ path, referrer, country }), ua, ip).run();
+  } catch {
+    // Analytics must never break the request path.
+  }
+  return c.body(null, 204);
 });
 
 // GET /api/breweries/nearby - Get breweries near coordinates (must be before :id route)
@@ -210,30 +238,48 @@ ${breweryInfo}
 
 Assume average speed of 40mph. Calculate approximate distances using the coordinates. Return only valid JSON, no explanations.`;
 
-    const aiResponse = await c.env.AI.run('@cf/meta/llama-3-8b-instruct', {
+    const aiResponse = await c.env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
       prompt,
       max_tokens: 500
     }) as any;
 
     const responseText = aiResponse?.response || '';
 
-    // Try to extract JSON from response
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      // Fallback: return original order with simple distance calc
-      return c.json({
-        success: true,
-        optimized_route: {
-          order: breweryIds,
-          total_distance_miles: validBreweries.length * 15,
-          total_time_minutes: validBreweries.length * 25,
-          legs: []
-        },
-        ai_failed: true
-      });
+    // Robustly extract the first balanced JSON object. Larger models often wrap
+    // JSON in prose or markdown fences, so a greedy regex + raw JSON.parse is
+    // brittle (and threw 500s). Strip fences, scan for a balanced {...}, and
+    // parse defensively — any failure degrades to the safe fallback below.
+    const fallbackRoute = {
+      success: true,
+      optimized_route: {
+        order: breweryIds,
+        total_distance_miles: validBreweries.length * 15,
+        total_time_minutes: validBreweries.length * 25,
+        legs: []
+      },
+      ai_failed: true
+    };
+
+    const cleaned = responseText.replace(/```(?:json)?/gi, '').trim();
+    const start = cleaned.indexOf('{');
+    let optimizedRoute: any = null;
+    if (start !== -1) {
+      let depth = 0;
+      for (let i = start; i < cleaned.length; i++) {
+        if (cleaned[i] === '{') depth++;
+        else if (cleaned[i] === '}') {
+          depth--;
+          if (depth === 0) {
+            try { optimizedRoute = JSON.parse(cleaned.slice(start, i + 1)); } catch { optimizedRoute = null; }
+            break;
+          }
+        }
+      }
     }
 
-    const optimizedRoute = JSON.parse(jsonMatch[0]);
+    if (!optimizedRoute) {
+      return c.json(fallbackRoute);
+    }
 
     // Cache the result for 24 hours
     await c.env.CACHE.put(cacheKey, JSON.stringify(optimizedRoute), { expirationTtl: 86400 });
@@ -350,7 +396,7 @@ User wants: ${mood ? `Mood: ${mood}` : ''} ${style ? `Style: ${style}` : ''}
 
 Return only the JSON array of 5 IDs:`;
 
-      const aiResponse = await c.env.AI.run('@cf/meta/llama-3-8b-instruct', {
+      const aiResponse = await c.env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
         prompt,
         max_tokens: 50
       }) as any;

@@ -23,12 +23,13 @@ const auth = new Hono<{ Bindings: Env; Variables: AppVariables }>();
  * Initiates Untappd OAuth flow
  */
 auth.get('/untappd', async (c) => {
-  // Check if Untappd credentials are configured
+  // Check if Untappd credentials are configured. When they aren't, degrade
+  // gracefully with a redirect instead of a 503: bots probe this endpoint
+  // heavily (it was the bulk of daily 5xx errors), and a real user clicking
+  // "Login" should be bounced home rather than shown a server error. Login
+  // turns on automatically once UNTAPPD_CLIENT_ID/SECRET are set as secrets.
   if (!c.env.UNTAPPD_CLIENT_ID || !c.env.UNTAPPD_CLIENT_SECRET) {
-    return c.json({
-      success: false,
-      error: 'Untappd authentication not configured'
-    }, 503);
+    return c.redirect('/?auth_error=unavailable');
   }
 
   // Generate state for CSRF protection
