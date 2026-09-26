@@ -22,3 +22,6 @@ This note tells the brewerytrip codebase what the game relies on and what it sen
 - A "Play today's beer question" link in the site footer / newsletter, pointing at https://beerquestions.com.
 - `GET https://beerquestions.com/api/today` returns `{number, date, prompt, url}` for the marketing agent's daily post (see `brewerytrip-marketing-agent/docs/beer-questions.md`).
 - If `/brewery/{id}` or `/api/subscribe` ever change shape, update the game (`games/beer-questions`) the same day; the game's E2E tests hit these URLs.
+
+## Abuse note (2026-09-26)
+`POST /api/subscribe` has no rate limit or challenge on this side, and CORS is `*`, so any page (not only the game) can submit sign-ups. The game rate-limits its own endpoints but cannot protect this one. Recommended here: a Cloudflare WAF rate-limiting rule on `/api/subscribe` (e.g. 5/min per IP) and confirming that verification emails are actually sent so unverified rows can be pruned. The OPTIONS preflight (204, `Allow-Methods: POST`, `Allow-Headers: Content-Type`) was verified working for cross-origin JSON posts.

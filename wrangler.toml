@@ -58,6 +58,10 @@ zone_name = "brewerytrip.com"
 pattern = "ohiobrewpath.com/*"
 zone_name = "ohiobrewpath.com"
 
+[[routes]]
+pattern = "www.ohiobrewpath.com/*"
+zone_name = "ohiobrewpath.com"
+
 # Environment variables
 [vars]
 ENVIRONMENT = "production"

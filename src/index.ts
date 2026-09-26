@@ -18,20 +18,30 @@ import planRoutes from './routes/plan';
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
-// Redirect HTTP to HTTPS (check CF-Visitor header)
+// Redirect HTTP to HTTPS (check CF-Visitor header) and www. to the apex host,
+// so each page has exactly one crawlable URL (GSC: "Alternate page with proper
+// canonical tag" on www.brewerytrip.com, SSL 525 on www.ohiobrewpath.com).
 app.use('*', async (c, next) => {
+  const url = new URL(c.req.url);
+  let changed = false;
   const cfVisitor = c.req.header('cf-visitor');
   if (cfVisitor) {
     try {
       const visitor = JSON.parse(cfVisitor);
       if (visitor.scheme === 'http') {
-        const url = new URL(c.req.url);
         url.protocol = 'https:';
-        return c.redirect(url.toString(), 301);
+        changed = true;
       }
     } catch (_e) {
       // ignore parse errors
     }
+  }
+  if (url.hostname === 'www.brewerytrip.com' || url.hostname === 'www.ohiobrewpath.com') {
+    url.hostname = url.hostname.slice(4);
+    changed = true;
+  }
+  if (changed && (c.req.method === 'GET' || c.req.method === 'HEAD')) {
+    return c.redirect(url.toString(), 301);
   }
   await next();
 });
@@ -67,6 +77,29 @@ app.use('*', cors());
 
 // Apply subdomain detection (before other middleware)
 app.use('*', subdomainMiddleware());
+
+// Canonical hygiene: layout() falls back to the site root when a template does not
+// pass `url`, which made /breweries, /events, /about etc. all declare the homepage as
+// their canonical (GSC: "Duplicate without user-selected canonical"). Rewrite a
+// root-only canonical/og:url/twitter:url on any non-root page to the page's own URL.
+const ROOT_CANONICALS = new Set(['https://brewerytrip.com', 'https://ohiobrewpath.com']);
+app.use('*', async (c, next) => {
+  await next();
+  const ct = c.res.headers.get('content-type') || '';
+  if (!ct.includes('text/html')) return;
+  const path = new URL(c.req.url).pathname.replace(/\/+$/, '');
+  if (!path) return; // homepage: root canonical is correct
+  const ctx = c.get('subdomain');
+  const baseUrl = ctx?.baseUrl || 'https://brewerytrip.com';
+  if (baseUrl.startsWith('http://')) return; // local dev
+  const selfUrl = `${baseUrl}${path}`;
+  const isRoot = (href: string | null) => !!href && ROOT_CANONICALS.has(href.replace(/\/+$/, ''));
+  c.res = new HTMLRewriter()
+    .on('link[rel="canonical"]', { element(e) { if (isRoot(e.getAttribute('href'))) e.setAttribute('href', selfUrl); } })
+    .on('meta[property="og:url"]', { element(e) { if (isRoot(e.getAttribute('content'))) e.setAttribute('content', selfUrl); } })
+    .on('meta[name="twitter:url"]', { element(e) { if (isRoot(e.getAttribute('content'))) e.setAttribute('content', selfUrl); } })
+    .transform(c.res);
+});
 
 // Serve static assets
 app.use('*', serveAssets());
