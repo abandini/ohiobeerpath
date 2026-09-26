@@ -449,3 +449,7 @@ Additional tables:
 - **Website URLs:** `website_url` field cleared (contained fake auto-generated URLs) - "Visit Website" button hidden when null
 - **AI Descriptions:** Background enrichment running to AI-generate missing brewery descriptions
 - **Vectorize:** Semantic search enabled via `brewery-embeddings` index
+
+## Beer Questions (feeder game, 2026-09-26)
+
+beerquestions.com is a separate Cloudflare Worker (`~/CascadeProjects/games/beer-questions`) that funnels players here. It depends on `/api/breweries`, `/api/breweries/{id}`, `/brewery/{id}` and `POST /api/subscribe` (with `preferences.source = "beerquestions"`) staying stable. Details and the sign-up attribution query: `docs/BEER_QUESTIONS_INTEGRATION.md`.
