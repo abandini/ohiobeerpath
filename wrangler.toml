@@ -53,14 +53,8 @@ zone_name = "brewerytrip.com"
 pattern = "*.brewerytrip.com/*"
 zone_name = "brewerytrip.com"
 
-# Ohio Brew Path - "little brother" Ohio-focused brand
-[[routes]]
-pattern = "ohiobrewpath.com/*"
-zone_name = "ohiobrewpath.com"
-
-[[routes]]
-pattern = "www.ohiobrewpath.com/*"
-zone_name = "ohiobrewpath.com"
+# ohiobrewpath.com is served by the "brewerytrip" worker (CascadeProjects/brewerytrip) since 2026-09-26.
+# The ?brand=ohiobrewpath code path remains for local testing only.
 
 # Environment variables
 [vars]
