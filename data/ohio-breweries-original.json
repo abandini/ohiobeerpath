@@ -31,7 +31,7 @@
     "latitude": 40.7194801,
     "longitude": -81.523856,
     "id": 1,
-    "website_url": "https://www.77brewhousebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/13-below-brewery/",
@@ -71,7 +71,7 @@
     "latitude": 39.1267382,
     "longitude": -84.7072374,
     "id": 2,
-    "website_url": "https://www.13belowbrewerybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/1820-brewwerks/",
@@ -107,7 +107,7 @@
     "latitude": 41.0245456,
     "longitude": -80.76394169999999,
     "id": 3,
-    "website_url": "https://www.1820brewwerksbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/2-tones-brewing-co/",
@@ -144,7 +144,7 @@
     "latitude": 39.9750879,
     "longitude": -82.88065309999999,
     "id": 4,
-    "website_url": "https://www.2tonesbrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/4kd-crick/",
@@ -181,7 +181,7 @@
     "latitude": 41.29316379999999,
     "longitude": -84.33867359999999,
     "id": 5,
-    "website_url": "https://www.4kdcrickbrewerybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/60cc-brewing/",
@@ -215,7 +215,7 @@
     "latitude": 41.6608879,
     "longitude": -83.6682158,
     "id": 6,
-    "website_url": "https://www.60ccbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/8th-day-brewing-co/",
@@ -253,7 +253,7 @@
     "latitude": 41.3874576,
     "longitude": -81.21732870000001,
     "id": 7,
-    "website_url": "https://www.8thdaybrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/aeonian-brewing-company/",
@@ -290,7 +290,7 @@
     "latitude": 40.9005412,
     "longitude": -81.10726629999999,
     "id": 8,
-    "website_url": "https://www.aeonianbrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/alcove-by-madtree/",
@@ -330,7 +330,7 @@
     "latitude": 39.1112797,
     "longitude": -84.5152137,
     "id": 9,
-    "website_url": "https://www.alcovebymadtreebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/alematic-artisan-ales/",
@@ -367,7 +367,7 @@
     "latitude": 39.8470297,
     "longitude": -84.11773269999999,
     "id": 10,
-    "website_url": "https://www.alematicartisanbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/american-brewery/",
@@ -407,7 +407,7 @@
     "latitude": 41.5725928,
     "longitude": -84.1559271,
     "id": 11,
-    "website_url": "https://www.americanbrewerybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/antiques-on-high/",
@@ -446,7 +446,7 @@
     "latitude": 39.9475998,
     "longitude": -82.9974569,
     "id": 12,
-    "website_url": "https://www.antiquesonhighbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/appalachian-artisan-ales/",
@@ -474,7 +474,7 @@
     "latitude": 38.891193,
     "longitude": -82.8672204,
     "id": 13,
-    "website_url": "https://www.appalachianartibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/arlyns-good-beer/",
@@ -512,7 +512,7 @@
     "latitude": 41.3732267,
     "longitude": -83.6573265,
     "id": 14,
-    "website_url": "https://www.arlynsgoodbeerbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/arrogant-goat-brewing/",
@@ -542,7 +542,7 @@
     "latitude": 40.8073959,
     "longitude": -82.9745384,
     "id": 15,
-    "website_url": "https://www.arrogantgoatbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/austin-mill-brewing-company/",
@@ -580,7 +580,7 @@
     "latitude": 39.4361418,
     "longitude": -83.2216619,
     "id": 16,
-    "website_url": "https://www.austinmillbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/avon-brewing-company/",
@@ -609,7 +609,7 @@
     "latitude": 41.4516242,
     "longitude": -82.035556,
     "id": 17,
-    "website_url": "https://www.avonbrewingcompbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bad-tom-smith-brewing/",
@@ -651,7 +651,7 @@
     "latitude": 39.1606963,
     "longitude": -84.3929215,
     "id": 18,
-    "website_url": "https://www.badtomsmithbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/barleys-brewing-co/",
@@ -689,7 +689,7 @@
     "latitude": 39.971926,
     "longitude": -83.00281609999999,
     "id": 19,
-    "website_url": "https://www.barleysbrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/barrel-run-brewery/",
@@ -714,7 +714,7 @@
     "latitude": 41.09867180000001,
     "longitude": -81.2438739,
     "id": 20,
-    "website_url": "https://www.barrelrunbrewerbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bascule-brewery-and-public-house/",
@@ -748,7 +748,7 @@
     "latitude": 41.4657958,
     "longitude": -82.1571116,
     "id": 21,
-    "website_url": "https://www.basculebreweryabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bcs-brewing-company/",
@@ -791,7 +791,7 @@
     "latitude": 39.377762,
     "longitude": -84.278561,
     "id": 22,
-    "website_url": "https://www.bcsbrewingcompabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bell-tower-brewing-co/",
@@ -832,7 +832,7 @@
     "latitude": 41.1546556,
     "longitude": -81.3606564,
     "id": 23,
-    "website_url": "https://www.belltowerbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bellbrook-brewing-company/",
@@ -869,7 +869,7 @@
     "latitude": 39.6362371,
     "longitude": -84.0698024,
     "id": 24,
-    "website_url": "https://www.bellbrookbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/big-ash-brewing-company/",
@@ -911,7 +911,7 @@
     "latitude": 39.1067334,
     "longitude": -84.3960038,
     "id": 25,
-    "website_url": "https://www.bigashbrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/biker-brewhouse/",
@@ -948,7 +948,7 @@
     "latitude": 41.1221809,
     "longitude": -80.77448439999999,
     "id": 26,
-    "website_url": "https://www.bikerbrewhousebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/birdfish-brewing-co/",
@@ -988,7 +988,7 @@
     "latitude": 40.8887278,
     "longitude": -80.69073379999999,
     "id": 27,
-    "website_url": "https://www.birdfishbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/black-fork-brewing/",
@@ -1024,7 +1024,7 @@
     "latitude": 40.8792705,
     "longitude": -82.6565905,
     "id": 28,
-    "website_url": "https://www.blackforkbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/black-frog-brewery/",
@@ -1055,7 +1055,7 @@
     "latitude": 41.6258623,
     "longitude": -83.70295829999999,
     "id": 29,
-    "website_url": "https://www.blackfrogbrewerbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/blockbuster-brewing/",
@@ -1080,7 +1080,7 @@
     "latitude": 39.6332738,
     "longitude": -84.1313177,
     "id": 30,
-    "website_url": "https://www.blockbusterbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/blue-heron-brewery/",
@@ -1116,7 +1116,7 @@
     "latitude": 41.1123748,
     "longitude": -81.804587,
     "id": 31,
-    "website_url": "https://www.blueheronbrewerbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/blue-monkey-brewing-co/",
@@ -1153,7 +1153,7 @@
     "latitude": 41.3313961,
     "longitude": -81.7254803,
     "id": 32,
-    "website_url": "https://www.bluemonkeybrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bocce-brewing-co/",
@@ -1194,7 +1194,7 @@
     "latitude": 39.2270312,
     "longitude": -84.4651639,
     "id": 33,
-    "website_url": "https://www.boccebrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bock-family-brewing/",
@@ -1233,7 +1233,7 @@
     "latitude": 39.6281504,
     "longitude": -84.1958752,
     "id": 34,
-    "website_url": "https://www.bockfamilybrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bookhouse-brewing/",
@@ -1267,7 +1267,7 @@
     "latitude": 41.4896112,
     "longitude": -81.7069763,
     "id": 35,
-    "website_url": "https://www.bookhousebrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/boss-dog-brewing-co/",
@@ -1298,7 +1298,7 @@
     "latitude": 41.5002724,
     "longitude": -81.56509299999999,
     "id": 36,
-    "website_url": "https://www.bossdogbrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/branch-bone-artisan-ales/",
@@ -1333,7 +1333,7 @@
     "latitude": 39.7520513,
     "longitude": -84.177363,
     "id": 37,
-    "website_url": "https://www.branchboneartisbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brew-brothers/",
@@ -1362,7 +1362,7 @@
     "latitude": 39.8412522,
     "longitude": -83.0006561,
     "id": 38,
-    "website_url": "https://www.brewbrothersbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/the-brew-kettle/",
@@ -1385,7 +1385,7 @@
     "latitude": 40.4172871,
     "longitude": -82.90712300000001,
     "id": 39,
-    "website_url": "https://www.thebrewkettleprbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brew-kettle-amherst/",
@@ -1408,7 +1408,7 @@
     "latitude": 41.3973751,
     "longitude": -82.22543259999999,
     "id": 40,
-    "website_url": "https://www.brewkettleamherbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brew-kettle-hudson/",
@@ -1431,7 +1431,7 @@
     "latitude": 41.240651,
     "longitude": -81.4459238,
     "id": 41,
-    "website_url": "https://www.brewkettlehudsobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brew-kettle-mentor/",
@@ -1454,7 +1454,7 @@
     "latitude": 41.6577308,
     "longitude": -81.36159649999999,
     "id": 42,
-    "website_url": "https://www.brewkettlementobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brewdog-cincinnati/",
@@ -1495,7 +1495,7 @@
     "latitude": 39.1031971,
     "longitude": -84.5064881,
     "id": 43,
-    "website_url": "https://www.brewdogcincinnabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brewdog-cleveland-outpost/",
@@ -1536,7 +1536,7 @@
     "latitude": 41.4926407,
     "longitude": -81.69799859999999,
     "id": 44,
-    "website_url": "https://www.brewdogclevelanbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brewdog-franklinton/",
@@ -1576,7 +1576,7 @@
     "latitude": 39.9571985,
     "longitude": -83.01237449999999,
     "id": 45,
-    "website_url": "https://www.brewdogfranklinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brewdog-new-albany/",
@@ -1618,7 +1618,7 @@
     "latitude": 40.08221959999999,
     "longitude": -82.810829,
     "id": 46,
-    "website_url": "https://www.brewdognewalbanbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brewdog-short-north/",
@@ -1656,7 +1656,7 @@
     "latitude": 39.9863404,
     "longitude": -83.0055905,
     "id": 47,
-    "website_url": "https://www.brewdogshortnorbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brewdog-usa-inc/",
@@ -1687,7 +1687,7 @@
     "latitude": 39.8472705,
     "longitude": -82.8258144,
     "id": 48,
-    "website_url": "https://www.brewdogusabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brewery33/",
@@ -1728,7 +1728,7 @@
     "latitude": 39.5445891,
     "longitude": -82.4494218,
     "id": 49,
-    "website_url": "https://www.brewery33hockinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brewing-green/",
@@ -1766,7 +1766,7 @@
     "latitude": 41.3775256,
     "longitude": -83.6532543,
     "id": 50,
-    "website_url": "https://www.brewinggreenbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brick-and-barrel/",
@@ -1808,7 +1808,7 @@
     "latitude": 41.4894905,
     "longitude": -81.7007862,
     "id": 51,
-    "website_url": "https://www.brickandbarrelbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bridges-end-brewing-co/",
@@ -1842,7 +1842,7 @@
     "latitude": 40.1584739,
     "longitude": -83.13344939999999,
     "id": 52,
-    "website_url": "https://www.bridgesendbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brighten-brewing/",
@@ -1876,7 +1876,7 @@
     "scrape_date": "2024-11-12",
     "region": "northeast",
     "id": 53,
-    "website_url": "https://www.brightenbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/brink-brewing-co/",
@@ -1916,7 +1916,7 @@
     "latitude": 39.199019,
     "longitude": -84.54705489999999,
     "id": 54,
-    "website_url": "https://www.brinkbrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/broadview-brewing-company/",
@@ -1949,7 +1949,7 @@
     "latitude": 41.2908628,
     "longitude": -81.683973,
     "id": 55,
-    "website_url": "https://www.broadviewbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bucks-brewing-company/",
@@ -1981,7 +1981,7 @@
     "latitude": 40.0839108,
     "longitude": -82.4179482,
     "id": 56,
-    "website_url": "https://www.bucksbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/buckeye-lake-brewery/",
@@ -2012,7 +2012,7 @@
     "latitude": 39.9314121,
     "longitude": -82.4829116,
     "id": 57,
-    "website_url": "https://www.buckeyelakebrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/buffalo-rock-brewing-co-bayside/",
@@ -2049,7 +2049,7 @@
     "latitude": 41.65194450000001,
     "longitude": -83.4283119,
     "id": 58,
-    "website_url": "https://www.buffalorockbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/buffalo-rock-brewing-company/",
@@ -2087,7 +2087,7 @@
     "latitude": 41.4923716,
     "longitude": -83.724519,
     "id": 59,
-    "website_url": "https://www.buffalorockbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bummin-beaver-brewery/",
@@ -2126,7 +2126,7 @@
     "latitude": 41.3877279,
     "longitude": -81.22393559999999,
     "id": 60,
-    "website_url": "https://www.bumminbeaverbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/bushrod-brew-works/",
@@ -2158,7 +2158,7 @@
     "latitude": 39.743742,
     "longitude": -84.63539399999999,
     "id": 61,
-    "website_url": "https://www.bushrodbrewworkbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/butcher-the-brewer/",
@@ -2188,7 +2188,7 @@
     "latitude": 41.499215,
     "longitude": -81.6900304,
     "id": 62,
-    "website_url": "https://www.butcherthebrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/camp-brewing/",
@@ -2228,7 +2228,7 @@
     "latitude": 40.4264036,
     "longitude": -83.8095831,
     "id": 63,
-    "website_url": "https://www.campbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/carey-brewing-station/",
@@ -2267,7 +2267,7 @@
     "latitude": 40.9507548,
     "longitude": -83.3798015,
     "id": 64,
-    "website_url": "https://www.careybrewingstabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/carillon-brewing-company/",
@@ -2303,7 +2303,7 @@
     "latitude": 39.7287245,
     "longitude": -84.2001964,
     "id": 65,
-    "website_url": "https://www.carillonbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/cartridge-brewing/",
@@ -2340,7 +2340,7 @@
     "latitude": 39.3507938,
     "longitude": -84.24146259999999,
     "id": 66,
-    "website_url": "https://www.cartridgebrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/catawba-island-brewing-company/",
@@ -2363,7 +2363,7 @@
     "latitude": 41.5777949,
     "longitude": -82.8342198,
     "id": 67,
-    "website_url": "https://www.catawbaislandbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/cincinnati-beverage-company/",
@@ -2386,7 +2386,7 @@
     "latitude": 39.1198278,
     "longitude": -84.52216580000001,
     "id": 68,
-    "website_url": "https://www.cincinnatibeverbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/clag-brewing-company/",
@@ -2420,7 +2420,7 @@
     "latitude": 41.4559729,
     "longitude": -82.71113129999999,
     "id": 69,
-    "website_url": "https://www.clagbrewingcompbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/cloven-hoof-brewing-co/",
@@ -2456,7 +2456,7 @@
     "latitude": 41.8982401,
     "longitude": -80.8015714,
     "id": 70,
-    "website_url": "https://www.clovenhoofbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/codex-brewing/",
@@ -2490,7 +2490,7 @@
     "latitude": 40.8725146,
     "longitude": -81.422583,
     "id": 71,
-    "website_url": "https://www.codexbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/collision-bend-brewing-company/",
@@ -2521,7 +2521,7 @@
     "latitude": 41.4987861,
     "longitude": -81.7040533,
     "id": 72,
-    "website_url": "https://www.collisionbendbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/collision-bend-brewing-company-euclid/",
@@ -2561,7 +2561,7 @@
     "latitude": 41.5909546,
     "longitude": -81.5086279,
     "id": 73,
-    "website_url": "https://www.collisionbendbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/combustion-brewery-taproom/",
@@ -2601,7 +2601,7 @@
     "latitude": 39.885268,
     "longitude": -82.754857,
     "id": 74,
-    "website_url": "https://www.combustionbrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/combustion-clintonville/",
@@ -2631,7 +2631,7 @@
     "latitude": 40.0225052,
     "longitude": -83.014128,
     "id": 75,
-    "website_url": "https://www.combustionbrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/common-beer-company/",
@@ -2666,7 +2666,7 @@
     "latitude": 39.3615203,
     "longitude": -84.30688669999999,
     "id": 76,
-    "website_url": "https://www.thecommonbeercobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/cornerstone-brewing-company/",
@@ -2700,7 +2700,7 @@
     "latitude": 41.3669426,
     "longitude": -81.8529097,
     "id": 77,
-    "website_url": "https://www.cornerstonebrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/country-mud-brewery/",
@@ -2732,7 +2732,7 @@
     "latitude": 41.6679475,
     "longitude": -83.34984299999999,
     "id": 78,
-    "website_url": "https://www.countrymudbrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/crooked-can-brewing-company/",
@@ -2770,7 +2770,7 @@
     "scrape_date": "2024-11-12",
     "region": "central",
     "id": 79,
-    "website_url": "https://www.crookedcanbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/crooked-handle-brewing-co-piqua/",
@@ -2810,7 +2810,7 @@
     "latitude": 40.14722889999999,
     "longitude": -84.2393015,
     "id": 80,
-    "website_url": "https://www.crookedhandlebrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/crooked-handle-brewing-company/",
@@ -2850,7 +2850,7 @@
     "latitude": 39.5780448,
     "longitude": -84.2289047,
     "id": 81,
-    "website_url": "https://www.crookedhandlebrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/crooked-pecker-brewing-company/",
@@ -2885,7 +2885,7 @@
     "latitude": 41.4159555,
     "longitude": -81.3462514,
     "id": 82,
-    "website_url": "https://www.crookedpeckerbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/dafuque-beer-company/",
@@ -2910,7 +2910,7 @@
     "latitude": 39.934936,
     "longitude": -82.9743057,
     "id": 83,
-    "website_url": "https://www.dafuquebeercompbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/dalton-union-winery-brewery/",
@@ -2949,7 +2949,7 @@
     "latitude": 40.2967616,
     "longitude": -83.44930719999999,
     "id": 84,
-    "website_url": "https://www.daltonunionwinebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/dankhouse-brewing-company/",
@@ -2990,7 +2990,7 @@
     "latitude": 40.0440273,
     "longitude": -82.4185616,
     "id": 85,
-    "website_url": "https://www.dankhousebrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/darkroom-brewing-company/",
@@ -3026,7 +3026,7 @@
     "latitude": 41.8057943,
     "longitude": -80.9477363,
     "id": 86,
-    "website_url": "https://www.darkroombrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/dead-low-brewing/",
@@ -3064,7 +3064,7 @@
     "scrape_date": "2024-11-12",
     "region": "southwest",
     "id": 87,
-    "website_url": "https://www.deadlowbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/depot-brewing-company-llc/",
@@ -3087,7 +3087,7 @@
     "latitude": 39.3544528,
     "longitude": -84.1333008,
     "id": 88,
-    "website_url": "https://www.depotbrewingcombrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/derive-brewing-company/",
@@ -3123,7 +3123,7 @@
     "latitude": 40.0195154,
     "longitude": -83.0118406,
     "id": 89,
-    "website_url": "https://www.derivebrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/devil-wind-brewing/",
@@ -3164,7 +3164,7 @@
     "latitude": 39.6831553,
     "longitude": -83.92946979999999,
     "id": 90,
-    "website_url": "https://www.devilwindbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/devils-kettle-brewing/",
@@ -3201,7 +3201,7 @@
     "latitude": 39.3491607,
     "longitude": -82.0953973,
     "id": 91,
-    "website_url": "https://www.devilskettlebrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/double-edge-brewing-co/",
@@ -3239,7 +3239,7 @@
     "latitude": 39.7123144,
     "longitude": -82.6041679,
     "id": 92,
-    "website_url": "https://www.doubleedgebrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/double-wing-brewing-co/",
@@ -3279,7 +3279,7 @@
     "latitude": 41.7394211,
     "longitude": -81.0066738,
     "id": 93,
-    "website_url": "https://www.doublewingbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/drop-tine-winery-and-tap-house/",
@@ -3317,7 +3317,7 @@
     "latitude": 41.5867018,
     "longitude": -84.6104244,
     "id": 94,
-    "website_url": "https://www.droptinewineryabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/dvd-brew/",
@@ -3356,7 +3356,7 @@
     "latitude": 39.2555945,
     "longitude": -84.2808196,
     "id": 95,
-    "website_url": "https://www.dvdbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/earnest-brew-works/",
@@ -3393,7 +3393,7 @@
     "latitude": 41.5902515,
     "longitude": -83.6152563,
     "id": 96,
-    "website_url": "https://www.earnestbrewworkbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/earnest-brew-works-westgate/",
@@ -3431,7 +3431,7 @@
     "latitude": 41.6779494,
     "longitude": -83.62043039999999,
     "id": 97,
-    "website_url": "https://www.earnestbrewworkbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/earnest-brew-works-downtown/",
@@ -3463,7 +3463,7 @@
     "latitude": 41.64663700000001,
     "longitude": -83.53855879999999,
     "id": 98,
-    "website_url": "https://www.earnestbrewworkbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/eastside-brewing-company/",
@@ -3493,7 +3493,7 @@
     "latitude": 39.95418069999999,
     "longitude": -82.80563029999999,
     "id": 99,
-    "website_url": "https://www.eastsidebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/edison-brewing-company/",
@@ -3529,7 +3529,7 @@
     "latitude": 39.9974366,
     "longitude": -82.84434689999999,
     "id": 100,
-    "website_url": "https://www.edisonbrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/eighty-three-brewery/",
@@ -3563,7 +3563,7 @@
     "latitude": 41.0664629,
     "longitude": -81.4830956,
     "id": 101,
-    "website_url": "https://www.eightythreebrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/eleventhree-brewing/",
@@ -3600,7 +3600,7 @@
     "latitude": 41.5819707,
     "longitude": -81.21311089999999,
     "id": 102,
-    "website_url": "https://www.eleventhreebrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/endeavor-brewing-company/",
@@ -3640,7 +3640,7 @@
     "latitude": 39.9876179,
     "longitude": -83.0303471,
     "id": 103,
-    "website_url": "https://www.endeavorbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/entropy-brewing-co/",
@@ -3678,7 +3678,7 @@
     "latitude": 39.6412685,
     "longitude": -84.28906090000001,
     "id": 104,
-    "website_url": "https://www.entropybrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/esp-brewing-company/",
@@ -3714,7 +3714,7 @@
     "latitude": 41.37249,
     "longitude": -82.20958,
     "id": 105,
-    "website_url": "https://www.espbrewingcompabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/eudora-brewing-co/",
@@ -3744,7 +3744,7 @@
     "latitude": 39.7023275,
     "longitude": -84.1411459,
     "id": 106,
-    "website_url": "https://www.eudorabrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/false-chord-brewing/",
@@ -3781,7 +3781,7 @@
     "latitude": 41.0382346,
     "longitude": -83.6504519,
     "id": 107,
-    "website_url": "https://www.falsechordbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fat-heads-middleburg-heights/",
@@ -3818,7 +3818,7 @@
     "latitude": 41.38699380000001,
     "longitude": -81.8313421,
     "id": 108,
-    "website_url": "https://www.fatheadsmiddlebbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fat-heads-canton/",
@@ -3855,7 +3855,7 @@
     "latitude": 40.860779,
     "longitude": -81.42003299999999,
     "id": 109,
-    "website_url": "https://www.fatheadsbrewerybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fat-heads-north-olmsted/",
@@ -3894,7 +3894,7 @@
     "latitude": 41.42640189999999,
     "longitude": -81.8941699,
     "id": 110,
-    "website_url": "https://www.fatheadsnortholbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fibonacci-brewing-company/",
@@ -3923,7 +3923,7 @@
     "latitude": 39.2314773,
     "longitude": -84.5409531,
     "id": 111,
-    "website_url": "https://www.fibonaccibrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fifth-street-brewpub/",
@@ -3953,7 +3953,7 @@
     "latitude": 39.7586223,
     "longitude": -84.1720232,
     "id": 112,
-    "website_url": "https://www.fifthstreetbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fifty-west-brewing-company/",
@@ -3984,7 +3984,7 @@
     "latitude": 39.1392932,
     "longitude": -84.3551409,
     "id": 113,
-    "website_url": "https://www.fiftywestbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fifty-west-chillicothe/",
@@ -4024,7 +4024,7 @@
     "latitude": 39.3334285,
     "longitude": -82.9818662,
     "id": 114,
-    "website_url": "https://www.fiftywestchillibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fifty-west-deerfield/",
@@ -4066,7 +4066,7 @@
     "latitude": 39.302345,
     "longitude": -84.320005,
     "id": 115,
-    "website_url": "https://www.fiftywestdeerfibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/figleaf/",
@@ -4105,7 +4105,7 @@
     "latitude": 39.4671427,
     "longitude": -84.3473746,
     "id": 116,
-    "website_url": "https://www.figleafbrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/findlay-brewing-company/",
@@ -4135,7 +4135,7 @@
     "latitude": 41.0375388,
     "longitude": -83.64787419999999,
     "id": 117,
-    "website_url": "https://www.findlaybrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/flying-pig-brewing-co/",
@@ -4160,7 +4160,7 @@
     "latitude": 39.7465796,
     "longitude": -81.51641540000001,
     "id": 118,
-    "website_url": "https://www.flyingpigbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/forbidden-root/",
@@ -4199,7 +4199,7 @@
     "latitude": 40.0544326,
     "longitude": -82.91293019999999,
     "id": 119,
-    "website_url": "https://www.forbiddenrootbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/forest-city-brewery/",
@@ -4240,7 +4240,7 @@
     "latitude": 41.4832518,
     "longitude": -81.70015769999999,
     "id": 120,
-    "website_url": "https://www.forestcitybrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fretboard-brewing-at-factory-52/",
@@ -4279,7 +4279,7 @@
     "latitude": 39.1593547,
     "longitude": -84.4408255,
     "id": 121,
-    "website_url": "https://www.fretboardbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fretboard-brewing-co-harrison/",
@@ -4317,7 +4317,7 @@
     "latitude": 39.2618337,
     "longitude": -84.81957729999999,
     "id": 122,
-    "website_url": "https://www.fretboardbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/fretboard-brewing-company/",
@@ -4354,7 +4354,7 @@
     "latitude": 39.260697,
     "longitude": -84.3678012,
     "id": 123,
-    "website_url": "https://www.fretboardbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/full-circle-brewgarden/",
@@ -4386,7 +4386,7 @@
     "latitude": 39.8731787,
     "longitude": -84.311303,
     "id": 124,
-    "website_url": "https://www.fullcirclebrewgbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/garretts-mill-and-brewing-company/",
@@ -4426,7 +4426,7 @@
     "latitude": 41.2840161,
     "longitude": -81.0971302,
     "id": 125,
-    "website_url": "https://www.garrettsmillandbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/gemut-biergarten/",
@@ -4464,7 +4464,7 @@
     "latitude": 39.9633755,
     "longitude": -82.98086180000001,
     "id": 126,
-    "website_url": "https://www.gemutbiergartenbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/the-getaway-brewing-co/",
@@ -4504,7 +4504,7 @@
     "latitude": 40.1025196,
     "longitude": -83.1138711,
     "id": 127,
-    "website_url": "https://www.thegetawaybrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ghost-tree-brewing-company/",
@@ -4543,7 +4543,7 @@
     "latitude": 41.3979883,
     "longitude": -82.2247692,
     "id": 128,
-    "website_url": "https://www.ghosttreebrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/glendalehouse-brewery/",
@@ -4575,7 +4575,7 @@
     "latitude": 39.2722499,
     "longitude": -84.4575831,
     "id": 129,
-    "website_url": "https://www.glendalehousebrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/goldhorn-brewery/",
@@ -4610,7 +4610,7 @@
     "latitude": 41.5217677,
     "longitude": -81.6513827,
     "id": 130,
-    "website_url": "https://www.goldhornbrewerybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/gongoozlers-brewery/",
@@ -4644,7 +4644,7 @@
     "latitude": 40.4364329,
     "longitude": -84.39188879999999,
     "id": 131,
-    "website_url": "https://www.gongoozlersbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/grainworks-brewing-company/",
@@ -4674,7 +4674,7 @@
     "latitude": 39.3648956,
     "longitude": -84.36463780000001,
     "id": 132,
-    "website_url": "https://www.grainworksbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/granville-brewing-company/",
@@ -4701,7 +4701,7 @@
     "latitude": 40.0311479,
     "longitude": -82.59518539999999,
     "id": 133,
-    "website_url": "https://www.granvillebrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/gravel-road-brewing-company/",
@@ -4729,7 +4729,7 @@
     "latitude": 39.5159501,
     "longitude": -84.40655579999999,
     "id": 134,
-    "website_url": "https://www.gravelroadbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/great-black-swamp-brewing-company/",
@@ -4770,7 +4770,7 @@
     "latitude": 41.5985418,
     "longitude": -83.62142659999999,
     "id": 135,
-    "website_url": "https://www.greatblackswampbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/great-lakes-brewing-company/",
@@ -4839,7 +4839,7 @@
     "latitude": 41.2376403,
     "longitude": -81.4462361,
     "id": 137,
-    "website_url": "https://www.greenvalleybrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/grizzlybird-brewing-company/",
@@ -4877,7 +4877,7 @@
     "latitude": 40.15439,
     "longitude": -82.9231458,
     "id": 138,
-    "website_url": "https://www.grizzlybirdbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/grove-city-brewing-company/",
@@ -4915,7 +4915,7 @@
     "latitude": 39.8837278,
     "longitude": -83.091934,
     "id": 139,
-    "website_url": "https://www.grovecitybrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/guernsey-brewhouse/",
@@ -4947,7 +4947,7 @@
     "latitude": 40.0511766,
     "longitude": -81.6556035,
     "id": 140,
-    "website_url": "https://www.guernseybrewhoubrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hairless-hare-brewery/",
@@ -4982,7 +4982,7 @@
     "latitude": 39.8896596,
     "longitude": -84.21183649999999,
     "id": 141,
-    "website_url": "https://www.hairlessharebrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/happenstance-brewing-project/",
@@ -5018,7 +5018,7 @@
     "latitude": 40.2376137,
     "longitude": -83.3625631,
     "id": 142,
-    "website_url": "https://www.happenstancebrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/happy-2-brewing-company/",
@@ -5059,7 +5059,7 @@
     "latitude": 39.0884649,
     "longitude": -84.3224022,
     "id": 143,
-    "website_url": "https://www.happy2brewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/happy-street-bru-werks/",
@@ -5080,7 +5080,7 @@
     "scrape_date": "2024-11-12",
     "region": "northeast",
     "id": 144,
-    "website_url": "https://www.happystreetbruwbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/haven-brewing/",
@@ -5105,7 +5105,7 @@
     "latitude": 41.2908722,
     "longitude": -82.21708919999999,
     "id": 145,
-    "website_url": "https://www.havenbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hearth-brewing/",
@@ -5143,7 +5143,7 @@
     "latitude": 39.2546602,
     "longitude": -84.7953507,
     "id": 146,
-    "website_url": "https://www.hearthbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/heavier-than-air-brewing-co/",
@@ -5177,7 +5177,7 @@
     "latitude": 39.6287771,
     "longitude": -84.1726573,
     "id": 147,
-    "website_url": "https://www.heavierthanairbbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/henmick-farm-brewery/",
@@ -5215,7 +5215,7 @@
     "latitude": 40.3366553,
     "longitude": -82.95549539999999,
     "id": 148,
-    "website_url": "https://www.henmickfarmbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hi-wire-brewing/",
@@ -5254,7 +5254,7 @@
     "latitude": 39.1589462,
     "longitude": -84.4424765,
     "id": 149,
-    "website_url": "https://www.hiwirebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/highgrain-brewing-company/",
@@ -5295,7 +5295,7 @@
     "latitude": 39.1928727,
     "longitude": -84.4002099,
     "id": 150,
-    "website_url": "https://www.highgrainbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/highgrain-brewing-company-brentwood/",
@@ -5328,7 +5328,7 @@
     "latitude": 39.2337441,
     "longitude": -84.5088577,
     "id": 151,
-    "website_url": "https://www.highgrainbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hi-ho-brewing-co/",
@@ -5357,7 +5357,7 @@
     "latitude": 41.12810349999999,
     "longitude": -81.4848674,
     "id": 152,
-    "website_url": "https://www.hihobrewingcompbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hocking-hills-brewing-company/",
@@ -5393,7 +5393,7 @@
     "latitude": 39.5393273,
     "longitude": -82.4100491,
     "id": 153,
-    "website_url": "https://www.hockinghillsbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hofbrauhaus-cleveland/",
@@ -5424,7 +5424,7 @@
     "latitude": 41.5028927,
     "longitude": -81.68110709999999,
     "id": 154,
-    "website_url": "https://www.hofbruhausclevebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hofbrauhaus-columbus/",
@@ -5455,7 +5455,7 @@
     "latitude": 39.9744811,
     "longitude": -83.0241149,
     "id": 155,
-    "website_url": "https://www.hofbruhauscolumbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/holy-moley-brewing-company/",
@@ -5488,7 +5488,7 @@
     "latitude": 40.39287600000001,
     "longitude": -81.333674,
     "id": 156,
-    "website_url": "https://www.holymoleybrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/home-roots-brewing/",
@@ -5513,7 +5513,7 @@
     "latitude": 41.09295220000001,
     "longitude": -81.1747498,
     "id": 157,
-    "website_url": "https://www.homerootsbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/homestead-beer-co-heart-state-brewing/",
@@ -5547,7 +5547,7 @@
     "latitude": 39.996449,
     "longitude": -82.83292569999999,
     "id": 158,
-    "website_url": "https://www.homesteadbeercobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hoodletown-brewing-company/",
@@ -5622,7 +5622,7 @@
     "latitude": 40.36678879999999,
     "longitude": -82.8177165,
     "id": 160,
-    "website_url": "https://www.hoofheartedbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hoof-hearted-brewing-5th-ave/",
@@ -5656,7 +5656,7 @@
     "latitude": 39.9873642,
     "longitude": -83.0046101,
     "id": 161,
-    "website_url": "https://www.hoofheartedbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hop-brothers-brewing/",
@@ -5696,7 +5696,7 @@
     "latitude": 41.3837222,
     "longitude": -81.9794982,
     "id": 162,
-    "website_url": "https://www.hopbrothersbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hoppin-frog-brewery/",
@@ -5734,7 +5734,7 @@
     "latitude": 41.0245936,
     "longitude": -81.4676915,
     "id": 163,
-    "website_url": "https://www.hoppinfrogbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hoppy-dude-brews/",
@@ -5767,7 +5767,7 @@
     "latitude": 41.2391708,
     "longitude": -81.7447074,
     "id": 164,
-    "website_url": "https://www.hoppydudebrewsbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hoptometry-brewing-company/",
@@ -5803,7 +5803,7 @@
     "latitude": 41.1248359,
     "longitude": -83.17846200000001,
     "id": 165,
-    "website_url": "https://www.hoptometrybrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/hoster-brewing/",
@@ -5832,7 +5832,7 @@
     "latitude": 39.98671239999999,
     "longitude": -82.907963,
     "id": 166,
-    "website_url": "https://www.hosterbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/humble-monk-brewing-co/",
@@ -5874,7 +5874,7 @@
     "latitude": 39.1599621,
     "longitude": -84.5413236,
     "id": 167,
-    "website_url": "https://www.humblemonkbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ignite-brewing-company/",
@@ -5905,7 +5905,7 @@
     "latitude": 41.0127135,
     "longitude": -81.6119418,
     "id": 168,
-    "website_url": "https://www.ignitebrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ignite-brewing-company-brunswick/",
@@ -5944,7 +5944,7 @@
     "latitude": 41.2412631,
     "longitude": -81.8050662,
     "id": 169,
-    "website_url": "https://www.ignitebrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ill-mannered-brewing-co-uptown-marysville/",
@@ -5982,7 +5982,7 @@
     "latitude": 40.2359428,
     "longitude": -83.36725539999999,
     "id": 170,
-    "website_url": "https://www.illmanneredbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ill-mannered-brewing-company/",
@@ -6019,7 +6019,7 @@
     "latitude": 40.1634634,
     "longitude": -83.0733317,
     "id": 171,
-    "website_url": "https://www.illmanneredbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/illuminati-brew-works/",
@@ -6058,7 +6058,7 @@
     "latitude": 39.67480339999999,
     "longitude": -84.1157071,
     "id": 172,
-    "website_url": "https://www.illuminatibrewwbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/immigrant-son-brewery/",
@@ -6095,7 +6095,7 @@
     "latitude": 41.4866916,
     "longitude": -81.823694,
     "id": 173,
-    "website_url": "https://www.immigrantsonbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/indian-lake-brewing-company/",
@@ -6130,7 +6130,7 @@
     "latitude": 40.4747783,
     "longitude": -83.8965678,
     "id": 174,
-    "website_url": "https://www.indianlakebrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/inside-the-five-brewing-perrysburg/",
@@ -6171,7 +6171,7 @@
     "latitude": 41.5580937,
     "longitude": -83.6300548,
     "id": 175,
-    "website_url": "https://www.insidethefivebrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/inside-the-five-brewing/",
@@ -6212,7 +6212,7 @@
     "latitude": 40.21948889999999,
     "longitude": -84.6368897,
     "id": 176,
-    "website_url": "https://www.insidethefivebrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/inside-the-five-brewing-fieldhouse/",
@@ -6252,7 +6252,7 @@
     "latitude": 41.6503957,
     "longitude": -83.6039545,
     "id": 177,
-    "website_url": "https://www.insidethefivebrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/jackie-os-on-fourth/",
@@ -6289,7 +6289,7 @@
     "latitude": 39.9663135,
     "longitude": -82.9974019,
     "id": 178,
-    "website_url": "https://www.jackieosonfourtbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/jackie-os-taproom-brewery/",
@@ -6326,7 +6326,7 @@
     "latitude": 39.3314604,
     "longitude": -82.0904848,
     "id": 179,
-    "website_url": "https://www.jackieostaproombrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/jackie-os-public-house-brewpub/",
@@ -6365,7 +6365,7 @@
     "latitude": 39.3215627,
     "longitude": -82.1378232,
     "id": 180,
-    "website_url": "https://www.jackieospublichbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/jafb-wooster/",
@@ -6396,7 +6396,7 @@
     "latitude": 40.799495,
     "longitude": -81.934715,
     "id": 181,
-    "website_url": "https://www.jafbwoosterbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/the-jolly-scholar/",
@@ -6434,7 +6434,7 @@
     "latitude": 41.5072462,
     "longitude": -81.6082083,
     "id": 182,
-    "website_url": "https://www.thejollyscholarbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/juniper-brewing-company/",
@@ -6467,7 +6467,7 @@
     "latitude": 41.3740345,
     "longitude": -83.6500545,
     "id": 183,
-    "website_url": "https://www.juniperbrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/karrikin-spirits-company/",
@@ -6500,7 +6500,7 @@
     "latitude": 39.1386607,
     "longitude": -84.3979775,
     "id": 184,
-    "website_url": "https://www.karrikinspiritsbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/the-laird-arcade-brewery-the-lab/",
@@ -6534,7 +6534,7 @@
     "latitude": 41.1143007,
     "longitude": -83.17718789999999,
     "id": 185,
-    "website_url": "https://www.thelairdarcadebbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/lake-milton-brewery/",
@@ -6567,7 +6567,7 @@
     "latitude": 41.09645,
     "longitude": -80.990172,
     "id": 186,
-    "website_url": "https://www.lakemiltonbrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/lake-rat-brewing/",
@@ -6606,7 +6606,7 @@
     "latitude": 40.548669,
     "longitude": -84.5703966,
     "id": 187,
-    "website_url": "https://www.lakeratbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/land-grant-brewing-co/",
@@ -6637,7 +6637,7 @@
     "latitude": 39.9579927,
     "longitude": -83.01153339999999,
     "id": 188,
-    "website_url": "https://www.landgrantbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/laughing-bomb-brewery/",
@@ -6668,7 +6668,7 @@
     "latitude": 41.4923151,
     "longitude": -82.0057216,
     "id": 189,
-    "website_url": "https://www.laughingbombbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/lazy-yeti-brewing/",
@@ -6691,7 +6691,7 @@
     "scrape_date": "2024-11-12",
     "region": "northwest",
     "id": 190,
-    "website_url": "https://www.lazyyetibrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/lebanon-brewing-co/",
@@ -6729,7 +6729,7 @@
     "latitude": 39.4358412,
     "longitude": -84.20922879999999,
     "id": 191,
-    "website_url": "https://www.lebanonbrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/lincoln-brewing-company/",
@@ -6761,7 +6761,7 @@
     "latitude": 40.8324424,
     "longitude": -84.58181789999999,
     "id": 192,
-    "website_url": "https://www.lincolnbrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/listermann-brewing-company/",
@@ -6798,7 +6798,7 @@
     "latitude": 39.1463113,
     "longitude": -84.4724258,
     "id": 193,
-    "website_url": "https://www.listermannbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/little-fish-brewing-company/",
@@ -6836,7 +6836,7 @@
     "latitude": 39.3329423,
     "longitude": -82.1296548,
     "id": 194,
-    "website_url": "https://www.littlefishbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/little-fish-brewing-company-dayton/",
@@ -6872,7 +6872,7 @@
     "latitude": 39.76335479999999,
     "longitude": -84.1818466,
     "id": 195,
-    "website_url": "https://www.littlefishbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/little-miami-brewing-company/",
@@ -6912,7 +6912,7 @@
     "latitude": 39.1718873,
     "longitude": -84.2972626,
     "id": 196,
-    "website_url": "https://www.littlemiamibrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/lock-15-brewing-co/",
@@ -6952,7 +6952,7 @@
     "latitude": 41.081199,
     "longitude": -81.51883769999999,
     "id": 197,
-    "website_url": "https://www.lock15brewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/lockport-brewery/",
@@ -7035,7 +7035,7 @@
     "latitude": 39.61541769999999,
     "longitude": -84.158703,
     "id": 199,
-    "website_url": "https://www.looseendsbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/mad-brewing-company/",
@@ -7073,7 +7073,7 @@
     "latitude": 41.14250759999999,
     "longitude": -81.8734832,
     "id": 200,
-    "website_url": "https://www.madbrewingcompabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/madtree-brewing-company/",
@@ -7104,7 +7104,7 @@
     "latitude": 39.1565939,
     "longitude": -84.4241454,
     "id": 201,
-    "website_url": "https://www.madtreebrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/maize-valley-brewing-co/",
@@ -7142,7 +7142,7 @@
     "latitude": 40.9541583,
     "longitude": -81.27900369999999,
     "id": 202,
-    "website_url": "https://www.maizevalleybrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/march-first-brewing/",
@@ -7177,7 +7177,7 @@
     "latitude": 39.2792245,
     "longitude": -84.34893679999999,
     "id": 203,
-    "website_url": "https://www.marchfirstbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/march-first-brewing-cincinnati/",
@@ -7217,7 +7217,7 @@
     "latitude": 39.10238,
     "longitude": -84.51256,
     "id": 204,
-    "website_url": "https://www.marchfirstbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/marietta-brewing-co/",
@@ -7253,7 +7253,7 @@
     "latitude": 39.4118528,
     "longitude": -81.4536564,
     "id": 205,
-    "website_url": "https://www.mariettabrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/marion-brewing-company/",
@@ -7287,7 +7287,7 @@
     "latitude": 40.58759939999999,
     "longitude": -83.129267,
     "id": 206,
-    "website_url": "https://www.marionbrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/market-garden-brewery/",
@@ -7316,7 +7316,7 @@
     "latitude": 41.4850769,
     "longitude": -81.70343059999999,
     "id": 207,
-    "website_url": "https://www.marketgardenbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/masthead-brewing-company/",
@@ -7353,7 +7353,7 @@
     "latitude": 41.502305,
     "longitude": -81.68861679999999,
     "id": 208,
-    "website_url": "https://www.mastheadbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/maumee-bay-brewing-co/",
@@ -7394,7 +7394,7 @@
     "latitude": 41.6432696,
     "longitude": -83.53809389999999,
     "id": 209,
-    "website_url": "https://www.maumeebaybrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/mcarthurs-brew-house/",
@@ -7432,7 +7432,7 @@
     "latitude": 41.1464342,
     "longitude": -81.47162420000001,
     "id": 210,
-    "website_url": "https://www.mcarthursbrewhobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/medina-brewing-company/",
@@ -7472,7 +7472,7 @@
     "latitude": 41.1354502,
     "longitude": -81.863674,
     "id": 211,
-    "website_url": "https://www.medinabrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/mellotone-beer-project/",
@@ -7499,7 +7499,7 @@
     "latitude": 39.1031182,
     "longitude": -84.5120196,
     "id": 212,
-    "website_url": "https://www.mellotonebeerprbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/mentor-brewing-company/",
@@ -7533,7 +7533,7 @@
     "latitude": 41.7143994,
     "longitude": -81.2977279,
     "id": 213,
-    "website_url": "https://www.mentorbrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/midnight-owl-brewing-company/",
@@ -7569,7 +7569,7 @@
     "latitude": 41.4641373,
     "longitude": -81.5371005,
     "id": 214,
-    "website_url": "https://www.midnightowlbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/millersburg-brewing-company/",
@@ -7606,7 +7606,7 @@
     "latitude": 40.5544291,
     "longitude": -81.91658489999999,
     "id": 215,
-    "website_url": "https://www.millersburgbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/missing-falls-brewery/",
@@ -7642,7 +7642,7 @@
     "latitude": 41.0705056,
     "longitude": -81.52679309999999,
     "id": 216,
-    "website_url": "https://www.missingfallsbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/missing-mountain-brewing-company/",
@@ -7679,7 +7679,7 @@
     "latitude": 41.1484766,
     "longitude": -81.4683941,
     "id": 217,
-    "website_url": "https://www.missingmountainbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/modern-methods-brewing-company/",
@@ -7714,7 +7714,7 @@
     "latitude": 41.23561189999999,
     "longitude": -80.8186058,
     "id": 218,
-    "website_url": "https://www.modernmethodsbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/moeller-brew-barn/",
@@ -7751,7 +7751,7 @@
     "latitude": 40.4210259,
     "longitude": -84.49297709999999,
     "id": 219,
-    "website_url": "https://www.moellerbrewbarnbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/moeller-brew-barn-dayton/",
@@ -7793,7 +7793,7 @@
     "latitude": 39.7634197,
     "longitude": -84.1847619,
     "id": 220,
-    "website_url": "https://www.moellerbrewbarnbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/moerlein-lager-house/",
@@ -7834,7 +7834,7 @@
     "latitude": 39.0962968,
     "longitude": -84.5086905,
     "id": 221,
-    "website_url": "https://www.moerleinlagerhobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/morning-dew-spa-and-brewery/",
@@ -7865,7 +7865,7 @@
     "latitude": 39.19208039999999,
     "longitude": -82.19558909999999,
     "id": 222,
-    "website_url": "https://www.morningdewspaanbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/mother-stewarts-brewing-company/",
@@ -7902,7 +7902,7 @@
     "latitude": 39.9270392,
     "longitude": -83.8124942,
     "id": 223,
-    "website_url": "https://www.motherstewartsbbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/mph-brewing/",
@@ -7941,7 +7941,7 @@
     "latitude": 39.2282587,
     "longitude": -84.35315920000001,
     "id": 224,
-    "website_url": "https://www.mphbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/muffleheads-brewery/",
@@ -7976,7 +7976,7 @@
     "latitude": 41.27147129999999,
     "longitude": -82.4245399,
     "id": 225,
-    "website_url": "https://www.muffleheadsbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/municipal-brew-works/",
@@ -8014,7 +8014,7 @@
     "latitude": 39.4009023,
     "longitude": -84.56410609999999,
     "id": 226,
-    "website_url": "https://www.municipalbrewwobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/muskellunge-brewing-company/",
@@ -8049,7 +8049,7 @@
     "latitude": 40.8019898,
     "longitude": -81.3770615,
     "id": 227,
-    "website_url": "https://www.muskellungebrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/new-ales-brewing/",
@@ -8081,7 +8081,7 @@
     "scrape_date": "2024-11-12",
     "region": "southwest",
     "id": 228,
-    "website_url": "https://www.newalesbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/nano/",
@@ -8110,7 +8110,7 @@
     "latitude": 41.4860542,
     "longitude": -81.7045576,
     "id": 229,
-    "website_url": "https://www.nanobrewclevelabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/narrow-path-brewing-company/",
@@ -8141,7 +8141,7 @@
     "latitude": 39.26809240000001,
     "longitude": -84.2594435,
     "id": 230,
-    "website_url": "https://www.narrowpathbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/neon-groundhog-brewery/",
@@ -8181,7 +8181,7 @@
     "latitude": 41.4882551,
     "longitude": -83.8677783,
     "id": 231,
-    "website_url": "https://www.neongroundhogbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/new-berlin-brewing-company/",
@@ -8218,7 +8218,7 @@
     "latitude": 40.8971878,
     "longitude": -81.4046395,
     "id": 232,
-    "website_url": "https://www.newberlinbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/new-enon-brewing/",
@@ -8247,7 +8247,7 @@
     "latitude": 39.880447,
     "longitude": -83.9365335,
     "id": 233,
-    "website_url": "https://www.newenonbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/nine-giant-brewing/",
@@ -8282,7 +8282,7 @@
     "latitude": 39.1822579,
     "longitude": -84.4276472,
     "id": 234,
-    "website_url": "https://www.ninegiantbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/noble-beast-brewing-co/",
@@ -8318,7 +8318,7 @@
     "latitude": 41.5078233,
     "longitude": -81.686408,
     "id": 235,
-    "website_url": "https://www.noblebeastbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/noble-creature-wild-ales-and-lagers/",
@@ -8357,7 +8357,7 @@
     "latitude": 41.1022385,
     "longitude": -80.64486480000001,
     "id": 236,
-    "website_url": "https://www.noblecreaturewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/nobleman-brewing-company/",
@@ -8384,7 +8384,7 @@
     "latitude": 39.8251427,
     "longitude": -81.560615,
     "id": 237,
-    "website_url": "https://www.noblemanbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/nocterra-brewing-co-audubon/",
@@ -8426,7 +8426,7 @@
     "latitude": 39.95003810000001,
     "longitude": -83.00761949999999,
     "id": 238,
-    "website_url": "https://www.nocterrabrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/nocterra-brewing-company/",
@@ -8465,7 +8465,7 @@
     "latitude": 40.1596203,
     "longitude": -83.0785105,
     "id": 239,
-    "website_url": "https://www.nocterrabrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/north-high-brewing-production/",
@@ -8488,7 +8488,7 @@
     "scrape_date": "2024-11-12",
     "region": "central",
     "id": 240,
-    "website_url": "https://www.northhighbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/northern-row/",
@@ -8525,7 +8525,7 @@
     "latitude": 39.1180025,
     "longitude": -84.5195155,
     "id": 241,
-    "website_url": "https://www.northernrowbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/nostalgia-brewing/",
@@ -8564,7 +8564,7 @@
     "latitude": 40.019887,
     "longitude": -82.8798342,
     "id": 242,
-    "website_url": "https://www.nostalgiabrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ohio-brewing-company/",
@@ -8603,7 +8603,7 @@
     "latitude": 41.1375723,
     "longitude": -81.482935,
     "id": 243,
-    "website_url": "https://www.ohiobrewingcompbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ohio-brewing-company-columbus/",
@@ -8645,7 +8645,7 @@
     "latitude": 39.9815626,
     "longitude": -82.9937022,
     "id": 244,
-    "website_url": "https://www.ohiobrewingcompbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/old-bridge-brewing-company/",
@@ -8684,7 +8684,7 @@
     "scrape_date": "2024-11-12",
     "region": "southeast",
     "id": 245,
-    "website_url": "https://www.oldbridgebrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/old-capitol-brewing/",
@@ -8718,7 +8718,7 @@
     "latitude": 39.3351095,
     "longitude": -82.9821961,
     "id": 246,
-    "website_url": "https://www.oldcapitolbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/old-dog-alehouse-brewery/",
@@ -8758,7 +8758,7 @@
     "latitude": 40.298446,
     "longitude": -83.06847599999999,
     "id": 247,
-    "website_url": "https://www.olddogalehousebbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/old-route-69-brewery/",
@@ -8792,7 +8792,7 @@
     "latitude": 40.77168289999999,
     "longitude": -83.8222262,
     "id": 248,
-    "website_url": "https://www.oldroute69brewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/olentangy-river-brewing-company/",
@@ -8833,7 +8833,7 @@
     "latitude": 40.1551765,
     "longitude": -83.0124352,
     "id": 249,
-    "website_url": "https://www.olentangyriverbbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/oncore-brewing/",
@@ -8870,7 +8870,7 @@
     "latitude": 41.581032,
     "longitude": -83.8818624,
     "id": 250,
-    "website_url": "https://www.oncorebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ottawa-brewing-company/",
@@ -8912,7 +8912,7 @@
     "latitude": 41.0194396,
     "longitude": -84.0492446,
     "id": 251,
-    "website_url": "https://www.ottawabrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/outerbelt-brewing/",
@@ -8946,7 +8946,7 @@
     "latitude": 39.7602767,
     "longitude": -82.6662873,
     "id": 252,
-    "website_url": "https://www.outerbeltbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/over-engineered-brewing/",
@@ -8979,7 +8979,7 @@
     "latitude": 39.7153623,
     "longitude": -82.5947046,
     "id": 253,
-    "website_url": "https://www.overengineeredbbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/paladin-brewing/",
@@ -9015,7 +9015,7 @@
     "latitude": 41.1000529,
     "longitude": -80.7876813,
     "id": 254,
-    "website_url": "https://www.paladinbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/paradigm-shift-brewery/",
@@ -9052,7 +9052,7 @@
     "latitude": 40.7988683,
     "longitude": -81.5219504,
     "id": 255,
-    "website_url": "https://www.paradigmshiftbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/paradise-brewing/",
@@ -9090,7 +9090,7 @@
     "latitude": 39.0536841,
     "longitude": -84.0529703,
     "id": 256,
-    "website_url": "https://www.paradisebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/paradise-brewing-east/",
@@ -9128,7 +9128,7 @@
     "latitude": 39.0536841,
     "longitude": -84.0529703,
     "id": 257,
-    "website_url": "https://www.paradisebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/parsons-north-brewing-company/",
@@ -9168,7 +9168,7 @@
     "latitude": 39.9498145,
     "longitude": -82.9827712,
     "id": 258,
-    "website_url": "https://www.parsonsnorthbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/penguin-city-brewing-company/",
@@ -9202,7 +9202,7 @@
     "latitude": 41.1039235,
     "longitude": -80.6564619,
     "id": 259,
-    "website_url": "https://www.penguincitybrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/the-phoenix-brewing-company/",
@@ -9240,7 +9240,7 @@
     "latitude": 40.7619279,
     "longitude": -82.5141144,
     "id": 260,
-    "website_url": "https://www.thephoenixbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/pompatus-brewing-co/",
@@ -9278,7 +9278,7 @@
     "latitude": 41.3918757,
     "longitude": -81.2885403,
     "id": 261,
-    "website_url": "https://www.pompatusbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/purpose-brew-works/",
@@ -9303,7 +9303,7 @@
     "latitude": 41.3012392,
     "longitude": -81.2380519,
     "id": 262,
-    "website_url": "https://www.purposebrewworkbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/quenched-tempered-brewing-company/",
@@ -9333,7 +9333,7 @@
     "scrape_date": "2024-11-12",
     "region": "northwest",
     "id": 263,
-    "website_url": "https://www.quenchedtemperebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/railroad-brewing-company-center-station/",
@@ -9373,7 +9373,7 @@
     "latitude": 41.478165,
     "longitude": -82.0200873,
     "id": 264,
-    "website_url": "https://www.railroadbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ramblin-reds-brewing/",
@@ -9415,7 +9415,7 @@
     "latitude": 41.5719626,
     "longitude": -84.1362458,
     "id": 265,
-    "website_url": "https://www.ramblinredsbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/red-wagon-brewing-four-paws-brewing/",
@@ -9449,7 +9449,7 @@
     "latitude": 41.29977909999999,
     "longitude": -81.91126799999999,
     "id": 266,
-    "website_url": "https://www.redwagonbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/restoration-brew-worx/",
@@ -9478,7 +9478,7 @@
     "latitude": 40.2996774,
     "longitude": -83.068006,
     "id": 267,
-    "website_url": "https://www.restorationbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/rhetoric-brewing-company/",
@@ -9513,7 +9513,7 @@
     "latitude": 40.37207739999999,
     "longitude": -83.34722839999999,
     "id": 268,
-    "website_url": "https://www.rhetoricbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/rhinegeist/",
@@ -9544,7 +9544,7 @@
     "latitude": 39.1172146,
     "longitude": -84.52000699999999,
     "id": 269,
-    "website_url": "https://www.rhinegeistbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/ridgeway-farm/",
@@ -9582,7 +9582,7 @@
     "latitude": 40.5282478,
     "longitude": -83.58557379999999,
     "id": 270,
-    "website_url": "https://www.ridgewayfarmbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/rockmill-brewery/",
@@ -9619,7 +9619,7 @@
     "latitude": 39.7483162,
     "longitude": -82.71006650000001,
     "id": 271,
-    "website_url": "https://www.rockmillbrewerybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/rocky-river-brewing-company/",
@@ -9658,7 +9658,7 @@
     "latitude": 41.4609457,
     "longitude": -81.85612280000001,
     "id": 272,
-    "website_url": "https://www.rockyriverbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/roundhouse-depot-brewing-co/",
@@ -9695,7 +9695,7 @@
     "latitude": 40.3596973,
     "longitude": -83.7628776,
     "id": 273,
-    "website_url": "https://www.roundhousedepotbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/rowhammer-brewing-company/",
@@ -9726,7 +9726,7 @@
     "latitude": 39.3992692,
     "longitude": -82.1276072,
     "id": 274,
-    "website_url": "https://www.rowhammerbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/royal-docks-brewhouse-cannery/",
@@ -9755,7 +9755,7 @@
     "latitude": 40.8637889,
     "longitude": -81.483907,
     "id": 275,
-    "website_url": "https://www.royaldocksbrewhbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/royal-docks-brewing-co-tied-house/",
@@ -9788,7 +9788,7 @@
     "latitude": 41.4907536,
     "longitude": -81.7100162,
     "id": 276,
-    "website_url": "https://www.royaldocksbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/royal-docks-brewing-co/",
@@ -9819,7 +9819,7 @@
     "latitude": 40.85832930000001,
     "longitude": -81.4830685,
     "id": 277,
-    "website_url": "https://www.royaldocksbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/samueladams/",
@@ -9851,7 +9851,7 @@
     "latitude": 40.4172871,
     "longitude": -82.90712300000001,
     "id": 278,
-    "website_url": "https://www.samueladamsbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/sandy-springs-brewing-company/",
@@ -9890,7 +9890,7 @@
     "latitude": 40.7298626,
     "longitude": -81.10386319999999,
     "id": 279,
-    "website_url": "https://www.sandyspringsbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/saucy-brew-works/",
@@ -9921,7 +9921,7 @@
     "latitude": 41.4895927,
     "longitude": -81.71057259999999,
     "id": 280,
-    "website_url": "https://www.saucybrewworksbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/saucy-brew-works-pinecrest/",
@@ -9959,7 +9959,7 @@
     "latitude": 41.4512406,
     "longitude": -81.4859937,
     "id": 281,
-    "website_url": "https://www.saucybrewworkspbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/saucy-brew-works-columbus/",
@@ -9998,7 +9998,7 @@
     "latitude": 39.9837751,
     "longitude": -83.01704749999999,
     "id": 282,
-    "website_url": "https://www.saucybrewworkscbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/saucy-brew-works-sandusky/",
@@ -10039,7 +10039,7 @@
     "latitude": 41.4580991,
     "longitude": -82.710239,
     "id": 283,
-    "website_url": "https://www.saucybrewworkssbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/schnitz-ale-brewery/",
@@ -10076,7 +10076,7 @@
     "latitude": 41.4063322,
     "longitude": -81.74203779999999,
     "id": 284,
-    "website_url": "https://www.schnitzalebrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/scottys-22-brew/",
@@ -10103,7 +10103,7 @@
     "latitude": 39.5373688,
     "longitude": -83.437579,
     "id": 285,
-    "website_url": "https://www.scottys22brewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/second-crossing-brew-co/",
@@ -10138,7 +10138,7 @@
     "scrape_date": "2024-11-12",
     "region": "northwest",
     "id": 286,
-    "website_url": "https://www.secondcrossingbbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/seventh-son-brewing-company/",
@@ -10169,7 +10169,7 @@
     "latitude": 39.9854835,
     "longitude": -82.99996159999999,
     "id": 287,
-    "website_url": "https://www.seventhsonbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/shawnee-station-taproom-by-maumee-bay/",
@@ -10210,7 +10210,7 @@
     "latitude": 40.1543273,
     "longitude": -83.130408,
     "id": 288,
-    "website_url": "https://www.shawneestationtbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/sibling-revelry-brewing/",
@@ -10247,7 +10247,7 @@
     "latitude": 41.4700813,
     "longitude": -81.94673379999999,
     "id": 289,
-    "website_url": "https://www.siblingrevelrybbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/silbi-brew-works/",
@@ -10271,7 +10271,7 @@
     "scrape_date": "2024-11-12",
     "region": "southwest",
     "id": 290,
-    "website_url": "https://www.silbibrewworksbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/sixth-sense-brewing-company/",
@@ -10308,7 +10308,7 @@
     "latitude": 39.0526991,
     "longitude": -82.63867979999999,
     "id": 291,
-    "website_url": "https://www.sixthsensebrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/somewhere-in-particular-brewing/",
@@ -10346,7 +10346,7 @@
     "latitude": 40.06193529999999,
     "longitude": -83.07543880000001,
     "id": 292,
-    "website_url": "https://www.somewhereinpartbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/sonder-brewing/",
@@ -10377,7 +10377,7 @@
     "latitude": 39.3133098,
     "longitude": -84.3019777,
     "id": 293,
-    "website_url": "https://www.sonderbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/sons-of-toil-brewing/",
@@ -10415,7 +10415,7 @@
     "latitude": 39.0276636,
     "longitude": -83.8771539,
     "id": 294,
-    "website_url": "https://www.sonsoftoilbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/southern-ohio-brewing/",
@@ -10452,7 +10452,7 @@
     "latitude": 39.7118051,
     "longitude": -84.028019,
     "id": 295,
-    "website_url": "https://www.southernohiobrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/southern-tier-brewing-co-cleveland/",
@@ -10491,7 +10491,7 @@
     "latitude": 41.4991253,
     "longitude": -81.6870304,
     "id": 296,
-    "website_url": "https://www.southerntierbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/spires-social-brewing-co/",
@@ -10523,7 +10523,7 @@
     "latitude": 40.1427441,
     "longitude": -82.9916752,
     "id": 297,
-    "website_url": "https://www.spiressocialbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/squids-brewery/",
@@ -10558,7 +10558,7 @@
     "latitude": 40.4565521,
     "longitude": -80.6068477,
     "id": 298,
-    "website_url": "https://www.squidsbrewerybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/staas-brewing-company/",
@@ -10586,7 +10586,7 @@
     "latitude": 40.30009829999999,
     "longitude": -83.06923259999999,
     "id": 299,
-    "website_url": "https://www.staasbrewingcombrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/standardized-brewing-company/",
@@ -10627,7 +10627,7 @@
     "latitude": 40.1998354,
     "longitude": -83.0028992,
     "id": 300,
-    "website_url": "https://www.standardizedbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/star-brick-brewing-of-hocking-college/",
@@ -10658,7 +10658,7 @@
     "latitude": 39.4313941,
     "longitude": -82.2080256,
     "id": 301,
-    "website_url": "https://www.starbrickbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/star-city-brewing/",
@@ -10696,7 +10696,7 @@
     "latitude": 39.6379855,
     "longitude": -84.28864380000002,
     "id": 302,
-    "website_url": "https://www.starcitybrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/starflyer-brewing-company/",
@@ -10721,7 +10721,7 @@
     "latitude": 40.7988285,
     "longitude": -81.3770606,
     "id": 303,
-    "website_url": "https://www.starflyerbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/streetside-brewery/",
@@ -10763,7 +10763,7 @@
     "latitude": 39.1091878,
     "longitude": -84.4330459,
     "id": 304,
-    "website_url": "https://www.streetsidebrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/swine-city-brewing/",
@@ -10800,7 +10800,7 @@
     "latitude": 39.3489964,
     "longitude": -84.5307661,
     "id": 305,
-    "website_url": "https://www.swinecitybrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/tafts-brewing-co/",
@@ -10830,7 +10830,7 @@
     "latitude": 39.1680687,
     "longitude": -84.51265409999999,
     "id": 306,
-    "website_url": "https://www.taftsbrewpouriubrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/tailspin-brewing-company/",
@@ -10865,7 +10865,7 @@
     "latitude": 40.4726235,
     "longitude": -84.6291274,
     "id": 307,
-    "website_url": "https://www.tailspinbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/terrestrial-brewing-company/",
@@ -10906,7 +10906,7 @@
     "latitude": 41.487193,
     "longitude": -81.7367252,
     "id": 308,
-    "website_url": "https://www.terrestrialbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/living-room-cabaret-brewery/",
@@ -10939,7 +10939,7 @@
     "latitude": 39.8754189,
     "longitude": -84.02108489999999,
     "id": 309,
-    "website_url": "https://www.thelivingroomcabrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/the-lot-beer-co/",
@@ -10976,7 +10976,7 @@
     "latitude": 40.0688713,
     "longitude": -82.51816699999999,
     "id": 310,
-    "website_url": "https://www.thelotbeercobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/the-urban-woody/",
@@ -11011,7 +11011,7 @@
     "latitude": 41.1565054,
     "longitude": -83.41354659999999,
     "id": 311,
-    "website_url": "https://www.theurbanwoodybrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/third-eye-brewing-company/",
@@ -11050,7 +11050,7 @@
     "latitude": 39.2781616,
     "longitude": -84.4433016,
     "id": 312,
-    "website_url": "https://www.thirdeyebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/third-eye-brewing-company-hamilton/",
@@ -11083,7 +11083,7 @@
     "latitude": 39.3866745,
     "longitude": -84.5491091,
     "id": 313,
-    "website_url": "https://www.thirdeyebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/thirsty-dog-brewing-co/",
@@ -11111,7 +11111,7 @@
     "latitude": 41.0671757,
     "longitude": -81.51731889999999,
     "id": 314,
-    "website_url": "https://www.thirstydogbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/three-tigers-brewing-company/",
@@ -11141,7 +11141,7 @@
     "latitude": 40.0687078,
     "longitude": -82.518626,
     "id": 315,
-    "website_url": "https://www.threetigersbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/thunderwing-brewing/",
@@ -11170,7 +11170,7 @@
     "latitude": 39.9669444,
     "longitude": -83.0669444,
     "id": 316,
-    "website_url": "https://www.thunderwingbrewbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/toxic-brew-company/",
@@ -11201,7 +11201,7 @@
     "latitude": 39.7574159,
     "longitude": -84.18395090000001,
     "id": 317,
-    "website_url": "https://www.toxicbrewcompanbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/trail-town-brewing/",
@@ -11235,7 +11235,7 @@
     "latitude": 39.8072378,
     "longitude": -83.8885078,
     "id": 318,
-    "website_url": "https://www.trailtownbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/traum-brewing/",
@@ -11269,7 +11269,7 @@
     "latitude": 40.826503,
     "longitude": -83.2815664,
     "id": 319,
-    "website_url": "https://www.traumbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/trek-brewing-company/",
@@ -11305,7 +11305,7 @@
     "latitude": 40.0579109,
     "longitude": -82.4561523,
     "id": 320,
-    "website_url": "https://www.trekbrewingcompbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/tricky-tortoise-brewing-company/",
@@ -11335,7 +11335,7 @@
     "latitude": 41.6415379,
     "longitude": -81.4055032,
     "id": 321,
-    "website_url": "https://www.trickytortoisebbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/twin-oast-brewing/",
@@ -11373,7 +11373,7 @@
     "latitude": 41.577217,
     "longitude": -82.83485999999999,
     "id": 322,
-    "website_url": "https://www.twinoastbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/two-bandits-brewing-company/",
@@ -11401,7 +11401,7 @@
     "latitude": 41.2932209,
     "longitude": -84.7618753,
     "id": 323,
-    "website_url": "https://www.twobanditsbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/understory/",
@@ -11440,7 +11440,7 @@
     "latitude": 40.0142374,
     "longitude": -83.01415779999999,
     "id": 324,
-    "website_url": "https://www.understorybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/uniontown-brewing-co/",
@@ -11463,7 +11463,7 @@
     "latitude": 40.8684938,
     "longitude": -82.3163324,
     "id": 325,
-    "website_url": "https://www.uniontownbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/upside-brewing/",
@@ -11494,7 +11494,7 @@
     "latitude": 41.7169852,
     "longitude": -83.7028988,
     "id": 326,
-    "website_url": "https://www.upsidebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/urban-artifact/",
@@ -11534,7 +11534,7 @@
     "latitude": 39.1607571,
     "longitude": -84.5423553,
     "id": 327,
-    "website_url": "https://www.urbanartifactbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/urbana-brewing-company/",
@@ -11571,7 +11571,7 @@
     "latitude": 40.1083952,
     "longitude": -83.75304899999999,
     "id": 328,
-    "website_url": "https://www.urbanabrewingcobrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/us-open-brewery/",
@@ -11596,7 +11596,7 @@
     "latitude": 39.5420846,
     "longitude": -84.7142899,
     "id": 329,
-    "website_url": "https://www.usopenbrewerybrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/verge-brewing/",
@@ -11628,7 +11628,7 @@
     "latitude": 39.1556493,
     "longitude": -84.60830229999999,
     "id": 330,
-    "website_url": "https://www.vergebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/wadsworth-brewing-company/",
@@ -11665,7 +11665,7 @@
     "latitude": 41.0250034,
     "longitude": -81.72991900000001,
     "id": 331,
-    "website_url": "https://www.wadsworthbrewinbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/walking-distance-brewing-co/",
@@ -11705,7 +11705,7 @@
     "latitude": 40.2332361,
     "longitude": -83.3655205,
     "id": 332,
-    "website_url": "https://www.walkingdistancebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/wandering-griffin-brewery-pub/",
@@ -11744,7 +11744,7 @@
     "latitude": 39.7751871,
     "longitude": -84.0682921,
     "id": 333,
-    "website_url": "https://www.wanderinggriffibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/wandering-monsters-brewing-company/",
@@ -11784,7 +11784,7 @@
     "latitude": 39.071783,
     "longitude": -84.3263477,
     "id": 334,
-    "website_url": "https://www.wanderingmonstebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/warped-wing-barrel-room-smokery/",
@@ -11822,7 +11822,7 @@
     "latitude": 39.5570895,
     "longitude": -84.2332903,
     "id": 335,
-    "website_url": "https://www.warpedwingbarrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/warped-wing-brewery-smokery-huber-heights/",
@@ -11853,7 +11853,7 @@
     "latitude": 39.8701455,
     "longitude": -84.1146253,
     "id": 336,
-    "website_url": "https://www.warpedwingbrewebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/warped-wing/",
@@ -11884,7 +11884,7 @@
     "latitude": 39.75965160000001,
     "longitude": -84.18588340000001,
     "id": 337,
-    "website_url": "https://www.warpedwingbrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/warped-wing-brewpub-smokery-mason/",
@@ -11922,7 +11922,7 @@
     "latitude": 39.35272570000001,
     "longitude": -84.321365,
     "id": 338,
-    "website_url": "https://www.warpedwingbrewpbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/weasel-boy-brewing-co/",
@@ -11999,7 +11999,7 @@
     "latitude": 39.1496182,
     "longitude": -84.59876340000001,
     "id": 340,
-    "website_url": "https://www.westsidebrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/wiedemann-brewery/",
@@ -12038,7 +12038,7 @@
     "latitude": 39.1683552,
     "longitude": -84.49778239999999,
     "id": 341,
-    "website_url": "https://www.wiedemannbrewerbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/wild-ohio-brewing-company/",
@@ -12061,7 +12061,7 @@
     "latitude": 39.92066,
     "longitude": -82.99612239999999,
     "id": 342,
-    "website_url": "https://www.wildohiobrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/wolfs-ridge-brewing-company/",
@@ -12091,7 +12091,7 @@
     "latitude": 39.9673132,
     "longitude": -82.9973361,
     "id": 343,
-    "website_url": "https://www.wolfsridgebrewibrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/woodburn-brewing/",
@@ -12125,7 +12125,7 @@
     "latitude": 39.1289415,
     "longitude": -84.4767968,
     "id": 344,
-    "website_url": "https://www.woodburnbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/wooly-pig-farm-brewery/",
@@ -12154,7 +12154,7 @@
     "latitude": 40.2921197,
     "longitude": -81.73517489999999,
     "id": 345,
-    "website_url": "https://www.woolypigfarmbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/working-class-brewery/",
@@ -12192,7 +12192,7 @@
     "latitude": 41.4514123,
     "longitude": -81.8188447,
     "id": 346,
-    "website_url": "https://www.workingclassbrebrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/y-bridge-brewing-company/",
@@ -12219,7 +12219,7 @@
     "latitude": 39.9562721,
     "longitude": -82.0044022,
     "id": 347,
-    "website_url": "https://www.ybridgebrewingcbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/yellow-springs-brewery/",
@@ -12250,7 +12250,7 @@
     "latitude": 39.809788,
     "longitude": -83.8885699,
     "id": 348,
-    "website_url": "https://www.yellowspringsbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/yellow-springs-brewery-columbus/",
@@ -12284,7 +12284,7 @@
     "latitude": 40.0218129,
     "longitude": -83.0022913,
     "id": 349,
-    "website_url": "https://www.yellowspringsbrbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/zaftig-brewing/",
@@ -12324,7 +12324,7 @@
     "latitude": 40.1060259,
     "longitude": -82.99777,
     "id": 350,
-    "website_url": "https://www.zaftigbrewingbrewing.com"
+    "website_url": null
   },
   {
     "url": "https://ohiocraftbeer.org/breweries/zzs-big-top/",
@@ -12362,6 +12362,6 @@
     "latitude": 41.4534496,
     "longitude": -82.00055329999999,
     "id": 351,
-    "website_url": "https://www.zzsbigtopbrewing.com"
+    "website_url": null
   }
 ]
