@@ -46,7 +46,7 @@ export async function selectCandidates(
     const geo = await env.DB.prepare(
       `SELECT AVG(latitude) AS lat, AVG(longitude) AS lng, COUNT(*) AS n
        FROM breweries
-       WHERE latitude IS NOT NULL AND longitude IS NOT NULL AND LOWER(city) = LOWER(?)`
+       WHERE latitude IS NOT NULL AND longitude IS NOT NULL AND closed_at IS NULL AND LOWER(city) = LOWER(?)`
     ).bind(cityOnly).first<{ lat: number; lng: number; n: number }>();
     if (geo && geo.n > 0 && geo.lat && geo.lng) {
       starting_lat = geo.lat;
@@ -85,7 +85,7 @@ export async function selectCandidates(
         if (matchedIds.length > 0) {
           const placeholders = matchedIds.map(() => '?').join(',');
           const { results: matchedBreweries } = await env.DB.prepare(
-            `SELECT * FROM breweries WHERE id IN (${placeholders})`
+            `SELECT * FROM breweries WHERE id IN (${placeholders}) AND closed_at IS NULL`
           ).bind(...matchedIds).all<any>();
 
           for (const brewery of matchedBreweries || []) {
@@ -129,6 +129,7 @@ export async function selectCandidates(
       AND longitude BETWEEN ? AND ?
       AND latitude IS NOT NULL
       AND longitude IS NOT NULL
+      AND closed_at IS NULL
     ORDER BY distance_miles ASC
     LIMIT 30
   `).bind(

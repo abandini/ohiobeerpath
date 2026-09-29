@@ -186,9 +186,9 @@ app.get('/sitemap.xml', async (c) => {
   // so `state = 'Ohio'` never matched and the Ohio sitemap dropped 336 of 486
   // breweries. Parameterized to avoid interpolating values into SQL.
   const stmt = subdomain.stateName
-    ? c.env.DB.prepare('SELECT id, region, state FROM breweries WHERE state = ? OR state_province = ?')
+    ? c.env.DB.prepare('SELECT id, region, state FROM breweries WHERE (state = ? OR state_province = ?) AND closed_at IS NULL')
         .bind(subdomain.stateAbbreviation, subdomain.stateName)
-    : c.env.DB.prepare('SELECT id, region, state FROM breweries');
+    : c.env.DB.prepare('SELECT id, region, state FROM breweries WHERE closed_at IS NULL');
 
   const { results: allBreweries } = await stmt
     .all<{ id: number; region: string; state: string }>();
@@ -340,7 +340,7 @@ async function seedEmbeddings(env: Env): Promise<{ success: boolean; processed: 
 
   try {
     const { results: breweries } = await env.DB.prepare(
-      'SELECT id, name, city, region, brewery_type, description FROM breweries'
+      'SELECT id, name, city, region, brewery_type, description FROM breweries WHERE closed_at IS NULL'
     ).all<Brewery>();
 
     if (!breweries || breweries.length === 0) {
@@ -412,8 +412,9 @@ async function processVibeInference(env: Env, batchSize: number = 10): Promise<{
       SELECT b.id, b.name, b.description, b.brewery_type, b.city, b.state
       FROM breweries b
       LEFT JOIN brewery_vibes v ON b.id = v.brewery_id
-      WHERE v.brewery_id IS NULL
-         OR v.last_updated < datetime('now', '-7 days')
+      WHERE b.closed_at IS NULL
+        AND (v.brewery_id IS NULL
+         OR v.last_updated < datetime('now', '-7 days'))
       LIMIT ?
     `).bind(batchSize).all<Brewery>();
 
@@ -485,10 +486,11 @@ async function enrichDescriptions(env: Env): Promise<{ success: boolean; process
     const { results: breweries } = await env.DB.prepare(`
       SELECT id, name, city, region, brewery_type, description, street
       FROM breweries
-      WHERE description IS NULL
+      WHERE closed_at IS NULL
+        AND (description IS NULL
          OR description = ''
          OR description = 'N/A'
-         OR LENGTH(description) < 50
+         OR LENGTH(description) < 50)
       LIMIT 20
     `).all<Brewery>();
 

@@ -159,6 +159,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
         </nav>
         <span class="region-pill">${(brewery.region || breweryStateName).toUpperCase()}</span>
         <h1 class="hero-title">${brewery.name}</h1>
+        ${brewery.closed_at ? `<p class="alert alert-warning py-2 px-3 d-inline-block mt-2 mb-0" role="status"><i class="bi bi-exclamation-triangle"></i> This brewery has closed. The page is kept for reference.</p>` : ''}
         <p class="hero-location">
           <i class="bi bi-geo-alt-fill"></i> ${brewery.city || breweryStateName}, ${breweryStateName}
           ${brewery.brewery_type ? `<span class="mx-2">|</span><i class="bi bi-cup-straw"></i> ${brewery.brewery_type}` : ''}
@@ -892,5 +893,6 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     image: ogImage,
     url: pageUrl,
     extraCss: ['/assets/css/pages/brewery.css'],
+    noindex: !!brewery.closed_at,
   });
 }

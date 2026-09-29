@@ -9,6 +9,7 @@ interface LayoutOptions {
   subdomain?: SubdomainContext;
   extraCss?: string[];
   extraJs?: string[];
+  noindex?: boolean; // closed breweries: keep the page reachable, keep it out of search results
 }
 
 // Site branding based on subdomain and brand domain - exported for use by other templates
@@ -84,7 +85,7 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <title>${title} | ${branding.siteName}</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="robots" content="${options.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'}">
   <meta name="author" content="${branding.siteName}">
   <meta name="geo.region" content="${branding.geoRegion}">
   <meta name="geo.placename" content="${branding.geoPlace}">

@@ -10,14 +10,14 @@ export async function getAllBreweries(env: Env, stateFilter?: StateFilter): Prom
   // If multi-state or no filter, return all breweries
   if (!stateFilter || stateFilter.isMultiState || !stateFilter.stateAbbreviation) {
     const { results } = await env.DB.prepare(
-      'SELECT * FROM breweries ORDER BY name ASC'
+      'SELECT * FROM breweries WHERE closed_at IS NULL ORDER BY name ASC'
     ).all<Brewery>();
     return results?.map(parseBrewery) || [];
   }
 
   // Filter by state abbreviation
   const { results } = await env.DB.prepare(
-    'SELECT * FROM breweries WHERE state = ? ORDER BY name ASC'
+    'SELECT * FROM breweries WHERE state = ? AND closed_at IS NULL ORDER BY name ASC'
   ).bind(stateFilter.stateAbbreviation).all<Brewery>();
 
   return results?.map(parseBrewery) || [];
@@ -27,14 +27,14 @@ export async function getBreweriesByRegion(env: Env, region: string, stateFilter
   // If multi-state or no filter, return all from region
   if (!stateFilter || stateFilter.isMultiState || !stateFilter.stateAbbreviation) {
     const { results } = await env.DB.prepare(
-      'SELECT * FROM breweries WHERE region = ? ORDER BY name ASC'
+      'SELECT * FROM breweries WHERE region = ? AND closed_at IS NULL ORDER BY name ASC'
     ).bind(region).all<Brewery>();
     return results?.map(parseBrewery) || [];
   }
 
   // Filter by region AND state
   const { results } = await env.DB.prepare(
-    'SELECT * FROM breweries WHERE region = ? AND state = ? ORDER BY name ASC'
+    'SELECT * FROM breweries WHERE region = ? AND state = ? AND closed_at IS NULL ORDER BY name ASC'
   ).bind(region, stateFilter.stateAbbreviation).all<Brewery>();
 
   return results?.map(parseBrewery) || [];
@@ -44,14 +44,14 @@ export async function getBreweriesByCity(env: Env, city: string, stateFilter?: S
   // If multi-state or no filter, return all from city
   if (!stateFilter || stateFilter.isMultiState || !stateFilter.stateAbbreviation) {
     const { results } = await env.DB.prepare(
-      'SELECT * FROM breweries WHERE city LIKE ? ORDER BY name ASC'
+      'SELECT * FROM breweries WHERE city LIKE ? AND closed_at IS NULL ORDER BY name ASC'
     ).bind(`%${city}%`).all<Brewery>();
     return results?.map(parseBrewery) || [];
   }
 
   // Filter by city AND state
   const { results } = await env.DB.prepare(
-    'SELECT * FROM breweries WHERE city LIKE ? AND state = ? ORDER BY name ASC'
+    'SELECT * FROM breweries WHERE city LIKE ? AND state = ? AND closed_at IS NULL ORDER BY name ASC'
   ).bind(`%${city}%`, stateFilter.stateAbbreviation).all<Brewery>();
 
   return results?.map(parseBrewery) || [];
@@ -97,6 +97,7 @@ export async function getNearbyBreweries(
       AND longitude BETWEEN ? AND ?
       AND latitude IS NOT NULL
       AND longitude IS NOT NULL
+      AND closed_at IS NULL
       ${stateClause}
     ORDER BY distance ASC
     LIMIT 100
@@ -130,7 +131,8 @@ export async function searchBreweries(env: Env, query: string, stateFilter?: Sta
   if (!stateFilter || stateFilter.isMultiState || !stateFilter.stateAbbreviation) {
     const { results } = await env.DB.prepare(`
       SELECT * FROM breweries
-      WHERE name LIKE ? OR city LIKE ? OR region LIKE ?
+      WHERE (name LIKE ? OR city LIKE ? OR region LIKE ?)
+        AND closed_at IS NULL
       ORDER BY name ASC
       LIMIT 100
     `).bind(searchTerm, searchTerm, searchTerm).all<Brewery>();
@@ -142,6 +144,7 @@ export async function searchBreweries(env: Env, query: string, stateFilter?: Sta
     SELECT * FROM breweries
     WHERE (name LIKE ? OR city LIKE ? OR region LIKE ?)
       AND state = ?
+      AND closed_at IS NULL
     ORDER BY name ASC
     LIMIT 100
   `).bind(searchTerm, searchTerm, searchTerm, stateFilter.stateAbbreviation).all<Brewery>();
@@ -154,7 +157,7 @@ export async function getBreweryCountByState(env: Env): Promise<Record<string, n
   const { results } = await env.DB.prepare(`
     SELECT state, COUNT(*) as count
     FROM breweries
-    WHERE state IS NOT NULL
+    WHERE state IS NOT NULL AND closed_at IS NULL
     GROUP BY state
   `).all<{ state: string; count: number }>();
 

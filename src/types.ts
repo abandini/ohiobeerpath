@@ -33,6 +33,7 @@ export interface Brewery {
   latitude?: number;
   phone?: string;
   website_url?: string;
+  closed_at?: string | null; // ISO date once retired; closed rows leave listings but stay addressable by id
   state?: string;
   region?: string;
   amenities?: string[]; // Parsed from JSON
