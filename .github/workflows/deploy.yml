@@ -36,15 +36,11 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
 
-      - name: Apply D1 migrations
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: d1 migrations apply ohio-beer-path-db --remote
+      # D1 migrations are applied by hand (`wrangler d1 execute --remote --file migrations/NNNN.sql`):
+      # the production d1_migrations history predates this folder and `migrations apply` would replay files.
 
       - name: Deployment notification
         if: success()
         run: |
           echo "✅ Deployment successful!"
-          echo "Visit: https://ohio-beer-path.abandini.workers.dev"
+          echo "Visit: https://brewerytrip.com"
