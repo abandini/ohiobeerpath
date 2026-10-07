@@ -25,6 +25,7 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Rate a Beer at ${brewery.name} | Brewery Trip</title>
+  <meta name="robots" content="noindex, follow">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="/assets/css/rating-form.css">
 </head>

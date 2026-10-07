@@ -503,6 +503,10 @@ pages.get('/terms', (c) => {
 });
 
 // SEO: Dynamic XML Sitemap
+// IndexNow site-verification key (Bing/Yandex). Not a secret; the file proves we control the host.
+const INDEXNOW_KEY = 'a7c3e1f0b9d24c5e8f6a1b2c3d4e5f60';
+pages.get(`/${INDEXNOW_KEY}.txt`, (c) => c.text(INDEXNOW_KEY, 200, { 'Cache-Control': 'public, max-age=86400' }));
+
 pages.get('/sitemap.xml', async (c) => {
   const baseUrl = 'https://brewerytrip.com';
   const today = new Date().toISOString().split('T')[0];
