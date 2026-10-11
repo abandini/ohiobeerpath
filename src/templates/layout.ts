@@ -1,6 +1,11 @@
 // Base HTML layout using template literals
 import type { SubdomainContext } from '../types';
 import { animationStyles, animationScripts } from './components/animations';
+import { jsonLd, escapeAttr, truncateDescription } from './utils';
+
+// Google AdSense publisher account. The meta tag verifies site ownership; the loader
+// script runs Auto ads (no manual ad units). ads.txt is served from src/index.ts.
+export const ADSENSE_CLIENT = 'ca-pub-3401889582473794';
 
 interface LayoutOptions {
   description?: string;
@@ -71,18 +76,41 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   const branding = getSiteBranding(subdomain);
   const baseUrl = subdomain?.baseUrl || 'https://brewerytrip.com';
 
-  const description = options.description || `Discover craft breweries across ${subdomain?.stateName || 'America'}. Plan your ultimate brewery tour with AI-powered recommendations.`;
+  const description = truncateDescription(options.description || `Discover craft breweries across ${subdomain?.stateName || 'America'}. Plan your ultimate brewery tour with AI-powered recommendations.`);
   const image = options.image || `${baseUrl}/assets/images/og-image.png`;
-  const url = options.url || baseUrl;
+  // Root canonical carries a trailing slash so it matches the sitemap's <loc> exactly
+  const url = options.url || `${baseUrl}/`;
+  const fullTitle = escapeAttr(`${title} | ${branding.siteName}`);
+  const metaDescription = escapeAttr(description);
+  const websiteJsonLd = jsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: branding.siteName,
+    alternateName: `${branding.geoPlace} Brewery Guide`,
+    url: baseUrl,
+    description,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${baseUrl}/breweries?search={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
+    }
+  });
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="${description}">
+  <meta name="description" content="${metaDescription}">
   <meta name="theme-color" content="#d97706">
-  <title>${title} | ${branding.siteName}</title>
+  <title>${fullTitle}</title>
+
+  <!-- Google AdSense (site verification + Auto ads) -->
+  <meta name="google-adsense-account" content="${ADSENSE_CLIENT}">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>
 
   <!-- SEO Meta Tags -->
   <meta name="robots" content="${options.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'}">
@@ -96,8 +124,8 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <meta property="og:site_name" content="${branding.siteName}">
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="${url}">
-  <meta property="og:title" content="${title} | ${branding.siteName}">
-  <meta property="og:description" content="${description}">
+  <meta property="og:title" content="${fullTitle}">
+  <meta property="og:description" content="${metaDescription}">
   <meta property="og:image" content="${image}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -105,29 +133,12 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="${url}">
-  <meta name="twitter:title" content="${title} | ${branding.siteName}">
-  <meta name="twitter:description" content="${description}">
+  <meta name="twitter:title" content="${fullTitle}">
+  <meta name="twitter:description" content="${metaDescription}">
   <meta name="twitter:image" content="${image}">
 
   <!-- Schema.org WebSite Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "${branding.siteName}",
-    "alternateName": "${branding.geoPlace} Brewery Guide",
-    "url": "${baseUrl}",
-    "description": "${description}",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "${baseUrl}/breweries?search={search_term_string}"
-      },
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
+  <script type="application/ld+json">${websiteJsonLd}</script>
 
   <!-- Google Fonts: Outfit (headings) + Inter (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

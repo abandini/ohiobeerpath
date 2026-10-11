@@ -1,6 +1,6 @@
 import { layout } from './layout';
 import type { Brewery } from '../types';
-import { hashCode } from './utils';
+import { hashCode, jsonLd } from './utils';
 
 interface Review {
   id: number;
@@ -839,7 +839,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
   }
 
   // Schema.org Brewery structured data for SEO + AEO
-  const schemaJsonLd = JSON.stringify({
+  const schemaJsonLd = jsonLd({
     '@context': 'https://schema.org',
     '@type': 'Brewery',
     name: brewery.name,
@@ -873,7 +873,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
   });
 
   // BreadcrumbList schema for navigation context
-  const breadcrumbJsonLd = JSON.stringify({
+  const breadcrumbJsonLd = jsonLd({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [

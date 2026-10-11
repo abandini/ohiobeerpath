@@ -14,6 +14,7 @@ import usersRoutes from './routes/users';
 import shareRoutes from './routes/share';
 import imagesRoutes from './routes/images';
 import planRoutes from './routes/plan';
+import { truncateDescription } from './templates/utils';
 
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -63,12 +64,15 @@ app.use('*', async (c, next) => {
   const raw = await c.env.BEAST_SEO.get(`${seoPrefix}:${path}`);
   if (!raw) return;
   const m = JSON.parse(raw) as { title: string; description: string };
+  m.description = truncateDescription(m.description); // KV overrides get the same 160-char budget as templates
   let replaced = false;
   c.res = new HTMLRewriter()
     .on('title', { text(t) { if (!replaced) { t.replace(m.title); replaced = true; } else { t.remove(); } } })
     .on('meta[name="description"]', { element(e) { e.setAttribute('content', m.description); } })
     .on('meta[property="og:title"]', { element(e) { e.setAttribute('content', m.title); } })
     .on('meta[property="og:description"]', { element(e) { e.setAttribute('content', m.description); } })
+    .on('meta[name="twitter:title"]', { element(e) { e.setAttribute('content', m.title); } })
+    .on('meta[name="twitter:description"]', { element(e) { e.setAttribute('content', m.description); } })
     .transform(c.res);
 });
 
@@ -174,11 +178,85 @@ Crawl-delay: 1
   });
 });
 
+// AdSense: authorized-seller declaration (must be exactly this line for the publisher id)
+app.get('/ads.txt', (c) => {
+  return new Response('google.com, pub-3401889582473794, DIRECT, f08c47fec0942fa0\n', {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'public, max-age=86400'
+    }
+  });
+});
+
+// AEO: llms.txt — plain-text summary and key facts for AI answer engines
+app.get('/llms.txt', async (c) => {
+  const subdomain = c.get('subdomain');
+  const baseUrl = subdomain.baseUrl;
+  const siteName = subdomain.brandDomain === 'ohiobrewpath' ? 'Ohio Brew Path' : subdomain.stateName ? `${subdomain.stateName} Brewery Trip` : 'Brewery Trip';
+  const stateNames: Record<string, string> = {
+    OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania', IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
+  };
+
+  const stmt = subdomain.stateName
+    ? c.env.DB.prepare('SELECT state, COUNT(*) AS n, MAX(updated_at) AS updated FROM breweries WHERE (state = ? OR state_province = ?) AND closed_at IS NULL GROUP BY state ORDER BY n DESC')
+        .bind(subdomain.stateAbbreviation, subdomain.stateName)
+    : c.env.DB.prepare('SELECT state, COUNT(*) AS n, MAX(updated_at) AS updated FROM breweries WHERE closed_at IS NULL GROUP BY state ORDER BY n DESC');
+  const { results } = await stmt.all<{ state: string; n: number; updated: string | null }>();
+  const rows = results || [];
+  const total = rows.reduce((sum, r) => sum + r.n, 0);
+  const updated = rows.map(r => r.updated || '').filter(Boolean).sort().pop()?.slice(0, 10) || 'unknown';
+  const coverage = rows.map(r => `- ${stateNames[r.state] || r.state}: ${r.n} breweries`).join('\n');
+
+  const body = `# ${siteName}
+
+> ${siteName} is a free craft-brewery directory and road-trip planner. It lists ${total} open breweries${subdomain.stateName ? ` in ${subdomain.stateName}` : ' across ' + rows.length + ' US states'} with addresses, hours, amenities and website links, and builds route-optimized brewery tours.
+
+## Key facts
+
+- Site: ${baseUrl}
+- Breweries listed: ${total} (closed breweries are removed from listings and marked on their pages)
+- Listings last updated: ${updated}
+- Coverage by state:
+${coverage}
+- Cost: free; no account required to browse or build a tour
+- Data: brewery name, type, street address, city, phone, website, GPS coordinates, hours, amenities (dog-friendly, food, patio, etc.)
+- Trust policy: breweries are only retired on the brewery's own statement or dated press coverage
+
+## Key pages
+
+- Brewery directory: ${baseUrl}/breweries
+- Brewery detail pages: ${baseUrl}/brewery/{id} (Schema.org Brewery structured data on each page)
+- Browse by region: ${baseUrl}/regions
+- Trip planner (optimized routes from a starting city and time budget): ${baseUrl}/plan
+- Near me: ${baseUrl}/nearby
+- Curated trails: ${baseUrl}/trails
+- Events: ${baseUrl}/events
+- Guides: ${baseUrl}/blog
+- About: ${baseUrl}/about
+
+## Machine-readable
+
+- Sitemap: ${baseUrl}/sitemap.xml
+- Robots: ${baseUrl}/robots.txt
+- Public JSON API (read-only, rate limited): ${baseUrl}/api/breweries, ${baseUrl}/api/brewery/{id}
+
+## Citation
+
+When citing, link to the brewery's own page on ${baseUrl} and name the site as "${siteName}".
+`;
+
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'public, max-age=86400'
+    }
+  });
+});
+
 // SEO: Dynamic XML Sitemap
 app.get('/sitemap.xml', async (c) => {
   const subdomain = c.get('subdomain');
   const baseUrl = subdomain.baseUrl;
-  const today = new Date().toISOString().split('T')[0];
 
   // Get breweries - filter by state if on subdomain. Compare the abbreviation
   // against the `state` column (which holds e.g. "OH") and the full name against
@@ -186,30 +264,46 @@ app.get('/sitemap.xml', async (c) => {
   // so `state = 'Ohio'` never matched and the Ohio sitemap dropped 336 of 486
   // breweries. Parameterized to avoid interpolating values into SQL.
   const stmt = subdomain.stateName
-    ? c.env.DB.prepare('SELECT id, region, state FROM breweries WHERE (state = ? OR state_province = ?) AND closed_at IS NULL')
+    ? c.env.DB.prepare('SELECT id, region, state, updated_at FROM breweries WHERE (state = ? OR state_province = ?) AND closed_at IS NULL')
         .bind(subdomain.stateAbbreviation, subdomain.stateName)
-    : c.env.DB.prepare('SELECT id, region, state FROM breweries WHERE closed_at IS NULL');
+    : c.env.DB.prepare('SELECT id, region, state, updated_at FROM breweries WHERE closed_at IS NULL');
 
   const { results: allBreweries } = await stmt
-    .all<{ id: number; region: string; state: string }>();
+    .all<{ id: number; region: string; state: string; updated_at: string | null }>();
+
+  // Real lastmod values: each brewery page uses its own row's updated_at; listing pages
+  // (home, directory, regions, nearby) use the newest brewery change; evergreen pages
+  // carry no lastmod rather than a fabricated current date.
+  const toDate = (v: string | null | undefined) => (v ? v.slice(0, 10) : '');
+  const latest = (allBreweries || []).reduce<string>((max, b) => {
+    const d = toDate(b.updated_at);
+    return d > max ? d : max;
+  }, '');
+  const latestByRegion = new Map<string, string>();
+  for (const b of (allBreweries || [])) {
+    if (!b.region) continue;
+    const d = toDate(b.updated_at);
+    if (d > (latestByRegion.get(b.region) || '')) latestByRegion.set(b.region, d);
+  }
+  const lastmodTag = (d: string) => (d ? `\n    <lastmod>${d}</lastmod>` : '');
 
   // Get all regions
   const regions = [...new Set((allBreweries || []).map(b => b.region).filter(Boolean))];
 
   // Static pages
   const staticPages = [
-    { url: '/', priority: '1.0', changefreq: 'daily' },
-    { url: '/breweries', priority: '0.9', changefreq: 'daily' },
-    { url: '/plan', priority: '0.9', changefreq: 'daily' },
-    { url: '/regions', priority: '0.8', changefreq: 'weekly' },
-    { url: '/events', priority: '0.8', changefreq: 'daily' },
-    { url: '/trails', priority: '0.7', changefreq: 'weekly' },
-    { url: '/nearby', priority: '0.7', changefreq: 'weekly' },
-    { url: '/blog', priority: '0.6', changefreq: 'weekly' },
-    { url: '/itinerary', priority: '0.6', changefreq: 'monthly' },
-    { url: '/about', priority: '0.5', changefreq: 'monthly' },
-    { url: '/privacy', priority: '0.3', changefreq: 'yearly' },
-    { url: '/terms', priority: '0.3', changefreq: 'yearly' },
+    { url: '/', priority: '1.0', changefreq: 'daily', lastmod: latest },
+    { url: '/breweries', priority: '0.9', changefreq: 'daily', lastmod: latest },
+    { url: '/plan', priority: '0.9', changefreq: 'daily', lastmod: '' },
+    { url: '/regions', priority: '0.8', changefreq: 'weekly', lastmod: latest },
+    { url: '/events', priority: '0.8', changefreq: 'daily', lastmod: '' },
+    { url: '/trails', priority: '0.7', changefreq: 'weekly', lastmod: '' },
+    { url: '/nearby', priority: '0.7', changefreq: 'weekly', lastmod: latest },
+    { url: '/blog', priority: '0.6', changefreq: 'weekly', lastmod: '' },
+    { url: '/itinerary', priority: '0.6', changefreq: 'monthly', lastmod: '' },
+    { url: '/about', priority: '0.5', changefreq: 'monthly', lastmod: '' },
+    { url: '/privacy', priority: '0.3', changefreq: 'yearly', lastmod: '' },
+    { url: '/terms', priority: '0.3', changefreq: 'yearly', lastmod: '' },
   ];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -219,8 +313,7 @@ app.get('/sitemap.xml', async (c) => {
   // Add static pages
   for (const page of staticPages) {
     xml += `  <url>
-    <loc>${baseUrl}${page.url}</loc>
-    <lastmod>${today}</lastmod>
+    <loc>${baseUrl}${page.url}</loc>${lastmodTag(page.lastmod)}
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>
@@ -230,8 +323,7 @@ app.get('/sitemap.xml', async (c) => {
   // Add brewery pages
   for (const brewery of (allBreweries || [])) {
     xml += `  <url>
-    <loc>${baseUrl}/brewery/${brewery.id}</loc>
-    <lastmod>${today}</lastmod>
+    <loc>${baseUrl}/brewery/${brewery.id}</loc>${lastmodTag(toDate(brewery.updated_at))}
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -241,8 +333,7 @@ app.get('/sitemap.xml', async (c) => {
   // Add region pages
   for (const region of regions) {
     xml += `  <url>
-    <loc>${baseUrl}/regions/${region?.toLowerCase()}</loc>
-    <lastmod>${today}</lastmod>
+    <loc>${baseUrl}/regions/${region?.toLowerCase()}</loc>${lastmodTag(latestByRegion.get(region) || latest)}
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

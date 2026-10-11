@@ -1,16 +1,43 @@
 import { layout, getSiteBranding } from './layout';
 import type { Brewery, SubdomainContext } from '../types';
-import { hashCode } from './utils';
+import { hashCode, jsonLd } from './utils';
 
 interface HomePageOptions {
   subdomain?: SubdomainContext;
 }
 
-export function homePage(featuredBreweries: Brewery[], stats: { total: number, regions: number }, options: HomePageOptions = {}): string {
+export interface HomeStats {
+  total: number;
+  regions: number;
+  states?: string[];   // full state names covered by the directory, e.g. ['Ohio', 'Michigan']
+  updatedAt?: string;  // ISO date of the most recent brewery record change
+}
+
+// Human-readable "A, B and C" list
+function joinNames(names: string[]): string {
+  if (names.length <= 1) return names.join('');
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+}
+
+// Quotable one-paragraph answer for people and answer engines: what the site is,
+// how many breweries it covers, where, and when the data last changed.
+export function homeSummary(stats: HomeStats, siteName: string, isMultiState: boolean, stateName: string): string {
+  const where = isMultiState
+    ? (stats.states && stats.states.length ? joinNames(stats.states) : 'the Midwest and Great Lakes states')
+    : stateName;
+  const updated = stats.updatedAt
+    ? ` Listings last updated ${new Date(stats.updatedAt + (stats.updatedAt.length === 10 ? 'T00:00:00Z' : '')).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}.`
+    : '';
+  return `${siteName} is a free directory and trip planner covering ${stats.total.toLocaleString('en-US')} craft breweries in ${where}, organized into ${stats.regions} regions, with hours, addresses, amenities and route-optimized tours.${updated}`;
+}
+
+export function homePage(featuredBreweries: Brewery[], stats: HomeStats, options: HomePageOptions = {}): string {
   const subdomain = options.subdomain;
   const branding = getSiteBranding(subdomain);
   const stateName = subdomain?.stateName || 'Ohio';
   const isMultiState = subdomain?.isMultiState ?? false;
+  // getSiteBranding() treats "no subdomain context" as the multi-state brand; the summary follows it
+  const summaryMultiState = subdomain ? subdomain.isMultiState : true;
   const stateAbbrevToName: Record<string, string> = {
     OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania',
     IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
@@ -26,6 +53,7 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
     <div class="hero-content">
       <h1>${branding.heroTitle}</h1>
       <p class="hero-subtitle">${branding.tagline}</p>
+      <p class="hero-summary" style="max-width:720px;margin:0 auto 1rem;font-size:1.05rem;line-height:1.55;opacity:.92">${homeSummary(stats, branding.siteName, summaryMultiState, stateName)}</p>
 
       <div class="hero-stats">
         <div class="hero-stat">
@@ -281,7 +309,7 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
   `;
 
   // HowTo schema for the "How It Works" section (AEO optimization)
-  const howToSchema = JSON.stringify({
+  const howToSchema = jsonLd({
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: `How to Plan Your Perfect Brewery Tour`,
@@ -309,7 +337,7 @@ export function homePage(featuredBreweries: Brewery[], stats: { total: number, r
   });
 
   // FAQ schema for common questions (AEO optimization)
-  const faqSchema = JSON.stringify({
+  const faqSchema = jsonLd({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [

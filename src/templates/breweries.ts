@@ -1,6 +1,6 @@
 import { layout } from './layout';
 import type { Brewery, SubdomainContext } from '../types';
-import { hashCode } from './utils';
+import { hashCode, jsonLd } from './utils';
 
 interface FilterOptions {
   region?: string;
@@ -177,7 +177,7 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {},
   </div>`;
 
   // Schema.org ItemList for brewery listing SEO
-  const itemListJsonLd = JSON.stringify({
+  const itemListJsonLd = jsonLd({
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `${stateLabel}Breweries`,

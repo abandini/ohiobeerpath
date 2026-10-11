@@ -1,4 +1,5 @@
 // Beer Blog templates
+import { jsonLd } from './utils';
 import { layout } from './layout';
 
 // Safe date formatter that handles epoch dates and invalid strings
@@ -203,7 +204,7 @@ export function blogPostPage(post: BlogPost, relatedPosts: BlogPost[] = []): str
   `;
 
   // Article schema for AEO/SEO
-  const articleSchema = JSON.stringify({
+  const articleSchema = jsonLd({
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
@@ -229,7 +230,7 @@ export function blogPostPage(post: BlogPost, relatedPosts: BlogPost[] = []): str
     }
   });
 
-  const breadcrumbSchema = JSON.stringify({
+  const breadcrumbSchema = jsonLd({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [

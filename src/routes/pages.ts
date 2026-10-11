@@ -36,10 +36,19 @@ pages.get('/', async (c) => {
   const featured = allBreweries.slice(0, 6); // First 6 as featured
 
   const regions = new Set(allBreweries.map(b => b.region).filter(Boolean));
+  const stateNames: Record<string, string> = {
+    OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania', IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
+  };
+  const stateCounts = new Map<string, number>();
+  for (const b of allBreweries) if (b.state) stateCounts.set(b.state, (stateCounts.get(b.state) || 0) + 1);
+  const states = [...stateCounts.entries()].sort((a, b) => b[1] - a[1]).map(([abbr]) => stateNames[abbr] || abbr);
+  const updatedAt = allBreweries.reduce<string | undefined>((max, b) => (b.updated_at && (!max || b.updated_at > max) ? b.updated_at : max), undefined);
 
   const html = homePage(featured, {
     total: allBreweries.length,
-    regions: regions.size
+    regions: regions.size,
+    states,
+    updatedAt: updatedAt?.slice(0, 10)
   }, { subdomain });
 
   return c.html(html);
