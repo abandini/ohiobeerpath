@@ -109,7 +109,7 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <title>${fullTitle}</title>
 
   <!-- Google AdSense (site verification + Auto ads) -->
-  <meta name="google-adsense-account" content="${ADSENSE_CLIENT}">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-05G0EVSWWR"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-05G0EVSWWR");</script><meta name="google-adsense-account" content="${ADSENSE_CLIENT}">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>
 
   <!-- SEO Meta Tags -->
