@@ -145,8 +145,7 @@ export function privacyPage(): string {
           <div class="card-body">
             <h2 class="h5">Cookies</h2>
             <p>
-              We use minimal cookies for essential functionality. We do not use
-              tracking cookies or sell your data to advertisers.
+              We use minimal cookies for essential functionality, Google Analytics to count visits, and Google AdSense to show ads. Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this and other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visits to this site and/or other sites on the Internet. You can opt out of personalized advertising at <a href="https://adssettings.google.com/" rel="noopener">Google Ads Settings</a> or <a href="https://www.aboutads.info/choices/" rel="noopener">www.aboutads.info</a>. We do not sell your personal information.
             </p>
           </div>
         </div>
