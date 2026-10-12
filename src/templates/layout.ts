@@ -409,6 +409,7 @@ function footer(branding: Branding): string {
             <li><a href="/regions">Regions</a></li>
             <li><a href="/trails">Trails</a></li>
             <li><a href="/about">About</a></li>
+            <li><a href="/privacy">Privacy policy</a></li>
           </ul>
         </div>
         <div class="col-md-4">
