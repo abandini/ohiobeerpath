@@ -1,5 +1,6 @@
 import { layout } from './layout';
 import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
+import { medalBadges, medalList } from './downtown-tour';
 import type { Brewery } from '../types';
 import { hashCode, jsonLd } from './utils';
 
@@ -71,7 +72,13 @@ function getOpenStatus(hours?: Record<string, string>): { isOpen: boolean; label
 function tourCallout(id: number): string {
   const i = DOWNTOWN_TOUR.stops.findIndex((s) => s.breweryId === id);
   if (i < 0) return '';
+  const gabf = DOWNTOWN_TOUR.stops[i].gabf || [];
   return `
+          ${gabf.length ? `<div class="content-card">
+            <h2>🏅 Great American Beer Festival medals ${medalBadges(gabf)}</h2>
+            <p class="small text-muted">${gabf.length} medal${gabf.length > 1 ? 's' : ''} in the official GABF winners lists, 2013–2026.</p>
+            ${medalList(gabf).replace('<details class="small mb-2">', '<details class="small mb-2" open>')}
+          </div>` : ''}
           <div class="content-card">
             <h2><i class="bi bi-signpost-2 text-warning" aria-hidden="true"></i> On the Downtown Cleveland Brewery Walk</h2>
             <p>Stop ${i + 1} of ${DOWNTOWN_TOUR.stops.length} on our walk from downtown through the Flats and Ohio City to Hingetown, with walking directions for the route and Uber/Lyft links at every stop.</p>

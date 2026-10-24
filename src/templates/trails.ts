@@ -34,7 +34,7 @@ export function trailsPage(trails: Trail[], subdomain?: SubdomainContext): strin
         <div class="trail-card-body">
           <h3>🚶 Downtown Cleveland Brewery Walk</h3>
           <div class="trail-meta"><span><i class="bi bi-building"></i> ${DOWNTOWN_TOUR.stops.length} breweries</span><span><i class="bi bi-geo-alt"></i> Downtown, the Flats, Ohio City</span></div>
-          <p class="trail-description">Noble Beast to Saucy Brew Works on foot, including the new Anthology Cask House in the former Bookhouse space. Every stop sourced.</p>
+          <p class="trail-description">Noble Beast to Saucy Brew Works on foot, including the new Anthology Cask House in the former Bookhouse space. ${DOWNTOWN_TOUR.stops.reduce((n, s) => n + (s.gabf?.length || 0), 0)} GABF medals among the stops since 2013. Every stop sourced.</p>
         </div>
       </div>
     </a>

@@ -100,3 +100,71 @@ describe('robots.txt', () => {
     expect(groups.find((g) => /Bytespider/.test(g))).toMatch(/Disallow: \/\n?$/m);
   });
 });
+
+describe('GABF medals', () => {
+  it('every medal quotes the official list line and names its beer, medal and entrant; years are inside the window', async () => {
+    const { GABF_WINDOW } = await import('../../src/data/tours/downtown-cleveland');
+    let n = 0;
+    for (const s of DOWNTOWN_TOUR.stops) for (const m of s.gabf || []) {
+      n++;
+      expect(m.quote).toBe(`${m.medal}: ${m.beer}, ${m.entrant}, Cleveland, OH`);
+      expect(m.url).toMatch(/^https:\/\/(www|cdn)\.greatamericanbeerfestival\.com\/.+\.pdf$/);
+      expect(m.year).toBeGreaterThanOrEqual(GABF_WINDOW.from); expect(m.year).toBeLessThanOrEqual(GABF_WINDOW.to);
+      expect(m.url).toContain(String(m.year).slice(2));
+      expect(m.category.length).toBeGreaterThan(3);
+    }
+    expect(n).toBe(14);
+    const count = (name: string) => DOWNTOWN_TOUR.stops.find((s) => s.name.startsWith(name))!.gabf?.length || 0;
+    expect([count('Masthead'), count('Noble Beast'), count('Market Garden'), count('Great Lakes')]).toEqual([7, 3, 3, 1]);
+  });
+  it('badges show one icon per medal, gold first, with a spoken summary', async () => {
+    const { medalBadges } = await import('../../src/templates/downtown-tour');
+    const nb = DOWNTOWN_TOUR.stops.find((s) => s.name.startsWith('Noble Beast'))!;
+    expect(medalBadges(nb.gabf)).toContain('aria-label="3 GABF medals: 1 gold, 1 silver, 1 bronze"');
+    expect(medalBadges(nb.gabf)).toContain('>🥇🥈🥉<');
+    expect(medalBadges([])).toBe('');
+  });
+  it('the page shows the medal total, per-stop lists and JSON-LD awards; medal brewery pages show the list', async () => {
+    const html = downtownTourPage();
+    expect(html).toContain('14 Great American Beer Festival medals at 4 stops');
+    expect(html).toContain('Shower Beer'); expect(html).toContain('entered as Market Garden Brewery - Production Brewery');
+    const ld = JSON.parse(html.match(/<script type="application\/ld\+json">(\{"@context":"https:\/\/schema.org","@type":"ItemList".*?)<\/script>/s)![1]);
+    expect(ld.itemListElement.find((x: any) => x.item.name.startsWith('Masthead')).item.award).toHaveLength(7);
+    const { breweryPage } = await import('../../src/templates/brewery');
+    const page = breweryPage({ id: 208, name: 'Masthead Brewing Company', city: 'Cleveland', state: 'OH', region: 'northeast' } as any);
+    expect(page).toContain('Great American Beer Festival medals'); expect(page).toContain('Midwest Red IPA');
+  });
+});
+
+describe('where are you starting from', () => {
+  it('routeFrom visits every stop once, starting with the nearest', async () => {
+    const { ROUTE_FROM_JS, LANDMARKS } = await import('../../src/data/tours/downtown-cleveland');
+    const routeFrom = new Function(`${ROUTE_FROM_JS}; return routeFrom;`)();
+    const st = DOWNTOWN_TOUR.stops;
+    const wsm = LANDMARKS.find((l) => l.name === 'West Side Market')!;
+    const order = routeFrom(wsm, st);
+    expect([...order].sort((a, b) => a - b)).toEqual(st.map((_, i) => i));
+    const nearest = st.map((s, i) => [milesBetween(wsm, s), i]).sort((a, b) => a[0] - b[0])[0][1];
+    expect(order[0]).toBe(nearest);
+    const len = (o: number[], from = wsm) => o.reduce((sum, i, k) => sum + milesBetween(k ? st[o[k - 1]] : from, st[i]), 0);
+    // no longer than the plain nearest-next walk would be
+    const greedy: number[] = []; { const left = st.map((_, i) => i); let at: any = wsm; while (left.length) { left.sort((a, b) => milesBetween(at, st[a]) - milesBetween(at, st[b])); const i = left.shift()!; greedy.push(i); at = st[i]; } }
+    expect(len(order)).toBeLessThanOrEqual(len(greedy) + 1e-9);
+    const ps = LANDMARKS.find((l) => l.name === 'Public Square')!;
+    const o2 = routeFrom(ps, st), names = o2.map((i) => st[i].name);
+    expect(names.indexOf('Forest City Brewery') === names.length - 1 || Math.abs(names.indexOf('Forest City Brewery') - names.indexOf('Brick and Barrel')) === 1).toBe(true);
+    expect(st[order[0]].name).toMatch(/Market Garden|Great Lakes/);
+  });
+  it('the finder script compiles and offers every landmark and stop', async () => {
+    const { LANDMARKS } = await import('../../src/data/tours/downtown-cleveland');
+    const html = downtownTourPage();
+    const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+    const finder = scripts.find((s) => s.includes('finder-out'))!;
+    expect(() => new Function(finder)).not.toThrow();
+    for (const l of LANDMARKS) expect(html).toContain(`>${l.name}</option>`);
+    expect(html).toContain("don't send your location to our server");
+    const { ROUTE_FROM_JS } = await import('../../src/data/tours/downtown-cleveland');
+    expect(finder).toContain(ROUTE_FROM_JS);
+    expect(finder).not.toMatch(/innerHTML/);
+  });
+});
