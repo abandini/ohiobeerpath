@@ -6,6 +6,9 @@ import type { SubdomainContext } from '../types';
 import { DOWNTOWN_TOUR, milesBetween, type Source, type TourStop } from '../data/tours/downtown-cleveland';
 
 const mi = (n: number) => `${n.toFixed(2)} mi`;
+// Rideshare deep links with the stop as the drop-off (Uber universal link; Lyft ride link). Pickup is the rider's location.
+const uber = (s: TourStop) => `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=${s.lat}&dropoff[longitude]=${s.lon}&dropoff[nickname]=${encodeURIComponent(s.name)}`;
+const lyft = (s: TourStop) => `https://lyft.com/ride?id=lyft&destination[latitude]=${s.lat}&destination[longitude]=${s.lon}`;
 const mapsSearch = (s: TourStop) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${s.name}, ${s.address}, Cleveland, OH`)}`;
 const source = (s: Source) =>
   `<blockquote class="small text-muted border-start ps-2 mb-1">“${e(s.quote)}”</blockquote>` +
@@ -49,6 +52,7 @@ export function downtownTourPage(subdomain?: SubdomainContext): string {
       <div class="col-lg-8">
         <p class="text-muted">The route starts on the east edge of downtown, heads through the Flats, runs up West 25th Street in Ohio City and ends in Hingetown on Detroit Avenue. Hours change, so check each brewery's site before you go.</p>
         <p class="small text-muted"><strong>How we measured:</strong> distances are straight lines between map points (our calculation), using coordinates from our brewery directory and, for Anthology Cask House, OpenStreetMap. Real walking routes are longer.</p>
+        <p class="small text-muted"><strong>Rather ride part of it?</strong> The longest leg is Southern Tier to Brick and Barrel (${mi(legs[2])} straight-line); each stop has Uber and Lyft links that set it as your drop-off.</p>
         <h2 class="h3 mb-4 mt-4"><i class="bi bi-geo-alt" aria-hidden="true"></i> The stops</h2>
         ${stops.map((s, i) => `
           ${i > 0 ? `<p class="small text-muted ms-5 mb-2"><i class="bi bi-arrow-down"></i> ${mi(legs[i - 1])} straight-line</p>` : ''}
@@ -58,7 +62,7 @@ export function downtownTourPage(subdomain?: SubdomainContext): string {
               <h3 class="h4">${s.breweryId ? `<a href="/brewery/${s.breweryId}" class="text-dark">${e(s.name)}</a>` : e(s.name)}</h3>
               <p class="stop-meta mb-1">${s.neighborhood ? `${e(s.neighborhood)} · ` : ''}<i class="bi bi-geo-alt" aria-hidden="true"></i> ${e(s.address)}, Cleveland</p>
               <p class="mb-1">${e(s.note)}</p>
-              <p class="small mb-2"><a href="${e(mapsSearch(s))}" rel="noopener" target="_blank">Map</a>${s.website ? ` · <a href="${e(s.website)}" rel="noopener" target="_blank">Website and hours</a>` : ''}</p>
+              <p class="small mb-2"><a href="${e(mapsSearch(s))}" rel="noopener" target="_blank">Map</a> · Ride here: <a href="${e(uber(s))}" rel="noopener" target="_blank">Uber</a> / <a href="${e(lyft(s))}" rel="noopener" target="_blank">Lyft</a>${s.website ? ` · <a href="${e(s.website)}" rel="noopener" target="_blank">Website and hours</a>` : ''}</p>
               <details class="small"><summary>Sources</summary>${source(s.addressSource)}${source(s.noteSource)}</details>
             </div>
           </div>`).join('')}
@@ -74,7 +78,7 @@ export function downtownTourPage(subdomain?: SubdomainContext): string {
           <div class="card">
             <div class="card-body text-center">
               <h2 class="h5 card-title">Walk it</h2>
-              <p class="text-muted small">Walking directions in ${segments.length} parts, or add the stops to your tour.</p>
+              <p class="text-muted small">Walking directions in ${segments.length} parts, a ride link at every stop, or add the stops to your tour.</p>
               ${segments.map((g) => `<a class="start-tour-btn w-100 d-block text-decoration-none mb-2" href="${e(g.href)}" rel="noopener" target="_blank"><i class="bi bi-map" aria-hidden="true"></i> Stops ${g.from}–${g.to}</a>`).join('')}
               <button class="btn btn-outline-secondary w-100" onclick="addDowntownTour([${ids.join(',')}])"><i class="bi bi-plus-circle" aria-hidden="true"></i> Add to my tour</button>
               <p class="small mt-2 mb-0" role="status" aria-live="polite" id="downtown-tour-status"></p>

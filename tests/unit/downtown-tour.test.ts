@@ -50,6 +50,13 @@ describe('downtown Cleveland tour page', () => {
     expect(links.length).toBe(3);
     for (const l of links) expect((new URL(l).searchParams.get('waypoints') || '').split('|').filter(Boolean).length).toBeLessThanOrEqual(3);
   });
+  it('every stop has Uber and Lyft links with its coordinates as the drop-off', () => {
+    for (const s of DOWNTOWN_TOUR.stops) {
+      expect(html).toContain(`dropoff[latitude]=${s.lat}&amp;dropoff[longitude]=${s.lon}`);
+      expect(html).toContain(`destination[latitude]=${s.lat}&amp;destination[longitude]=${s.lon}`);
+    }
+    expect(html).toContain('The longest leg is Southern Tier to Brick and Barrel');
+  });
   it('links Anthology without a broken directory link (it has no brewery id)', () => {
     expect(html).not.toContain('/brewery/undefined');
   });
