@@ -51,11 +51,19 @@ describe('downtown Cleveland tour page', () => {
     for (const l of links) expect((new URL(l).searchParams.get('waypoints') || '').split('|').filter(Boolean).length).toBeLessThanOrEqual(3);
   });
   it('every stop has Uber and Lyft links with its coordinates as the drop-off', () => {
-    for (const s of DOWNTOWN_TOUR.stops) {
-      expect(html).toContain(`dropoff[latitude]=${s.lat}&amp;dropoff[longitude]=${s.lon}`);
-      expect(html).toContain(`destination[latitude]=${s.lat}&amp;destination[longitude]=${s.lon}`);
-    }
-    expect(html).toContain('The longest leg is Southern Tier to Brick and Barrel');
+    const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
+    const ubers = hrefs.filter((h) => h.startsWith('https://m.uber.com/ul/')).map((h) => new URL(h).searchParams);
+    const lyfts = hrefs.filter((h) => h.startsWith('https://lyft.com/ride')).map((h) => new URL(h).searchParams);
+    expect(ubers).toHaveLength(DOWNTOWN_TOUR.stops.length); expect(lyfts).toHaveLength(DOWNTOWN_TOUR.stops.length);
+    DOWNTOWN_TOUR.stops.forEach((s, i) => {
+      expect(ubers[i].get('action')).toBe('setPickup'); expect(ubers[i].get('pickup')).toBe('my_location');
+      expect(Number(ubers[i].get('dropoff[latitude]'))).toBe(s.lat); expect(Number(ubers[i].get('dropoff[longitude]'))).toBe(s.lon);
+      expect(ubers[i].get('dropoff[nickname]')).toBe(s.name);
+      expect(lyfts[i].get('id')).toBe('lyft');
+      expect(Number(lyfts[i].get('destination[latitude]'))).toBe(s.lat); expect(Number(lyfts[i].get('destination[longitude]'))).toBe(s.lon);
+    });
+    const st = DOWNTOWN_TOUR.stops, legs = st.slice(1).map((s, i) => milesBetween(st[i], s)), k = legs.indexOf(Math.max(...legs));
+    expect(html).toContain(`The longest straight-line leg is ${st[k].name} to ${st[k + 1].name}`);
   });
   it('links Anthology without a broken directory link (it has no brewery id)', () => {
     expect(html).not.toContain('/brewery/undefined');

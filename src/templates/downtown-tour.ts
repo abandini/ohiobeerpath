@@ -18,6 +18,7 @@ export function downtownTourPage(subdomain?: SubdomainContext): string {
   const t = DOWNTOWN_TOUR, stops = t.stops;
   const legs = stops.slice(1).map((s, i) => milesBetween(stops[i], s));
   const total = legs.reduce((a, b) => a + b, 0);
+  const longest = legs.indexOf(Math.max(...legs));
   const ids = stops.filter((s) => s.breweryId).map((s) => s.breweryId);
   // Google Maps on mobile browsers accepts at most three waypoints, so the walk opens as segments of up to five stops.
   const place = (s: TourStop) => encodeURIComponent(`${s.address}, Cleveland, OH`);
@@ -52,7 +53,7 @@ export function downtownTourPage(subdomain?: SubdomainContext): string {
       <div class="col-lg-8">
         <p class="text-muted">The route starts on the east edge of downtown, heads through the Flats, runs up West 25th Street in Ohio City and ends in Hingetown on Detroit Avenue. Hours change, so check each brewery's site before you go.</p>
         <p class="small text-muted"><strong>How we measured:</strong> distances are straight lines between map points (our calculation), using coordinates from our brewery directory and, for Anthology Cask House, OpenStreetMap. Real walking routes are longer.</p>
-        <p class="small text-muted"><strong>Rather ride part of it?</strong> The longest leg is Southern Tier to Brick and Barrel (${mi(legs[2])} straight-line); each stop has Uber and Lyft links that set it as your drop-off.</p>
+        <p class="small text-muted"><strong>Rather ride part of it?</strong> The longest straight-line leg is ${e(stops[longest].name)} to ${e(stops[longest + 1].name)} (${mi(legs[longest])}); each stop has Uber and Lyft links that set it as your drop-off.</p>
         <h2 class="h3 mb-4 mt-4"><i class="bi bi-geo-alt" aria-hidden="true"></i> The stops</h2>
         ${stops.map((s, i) => `
           ${i > 0 ? `<p class="small text-muted ms-5 mb-2"><i class="bi bi-arrow-down"></i> ${mi(legs[i - 1])} straight-line</p>` : ''}
