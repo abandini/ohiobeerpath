@@ -88,7 +88,7 @@ export const DOWNTOWN_TOUR = {
       addressSource: { quote: "1859 West 25th St", url: "https://www.nanobrewcleveland.com/", checked: C },
       note: "Beer and burgers on West 25th since 2012.",
       noteSource: { quote: "GOOD TIMES, GREAT BEER & BURGERS IN OHIO CITY SINCE 2012", url: "https://www.nanobrewcleveland.com/", checked: C } },
-    { name: "Anthology Cask House", neighborhood: "Ohio City", address: "1526 W. 25th St",
+    { name: "Anthology Cask House", breweryId: 2464, neighborhood: "Ohio City", address: "1526 W. 25th St",
       lat: 41.4895913, lon: -81.7070255,
       addressSource: { quote: "Ohio City's newest pub pours its first pint today at Anthology Cask House (1526 W. 25th St.), which opens in the former Bookhouse Brewing space from Noble Beast's Shaun and JoLyn Yasaki.", url: "https://clevelandmagazine.com/articles/downtown-farmers-market-lessens-loss-of-grocery-store-cle-daily/", checked: C, publisher: "Cleveland Magazine, Aug. 14, 2026" },
       note: "Noble Beast's owners opened it in the former Bookhouse Brewing space; its cask ales are brewed on site.",

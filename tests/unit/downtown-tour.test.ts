@@ -65,8 +65,10 @@ describe('downtown Cleveland tour page', () => {
     const st = DOWNTOWN_TOUR.stops, legs = st.slice(1).map((s, i) => milesBetween(st[i], s)), k = legs.indexOf(Math.max(...legs));
     expect(html).toContain(`The longest straight-line leg is ${st[k].name} to ${st[k + 1].name}`);
   });
-  it('links Anthology without a broken directory link (it has no brewery id)', () => {
+  it('every stop links to its directory page, Anthology included, and all ten join the tour', () => {
     expect(html).not.toContain('/brewery/undefined');
+    for (const s of DOWNTOWN_TOUR.stops) expect(html).toContain(`href="/brewery/${s.breweryId}"`);
+    expect(html).toContain(`addDowntownTour([${DOWNTOWN_TOUR.stops.map((s) => s.breweryId).join(',')}])`);
   });
   it('the trails index links to the walk', () => {
     expect(trailsPage([])).toContain('href="/trails/downtown-cleveland"');

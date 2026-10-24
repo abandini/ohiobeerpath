@@ -124,7 +124,6 @@ export function downtownTourPage(subdomain?: SubdomainContext): string {
               ${segments.map((g) => `<a class="start-tour-btn w-100 d-block text-decoration-none mb-2" href="${e(g.href)}" rel="noopener" target="_blank"><i class="bi bi-map" aria-hidden="true"></i> Stops ${g.from}–${g.to}</a>`).join('')}
               <button class="btn btn-outline-secondary w-100" onclick="addDowntownTour([${ids.join(',')}])"><i class="bi bi-plus-circle" aria-hidden="true"></i> Add to my tour</button>
               <p class="small mt-2 mb-0" role="status" aria-live="polite" id="downtown-tour-status"></p>
-              <p class="small text-muted mt-3 mb-0">Anthology Cask House isn't in our brewery directory yet, so it isn't added to your tour.</p>
             </div>
           </div>
         </div>
