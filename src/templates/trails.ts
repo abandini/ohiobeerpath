@@ -1,4 +1,5 @@
 import { layout } from './layout';
+import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
 import type { Brewery, SubdomainContext } from '../types';
 
 export interface Trail {
@@ -22,12 +23,22 @@ export function trailsPage(trails: Trail[], subdomain?: SubdomainContext): strin
 
   <div class="trails-hero">
     <div class="container">
-      <h1><i class="bi bi-signpost-2"></i> Brewery Trails</h1>
+      <h1 style="color: #fff;"><i class="bi bi-signpost-2"></i> Brewery Trails</h1>
       <p>Curated routes through ${subdomain?.isMultiState ? "America's" : (subdomain?.stateName ? subdomain.stateName + "'s" : "America's")} best breweries. Pick a trail and start your adventure!</p>
     </div>
   </div>
 
   <div class="container my-5">
+    <a href="/trails/downtown-cleveland" class="d-block text-decoration-none mb-5">
+      <div class="trail-card">
+        <div class="trail-card-body">
+          <h3>🚶 Downtown Cleveland Brewery Walk</h3>
+          <div class="trail-meta"><span><i class="bi bi-building"></i> ${DOWNTOWN_TOUR.stops.length} breweries</span><span><i class="bi bi-geo-alt"></i> Downtown, the Flats, Ohio City</span></div>
+          <p class="trail-description">Noble Beast to Saucy Brew Works on foot, including the new Anthology Cask House in the former Bookhouse space. Every stop sourced.</p>
+        </div>
+      </div>
+    </a>
+
     ${featuredTrails.length > 0 ? `
     <h2 class="mb-4" style="font-weight: 700;"><i class="bi bi-star-fill text-warning"></i> Featured Trails</h2>
     <div class="row g-4 mb-5">
@@ -115,7 +126,7 @@ export function trailDetailPage(trail: Trail, breweries: Brewery[], subdomain?: 
           <li class="breadcrumb-item active text-white">${trail.name}</li>
         </ol>
       </nav>
-      <h1>${trail.name}</h1>
+      <h1 style="color: #fff;">${trail.name}</h1>
       <p style="opacity: 0.9; max-width: 600px;">${trail.description || ''}</p>
 
       <div class="trail-stats">

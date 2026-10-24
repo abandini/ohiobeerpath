@@ -9,6 +9,7 @@ import { regionsPage, regionDetailPage } from '../templates/regions';
 import { nearbyPage } from '../templates/nearby';
 import { itineraryPage } from '../templates/itinerary';
 import { trailsPage, trailDetailPage, Trail } from '../templates/trails';
+import { downtownTourPage } from '../templates/downtown-tour';
 import { aboutPage, privacyPage, termsPage } from '../templates/static';
 import { blogListPage, blogPostPage, BlogPost, sampleBlogPosts } from '../templates/blog';
 import { eventsPage } from '../templates/events';
@@ -251,6 +252,9 @@ pages.get('/trails', async (c) => {
   const html = trailsPage(trails || [], subdomain);
   return c.html(html);
 });
+
+// Code-defined, sourced walking tour (registered before the D1-backed /trails/:slug)
+pages.get('/trails/downtown-cleveland', (c) => c.html(downtownTourPage(c.get('subdomain'))));
 
 // Single trail page
 pages.get('/trails/:slug', async (c) => {
@@ -533,6 +537,7 @@ pages.get('/sitemap.xml', async (c) => {
     { url: '/regions', priority: '0.8', changefreq: 'weekly' },
     { url: '/events', priority: '0.8', changefreq: 'daily' },
     { url: '/trails', priority: '0.7', changefreq: 'weekly' },
+    { url: '/trails/downtown-cleveland', priority: '0.7', changefreq: 'monthly' },
     { url: '/nearby', priority: '0.7', changefreq: 'weekly' },
     { url: '/blog', priority: '0.6', changefreq: 'weekly' },
     { url: '/itinerary', priority: '0.6', changefreq: 'monthly' },
