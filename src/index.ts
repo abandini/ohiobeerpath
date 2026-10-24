@@ -1,3 +1,4 @@
+import { sourcedQuote } from './templates/utils';
 import { Hono } from 'hono';
 import { cors } from './middleware/cors';
 import { serveAssets } from './middleware/assets';
@@ -417,7 +418,7 @@ async function seedEmbeddings(env: Env): Promise<{ success: boolean; processed: 
 
   try {
     const { results: breweries } = await env.DB.prepare(
-      'SELECT id, name, city, region, brewery_type, description FROM breweries WHERE closed_at IS NULL'
+      'SELECT id, name, city, region, brewery_type, about_quote, about_source_url, about_checked_at FROM breweries WHERE closed_at IS NULL'
     ).all<Brewery>();
 
     if (!breweries || breweries.length === 0) {
@@ -437,7 +438,7 @@ async function seedEmbeddings(env: Env): Promise<{ success: boolean; processed: 
             brewery.city,
             brewery.region,
             brewery.brewery_type,
-            brewery.description
+            sourcedQuote(brewery)?.quote
           ].filter(Boolean).join(' | ');
 
           const embeddingResponse = await env.AI.run('@cf/baai/bge-base-en-v1.5', {
@@ -486,7 +487,7 @@ async function processVibeInference(env: Env, batchSize: number = 10): Promise<{
   try {
     // Get breweries that haven't been processed recently (older than 7 days or never)
     const { results: breweries } = await env.DB.prepare(`
-      SELECT b.id, b.name, b.description, b.brewery_type, b.city, b.state
+      SELECT b.id, b.name, b.about_quote, b.about_source_url, b.about_checked_at, b.brewery_type, b.city, b.state
       FROM breweries b
       LEFT JOIN brewery_vibes v ON b.id = v.brewery_id
       WHERE b.closed_at IS NULL
@@ -507,7 +508,7 @@ async function processVibeInference(env: Env, batchSize: number = 10): Promise<{
 Brewery: ${brewery.name}
 Type: ${brewery.brewery_type || 'unknown'}
 City: ${brewery.city}
-Description: ${brewery.description || 'No description available'}
+Description: ${sourcedQuote(brewery)?.quote || 'No description available'}
 
 Return ONLY a JSON object like:
 {

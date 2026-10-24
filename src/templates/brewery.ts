@@ -2,7 +2,7 @@ import { layout } from './layout';
 import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
 import { medalBadges, medalList } from './downtown-tour';
 import type { Brewery } from '../types';
-import { hashCode, jsonLd } from './utils';
+import { hashCode, jsonLd, escapeHtml, escapeAttr, safeHttpUrl, hostOf, sourcedQuote, excerpt, isCalendarDate, safeImagePath } from './utils';
 
 interface Review {
   id: number;
@@ -63,7 +63,7 @@ function getOpenStatus(hours?: Record<string, string>): { isOpen: boolean; label
 
   return {
     isOpen,
-    label: isOpen ? 'Open Now' : 'Closed',
+    label: isOpen ? 'Open Now' : 'Closed now',
     cssClass: isOpen ? 'status-open' : 'status-closed'
   };
 }
@@ -91,17 +91,34 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania',
     IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
   };
-  const breweryStateName = stateAbbrevToName[brewery.state || ''] || 'Ohio';
-  const breweryStateAbbr = brewery.state || 'OH';
+  // No invented geography: an unknown state renders as whatever the row carries, never as Ohio.
+  const breweryStateAbbr = (brewery.state || '').toUpperCase();
+  const breweryStateName = stateAbbrevToName[breweryStateAbbr] || brewery.state_province || breweryStateAbbr;
+  // Some imported rows store the literal 'N/A' as a phone number; treat that as no phone.
+  const phone = brewery.phone && brewery.phone.trim().toUpperCase() !== 'N/A' ? brewery.phone.trim() : '';
 
   const hue = Math.abs(hashCode(brewery.name)) % 360;
   const openStatus = getOpenStatus(brewery.hours);
   const gradientColors = `hsl(${hue}, 70%, 35%), hsl(${(hue + 40) % 360}, 60%, 25%)`;
 
   // Support real brewery photos when available, fallback to gradient
-  const heroBackground = brewery.image_url
-    ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${brewery.image_url}'); background-size: cover; background-position: center;`
+  // Hero photo: owner-supplied gallery photo first (same-origin /images/ path), else legacy image_url, else gradient.
+  // One validator for every image path that reaches the CSS url() or an <img src>: see safeImagePath.
+  const photos = (brewery.photos || []).map(p => ({ url: safeImagePath(p.url), alt: p.alt })).filter(p => p.url !== '' && p.alt.trim() !== '');
+  const heroImage = photos[0]?.url || safeImagePath(brewery.image_url);
+  const heroBackground = heroImage
+    ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${escapeAttr(heroImage)}'); background-size: cover; background-position: center;`
     : `background: linear-gradient(135deg, ${gradientColors});`;
+  const photoCredit = (brewery.photo_credit || '').trim();
+  const gallerySection = photos.length > 0 ? `
+          <!-- Photos: owner-supplied, factual alt text, one credit line -->
+          <div class="content-card brewery-photos">
+            <h2><i class="bi bi-images text-warning"></i> Photos</h2>
+            <div class="photo-grid">
+              ${photos.map(p => `<figure><img src="${escapeAttr(p.url)}" alt="${escapeAttr(p.alt)}" loading="lazy" width="1600" height="739"></figure>`).join('')}
+            </div>
+            ${photoCredit ? `<p class="photo-credit">${escapeHtml(photoCredit)}</p>` : ''}
+          </div>` : '';
 
   const amenitiesList = brewery.amenities && Array.isArray(brewery.amenities) && brewery.amenities.length > 0
     ? brewery.amenities.map(amenity => {
@@ -129,18 +146,37 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
       }).join('')
     : '<p class="text-muted mb-0">No amenities listed</p>';
 
+  const hasAmenities = Array.isArray(brewery.amenities) && brewery.amenities.length > 0;
   const hoursOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const hoursList = brewery.hours && typeof brewery.hours === 'object' && Object.keys(brewery.hours).length > 0
-    ? hoursOrder.filter(day => brewery.hours![day]).map(day => {
+  // Only days with a nonblank value count as hours the page actually shows.
+  const hoursRows = brewery.hours && typeof brewery.hours === 'object'
+    ? hoursOrder.filter(day => typeof brewery.hours![day] === 'string' && brewery.hours![day].trim() !== '')
+    : [];
+  const hasHours = hoursRows.length > 0;
+  const hoursList = hasHours
+    ? hoursRows.map(day => {
         const isToday = new Date().toLocaleDateString('en-US', { weekday: 'long' }) === day;
         return `
           <div class="hours-row ${isToday ? 'today' : ''}">
             <span class="day">${day}</span>
-            <span class="time">${brewery.hours![day]}</span>
+            <span class="time">${escapeHtml(brewery.hours![day])}</span>
           </div>
         `;
       }).join('')
     : '<p class="text-muted mb-0">Hours not available</p>';
+
+  // About copy: only a verbatim quote from the brewery's own website, with its source and check date.
+  // The legacy generated `description` column is never rendered.
+  const sourced = sourcedQuote(brewery);
+  const websiteUrl = safeHttpUrl(brewery.website_url);
+  const aboutBlock = sourced
+    ? `
+            <blockquote class="about-quote" cite="${escapeAttr(sourced.sourceUrl)}">
+              <p>“${escapeHtml(sourced.quote)}”</p>
+              <footer class="about-source">From <a href="${escapeAttr(sourced.sourceUrl)}" target="_blank" rel="noopener nofollow">${escapeHtml(sourced.host)}</a>, checked ${formatCheckedDate(sourced.checkedAt)}</footer>
+            </blockquote>`
+    : `
+            <p class="about-text text-muted">We haven’t confirmed a description from ${escapeHtml(brewery.name)}’s own website yet. The details below come from our listing data; check with the brewery before you go.</p>`;
 
   // Build the address string
   const addressParts = [
@@ -174,20 +210,20 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
           <ol class="breadcrumb breadcrumb-light">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="/breweries">Breweries</a></li>
-            <li class="breadcrumb-item active">${brewery.name}</li>
+            <li class="breadcrumb-item active">${escapeHtml(brewery.name)}</li>
           </ol>
         </nav>
-        <span class="region-pill">${(brewery.region || breweryStateName).toUpperCase()}</span>
-        <h1 class="hero-title">${brewery.name}</h1>
+        <span class="region-pill">${escapeHtml((brewery.region || breweryStateName || '').toUpperCase())}</span>
+        <h1 class="hero-title">${escapeHtml(brewery.name)}</h1>
         ${brewery.closed_at ? `<p class="alert alert-warning py-2 px-3 d-inline-block mt-2 mb-0" role="status"><i class="bi bi-exclamation-triangle"></i> This brewery has closed. The page is kept for reference.</p>` : ''}
         <p class="hero-location">
-          <i class="bi bi-geo-alt-fill"></i> ${brewery.city || breweryStateName}, ${breweryStateName}
+          <i class="bi bi-geo-alt-fill"></i> ${escapeHtml(placeLabel(brewery.city, breweryStateName))}
           ${brewery.brewery_type ? `<span class="mx-2">|</span><i class="bi bi-cup-straw"></i> ${brewery.brewery_type}` : ''}
           ${openStatus ? `<span class="mx-2">|</span><span class="open-status ${openStatus.cssClass}"><i class="bi ${openStatus.isOpen ? 'bi-clock' : 'bi-clock-history'}"></i> ${openStatus.label}</span>` : ''}
         </p>
         <div class="hero-actions">
-          ${brewery.website_url ? `
-            <a href="${brewery.website_url}" target="_blank" rel="noopener" class="btn btn-light btn-lg">
+          ${websiteUrl ? `
+            <a href="${escapeAttr(websiteUrl)}" target="_blank" rel="noopener" class="btn btn-light btn-lg">
               <i class="bi bi-globe"></i> Visit Website
             </a>
           ` : ''}
@@ -218,22 +254,20 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
         <div class="col-lg-8">
           <!-- About Section -->
           <div class="content-card">
-            <h2><i class="bi bi-info-circle-fill text-warning"></i> About ${brewery.name}</h2>
-            <p class="about-text">
-              ${brewery.description && brewery.description !== 'N/A'
-                ? brewery.description
-                : `${brewery.name} is a craft brewery located in ${brewery.city}, ${breweryStateName}. Visit their taproom to experience their unique selection of handcrafted beers and enjoy the local brewery atmosphere.`}
-            </p>
-            ${brewery.phone ? `
-              <div class="contact-info">
-                <a href="tel:${brewery.phone.replace(/[^0-9]/g, '')}" class="contact-link">
-                  <i class="bi bi-telephone-fill"></i> ${brewery.phone}
-                </a>
-              </div>
-            ` : ''}
+            <h2><i class="bi bi-info-circle-fill text-warning"></i> About ${escapeHtml(brewery.name)}</h2>
+            ${aboutBlock}
+            <dl class="brewery-facts">
+              ${brewery.brewery_type ? `<div><dt>Type</dt><dd>${breweryTypeLabel(brewery.brewery_type)}</dd></div>` : ''}
+              ${fullAddress ? `<div><dt>${brewery.street ? 'Address' : 'Location'}</dt><dd>${escapeHtml(fullAddress)}</dd></div>` : ''}
+              ${phone ? `<div><dt>Phone</dt><dd><a href="tel:${phone.replace(/[^0-9]/g, '')}" class="contact-link"><i class="bi bi-telephone-fill"></i> ${escapeHtml(phone)}</a></dd></div>` : ''}
+              ${websiteUrl ? `<div><dt>Website</dt><dd><a href="${escapeAttr(websiteUrl)}" target="_blank" rel="noopener">${escapeHtml(hostOf(websiteUrl))}</a></dd></div>` : ''}
+            </dl>
           </div>
           ${tourCallout(brewery.id)}
 
+          ${gallerySection}
+
+          ${hasAmenities ? `
           <!-- Amenities Section -->
           <div class="content-card">
             <h2><i class="bi bi-stars text-warning"></i> Amenities & Features</h2>
@@ -241,6 +275,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
               ${amenitiesList}
             </div>
           </div>
+          ` : ''}
 
           <!-- Hours Section -->
           <div class="content-card">
@@ -267,8 +302,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             `}
             ${brewery.street || brewery.city ? `
               <address class="brewery-address">
-                ${brewery.street ? `${brewery.street}<br>` : ''}
-                ${brewery.city}, ${breweryStateAbbr} ${brewery.postal_code || ''}
+                ${brewery.street ? `${escapeHtml(brewery.street)}<br>` : ''}
+                ${escapeHtml([brewery.city, [breweryStateAbbr, brewery.postal_code].filter(Boolean).join(' ')].filter(Boolean).join(', '))}
               </address>
             ` : ''}
             ${brewery.latitude && brewery.longitude ? `
@@ -295,8 +330,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
                 <i class="bi bi-link-45deg"></i>
                 <span>Copy Link</span>
               </button>
-              ${brewery.website_url ? `
-                <a href="${brewery.website_url}" target="_blank" rel="noopener" class="action-btn">
+              ${websiteUrl ? `
+                <a href="${escapeAttr(websiteUrl)}" target="_blank" rel="noopener" class="action-btn">
                   <i class="bi bi-globe2"></i>
                   <span>Website</span>
                 </a>
@@ -307,9 +342,9 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
           <!-- Nearby Breweries Teaser -->
           <div class="sidebar-card">
             <h3><i class="bi bi-geo text-warning"></i> Explore More</h3>
-            <p class="text-muted">Discover other breweries in the ${brewery.region || breweryStateName} region.</p>
-            <a href="/regions/${(brewery.region || 'central').toLowerCase()}" class="btn btn-warning w-100">
-              <i class="bi bi-compass"></i> Explore ${brewery.region || breweryStateName} Region
+            <p class="text-muted">Discover other breweries in the ${escapeHtml(brewery.region || breweryStateName || '')} region.</p>
+            <a href="/regions/${encodeURIComponent((brewery.region || 'central').toLowerCase())}" class="btn btn-warning w-100">
+              <i class="bi bi-compass"></i> Explore ${escapeHtml(brewery.region || breweryStateName || '')} Region
             </a>
           </div>
 
@@ -330,7 +365,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
       ${nearbyBreweries && nearbyBreweries.length > 0 ? `
       <!-- Nearby Breweries Section -->
       <div class="nearby-section">
-        <h2><i class="bi bi-geo-alt text-warning"></i> More Breweries in ${brewery.region || breweryStateName}</h2>
+        <h2><i class="bi bi-geo-alt text-warning"></i> More Breweries in ${escapeHtml(brewery.region || breweryStateName || '')}</h2>
         <div class="row g-3">
           ${nearbyBreweries.map(nb => {
             const nbHue = Math.abs(hashCode(nb.name)) % 360;
@@ -431,39 +466,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
                 </button>
               </div>
             </div>
-          `).join('') : `
-            <div class="no-reviews">
-              <i class="bi bi-chat-quote"></i>
-              <h4>No reviews yet</h4>
-              <p>Be the first to share your experience at ${brewery.name}!</p>
-            </div>
-          `}
+          `).join('') : ''}
         </div>
-      </div>
-
-      <!-- AI Recommendations Section -->
-      <div class="ai-recs-section">
-        <h2><i class="bi bi-magic text-warning"></i> AI-Powered Recommendations</h2>
-        <p class="text-muted mb-3">Find breweries with a similar vibe</p>
-        <div class="rec-buttons mb-4">
-          <button class="rec-btn" onclick="getRecommendations('cozy', null, event)">
-            <i class="bi bi-lamp"></i> Cozy Vibes
-          </button>
-          <button class="rec-btn" onclick="getRecommendations('lively', null, event)">
-            <i class="bi bi-music-note-beamed"></i> Lively Scene
-          </button>
-          <button class="rec-btn" onclick="getRecommendations('family', null, event)">
-            <i class="bi bi-people"></i> Family Friendly
-          </button>
-          <button class="rec-btn active" onclick="getRecommendations('similar', ${brewery.id}, event)">
-            <i class="bi bi-stars"></i> Similar to This
-          </button>
-        </div>
-        <div id="ai-recs-loading" class="text-center d-none">
-          <div class="spinner-border text-warning" role="status"></div>
-          <p class="text-muted mt-2">Finding recommendations...</p>
-        </div>
-        <div id="ai-recs-results" class="row g-3"></div>
       </div>
 
       <!-- Back Link -->
@@ -478,7 +482,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     <div class="claim-modal-overlay" id="claim-modal" role="dialog" aria-modal="true" aria-labelledby="claim-modal-title">
       <div class="claim-modal">
         <div class="claim-modal-header">
-          <h3 id="claim-modal-title"><i class="bi bi-shield-check text-warning"></i> Claim ${brewery.name}</h3>
+          <h3 id="claim-modal-title"><i class="bi bi-shield-check text-warning"></i> Claim ${escapeHtml(brewery.name)}</h3>
           <button class="claim-modal-close" onclick="hideClaimModal()" aria-label="Close">&times;</button>
         </div>
         <div class="claim-modal-body">
@@ -522,7 +526,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
               <textarea class="form-control" name="notes" rows="3" placeholder="Tell us anything else that might help verify your claim..."></textarea>
             </div>
             <input type="hidden" name="brewery_id" value="${brewery.id}">
-            <input type="hidden" name="brewery_name" value="${brewery.name}">
+            <input type="hidden" name="brewery_name" value="${escapeHtml(brewery.name)}">
             <button type="submit" class="btn btn-warning w-100">
               <i class="bi bi-send"></i> Submit Claim Request
             </button>
@@ -563,8 +567,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
       function shareBrewery() {
         if (navigator.share) {
           navigator.share({
-            title: '${brewery.name.replace(/'/g, "\\'")}',
-            text: 'Check out ${brewery.name.replace(/'/g, "\\'")} in ${brewery.city}, ${breweryStateName}!',
+            title: ${jsonLd(brewery.name)},
+            text: ${jsonLd(`Check out ${brewery.name}${placeLabel(brewery.city, breweryStateName) ? ` in ${placeLabel(brewery.city, breweryStateName)}` : ''}!`)},
             url: window.location.href
           }).catch(() => {});
         } else {
@@ -609,76 +613,6 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
       document.head.appendChild(style);
 
       document.addEventListener('DOMContentLoaded', updateTourBadge);
-
-      // AI Recommendations
-      async function getRecommendations(type, breweryId, evt) {
-        const loading = document.getElementById('ai-recs-loading');
-        const results = document.getElementById('ai-recs-results');
-
-        // Update active button
-        document.querySelectorAll('.rec-btn').forEach(btn => btn.classList.remove('active'));
-        if (evt && evt.target) {
-          evt.target.closest('.rec-btn').classList.add('active');
-        } else {
-          // Auto-load case: highlight "Similar to This" button
-          document.querySelector('.rec-btn:last-child')?.classList.add('active');
-        }
-
-        loading.classList.remove('d-none');
-        results.innerHTML = '';
-
-        try {
-          let url;
-          if (type === 'similar' && breweryId) {
-            url = '/api/ai/recommend?brewery_id=' + breweryId;
-          } else {
-            url = '/api/ai/recommend?mood=' + type;
-          }
-
-          const response = await fetch(url);
-          const data = await response.json();
-
-          if (data.success && data.recommendations) {
-            results.innerHTML = data.recommendations.map(b => {
-              const hue = Math.abs(hashCode(b.name)) % 360;
-              return \`
-                <div class="col-6 col-md-4 col-lg-2">
-                  <a href="/brewery/\${b.id}" class="rec-card">
-                    <div class="rec-card-img" style="background: linear-gradient(135deg, hsl(\${hue}, 70%, 40%), hsl(\${(hue + 40) % 360}, 60%, 30%));">
-                      <i class="bi bi-cup-straw"></i>
-                    </div>
-                    <div class="rec-card-body">
-                      <h5>\${b.name}</h5>
-                      <p>\${b.city}</p>
-                    </div>
-                  </a>
-                </div>
-              \`;
-            }).join('');
-
-            if (data.reason) {
-              results.innerHTML += '<div class="col-12 mt-2"><small class="text-muted"><i class="bi bi-lightbulb"></i> ' + data.reason + '</small></div>';
-            }
-          }
-        } catch (err) {
-          results.innerHTML = '<div class="col-12 text-center text-muted">Unable to load recommendations</div>';
-        } finally {
-          loading.classList.add('d-none');
-        }
-      }
-
-      function hashCode(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-          hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        return hash;
-      }
-
-      // Auto-load similar recommendations on page load
-      document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => getRecommendations('similar', ${brewery.id}), 500);
-      });
 
       // Review submission
       async function submitReview(event) {
@@ -795,9 +729,10 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
   const baseUrl = 'https://brewerytrip.com';
   const pageUrl = `${baseUrl}/brewery/${brewery.id}`;
 
-  const seoDescription = brewery.description && brewery.description !== 'N/A'
-    ? brewery.description
-    : `Visit ${brewery.name} in ${brewery.city || breweryStateName}, ${breweryStateName}. Discover craft beers and plan your brewery tour.`;
+  const cityLabel = placeLabel(brewery.city, breweryStateName);
+  const shownFacts = [hasHours ? 'hours' : '', brewery.street ? 'address' : '', phone ? 'phone' : ''].filter(Boolean);
+  const seoDescription = buildSeoDescription(brewery, cityLabel, breweryStateName, breweryStateAbbr, shownFacts);
+  const pageTitle = buildPageTitle(brewery, cityLabel, breweryStateAbbr, shownFacts);
 
   // Dynamic OG image for this brewery
   const ogImage = `${baseUrl}/api/og/${brewery.id}`;
@@ -866,7 +801,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     name: brewery.name,
     description: seoDescription,
     url: pageUrl,
-    ...(brewery.website_url && { sameAs: brewery.website_url }),
+    ...(websiteUrl && { sameAs: websiteUrl }),
     address: {
       '@type': 'PostalAddress',
       ...(brewery.street && { streetAddress: brewery.street }),
@@ -882,11 +817,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
         longitude: brewery.longitude
       }
     }),
-    ...(brewery.phone && { telephone: brewery.phone }),
+    ...(phone && { telephone: phone }),
     ...(brewery.brewery_type && { additionalType: brewery.brewery_type }),
-    servesCuisine: 'Beer',
-    priceRange: '$$',
-    isAccessibleForFree: true,
     ...(hoursSpecs.length > 0 && { openingHoursSpecification: hoursSpecs }),
     ...(schemaAmenities.length > 0 && { amenityFeature: schemaAmenities }),
     ...(aggregateRating && { aggregateRating }),
@@ -909,11 +841,66 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     <script type="application/ld+json">${breadcrumbJsonLd}</script>
   `;
 
-  return layout(`${brewery.name}`, contentWithSchema, {
+  return layout(pageTitle, contentWithSchema, {
     description: seoDescription,
     image: ogImage,
     url: pageUrl,
     extraCss: ['/assets/css/pages/brewery.css'],
     noindex: !!brewery.closed_at,
   });
+}
+
+const TYPE_LABELS: Record<string, string> = {
+  micro: 'Microbrewery', nano: 'Nanobrewery', brewpub: 'Brewpub', regional: 'Regional brewery',
+  large: 'Large brewery', taproom: 'Taproom', contract: 'Contract brewery', proprietor: 'Brewery', planning: 'Brewery (in planning)',
+};
+
+export function breweryTypeLabel(type?: string | null): string {
+  if (!type) return 'Brewery';
+  return TYPE_LABELS[type.toLowerCase()] || 'Brewery';
+}
+
+export { hostOf } from './utils';
+
+export function formatCheckedDate(iso?: string | null): string {
+  if (!isCalendarDate(iso)) return '';
+  return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+}
+
+function joinFacts(facts: string[]): string {
+  if (facts.length === 0) return '';
+  if (facts.length === 1) return facts[0];
+  return `${facts.slice(0, -1).join(', ')} and ${facts[facts.length - 1]}`;
+}
+
+// "City, State" from whichever parts exist (no "Ohio, Ohio", no dangling commas); '' when neither is known.
+export function placeLabel(city?: string | null, state?: string | null): string {
+  const parts = [city, state].map((x) => (x || '').trim()).filter(Boolean);
+  return [...new Set(parts)].join(', ');
+}
+
+// Meta description: a sourced quote when we have one, otherwise only what the listing shows.
+export function buildSeoDescription(brewery: Brewery, cityLabel: string, stateName: string, stateAbbr: string, shownFacts: string[]): string {
+  const place = placeLabel(brewery.city ? cityLabel.split(', ')[0] : '', stateName); // "City, State" from real parts only
+  if (brewery.closed_at) {
+    return `${brewery.name}${place ? ` in ${place}` : ''} has closed. This page is kept for reference.`;
+  }
+  const sourced = sourcedQuote(brewery);
+  if (sourced) {
+    const where = [brewery.city ? cityLabel.split(', ')[0] : '', stateAbbr].filter(Boolean).join(', ');
+    return `${brewery.name}${where ? `, ${where}` : ''}: “${excerpt(sourced.quote, 110)}”`;
+  }
+  const facts = joinFacts(shownFacts);
+  const lead = `${brewery.name} is a ${breweryTypeLabel(brewery.brewery_type).toLowerCase()}${place ? ` in ${place}` : ''}.`;
+  return facts ? `${lead} ${facts.charAt(0).toUpperCase() + facts.slice(1)} on Brewery Trip.` : `${lead} Listed on Brewery Trip.`;
+}
+
+// Title for branded searches: name, place, then only the facts the page actually shows. Kept under ~60 chars when possible.
+export function buildPageTitle(brewery: Brewery, cityLabel: string, stateAbbr: string, shownFacts: string[]): string {
+  const city = brewery.city ? cityLabel.split(', ')[0] : ''; // a real city only, never the state standing in for it
+  const base = [brewery.name, [city, stateAbbr].filter(Boolean).filter((x, i, a) => a.indexOf(x) === i).join(' ')].filter(Boolean).join(', ');
+  if (brewery.closed_at) return `${base} (closed)`;
+  const facts = [...shownFacts];
+  while (facts.length > 0 && `${base}: ${facts.join(', ')}`.length > 60) facts.pop();
+  return facts.length > 0 ? `${base}: ${facts.join(', ')}` : base;
 }

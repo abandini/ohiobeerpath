@@ -1,3 +1,4 @@
+import { safeImagePath } from '../templates/utils';
 import type { Env, Brewery } from '../types';
 
 // State filter options for queries
@@ -173,6 +174,21 @@ function parseBrewery(brewery: any): Brewery {
   return {
     ...brewery,
     amenities: brewery.amenities ? JSON.parse(brewery.amenities) : [],
-    hours: brewery.hours ? JSON.parse(brewery.hours) : {}
+    hours: brewery.hours ? JSON.parse(brewery.hours) : {},
+    photos: parsePhotos(brewery.photos)
   };
+}
+
+// Photos must be a JSON array of {url, alt}; anything malformed renders as no photos rather than breaking the page.
+function parsePhotos(raw: unknown): { url: string; alt: string }[] {
+  if (typeof raw !== 'string' || raw.trim() === '') return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((p) => p && typeof p.url === 'string' && typeof p.alt === 'string' && safeImagePath(p.url) !== '' && p.alt.trim() !== '')
+      .map((p) => ({ url: safeImagePath(p.url), alt: p.alt.trim() }));
+  } catch {
+    return [];
+  }
 }

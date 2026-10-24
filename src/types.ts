@@ -20,6 +20,11 @@ export interface Env {
   UNTAPPD_REDIRECT_URI?: string;
 }
 
+export interface BreweryPhoto {
+  url: string; // same-origin path under /images/
+  alt: string; // factual description only
+}
+
 export interface Brewery {
   id: number;
   name: string;
@@ -37,9 +42,14 @@ export interface Brewery {
   state?: string;
   region?: string;
   amenities?: string[]; // Parsed from JSON
-  description?: string;
+  description?: string; // legacy generated copy: kept in the DB, never rendered (see about_quote)
+  about_quote?: string | null; // verbatim sentence(s) from the brewery's own website
+  about_source_url?: string | null; // page the quote was copied from
+  about_checked_at?: string | null; // ISO date the quote was verified
   hours?: Record<string, string>; // Parsed from JSON
   image_url?: string;
+  photos?: BreweryPhoto[]; // Parsed from JSON; owner-supplied, metadata-stripped, served from R2 via /images/
+  photo_credit?: string | null; // one credit line for the whole gallery, e.g. 'Photo: Brewery Trip visit, Oct 17, 2026'
   created_at?: string;
   updated_at?: string;
 }

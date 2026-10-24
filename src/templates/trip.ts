@@ -26,7 +26,6 @@ export function tripPage(trip: TripPlan, subdomain?: SubdomainContext): string {
         ${stop.drive_minutes_from_prev > 0 ? `<div class="text-muted small"><i class="bi bi-car-front"></i> ${Math.round(stop.drive_minutes_from_prev)} min drive (${Math.round(stop.drive_miles_from_prev)} mi)</div>` : ''}
         <strong>${escapeHtml(stop.name)}</strong>
         <div class="text-muted small">${escapeHtml(stop.city)}, ${escapeHtml(stop.state)}</div>
-        ${stop.description ? `<div class="small text-secondary mt-1">${escapeHtml(stop.description)}</div>` : ''}
         ${stop.amenities && stop.amenities.length > 0 ? `
           <div class="mt-1">
             ${stop.amenities.map(a => `<span class="badge bg-light text-dark me-1">${escapeHtml(a)}</span>`).join('')}

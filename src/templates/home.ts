@@ -1,6 +1,6 @@
 import { layout, getSiteBranding } from './layout';
 import type { Brewery, SubdomainContext } from '../types';
-import { hashCode, jsonLd } from './utils';
+import { hashCode, jsonLd, sourcedQuote, escapeAttr, escapeHtml, excerpt } from './utils';
 
 interface HomePageOptions {
   subdomain?: SubdomainContext;
@@ -46,6 +46,7 @@ export function homePage(featuredBreweries: Brewery[], stats: HomeStats, options
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
   const breweryOfDay = featuredBreweries[dayOfYear % featuredBreweries.length];
   const breweryOfDayState = breweryOfDay ? (stateAbbrevToName[breweryOfDay.state || ''] || stateName) : stateName;
+  const spotlightQuote = breweryOfDay ? sourcedQuote(breweryOfDay) : null;
 
   const content = `
   <!-- Hero Section -->
@@ -156,9 +157,9 @@ export function homePage(featuredBreweries: Brewery[], stats: HomeStats, options
             ${breweryOfDay.brewery_type ? `<span class="mx-2">•</span>${breweryOfDay.brewery_type}` : ''}
           </p>
           <p class="spotlight-description">
-            ${breweryOfDay.description && breweryOfDay.description !== 'N/A'
-              ? breweryOfDay.description.substring(0, 150) + '...'
-              : `Discover ${breweryOfDay.name}, a craft brewery in ${breweryOfDay.city}, ${breweryOfDayState}. Experience their unique selection of handcrafted beers.`}
+            ${spotlightQuote
+              ? `<q cite="${escapeAttr(spotlightQuote.sourceUrl)}" title="From ${escapeAttr(spotlightQuote.host)}">${escapeHtml(excerpt(spotlightQuote.quote, 150))}</q>`
+              : escapeHtml(`${breweryOfDay.name} is a ${breweryOfDay.brewery_type || 'craft'} brewery in ${breweryOfDay.city}, ${breweryOfDayState}.`)}
           </p>
           <div class="spotlight-actions">
             <a href="/brewery/${breweryOfDay.id}" class="btn btn-warning btn-lg">

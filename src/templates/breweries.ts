@@ -1,6 +1,6 @@
 import { layout } from './layout';
 import type { Brewery, SubdomainContext } from '../types';
-import { hashCode, jsonLd } from './utils';
+import { hashCode, jsonLd, sourcedQuote, escapeAttr, escapeHtml, excerpt } from './utils';
 
 interface FilterOptions {
   region?: string;
@@ -206,7 +206,7 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {},
   });
 }
 
-function breweryCard(brewery: Brewery): string {
+export function breweryCard(brewery: Brewery): string {
   // Generate gradient colors from brewery name
   const hue = Math.abs(hashCode(brewery.name)) % 360;
   const gradient = `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 55%, 35%))`;
@@ -217,10 +217,11 @@ function breweryCard(brewery: Brewery): string {
   const cityFallback = brewery.city || stateName || 'USA';
   const regionFallback = brewery.region || stateName || 'USA';
 
-  // Better description: avoid generic text, keep it short
-  const desc = brewery.description && brewery.description !== 'N/A' && brewery.description.length > 10
-    ? (brewery.description.length > 120 ? brewery.description.substring(0, 117) + '...' : brewery.description)
-    : `${brewery.brewery_type || 'Craft brewery'} in ${cityFallback}${stateName ? ', ' + stateName : ''}.`;
+  // Card line: listing facts only. The generated `description` column is never rendered.
+  const sourced = sourcedQuote(brewery);
+  const desc = sourced
+    ? `<q cite="${escapeAttr(sourced.sourceUrl)}" title="From ${escapeAttr(sourced.host)}">${escapeHtml(excerpt(sourced.quote, 120))}</q>`
+    : escapeHtml(`${brewery.brewery_type || 'Craft brewery'} in ${cityFallback}${stateName ? ', ' + stateName : ''}.`);
 
   // Amenity highlights (show top 2)
   const topAmenities = (brewery.amenities || []).slice(0, 2);

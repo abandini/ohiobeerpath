@@ -1,3 +1,4 @@
+import { sourcedQuote } from '../templates/utils';
 import type { Env, PlanRequest, TripPlan, TripRoute } from '../types';
 
 interface BreweryCandidate {
@@ -100,7 +101,7 @@ export async function selectCandidates(
                   latitude: brewery.latitude,
                   longitude: brewery.longitude,
                   amenities: brewery.amenities ? JSON.parse(brewery.amenities) : [],
-                  description: brewery.description,
+                  description: sourcedQuote(brewery)?.quote,
                   distance_miles: dist,
                 });
               }
@@ -118,7 +119,7 @@ export async function selectCandidates(
   const lngDelta = maxRadiusMiles / (69 * Math.cos(starting_lat * Math.PI / 180));
 
   const { results: nearbyBreweries } = await env.DB.prepare(`
-    SELECT id, name, city, state, state_province, latitude, longitude, amenities, description,
+    SELECT id, name, city, state, state_province, latitude, longitude, amenities, about_quote, about_source_url, about_checked_at,
     (3959 * acos(
       cos(radians(?)) * cos(radians(latitude)) *
       cos(radians(longitude) - radians(?)) +
@@ -148,7 +149,7 @@ export async function selectCandidates(
         latitude: b.latitude,
         longitude: b.longitude,
         amenities: b.amenities ? JSON.parse(b.amenities) : [],
-        description: b.description,
+        description: sourcedQuote(b)?.quote,
         distance_miles: b.distance_miles,
       });
     }
