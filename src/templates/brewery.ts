@@ -1,4 +1,5 @@
 import { layout } from './layout';
+import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
 import type { Brewery } from '../types';
 import { hashCode, jsonLd } from './utils';
 
@@ -64,6 +65,18 @@ function getOpenStatus(hours?: Record<string, string>): { isOpen: boolean; label
     label: isOpen ? 'Open Now' : 'Closed',
     cssClass: isOpen ? 'status-open' : 'status-closed'
   };
+}
+
+// Breweries on the sourced Downtown Cleveland Brewery Walk link to it (internal linking from pages that get traffic).
+function tourCallout(id: number): string {
+  const i = DOWNTOWN_TOUR.stops.findIndex((s) => s.breweryId === id);
+  if (i < 0) return '';
+  return `
+          <div class="content-card">
+            <h2><i class="bi bi-signpost-2 text-warning" aria-hidden="true"></i> On the Downtown Cleveland Brewery Walk</h2>
+            <p>Stop ${i + 1} of ${DOWNTOWN_TOUR.stops.length} on our walk from downtown through the Flats and Ohio City to Hingetown, with walking directions for the route and Uber/Lyft links at every stop.</p>
+            <a href="/trails/${DOWNTOWN_TOUR.slug}" class="btn btn-warning">See the walk</a>
+          </div>`;
 }
 
 export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyBreweries?: Brewery[], reviews?: Review[]): string {
@@ -212,6 +225,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
               </div>
             ` : ''}
           </div>
+          ${tourCallout(brewery.id)}
 
           <!-- Amenities Section -->
           <div class="content-card">

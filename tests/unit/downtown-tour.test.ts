@@ -72,3 +72,19 @@ describe('downtown Cleveland tour page', () => {
     expect(trailsPage([])).toContain('href="/trails/downtown-cleveland"');
   });
 });
+
+describe('internal links to the walk', () => {
+  it('a tour stop brewery page links to the walk; others do not', async () => {
+    const { breweryPage } = await import('../../src/templates/brewery');
+    const b = (id: number, name: string) => ({ id, name, city: 'Cleveland', state: 'OH', state_province: 'Ohio', region: 'northeast' } as any);
+    const on = breweryPage(b(235, 'Noble Beast Brewing Co.'));
+    expect(on).toContain('href="/trails/downtown-cleveland"'); expect(on).toContain('Stop 1 of 10');
+    expect(breweryPage(b(999999, 'Elsewhere Brewing'))).not.toContain('/trails/downtown-cleveland');
+    DOWNTOWN_TOUR.stops.forEach((s, i) => { if (s.breweryId) expect(breweryPage(b(s.breweryId, s.name))).toContain(`Stop ${i + 1} of ${DOWNTOWN_TOUR.stops.length}`); });
+  });
+  it('Cleveland trails link to the walk', async () => {
+    const { trailDetailPage } = await import('../../src/templates/trails');
+    expect(trailDetailPage({ id: 4, slug: 'ohio-city-hop', name: 'Ohio City Hop', region: 'northeast', brewery_ids: '[]' }, [])).toContain('/trails/downtown-cleveland');
+    expect(trailDetailPage({ id: 2, slug: 'cincinnati-craft-crawl', name: 'Cincinnati Craft Crawl', region: 'southwest', brewery_ids: '[]' }, [])).not.toContain('/trails/downtown-cleveland');
+  });
+});

@@ -151,6 +151,7 @@ export function trailDetailPage(trail: Trail, breweries: Brewery[], subdomain?: 
   <div class="container my-5">
     <div class="row">
       <div class="col-lg-8">
+        ${['cleveland-classics', 'ohio-city-hop'].includes(trail.slug) ? `<p class="mb-4"><a href="/trails/downtown-cleveland">See also: the Downtown Cleveland Brewery Walk</a>, ten sourced stops from Noble Beast to Saucy Brew Works.</p>` : ''}
         <h3 class="mb-4"><i class="bi bi-geo-alt"></i> Trail Stops</h3>
         ${breweries.map((brewery, index) => `
           <div class="trail-stop">
