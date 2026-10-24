@@ -298,6 +298,8 @@ app.get('/sitemap.xml', async (c) => {
     { url: '/regions', priority: '0.8', changefreq: 'weekly', lastmod: latest },
     { url: '/events', priority: '0.8', changefreq: 'daily', lastmod: '' },
     { url: '/trails', priority: '0.7', changefreq: 'weekly', lastmod: '' },
+    // The downtown Cleveland walk belongs to the national site and the Ohio subdomain only
+    ...(!subdomain.stateName || subdomain.stateName === 'Ohio' ? [{ url: '/trails/downtown-cleveland', priority: '0.7', changefreq: 'monthly', lastmod: '2026-10-24' }] : []),
     { url: '/nearby', priority: '0.7', changefreq: 'weekly', lastmod: latest },
     { url: '/blog', priority: '0.6', changefreq: 'weekly', lastmod: '' },
     { url: '/itinerary', priority: '0.6', changefreq: 'monthly', lastmod: '' },
