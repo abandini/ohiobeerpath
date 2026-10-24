@@ -130,44 +130,28 @@ app.get('/robots.txt', (c) => {
   const subdomain = c.get('subdomain');
   const siteName = subdomain.brandDomain === 'ohiobrewpath' ? 'Ohio Brew Path' : subdomain.stateName ? `${subdomain.stateName} Brewery Trip` : 'Brewery Trip';
 
+  // One group for every crawler we welcome (search engines and AI answer engines), so the /admin/ and /api/ rules
+  // apply to all of them. They used to sit after the Bytespider group and so applied only to Bytespider: Googlebot
+  // crawled the Untappd login endpoint (/api/auth/untappd?return=...) and GSC listed 281 of them as server errors.
   const robotsTxt = `# ${siteName} - Robots.txt
+# Search engines and AI answer engines (AEO)
 User-agent: *
-Allow: /
-
-# Allow AI answer engines for AEO (Answer Engine Optimization)
 User-agent: GPTBot
-Allow: /
-
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: Google-Extended
-Allow: /
-
 User-agent: Applebot-Extended
-Allow: /
-
 User-agent: Amazonbot
-Allow: /
-
 User-agent: meta-externalagent
-Allow: /
-
 User-agent: CCBot
+Disallow: /admin/
+Disallow: /api/
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bytespider
 Disallow: /
 
-# Sitemaps
 Sitemap: ${subdomain.baseUrl}/sitemap.xml
-
-# Disallow admin and API endpoints
-Disallow: /admin/
-Disallow: /api/
-
-# Crawl delay for polite crawling
-Crawl-delay: 1
 `;
 
   return new Response(robotsTxt, {

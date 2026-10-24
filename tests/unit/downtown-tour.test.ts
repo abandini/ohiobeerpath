@@ -88,3 +88,15 @@ describe('internal links to the walk', () => {
     expect(trailDetailPage({ id: 2, slug: 'cincinnati-craft-crawl', name: 'Cincinnati Craft Crawl', region: 'southwest', brewery_ids: '[]' }, [])).not.toContain('/trails/downtown-cleveland');
   });
 });
+
+describe('robots.txt', () => {
+  it('blocks /admin/ and /api/ for every welcomed crawler, Googlebot included', async () => {
+    const { readFileSync } = await import('node:fs');
+    const src = readFileSync(new URL('../../src/index.ts', import.meta.url), 'utf8');
+    const body = src.slice(src.indexOf('const robotsTxt = `'), src.indexOf('`;', src.indexOf('const robotsTxt = `')));
+    const groups = body.split(/\n\s*\n/).filter((g) => /User-agent:/.test(g));
+    const star = groups.find((g) => /User-agent: \*/.test(g))!;
+    expect(star).toMatch(/Disallow: \/api\//); expect(star).toMatch(/Disallow: \/admin\//);
+    expect(groups.find((g) => /Bytespider/.test(g))).toMatch(/Disallow: \/\n?$/m);
+  });
+});
