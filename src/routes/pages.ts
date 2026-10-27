@@ -11,6 +11,8 @@ import { itineraryPage } from '../templates/itinerary';
 import { trailsPage, trailDetailPage, Trail } from '../templates/trails';
 import { downtownTourPage } from '../templates/downtown-tour';
 import { beerOfTheMonthPage } from '../templates/beer-of-the-month';
+import { ipaGuidePage } from '../templates/ipa-guide';
+import { IPA_GUIDE } from '../data/ipa-guide';
 import { aboutPage, privacyPage, termsPage } from '../templates/static';
 import { blogListPage, blogPostPage, BlogPost, sampleBlogPosts } from '../templates/blog';
 import { eventsPage } from '../templates/events';
@@ -308,13 +310,21 @@ pages.get('/tour/:id', async (c) => {
   return c.redirect('/itinerary?tour=' + breweryIds.join(','));
 });
 
+// The sourced Ohio IPA guide replaces the unsourced 2024 post, whose row is still in D1: the old URL 301s here, and
+// the blog list shows the old row under the guide's slug and title. Both routes come before /blog/:slug.
+const withIpaGuide = (posts: BlogPost[]): BlogPost[] => posts.map((p) => p.slug === IPA_GUIDE.oldSlug
+  ? { ...p, slug: IPA_GUIDE.slug, title: IPA_GUIDE.title, excerpt: IPA_GUIDE.excerpt, tags: 'IPA, Guides, Craft Beer', updated_at: IPA_GUIDE.dateModified }
+  : p);
+pages.get(`/blog/${IPA_GUIDE.slug}`, (c) => c.html(ipaGuidePage(c.get('subdomain'))));
+pages.get(`/blog/${IPA_GUIDE.oldSlug}`, (c) => c.redirect(`/blog/${IPA_GUIDE.slug}`, 301));
+
 // Blog list page
 pages.get('/blog', async (c) => {
   const category = c.req.query('category');
 
   // Helper to filter sample posts
   const getSamplePosts = () => {
-    let samples = sampleBlogPosts.map((p, i) => ({ ...p, id: i + 1 })) as BlogPost[];
+    let samples = withIpaGuide(sampleBlogPosts.map((p, i) => ({ ...p, id: i + 1 })) as BlogPost[]);
     if (category) {
       samples = samples.filter(p => p.category?.toLowerCase() === category.toLowerCase());
     }
@@ -332,9 +342,9 @@ pages.get('/blog', async (c) => {
     }
 
     // Apply category filter if provided
-    let filteredPosts = posts;
+    let filteredPosts = withIpaGuide(posts);
     if (category) {
-      filteredPosts = posts.filter(p => p.category?.toLowerCase() === category.toLowerCase());
+      filteredPosts = filteredPosts.filter(p => p.category?.toLowerCase() === category.toLowerCase());
       if (filteredPosts.length === 0) {
         return c.html(blogListPage(getSamplePosts(), category));
       }
@@ -371,7 +381,7 @@ pages.get('/blog/:slug', async (c) => {
       'SELECT * FROM blog_posts WHERE category = ? AND slug != ? AND published = 1 ORDER BY created_at DESC LIMIT 2'
     ).bind(post.category || '', slug).all<BlogPost>();
 
-    const html = blogPostPage(post, relatedPosts || []);
+    const html = blogPostPage(post, withIpaGuide(relatedPosts || []));
     return c.html(html);
   } catch (err) {
     // Check sample posts if DB fails

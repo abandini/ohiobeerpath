@@ -360,38 +360,19 @@ Plan your own Road Trip Around Ohio with Ohio Beer Path — map out the particip
     created_at: '2026-06-06T12:00:00.000Z'
   },
   {
-    slug: 'best-ohio-ipa-breweries-2024',
-    title: 'The 10 Best Ohio Breweries for IPA Lovers in 2024',
-    excerpt: 'From hazy New England-style to crisp West Coast IPAs, these Ohio breweries are pushing the boundaries of hop-forward brewing.',
-    content: `Ohio has quietly become one of the best states in the Midwest for craft beer, and IPA lovers have plenty of reasons to celebrate. From Cleveland to Cincinnati, breweries are crafting everything from hazy juice bombs to classic West Coast bitters.
-
-## What Makes Ohio IPAs Special?
-
-Ohio brewers benefit from access to fresh Great Lakes water and a growing community of hop suppliers. Many breweries have established relationships with farms in the Pacific Northwest, ensuring they get the freshest hops for their brews.
-
-### Our Top Picks
-
-**1. Great Lakes Brewing Company** - Cleveland's legendary brewery has been perfecting their hop game since 1988. Their Commodore Perry IPA remains a benchmark for the style.
-
-**2. Fat Head's Brewery** - Known for Head Hunter IPA, which has won numerous awards and is considered one of the best IPAs in the country.
-
-**3. Platform Beer Co.** - Their rotating IPA series showcases the latest hop varieties and brewing techniques.
-
-> "Ohio's craft beer scene has exploded in the last decade, and our IPAs can compete with anyone in the country." - Local brewer
-
-### The Hazy Revolution
-
-Northeast Ohio has embraced the hazy IPA trend, with breweries like Masthead and Noble Beast creating silky, juicy interpretations that rival the best from New England.
-
-## Plan Your IPA Tour
-
-Use Ohio Beer Path to create your perfect IPA-focused brewery tour. Filter by region and add your favorites to your itinerary for an unforgettable hop-filled adventure.`,
+    // Served by src/templates/ipa-guide.ts (sourced quotes in src/data/ipa-guide.ts); the old
+    // 'best-ohio-ipa-breweries-2024' URL 301s there. This entry only lists it on /blog.
+    slug: 'ohio-ipa-breweries',
+    title: 'Ohio IPA Breweries: 10 IPAs Worth the Drive (2026 Guide)',
+    excerpt: 'Ten Ohio IPAs from Cleveland to Cincinnati, each described in its brewery’s own words, with a link to the page we quoted.',
+    content: 'Ten Ohio IPAs from Cleveland to Cincinnati, each described in its brewery’s own words, with a link to the page we quoted.',
     featured_image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=1200',
     author: 'Ohio Beer Path',
     category: 'Guides',
-    tags: 'IPA, Best Of, 2024, Craft Beer',
+    tags: 'IPA, Guides, Craft Beer',
     published: 1,
-    created_at: new Date().toISOString()
+    created_at: '2026-06-05T12:00:00.000Z',
+    updated_at: '2026-10-27'
   },
   {
     slug: 'cleveland-craft-beer-weekend-guide',

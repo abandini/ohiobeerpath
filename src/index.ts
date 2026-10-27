@@ -287,6 +287,7 @@ app.get('/sitemap.xml', async (c) => {
     ...(!subdomain.stateName || subdomain.stateName === 'Ohio' ? [
       { url: '/trails/downtown-cleveland', priority: '0.7', changefreq: 'monthly', lastmod: '2026-10-24' },
       { url: '/cleveland-beer-of-the-month', priority: '0.7', changefreq: 'weekly', lastmod: '2026-10-26' },
+      { url: '/blog/ohio-ipa-breweries', priority: '0.6', changefreq: 'monthly', lastmod: '2026-10-27' },
     ] : []),
     { url: '/nearby', priority: '0.7', changefreq: 'weekly', lastmod: latest },
     { url: '/blog', priority: '0.6', changefreq: 'weekly', lastmod: '' },
