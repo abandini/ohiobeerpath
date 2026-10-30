@@ -25,6 +25,12 @@ export interface BreweryPhoto {
   alt: string; // factual description only
 }
 
+// A first-hand note from a Brewery Trip visit. date is the visit day (YYYY-MM-DD); text is plain text.
+export interface VisitNote {
+  date: string;
+  text: string;
+}
+
 export interface Brewery {
   id: number;
   name: string;
@@ -50,6 +56,8 @@ export interface Brewery {
   image_url?: string;
   photos?: BreweryPhoto[]; // Parsed from JSON; owner-supplied, metadata-stripped, served from R2 via /images/
   photo_credit?: string | null; // one credit line for the whole gallery, e.g. 'Photo: Brewery Trip visit, Oct 17, 2026'
+  visit_notes?: VisitNote[]; // Parsed from JSON; first-hand notes from our own visits, each dated
+
   created_at?: string;
   updated_at?: string;
 }

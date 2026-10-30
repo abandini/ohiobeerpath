@@ -1,4 +1,4 @@
-import { safeImagePath } from '../templates/utils';
+import { safeImagePath, isCalendarDate } from '../templates/utils';
 import type { Env, Brewery } from '../types';
 
 // State filter options for queries
@@ -175,8 +175,24 @@ function parseBrewery(brewery: any): Brewery {
     ...brewery,
     amenities: brewery.amenities ? JSON.parse(brewery.amenities) : [],
     hours: brewery.hours ? JSON.parse(brewery.hours) : {},
-    photos: parsePhotos(brewery.photos)
+    photos: parsePhotos(brewery.photos),
+    visit_notes: parseVisitNotes(brewery.visit_notes)
   };
+}
+
+// Visit notes must be a JSON array of {date: 'YYYY-MM-DD', text}; anything malformed renders as no notes. Newest first.
+export function parseVisitNotes(raw: unknown): { date: string; text: string }[] {
+  if (typeof raw !== 'string' || raw.trim() === '') return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((n) => n && typeof n.date === 'string' && isCalendarDate(n.date) && typeof n.text === 'string' && n.text.trim() !== '' && n.text.length <= 1000)
+      .map((n) => ({ date: n.date, text: n.text.trim() }))
+      .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+  } catch {
+    return [];
+  }
 }
 
 // Photos must be a JSON array of {url, alt}; anything malformed renders as no photos rather than breaking the page.

@@ -120,6 +120,15 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             ${photoCredit ? `<p class="photo-credit">${escapeHtml(photoCredit)}</p>` : ''}
           </div>` : '';
 
+  // First-hand notes from our own visits, dated so readers know how old they are.
+  const notes = (Array.isArray(brewery.visit_notes) ? brewery.visit_notes : []).filter(n => n && isCalendarDate(n.date) && typeof n.text === 'string' && n.text.trim() !== '');
+  const visitSection = notes.length > 0 ? `
+          <div class="content-card brewery-visit-notes">
+            <h2><i class="bi bi-chat-quote text-warning"></i> From our visit${notes.length > 1 ? 's' : ''}</h2>
+            ${notes.map(n => `<div class="visit-note"><p class="visit-note-date">${escapeHtml(formatCheckedDate(n.date))}</p><p>${escapeHtml(n.text.trim())}</p></div>`).join('')}
+            <p class="photo-credit">Written by Brewery Trip after our own visit. Staff, beers and hours change, so check with the brewery before you go.</p>
+          </div>` : '';
+
   const amenitiesList = brewery.amenities && Array.isArray(brewery.amenities) && brewery.amenities.length > 0
     ? brewery.amenities.map(amenity => {
         const iconMap: Record<string, string> = {
@@ -266,6 +275,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
           ${tourCallout(brewery.id)}
 
           ${gallerySection}
+          ${visitSection}
 
           ${hasAmenities ? `
           <!-- Amenities Section -->

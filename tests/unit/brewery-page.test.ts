@@ -270,3 +270,33 @@ describe('hostile location fields (Astra review round 2)', () => {
     }
   });
 });
+
+describe('brewery page: first-hand visit notes', () => {
+  it('renders dated notes, newest first, escaped, with the check-before-you-go line', async () => {
+    const { parseVisitNotes } = await import('../../src/db/breweries');
+    const notes = parseVisitNotes(JSON.stringify([
+      { date: '2026-10-17', text: 'Older note.' },
+      { date: '2026-10-29', text: 'Curtis was pouring <b>and</b> it was fun.' },
+    ]));
+    expect(notes.map((n) => n.date)).toEqual(['2026-10-29', '2026-10-17']);
+    const html = breweryPage({ ...base, visit_notes: notes });
+    expect(html).toContain('From our visits');
+    expect(html).toContain('October 29, 2026');
+    expect(html).toContain('Curtis was pouring &lt;b&gt;and&lt;/b&gt; it was fun.');
+    expect(html).not.toContain('<b>and</b>');
+    expect(html).toContain('check with the brewery before you go');
+    expect(html.indexOf('October 29, 2026')).toBeLessThan(html.indexOf('October 17, 2026'));
+  });
+  it('drops malformed notes instead of breaking the page', async () => {
+    const { parseVisitNotes } = await import('../../src/db/breweries');
+    expect(parseVisitNotes('not json')).toEqual([]);
+    expect(parseVisitNotes(JSON.stringify({ date: '2026-10-29', text: 'x' }))).toEqual([]);
+    expect(parseVisitNotes(JSON.stringify([{ date: '2026-02-30', text: 'bad date' }, { date: '2026-10-29', text: '   ' }, { date: '2026-10-29', text: 'x'.repeat(1001) }]))).toEqual([]);
+    expect(parseVisitNotes(null)).toEqual([]);
+  });
+  it('shows no visit section when there are no notes, and survives unnormalized data', () => {
+    expect(breweryPage(base)).not.toContain('From our visit');
+    expect(breweryPage({ ...base, visit_notes: 'oops' as never })).not.toContain('From our visit');
+    expect(breweryPage({ ...base, visit_notes: [null, { date: '2026-10-29', text: 'ok' }] as never })).toContain('From our visit');
+  });
+});
