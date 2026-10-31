@@ -289,6 +289,7 @@ app.get('/sitemap.xml', async (c) => {
       { url: '/cleveland-beer-of-the-month', priority: '0.7', changefreq: 'weekly', lastmod: '2026-10-26' },
       { url: '/blog/ohio-ipa-breweries', priority: '0.6', changefreq: 'monthly', lastmod: '2026-10-27' },
       { url: '/blog/ohio-christmas-ales', priority: '0.6', changefreq: 'weekly', lastmod: '2026-10-31' },
+      { url: '/blog/dog-friendly-ohio-breweries', priority: '0.6', changefreq: 'monthly', lastmod: '2026-10-31' },
     ] : []),
     { url: '/nearby', priority: '0.7', changefreq: 'weekly', lastmod: latest },
     { url: '/blog', priority: '0.6', changefreq: 'weekly', lastmod: '' },

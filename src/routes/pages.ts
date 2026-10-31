@@ -15,6 +15,8 @@ import { ipaGuidePage } from '../templates/ipa-guide';
 import { IPA_GUIDE } from '../data/ipa-guide';
 import { christmasAlesPage } from '../templates/christmas-ales';
 import { CHRISTMAS_ALES } from '../data/christmas-ales';
+import { dogGuidePage } from '../templates/dog-guide';
+import { DOG_GUIDE } from '../data/dog-guide';
 import { aboutPage, privacyPage, termsPage } from '../templates/static';
 import { blogListPage, blogPostPage, BlogPost, sampleBlogPosts } from '../templates/blog';
 import { eventsPage } from '../templates/events';
@@ -314,14 +316,19 @@ pages.get('/tour/:id', async (c) => {
 
 // The sourced Ohio IPA guide replaces the unsourced 2024 post, whose row is still in D1: the old URL 301s here, and
 // the blog list shows the old row under the guide's slug and title. Both routes come before /blog/:slug.
+// The sourced dog-friendly guide keeps the old post's slug (it already ranks) and replaces what it renders; its D1 row
+// (blog_posts id 20) is listed with the guide's excerpt and date until migrations/0023_dog_guide_blog_row.sql is applied.
 const withIpaGuide = (posts: BlogPost[]): BlogPost[] => posts.map((p) => p.slug === IPA_GUIDE.oldSlug
   ? { ...p, slug: IPA_GUIDE.slug, title: IPA_GUIDE.title, excerpt: IPA_GUIDE.excerpt, tags: 'IPA, Guides, Craft Beer', updated_at: IPA_GUIDE.dateModified }
-  : p);
+  : p.slug === DOG_GUIDE.slug
+    ? { ...p, title: DOG_GUIDE.title, excerpt: DOG_GUIDE.excerpt, updated_at: DOG_GUIDE.dateModified }
+    : p);
 pages.get(`/blog/${IPA_GUIDE.slug}`, (c) => c.html(ipaGuidePage(c.get('subdomain'))));
 pages.get(`/blog/${IPA_GUIDE.oldSlug}`, (c) => c.redirect(`/blog/${IPA_GUIDE.slug}`, 301));
 // The sourced Ohio Christmas ales guide. Its /blog listing comes from a blog_posts row (migrations/0022) or the
 // sample fallback; this route comes before /blog/:slug, so the row's content is never rendered.
 pages.get(`/blog/${CHRISTMAS_ALES.slug}`, (c) => c.html(christmasAlesPage(c.get('subdomain'))));
+pages.get(`/blog/${DOG_GUIDE.slug}`, (c) => c.html(dogGuidePage(c.get('subdomain'))));
 
 // Blog list page
 pages.get('/blog', async (c) => {

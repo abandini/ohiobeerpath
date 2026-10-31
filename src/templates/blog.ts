@@ -471,44 +471,17 @@ Stay tuned for the full event schedule coming soon!`,
     created_at: new Date(Date.now() - 172800000).toISOString()
   },
   {
+    // Served by src/templates/dog-guide.ts (sourced quotes in src/data/dog-guide.ts). This entry only lists it on /blog.
     slug: 'dog-friendly-ohio-breweries',
     title: '15 Dog-Friendly Ohio Breweries Where Your Pup Is Welcome',
-    excerpt: 'Bring your four-legged friend along for brewery hopping at these pet-friendly Ohio spots.',
-    content: `Who says you can't enjoy craft beer with your best friend? Ohio has dozens of dog-friendly breweries where your pup can join you for a pint. Here are our favorites.
-
-## Cleveland Area
-
-**1. Bookhouse Brewing** - Cozy patio perfect for dogs and their humans
-**2. Collision Bend Brewing** - Spacious outdoor area with river views
-**3. Terrestrial Brewing** - Dog-friendly taproom with a relaxed vibe
-
-## Columbus Area
-
-**4. Land-Grant Brewing** - Large outdoor space, often hosts dog-themed events
-**5. Seventh Son Brewing** - Italian Village location welcomes well-behaved dogs
-**6. Hoof Hearted Brewery** - Their Marengo location has plenty of space
-
-## Cincinnati Area
-
-**7. MadTree Brewing** - Expansive outdoor area, dog water bowls provided
-**8. Rhinegeist** - Dog-friendly taproom in historic brewery building
-**9. Fifty West Brewing** - Beautiful outdoor seating by the river
-
-## Tips for Brewery Hopping with Dogs
-
-- Always call ahead to confirm dog policies
-- Bring water and a bowl for your pup
-- Keep your dog on a leash
-- Be mindful of other patrons
-- Clean up after your dog
-- Know your dog's limits in social situations
-
-Many of these breweries even have special dog treats available. Use the Ohio Beer Path amenity filter to find more dog-friendly spots near you!`,
+    excerpt: 'Fifteen Ohio breweries from Cleveland to Cincinnati that welcome dogs, each policy quoted from the brewery’s own website with the rules it posts.',
+    content: 'Fifteen Ohio breweries from Cleveland to Cincinnati that welcome dogs, each policy quoted from the brewery’s own website with the rules it posts.',
     featured_image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1200',
     author: 'Ohio Beer Path',
     category: 'Guides',
     tags: 'Dog Friendly, Guides, Pet Friendly',
     published: 1,
-    created_at: new Date(Date.now() - 259200000).toISOString()
+    created_at: '2026-06-02T12:00:00.000Z',
+    updated_at: '2026-10-31'
   }
 ];
