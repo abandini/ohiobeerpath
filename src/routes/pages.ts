@@ -13,6 +13,8 @@ import { downtownTourPage } from '../templates/downtown-tour';
 import { beerOfTheMonthPage } from '../templates/beer-of-the-month';
 import { ipaGuidePage } from '../templates/ipa-guide';
 import { IPA_GUIDE } from '../data/ipa-guide';
+import { christmasAlesPage } from '../templates/christmas-ales';
+import { CHRISTMAS_ALES } from '../data/christmas-ales';
 import { aboutPage, privacyPage, termsPage } from '../templates/static';
 import { blogListPage, blogPostPage, BlogPost, sampleBlogPosts } from '../templates/blog';
 import { eventsPage } from '../templates/events';
@@ -317,6 +319,9 @@ const withIpaGuide = (posts: BlogPost[]): BlogPost[] => posts.map((p) => p.slug 
   : p);
 pages.get(`/blog/${IPA_GUIDE.slug}`, (c) => c.html(ipaGuidePage(c.get('subdomain'))));
 pages.get(`/blog/${IPA_GUIDE.oldSlug}`, (c) => c.redirect(`/blog/${IPA_GUIDE.slug}`, 301));
+// The sourced Ohio Christmas ales guide. Its /blog listing comes from a blog_posts row (migrations/0022) or the
+// sample fallback; this route comes before /blog/:slug, so the row's content is never rendered.
+pages.get(`/blog/${CHRISTMAS_ALES.slug}`, (c) => c.html(christmasAlesPage(c.get('subdomain'))));
 
 // Blog list page
 pages.get('/blog', async (c) => {

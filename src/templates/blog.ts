@@ -288,6 +288,21 @@ function formatBlogContent(content: string): string {
 // Sample blog posts for seeding
 export const sampleBlogPosts: Omit<BlogPost, 'id'>[] = [
   {
+    // Served by src/templates/christmas-ales.ts (sourced quotes in src/data/christmas-ales.ts). This entry only lists
+    // it on /blog when D1 is unavailable; the D1 row is migrations/0022_blog_ohio_christmas_ales.sql.
+    slug: 'ohio-christmas-ales',
+    title: 'Ohio Christmas Ales: 10 Holiday Beers to Look For (2026 Guide)',
+    excerpt: 'Ten Ohio Christmas and holiday beers from Cleveland, Akron, Toledo, Columbus, Dayton, Cincinnati and Athens, each described in its brewery’s own words, with a link to the page we quoted.',
+    content: 'Ten Ohio Christmas and holiday beers from Cleveland, Akron, Toledo, Columbus, Dayton, Cincinnati and Athens, each described in its brewery’s own words, with a link to the page we quoted.',
+    featured_image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=1200',
+    author: 'Ohio Beer Path',
+    category: 'Guides',
+    tags: 'Christmas Ale, Holiday Beer, Guides, Craft Beer',
+    published: 1,
+    created_at: '2026-10-31T12:00:00.000Z',
+    updated_at: '2026-10-31'
+  },
+  {
     slug: 'buckeye-beer-engine-road-trip-ohio-passport-2026',
     title: "Buckeye Beer Engine Launches 2026 Road Trip Around Ohio Passport",
     excerpt: "Lakewood's Buckeye Beer Engine is pouring two beers from 20 Ohio breweries all summer long — a $20 passport celebrating the Buckeye State's independent brewing scene.",
