@@ -91,6 +91,7 @@ export function christmasAlesPage(subdomain?: SubdomainContext): string {
               <h2 class="h5 card-title">Plan a holiday beer trip</h2>
               <p class="small text-muted mb-2">Each brewery name links to its page in our brewery directory. Sources for every beer are linked on its card.</p>
               <p class="small mb-0"><a href="/breweries">Browse all breweries</a> · <a href="/plan">Plan a route</a> · <a href="/cleveland-beer-of-the-month">Cleveland Beer of the Month</a> · <a href="/blog/ohio-ipa-breweries">Ohio IPA guide</a></p>
+              <p class="small mt-3 mb-0"><strong>Driving?</strong> <a href="https://hoppywater.com/?utm_source=brewerytrip&amp;utm_medium=referral&amp;utm_campaign=designated-driver" rel="nofollow noopener" target="_blank">Hoppy Water</a> lists 0.0% hop waters, sparkling water infused with hops, for whoever has the keys.</p>
             </div>
           </div>
         </div>

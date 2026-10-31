@@ -119,3 +119,13 @@ describe('Christmas ales routes and listing', () => {
     for (const v of [G.slug, G.title, G.excerpt]) expect(sql).toContain(`'${v}'`);
   });
 });
+
+describe('designated-driver link', () => {
+  it('links Hoppy Water once with nofollow noopener', async () => {
+    const { christmasAlesPage } = await import('../../src/templates/christmas-ales');
+    const html = christmasAlesPage();
+    const m = html.match(/<a [^>]*href="https:\/\/hoppywater\.com\/\?utm_source=brewerytrip[^"]*"[^>]*>/g) || [];
+    expect(m.length).toBe(1);
+    expect(m[0]).toContain('rel="nofollow noopener"');
+  });
+});
