@@ -93,6 +93,7 @@ export function dogGuidePage(subdomain?: SubdomainContext): string {
 
         <h2 class="h3 mb-3 mt-5">Before you bring your dog</h2>
         <p>Every policy above is as posted when we checked on ${e(checked)}. Patio seasons, special events and food-service rules can change where dogs are allowed, so look at the brewery’s site or call before you go, and follow the rules each brewery posts.</p>
+        <p>Want to run the dog first? <a href="https://wagginways.com/ohio/?utm_source=brewerytrip&amp;utm_medium=referral&amp;utm_campaign=dog-triangle" rel="nofollow noopener" target="_blank">Waggin’ Ways lists Ohio dog parks</a> with their posted rules.</p>
         <p class="mb-0">Celebrating your dog’s adoption anniversary? <a href="https://happygotchadays.com/" rel="nofollow noopener" target="_blank">HappyGotchaDays</a> keeps track of gotcha days.</p>
       </div>
 

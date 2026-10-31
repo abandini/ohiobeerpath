@@ -93,7 +93,10 @@ describe('dog guide page', () => {
     expect(html).not.toContain('Little Miami');
     expect(G.picks.find((p) => p.site === 'madtree.com')?.breweryId).toBe(2382);
   });
-  it('links HappyGotchaDays once, with rel="nofollow noopener"', () => {
+  it('links its sister sites (Waggin Ways, HappyGotchaDays) once, with rel="nofollow noopener"', () => {
+    const wag = html.match(/<a [^>]*href="https:\/\/wagginways\.com\/ohio\/\?utm_source=brewerytrip[^"]*"[^>]*>/g) || [];
+    expect(wag.length).toBe(1);
+    expect(wag[0]).toContain('rel="nofollow noopener"');
     const links = html.match(/<a [^>]*href="https:\/\/happygotchadays\.com\/"[^>]*>/g) || [];
     expect(links.length).toBe(1);
     expect(links[0]).toContain('rel="nofollow noopener"');
