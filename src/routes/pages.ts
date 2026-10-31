@@ -564,7 +564,6 @@ pages.get('/sitemap.xml', async (c) => {
     { url: '/', priority: '1.0', changefreq: 'daily' },
     { url: '/breweries', priority: '0.9', changefreq: 'daily' },
     { url: '/regions', priority: '0.8', changefreq: 'weekly' },
-    { url: '/events', priority: '0.8', changefreq: 'daily' },
     { url: '/trails', priority: '0.7', changefreq: 'weekly' },
     { url: '/trails/downtown-cleveland', priority: '0.7', changefreq: 'monthly' },
     { url: '/cleveland-beer-of-the-month', priority: '0.7', changefreq: 'weekly' },

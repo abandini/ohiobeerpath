@@ -334,11 +334,6 @@ function navigation(branding: Branding): string {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/events">
-              <i class="bi bi-calendar-event"></i> Events
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="/blog">
               <i class="bi bi-newspaper"></i> Blog
             </a>

@@ -59,8 +59,8 @@ export function eventsPage(events: Event[]): string {
     </div>
 
     <div class="container events-content">
-      <!-- Filter Tabs -->
-      <div class="event-filters">
+      <!-- Filter Tabs (only when there is something to filter) -->
+      ${events.length === 0 ? '' : `<div class="event-filters">
         <button class="filter-btn active" data-filter="all">
           <i class="bi bi-grid"></i> All Events
         </button>
@@ -79,13 +79,13 @@ export function eventsPage(events: Event[]): string {
         <button class="filter-btn" data-filter="release">
           <i class="bi bi-star-fill"></i> New Releases
         </button>
-      </div>
+      </div>`}
 
       ${events.length === 0 ? `
         <div class="no-events">
           <i class="bi bi-calendar-x"></i>
-          <h3>No upcoming events</h3>
-          <p>Check back soon for brewery events across Ohio!</p>
+          <h3>We don't list brewery events yet</h3>
+          <p>Breweries post their own tap takeovers, live music and trivia nights, so check a brewery's own website or its page in our <a href="/breweries">brewery directory</a> before you go. For seasonal ideas, see our <a href="/blog/ohio-christmas-ales">Ohio Christmas ales guide</a>.</p>
         </div>
       ` : `
         ${Array.from(eventsByMonth.entries()).map(([month, monthEvents]) => `
@@ -143,8 +143,8 @@ export function eventsPage(events: Event[]): string {
 
       <!-- Add to Calendar CTA -->
       <div class="calendar-cta">
-        <h3><i class="bi bi-bell"></i> Never Miss an Event</h3>
-        <p>Sign up for our newsletter to get weekly event updates</p>
+        <h3><i class="bi bi-bell"></i> The Weekly Brewery Pick</h3>
+        <p>One hand-picked brewery each week, by email.</p>
         <a href="#email-signup-form" class="btn btn-warning">
           <i class="bi bi-envelope"></i> Subscribe Now
         </a>
@@ -182,6 +182,9 @@ export function eventsPage(events: Event[]): string {
   `;
 
   return layout('Events', content, {
-    description: 'Discover upcoming events at Ohio breweries - tap takeovers, live music, food trucks, trivia nights, and beer releases.'
+    noindex: events.length === 0,
+    description: events.length === 0
+      ? 'Brewery Trip does not list brewery events yet; check each brewery\'s own site, or browse the Ohio brewery directory.'
+      : 'Discover upcoming events at Ohio breweries - tap takeovers, live music, food trucks, trivia nights, and beer releases.'
   });
 }
