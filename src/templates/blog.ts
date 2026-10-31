@@ -433,44 +433,6 @@ Make sure to check each brewery's hours before visiting, and use Ohio Beer Path 
     created_at: new Date(Date.now() - 86400000).toISOString()
   },
   {
-    slug: 'ohio-beer-week-2024-preview',
-    title: 'Ohio Beer Week 2024: What to Expect',
-    excerpt: 'Get ready for the biggest celebration of Ohio craft beer with events happening across the state.',
-    content: `Ohio Beer Week is back and bigger than ever! This annual celebration of Ohio craft beer brings together breweries, bars, and beer lovers from across the state for a week of special releases, tap takeovers, and collaborative events.
-
-## When Is Ohio Beer Week?
-
-Mark your calendars for the third week of July. Events will be happening throughout the week, with the biggest celebrations on Friday and Saturday.
-
-## Featured Events
-
-### Kickoff Party
-The week starts with a massive kickoff party featuring 50+ Ohio breweries pouring their best. Location to be announced.
-
-### Collaboration Brew Day
-Watch as rival breweries come together to create special one-off beers. Past collaborations have produced some incredible results.
-
-### Beer and Food Pairings
-Participating restaurants will offer special menus designed to pair with local craft beers.
-
-> "Ohio Beer Week is the highlight of our year. The collaboration between breweries shows what makes our state's beer scene so special." - Ohio Craft Brewers Association
-
-## How to Participate
-
-- Follow your favorite Ohio breweries on social media for announcements
-- Sign up for brewery newsletters for early access to special releases
-- Plan your route using Ohio Beer Path
-- Consider booking accommodations near brewery districts
-
-Stay tuned for the full event schedule coming soon!`,
-    featured_image: 'https://images.unsplash.com/photo-1575037614876-c38a4d44f5b8?w=1200',
-    author: 'Ohio Beer Path',
-    category: 'Events',
-    tags: 'Events, Ohio Beer Week, 2024',
-    published: 1,
-    created_at: new Date(Date.now() - 172800000).toISOString()
-  },
-  {
     // Served by src/templates/dog-guide.ts (sourced quotes in src/data/dog-guide.ts). This entry only lists it on /blog.
     slug: 'dog-friendly-ohio-breweries',
     title: '15 Dog-Friendly Ohio Breweries Where Your Pup Is Welcome',

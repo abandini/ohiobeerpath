@@ -370,8 +370,13 @@ pages.get('/blog', async (c) => {
 });
 
 // Single blog post page
+// 2024 event preview, retired 2026-10-31 (thin, out of date; Bill's call).
+export const RETIRED_BLOG_SLUGS = new Set(['ohio-beer-week-2024-preview']);
+
 pages.get('/blog/:slug', async (c) => {
   const slug = c.req.param('slug');
+  // Retired posts answer 410 Gone so search engines drop them (the D1 row is unpublished too).
+  if (RETIRED_BLOG_SLUGS.has(slug)) return c.html('<h1>This post has been retired</h1><p><a href="/blog">See current guides</a></p>', 410);
 
   try {
     const post = await c.env.DB.prepare(
