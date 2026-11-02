@@ -75,6 +75,14 @@ export function aboutPage(): string {
           </div>
         </div>
 
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="h4">Photo and font credits</h2>
+            <p>The photographs on our home page come from the Library of Congress: Carol M. Highsmith's photographs (Carol M. Highsmith Archive, Prints and Photographs Division, no known restrictions on publication) and a 1936 Historic American Buildings Survey photograph by Carl Waite (a U.S. government work). Each caption links to its record and says where and when it was taken.</p>
+            <p class="mb-0">Fonts: Fraunces and Work Sans, used under the SIL Open Font License (<a href="/assets/fonts/OFL-fraunces.txt">Fraunces notice</a>, <a href="/assets/fonts/OFL-work-sans.txt">Work Sans notice</a>).</p>
+          </div>
+        </div>
+
         <div class="text-center mt-5">
           <a href="/breweries" class="btn btn-warning btn-lg">
             <i class="bi bi-search"></i> Start Exploring

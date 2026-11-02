@@ -113,7 +113,7 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="${metaDescription}">
-  <meta name="theme-color" content="#d97706">
+  <meta name="theme-color" content="#2a1d17">
   <title>${fullTitle}</title>
 
   <!-- Google AdSense (site verification + Auto ads) -->
@@ -148,10 +148,9 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <!-- Schema.org WebSite Structured Data -->
   <script type="application/ld+json">${websiteJsonLd}</script>
 
-  <!-- Google Fonts: Outfit (headings) + Inter (body) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+  <!-- Self-hosted fonts (OFL): Fraunces (headings) + Work Sans (body); @font-face lives in theme-2026-11.css -->
+  <link rel="preload" href="/assets/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/work-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -164,6 +163,8 @@ export function layout(title: string, content: string, options: LayoutOptions = 
   <link rel="stylesheet" href="/assets/css/mobile.css">
   <link rel="stylesheet" href="/assets/css/pages/pages.css">
   ${(options.extraCss || []).map(href => `<link rel="stylesheet" href="${href}">`).join('\n  ')}
+  <!-- Site theme: loaded last so it restyles every page (docs/design-playbook in domain-hub) -->
+  <link rel="stylesheet" href="/assets/css/theme-2026-11.css?v=10">
 
   <!-- Animation Utilities -->
   <style>${animationStyles}</style>

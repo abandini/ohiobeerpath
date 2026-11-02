@@ -1,6 +1,6 @@
 import { layout } from './layout';
 import type { Brewery, SubdomainContext } from '../types';
-import { hashCode, jsonLd, sourcedQuote, escapeAttr, escapeHtml, excerpt } from './utils';
+import { hashCode, jsonLd, sourcedQuote, escapeAttr, escapeHtml, excerpt, labelColors } from './utils';
 
 interface FilterOptions {
   region?: string;
@@ -91,8 +91,8 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {},
   const content = `
 
   <div class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 style="font-weight: 800; color: #1a1a2e;">${stateLabel}Breweries</h1>
+    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+      <h1 style="font-weight: 800;">${stateLabel}Breweries</h1>
       <span class="badge" style="background: #D97706; font-size: 0.9rem; padding: 8px 16px;">${pagination ? pagination.totalItems : breweries.length} breweries</span>
     </div>
 
@@ -209,7 +209,7 @@ export function breweriesPage(breweries: Brewery[], filters: FilterOptions = {},
 export function breweryCard(brewery: Brewery): string {
   // Generate gradient colors from brewery name
   const hue = Math.abs(hashCode(brewery.name)) % 360;
-  const gradient = `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 55%, 35%))`;
+  const gradient = `linear-gradient(135deg, ${labelColors(brewery.name)})`;
 
   // Use state as fallback for city/region
   const stateNames: Record<string, string> = { OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania', IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia' };

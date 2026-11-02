@@ -2,7 +2,7 @@ import { layout } from './layout';
 import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
 import { medalBadges, medalList } from './downtown-tour';
 import type { Brewery } from '../types';
-import { hashCode, jsonLd, escapeHtml, escapeAttr, safeHttpUrl, hostOf, sourcedQuote, excerpt, isCalendarDate, safeImagePath } from './utils';
+import { hashCode, jsonLd, escapeHtml, escapeAttr, safeHttpUrl, hostOf, sourcedQuote, excerpt, isCalendarDate, safeImagePath, labelColors } from './utils';
 
 interface Review {
   id: number;
@@ -99,7 +99,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
 
   const hue = Math.abs(hashCode(brewery.name)) % 360;
   const openStatus = getOpenStatus(brewery.hours);
-  const gradientColors = `hsl(${hue}, 70%, 35%), hsl(${(hue + 40) % 360}, 60%, 25%)`;
+  const gradientColors = labelColors(brewery.name);
 
   // Support real brewery photos when available, fallback to gradient
   // Hero photo: owner-supplied gallery photo first (same-origin /images/ path), else legacy image_url, else gradient.
@@ -382,7 +382,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             return `
               <div class="col-md-6 col-lg-3">
                 <a href="/brewery/${nb.id}" class="nearby-card">
-                  <div class="nearby-img" style="background: linear-gradient(135deg, hsl(${nbHue}, 70%, 40%) 0%, hsl(${(nbHue + 40) % 360}, 60%, 30%) 100%);">
+                  <div class="nearby-img" style="background: linear-gradient(135deg, ${labelColors(nb.name)});">
                     <i class="bi bi-cup-straw"></i>
                   </div>
                   <div class="nearby-info">

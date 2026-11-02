@@ -1,6 +1,7 @@
 import { layout, getSiteBranding } from './layout';
 import type { Brewery, SubdomainContext } from '../types';
 import { hashCode, jsonLd, sourcedQuote, escapeAttr, escapeHtml, excerpt } from './utils';
+import { PHOTOS, photoCaption, photoFigure } from './photos';
 
 interface HomePageOptions {
   subdomain?: SubdomainContext;
@@ -50,8 +51,10 @@ export function homePage(featuredBreweries: Brewery[], stats: HomeStats, options
 
   const content = `
   <!-- Hero Section -->
-  <section class="hero-section">
+  <section class="hero-section bt-hero">
+    <img class="bt-hero-img" src="/assets/images/photos/${PHOTOS.pedalWagon.file}" width="${PHOTOS.pedalWagon.w}" height="${PHOTOS.pedalWagon.h}" alt="${escapeAttr(PHOTOS.pedalWagon.alt)}" fetchpriority="high" decoding="async">
     <div class="hero-content">
+      <p class="bt-kicker">${isMultiState ? 'Ohio \u00b7 Michigan \u00b7 Pennsylvania \u00b7 Indiana \u00b7 Kentucky \u00b7 West Virginia' : `${escapeHtml(stateName)} breweries, one trip at a time`}</p>
       <h1>${branding.heroTitle}</h1>
       <p class="hero-subtitle">${branding.tagline}</p>
       <p class="hero-summary" style="max-width:720px;margin:0 auto 1rem;font-size:1.05rem;line-height:1.55;opacity:.92">${homeSummary(stats, branding.siteName, summaryMultiState, stateName)}</p>
@@ -88,6 +91,7 @@ export function homePage(featuredBreweries: Brewery[], stats: HomeStats, options
       </div>
     </div>
   </section>
+  <p class="bt-herocap">${photoCaption(PHOTOS.pedalWagon)}</p>
 
   <!-- Quick Region Filters -->
   <section class="container my-4">
@@ -183,6 +187,15 @@ export function homePage(featuredBreweries: Brewery[], stats: HomeStats, options
     </div>
     <div class="row g-4">
       ${featuredBreweries.map(brewery => breweryCard(brewery, stateName)).join('')}
+    </div>
+  </section>
+
+  <!-- From the archives -->
+  <section class="container">
+    <div class="bt-archive" aria-labelledby="bt-archive-h">
+      <h2 id="bt-archive-h">${isMultiState ? 'Brewing in these states, from the archives' : 'Regional brewing history, from the archives'}</h2>
+      <p class="intro">Three photographs from the Library of Congress: a brewery building surveyed in Ohio in 1936, and two Pennsylvania brewing towns photographed in 2019.</p>
+      <div class="shots">${photoFigure('zoar')}${photoFigure('latrobe')}${photoFigure('northCountry')}</div>
     </div>
   </section>
 
@@ -381,9 +394,8 @@ function breweryCard(brewery: Brewery, stateName: string = 'Ohio'): string {
   const amenities = brewery.amenities?.slice(0, 3) || [];
   const remaining = (brewery.amenities?.length || 0) - 3;
 
-  // Generate gradient based on brewery name
-  const hue = Math.abs(hashCode(brewery.name)) % 360;
-  const gradient = `linear-gradient(135deg, hsl(${hue}, 70%, 40%) 0%, hsl(${(hue + 40) % 360}, 60%, 30%) 100%)`;
+  // Label-style card top: one of four house tones, picked from the name so a brewery keeps its color
+  const tone = ['stout', 'hop', 'brick', 'porter'][Math.abs(hashCode(brewery.name)) % 4];
 
   const stateNames: Record<string, string> = { OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania', IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia' };
   const displayState = stateNames[brewery.state || ''] || brewery.state_province || stateName;
@@ -392,7 +404,7 @@ function breweryCard(brewery: Brewery, stateName: string = 'Ohio'): string {
   return `
   <div class="col-md-6 col-lg-4">
     <div class="brewery-card">
-      <div class="card-img-placeholder" style="background: ${gradient};">
+      <div class="card-img-placeholder bt-label" data-tone="${tone}">
         <i class="bi bi-cup-straw"></i>
         <span class="brewery-region-badge">${regionLabel}</span>
       </div>

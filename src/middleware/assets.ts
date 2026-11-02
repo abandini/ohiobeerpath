@@ -65,5 +65,7 @@ function getContentType(path: string): string {
   if (path.endsWith('.jpg') || path.endsWith('.jpeg')) return 'image/jpeg';
   if (path.endsWith('.svg')) return 'image/svg+xml';
   if (path.endsWith('.woff2')) return 'font/woff2';
+  if (path.endsWith('.webp')) return 'image/webp';
+  if (path.endsWith('.txt')) return 'text/plain; charset=utf-8';
   return 'application/octet-stream';
 }

@@ -95,3 +95,13 @@ export const safeImagePath = (value?: string | null): string => {
   if (segments.some(s => s === '' || s === '.' || s === '..')) return '';
   return v;
 };
+
+// House label colors (theme-2026-11.css) for breweries without a photo: one of four stout/hop/brick/porter
+// pairs, picked from the name so a brewery keeps its color. Replaces the old random-hue gradients.
+const LABEL_PAIRS = [['#2a1d17', '#4a3428'], ['#3b5220', '#4f6b2a'], ['#7f2f1e', '#9e3b26'], ['#4a3428', '#6b4a33']];
+export function labelColors(name: string): string {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = ((h << 5) - h + name.charCodeAt(i)) | 0;
+  const [a, b] = LABEL_PAIRS[Math.abs(h) % LABEL_PAIRS.length];
+  return `${a}, ${b}`;
+}
