@@ -8,7 +8,7 @@ import { optionalAuth } from './middleware/auth';
 import type { Env, Brewery, AppVariables } from './types';
 import apiRoutes from './routes/api';
 import pageRoutes from './routes/pages';
-import adminRoutes from './routes/admin';
+import adminRoutes, { adminAuth } from './routes/admin';
 import authRoutes from './routes/auth';
 import ratingsRoutes from './routes/ratings';
 import usersRoutes from './routes/users';
@@ -104,6 +104,22 @@ app.use('*', async (c, next) => {
     .on('meta[property="og:url"]', { element(e) { if (isRoot(e.getAttribute('content'))) e.setAttribute('content', selfUrl); } })
     .on('meta[name="twitter:url"]', { element(e) { if (isRoot(e.getAttribute('content'))) e.setAttribute('content', selfUrl); } })
     .transform(c.res);
+});
+
+// Security headers on every response, and no ad loader on screens without publisher content (AdSense policy):
+// error pages, legal pages and account screens.
+const NO_AD_PATHS = /^\/(privacy|terms|login|signup|account|admin)(\/|$)/;
+app.use('*', async (c, next) => {
+  await next();
+  c.res.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  c.res.headers.set('X-Content-Type-Options', 'nosniff');
+  c.res.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  c.res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  c.res.headers.set('Permissions-Policy', 'camera=(), microphone=(), payment=()');
+  const ct = c.res.headers.get('content-type') || '';
+  if (!ct.includes('text/html')) return;
+  if (c.res.status === 200 && !NO_AD_PATHS.test(new URL(c.req.url).pathname)) return;
+  c.res = new HTMLRewriter().on('script[src*="adsbygoogle.js"]', { element(e) { e.remove(); } }).transform(c.res);
 });
 
 // Serve static assets
@@ -342,7 +358,11 @@ app.get('/sitemap.xml', async (c) => {
   });
 });
 
-// Admin endpoint to seed embeddings (protected by simple check)
+// Every /api/admin/* endpoint needs the admin login. They were open to anyone until 2026-11-10: three of them
+// spend Workers AI budget and one writes AI-generated descriptions into the brewery table.
+app.use('/api/admin/*', adminAuth);
+
+// Admin endpoint to seed embeddings
 app.post('/api/admin/seed-embeddings', async (c) => {
   const result = await seedEmbeddings(c.env);
   return c.json(result);
@@ -410,10 +430,7 @@ app.notFound((c) => {
 // Error handler
 app.onError((err, c) => {
   console.error(err);
-  return c.json({
-    error: 'Internal Server Error',
-    message: err.message
-  }, 500);
+  return c.json({ error: 'Internal Server Error' }, 500);
 });
 
 // Seed embeddings helper function

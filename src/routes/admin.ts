@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { basicAuth } from 'hono/basic-auth';
+import type { MiddlewareHandler } from 'hono';
 import type { Env } from '../types';
 import * as breweriesDB from '../db/breweries';
 import {
@@ -15,19 +15,32 @@ import {
 
 const admin = new Hono<{ Bindings: Env }>();
 
-// Basic auth middleware for admin routes
-admin.use('*', async (c, next) => {
-  // Get admin credentials from environment
+// Basic auth for everything under /admin and /api/admin. There is no default password: if the ADMIN_PASS
+// secret is not set, admin is off (503). A default used to live here in a public repository (fixed 2026-11-10).
+export const adminAuth: MiddlewareHandler<{ Bindings: Env }> = async (c, next) => {
   const adminUser = c.env.ADMIN_USER || 'admin';
-  const adminPass = c.env.ADMIN_PASS || 'ohiobeer2024';
-
-  const auth = basicAuth({
-    username: adminUser,
-    password: adminPass,
-  });
-
-  return auth(c, next);
-});
+  const adminPass = c.env.ADMIN_PASS;
+  if (!adminPass || adminPass.length < 12) return c.text('Admin is not configured.', 503);
+  const header = c.req.header('Authorization') || '';
+  let ok = false;
+  if (header.startsWith('Basic ')) {
+    try {
+      const [user, ...rest] = atob(header.slice(6)).split(':');
+      ok = safeEqual(user, adminUser) && safeEqual(rest.join(':'), adminPass);
+    } catch { ok = false; }
+  }
+  if (!ok) return c.text('Unauthorized', 401, { 'WWW-Authenticate': 'Basic realm="Admin"', 'Cache-Control': 'no-store' });
+  await next();
+  c.header('Cache-Control', 'no-store');
+};
+// Length-independent comparison so a wrong guess takes the same time as a right one.
+function safeEqual(a: string, b: string): boolean {
+  const enc = new TextEncoder(); const x = enc.encode(a), y = enc.encode(b);
+  let diff = x.length ^ y.length;
+  for (let i = 0; i < Math.max(x.length, y.length); i++) diff |= (x[i] ?? 0) ^ (y[i] ?? 0);
+  return diff === 0;
+}
+admin.use('*', adminAuth);
 
 // Dashboard
 admin.get('/', async (c) => {
