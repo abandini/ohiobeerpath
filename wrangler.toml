@@ -60,6 +60,8 @@ zone_name = "brewerytrip.com"
 [vars]
 ENVIRONMENT = "production"
 AI_GATEWAY_ENDPOINT = "https://gateway.ai.cloudflare.com/v1"
+# Public tap list API of the beerthirty-intake Worker ("On tap" on brewery pages, src/services/taplist.ts).
+TAPLIST_API_URL = "https://beerthirty-intake.bill-burkey.workers.dev"
 
 # Secrets (set via wrangler secret put — NEVER commit credentials)
 # wrangler secret put ADMIN_USER

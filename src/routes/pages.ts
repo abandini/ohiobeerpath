@@ -5,6 +5,7 @@ import type { StateFilter } from '../db/breweries';
 import { homePage } from '../templates/home';
 import { breweriesPage } from '../templates/breweries';
 import { breweryPage } from '../templates/brewery';
+import { getTapList } from '../services/taplist';
 import { regionsPage, regionDetailPage } from '../templates/regions';
 import { nearbyPage } from '../templates/nearby';
 import { itineraryPage } from '../templates/itinerary';
@@ -148,6 +149,10 @@ pages.get('/brewery/:id', async (c) => {
     return c.html('<h1>Brewery not found</h1>', 404);
   }
 
+  // Current "On tap" list, if the brewery has one. Started now so it runs alongside the queries below;
+  // it has its own timeout and resolves to null on any failure, so it cannot break or hold up the page.
+  const tapListPromise = brewery.closed_at ? Promise.resolve(null) : getTapList(c.env, brewery.id);
+
   // Fetch nearby breweries in the same region
   let nearbyBreweries: typeof brewery[] = [];
   if (brewery.region) {
@@ -171,7 +176,7 @@ pages.get('/brewery/:id', async (c) => {
     // Reviews table might not exist yet
   }
 
-  const html = breweryPage(brewery, c.env.GOOGLE_MAPS_API_KEY, nearbyBreweries, reviews);
+  const html = breweryPage(brewery, c.env.GOOGLE_MAPS_API_KEY, nearbyBreweries, reviews, await tapListPromise);
   return c.html(html);
 });
 

@@ -12,6 +12,10 @@ export interface Env {
   AI_GATEWAY_ENDPOINT?: string;
   ANTHROPIC_API_KEY?: string;
   ENVIRONMENT: string;
+  // Base URL of the beerthirty-intake Worker's public tap list API (see src/services/taplist.ts).
+  TAPLIST_API_URL?: string;
+  // Optional service binding to that Worker; used instead of a fetch by URL when present.
+  TAPLIST_API?: Fetcher;
   ADMIN_USER?: string;
   ADMIN_PASS?: string;
   // Untappd OAuth

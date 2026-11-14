@@ -2,6 +2,8 @@ import { layout } from './layout';
 import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
 import { medalBadges, medalList } from './downtown-tour';
 import type { Brewery } from '../types';
+import type { TapList } from '../services/taplist';
+import { tapListSection } from './taplist';
 import { hashCode, jsonLd, escapeHtml, escapeAttr, safeHttpUrl, hostOf, sourcedQuote, excerpt, isCalendarDate, safeImagePath, labelColors } from './utils';
 
 interface Review {
@@ -86,7 +88,7 @@ function tourCallout(id: number): string {
           </div>`;
 }
 
-export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyBreweries?: Brewery[], reviews?: Review[]): string {
+export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyBreweries?: Brewery[], reviews?: Review[], tapList?: TapList | null): string {
   const stateAbbrevToName: Record<string, string> = {
     OH: 'Ohio', MI: 'Michigan', PA: 'Pennsylvania',
     IN: 'Indiana', KY: 'Kentucky', WV: 'West Virginia'
@@ -273,6 +275,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             </dl>
           </div>
           ${tourCallout(brewery.id)}
+          ${brewery.closed_at ? '' : tapListSection(tapList)}
 
           ${gallerySection}
           ${visitSection}
