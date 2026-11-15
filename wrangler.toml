@@ -70,3 +70,10 @@ TAPLIST_API_URL = "https://beerthirty-intake.bill-burkey.workers.dev"
 # wrangler secret put UNTAPPD_CLIENT_ID
 # wrangler secret put UNTAPPD_CLIENT_SECRET
 # wrangler secret put UNTAPPD_REDIRECT_URI
+
+# Direct binding to the beerthirty-intake Worker for the tap list fetch. Workers on one account cannot
+# reliably reach each other by workers.dev address, so the fetch goes through this binding (same code path).
+[[services]]
+binding = "TAPLIST_API"
+service = "beerthirty-intake"
+
