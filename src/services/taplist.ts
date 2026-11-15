@@ -122,6 +122,25 @@ async function getIndex(env: Env, now: number): Promise<Map<string, string> | nu
 }
 
 /**
+ * The breweries that have a current list, newest first. Null when the intake could not be reached,
+ * so a caller can tell "no lists" (an empty array) from "could not ask". Uses the same cached index
+ * as getTapList. Never throws.
+ */
+export async function listTapLists(env: Env, now: number = Date.now()): Promise<{ breweryId: number; updatedAt: string | null }[] | null> {
+  try {
+    const index = await getIndex(env, now);
+    if (!index) return null;
+    const rows = [...index].map(([key, updated]) => {
+      const t = updated.length <= 40 ? Date.parse(updated) : NaN;
+      return { breweryId: Number(key), updatedAt: Number.isFinite(t) && t <= now + 86_400_000 ? new Date(t).toISOString() : null };
+    });
+    return rows.sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? '') || a.breweryId - b.breweryId);
+  } catch {
+    return null;
+  }
+}
+
+/**
  * The current approved tap list for a brewery, or null (none, not reachable, too slow, malformed).
  * Never throws. Most breweries have no list, and for them this costs no request at all: the index of
  * breweries that do have one is fetched once and reused for five minutes.

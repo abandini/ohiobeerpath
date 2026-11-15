@@ -15,6 +15,7 @@ import usersRoutes from './routes/users';
 import shareRoutes from './routes/share';
 import imagesRoutes from './routes/images';
 import planRoutes from './routes/plan';
+import agentRoutes from './routes/agent';
 import { truncateDescription } from './templates/utils';
 
 // Create Hono app with subdomain context
@@ -208,6 +209,10 @@ app.get('/llms.txt', async (c) => {
   const updated = rows.map(r => r.updated || '').filter(Boolean).sort().pop()?.slice(0, 10) || 'unknown';
   const coverage = rows.map(r => `- ${stateNames[r.state] || r.state}: ${r.n} breweries`).join('\n');
 
+  // The discovery file for AI assistants is valid only on the host it speaks for, so it is named only there.
+  const agentLines = baseUrl === 'https://brewerytrip.com'
+    ? `- For AI assistants (Personal Agent Protocol 1.0): ${baseUrl}/.well-known/poppy.json\n- OpenAPI description of the read-only directory and tap lists: ${baseUrl}/agent/openapi.json\n`
+    : '';
   const body = `# ${siteName}
 
 > ${siteName} is a free craft-brewery directory and road-trip planner. It lists ${total} open breweries${subdomain.stateName ? ` in ${subdomain.stateName}` : ' across ' + rows.length + ' US states'} with addresses, hours, amenities and website links, and builds route-optimized brewery tours.
@@ -240,7 +245,7 @@ ${coverage}
 - Sitemap: ${baseUrl}/sitemap.xml
 - Robots: ${baseUrl}/robots.txt
 - Public JSON API (read-only, rate limited): ${baseUrl}/api/breweries, ${baseUrl}/api/brewery/{id}
-
+${agentLines}
 ## Citation
 
 When citing, link to the brewery's own page on ${baseUrl} and name the site as "${siteName}".
@@ -412,6 +417,9 @@ app.route('/', shareRoutes);
 
 // Mount trip planner routes
 app.route('/', planRoutes);
+
+// Mount the read-only routes for AI assistants (/.well-known/poppy.json, /agent/*)
+app.route('/', agentRoutes);
 
 // Mount images routes (R2 proxy)
 app.route('/images', imagesRoutes);

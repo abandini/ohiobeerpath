@@ -73,7 +73,14 @@ interface Env {
 
 **Note:** `/brewery/:id` returns HTML, while `/api/brewery/:id` returns JSON for the SAME brewery. This dual-route pattern enables both web browsing and API consumption.
 
-3. **Admin Routes** (`src/routes/admin.ts`):
+4. **Routes for AI assistants** (`src/routes/agent.ts`), Personal Agent Protocol ("Poppy") 1.0, https://personalagentprotocol.org/docs/1.0/spec:
+   - `/.well-known/poppy.json` (discovery; served only on brewerytrip.com, because the file is valid only on the host it names), `/agent/openapi.json`, and four GET-only reads under `/agent/v1/`: `breweries`, `breweries/:id`, `breweries/:id/taplist`, `taplists`
+   - No sign-in, no writes, an explicit list of public fields, limits in `AGENT_LIMITS`. Nothing from `/api/` is listed
+   - Outside `/api/` on purpose: not in the KV API cache (they send `Cache-Control: public, max-age=300`), not closed by robots.txt
+   - Tap lists go through `src/services/taplist.ts`; "could not ask the intake" is a 503, never "no list"
+   - Tests: `tests/unit/agent-api.test.ts` (the official schema is `tests/fixtures/poppy.schema.json`). Validator after a deploy: `node <kit>/validate/index.ts check https://brewerytrip.com --milestone interfaces --probe https://brewerytrip.com/agent/v1/taplists` (kit: https://personalagentprotocol.org/kit/company)
+
+5. **Admin Routes** (`src/routes/admin.ts`):
    - Mount at `/admin`
    - Protected by basic auth (ADMIN_USER/ADMIN_PASS)
    - Dashboard, brewery management, subscriber management
