@@ -2,6 +2,7 @@
 import type { SubdomainContext } from '../types';
 import { animationStyles, animationScripts } from './components/animations';
 import { jsonLd, escapeAttr, truncateDescription } from './utils';
+import { availableRoads } from '../data/roads';
 
 // Google AdSense publisher account. The meta tag verifies site ownership; the loader
 // script runs Auto ads (no manual ad units). ads.txt is served from src/index.ts.
@@ -411,7 +412,7 @@ function footer(branding: Branding): string {
           <ul class="footer-links">
             <li><a href="/breweries">Breweries</a></li>
             <li><a href="/regions">Regions</a></li>
-            <li><a href="/trails">Trails</a></li>
+            <li><a href="/trails">Trails</a></li>${availableRoads().length ? '\n            <li><a href="/roads">Road trips</a></li>' : ''}
             <li><a href="/about">About</a></li>
             <li><a href="/privacy">Privacy policy</a></li>
           </ul>

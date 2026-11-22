@@ -17,6 +17,7 @@ import imagesRoutes from './routes/images';
 import planRoutes from './routes/plan';
 import agentRoutes from './routes/agent';
 import { truncateDescription } from './templates/utils';
+import { availableRoads } from './data/roads';
 
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -213,6 +214,11 @@ app.get('/llms.txt', async (c) => {
   const agentLines = baseUrl === 'https://brewerytrip.com'
     ? `- For AI assistants (Personal Agent Protocol 1.0): ${baseUrl}/.well-known/poppy.json\n- OpenAPI description of the read-only directory and tap lists: ${baseUrl}/agent/openapi.json\n`
     : '';
+  // Single-road trips live on the national site; each line says what the list is and when it was checked.
+  const roadLines = baseUrl === 'https://brewerytrip.com' && availableRoads().length
+    ? `- Single-road brewery trips (stops in driving order, each checked against the brewery's own site): ${baseUrl}/roads\n` +
+      availableRoads().map((r) => `  - ${r.config.name}: ${baseUrl}/roads/${r.config.slug} (${r.stops.length} stops, last checked ${r.lastChecked})\n`).join('')
+    : '';
   const body = `# ${siteName}
 
 > ${siteName} is a free craft-brewery directory and road-trip planner. It lists ${total} open breweries${subdomain.stateName ? ` in ${subdomain.stateName}` : ' across ' + rows.length + ' US states'} with addresses, hours, amenities and website links, and builds route-optimized brewery tours.
@@ -236,7 +242,7 @@ ${coverage}
 - Trip planner (optimized routes from a starting city and time budget): ${baseUrl}/plan
 - Near me: ${baseUrl}/nearby
 - Curated trails: ${baseUrl}/trails
-- Events: ${baseUrl}/events
+${roadLines}- Events: ${baseUrl}/events
 - Guides: ${baseUrl}/blog
 - About: ${baseUrl}/about
 
@@ -310,6 +316,11 @@ app.get('/sitemap.xml', async (c) => {
       { url: '/blog/ohio-ipa-breweries', priority: '0.6', changefreq: 'monthly', lastmod: '2026-10-27' },
       { url: '/blog/ohio-christmas-ales', priority: '0.6', changefreq: 'weekly', lastmod: '2026-10-31' },
       { url: '/blog/dog-friendly-ohio-breweries', priority: '0.6', changefreq: 'monthly', lastmod: '2026-10-31' },
+    ] : []),
+    // Single-road trips cross state lines, so they belong to the national site only; a road is listed once it has checked stops
+    ...(!subdomain.stateName && availableRoads().length ? [
+      { url: '/roads', priority: '0.7', changefreq: 'monthly', lastmod: availableRoads().map((r) => r.lastChecked).sort().pop() || '' },
+      ...availableRoads().map((r) => ({ url: `/roads/${r.config.slug}`, priority: '0.7', changefreq: 'monthly', lastmod: r.lastChecked })),
     ] : []),
     { url: '/nearby', priority: '0.7', changefreq: 'weekly', lastmod: latest },
     { url: '/blog', priority: '0.6', changefreq: 'weekly', lastmod: '' },

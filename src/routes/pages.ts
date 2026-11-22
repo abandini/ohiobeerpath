@@ -5,7 +5,9 @@ import type { StateFilter } from '../db/breweries';
 import { homePage } from '../templates/home';
 import { breweriesPage } from '../templates/breweries';
 import { breweryPage } from '../templates/brewery';
-import { getTapList } from '../services/taplist';
+import { getTapList, listTapLists } from '../services/taplist';
+import { roadTripPage, roadsIndexPage } from '../templates/road-trip';
+import { availableRoads, roadBySlug } from '../data/roads';
 import { regionsPage, regionDetailPage } from '../templates/regions';
 import { nearbyPage } from '../templates/nearby';
 import { itineraryPage } from '../templates/itinerary';
@@ -268,6 +270,22 @@ pages.get('/trails', async (c) => {
 // Code-defined, sourced walking tour (registered before the D1-backed /trails/:slug)
 pages.get('/trails/downtown-cleveland', (c) => c.html(downtownTourPage(c.get('subdomain'))));
 pages.get('/cleveland-beer-of-the-month', (c) => c.html(beerOfTheMonthPage(c.get('subdomain'))));
+
+// Single-road trips. A road has a page only while at least one of its stops is a checked, sourced, open brewery;
+// with none, both routes answer 404 and nothing links here.
+pages.get('/roads', (c) => {
+  const roads = availableRoads();
+  return roads.length ? c.html(roadsIndexPage(roads, c.get('subdomain'))) : c.notFound();
+});
+pages.get('/roads/:slug', async (c) => {
+  const road = roadBySlug(c.req.param('slug'));
+  if (!road) return c.notFound();
+  // One cached lookup of which breweries have a tap list (it has its own short timeout and never throws).
+  // If it cannot be read the page simply shows no tap-list markers.
+  const lists = await listTapLists(c.env);
+  const tapLists = lists ? new Map(lists.map((l) => [l.breweryId, l.updatedAt])) : null;
+  return c.html(roadTripPage(road, { subdomain: c.get('subdomain'), tapLists }));
+});
 
 // Single trail page
 pages.get('/trails/:slug', async (c) => {

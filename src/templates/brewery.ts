@@ -1,5 +1,6 @@
 import { layout } from './layout';
 import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
+import { roadStopFor } from '../data/roads';
 import { medalBadges, medalList } from './downtown-tour';
 import type { Brewery } from '../types';
 import type { TapList } from '../services/taplist';
@@ -115,6 +116,19 @@ function tourCallout(id: number): string {
             <h2><i class="bi bi-signpost-2 text-warning" aria-hidden="true"></i> On the Downtown Cleveland Brewery Walk</h2>
             <p>Stop ${i + 1} of ${DOWNTOWN_TOUR.stops.length} on our walk from downtown through the Flats and Ohio City to Hingetown, with walking directions for the route and Uber/Lyft links at every stop.</p>
             <a href="/trails/${DOWNTOWN_TOUR.slug}" class="btn btn-warning">See the walk</a>
+          </div>`;
+}
+
+// A brewery that is a checked stop on a single-road trip links to it, with its place on the road.
+export function roadCallout(id: number, roads?: Parameters<typeof roadStopFor>[1]): string {
+  const hit = roadStopFor(id, roads);
+  if (!hit) return '';
+  const { road, stop } = hit, leg = road.legs.find((l) => l.id === stop.legId)!;
+  return `
+          <div class="content-card">
+            <h2><i class="bi bi-signpost text-warning" aria-hidden="true"></i> On our ${escapeHtml(road.config.name)} list</h2>
+            <p>Mile ${stop.mile.toFixed(1)} of the ${escapeHtml(leg.from.split(',')[0])} to ${escapeHtml(leg.to.split(',')[0])} leg, ${stop.detourMiles < 0.1 ? 'under 0.1' : stop.detourMiles.toFixed(1)} miles off the road in a straight line. Checked ${escapeHtml(stop.checked)}.</p>
+            <a href="/roads/${escapeAttr(road.config.slug)}#stop-${stop.breweryId}" class="btn btn-warning">See the road trip</a>
           </div>`;
 }
 
@@ -313,6 +327,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
             </dl>
           </div>
           ${tourCallout(brewery.id)}
+          ${brewery.closed_at ? '' : roadCallout(brewery.id)}
           ${brewery.closed_at ? '' : tapListSection(tapList)}
 
           ${brewery.closed_at ? '' : medalsSection(medals)}
