@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { breweryPage, buildPageTitle, buildSeoDescription, breweryTypeLabel, hostOf } from '../../src/templates/brewery';
 import { sourcedQuote, safeHttpUrl, isCalendarDate, safeImagePath } from '../../src/templates/utils';
 import { breweryCard } from '../../src/templates/breweries';
+import { parsePhotos } from '../../src/db/breweries';
 import type { Brewery } from '../../src/types';
 
 const GENERATED = 'Nestled in the charming town of Columbiana, Ohio, Birdfish Brewing Co. is a warm and welcoming haven with a signature Appalachian Pale Ale.';
@@ -206,6 +207,23 @@ describe('owner-supplied photos', () => {
     for (const alt of ['No size', 'Half', 'Bad', 'Huge']) expect(html).toContain(`alt="${alt}" loading="lazy" width="1600" height="739">`);
     expect(html).not.toContain('width="1"');
     expect(html).not.toContain('"><script>');
+  });
+  it('the database parser keeps width and height only as a valid pair, so the size reaches the page', () => {
+    const raw = JSON.stringify([
+      { url: '/images/breweries/x/a.webp', alt: 'A', width: 1071, height: 1600 },
+      { url: '/images/breweries/x/b.webp', alt: 'B', width: 900 },
+      { url: '/images/breweries/x/c.webp', alt: 'C', width: '1600', height: 883 },
+      { url: '/images/breweries/x/d.webp', alt: 'D', width: 0, height: 20000, extra: 'dropped' },
+    ]);
+    const photos = parsePhotos(raw);
+    expect(photos).toEqual([
+      { url: '/images/breweries/x/a.webp', alt: 'A', width: 1071, height: 1600 },
+      { url: '/images/breweries/x/b.webp', alt: 'B' },
+      { url: '/images/breweries/x/c.webp', alt: 'C' },
+      { url: '/images/breweries/x/d.webp', alt: 'D' },
+    ]);
+    expect(breweryPage({ ...base, photos })).toContain('alt="A" loading="lazy" width="1071" height="1600">');
+    expect(parsePhotos('not json')).toEqual([]);
   });
   it('rejects CSS-injection and path-traversal image paths at the hero and gallery', () => {
     const inj = "/images/x');background-image:url(https://example.org/pixel);/*";

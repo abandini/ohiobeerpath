@@ -1,5 +1,5 @@
 import { safeImagePath, isCalendarDate } from '../templates/utils';
-import type { Env, Brewery } from '../types';
+import type { Env, Brewery, BreweryPhoto } from '../types';
 
 // State filter options for queries
 export interface StateFilter {
@@ -196,14 +196,16 @@ export function parseVisitNotes(raw: unknown): { date: string; text: string }[] 
 }
 
 // Photos must be a JSON array of {url, alt}; anything malformed renders as no photos rather than breaking the page.
-function parsePhotos(raw: unknown): { url: string; alt: string }[] {
+// width and height are kept only as a pair of whole numbers from 1 to 10000 (the stored file's pixel size).
+const photoDim = (n: unknown): n is number => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 10000;
+export function parsePhotos(raw: unknown): BreweryPhoto[] {
   if (typeof raw !== 'string' || raw.trim() === '') return [];
   try {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
     return parsed
       .filter((p) => p && typeof p.url === 'string' && typeof p.alt === 'string' && safeImagePath(p.url) !== '' && p.alt.trim() !== '')
-      .map((p) => ({ url: safeImagePath(p.url), alt: p.alt.trim() }));
+      .map((p) => ({ url: safeImagePath(p.url), alt: p.alt.trim(), ...(photoDim(p.width) && photoDim(p.height) ? { width: p.width, height: p.height } : {}) }));
   } catch {
     return [];
   }
