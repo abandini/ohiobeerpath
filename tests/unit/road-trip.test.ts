@@ -609,7 +609,8 @@ describe('the real road data (src/data/roads)', () => {
     for (const r of verified.filter((x) => x.status !== 'OPEN' || !x.operating_evidence)) expect(US_422_BUILT.stops.some((s) => s.breweryId === r.id), String(r.name)).toBe(false);
   });
   it('only pages a person read in a browser carry a browser check', () => {
-    expect(US_422_BUILT.stops.filter((s) => s.browserChecked).map((s) => s.breweryId)).toEqual([1082]);
+    // 82 Crooked Pecker, 261 Pompatus and 1082 Hidden River are script-rendered sites read in a real browser on 2026-11-22.
+    expect(US_422_BUILT.stops.filter((s) => s.browserChecked).map((s) => s.breweryId).sort((a, b) => a - b)).toEqual([82, 261, 1082]);
   });
 });
 
