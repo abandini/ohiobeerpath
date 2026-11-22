@@ -270,6 +270,7 @@ export interface VerifiedRow {
   browser_checked?: string | null; // the day a person read the row's sources on the rendered page, for sites a script cannot read
   evidence_kind?: string | null;   // 'notice' when the evidence is a dated notice or event, not visiting hours
   notice_context?: string | null;  // for a notice: what on the page establishes its year and the venue
+  suspended_reason?: string;       // set with status SUSPENDED, from suspended.json
   taken_from?: string;             // the road whose check this row is, when it is not this road's own (see shareRows)
   placement_accepted?: string | null; // a reviewed exception: the evidence that resolves the address difference (from decisions.json)
 }
@@ -305,9 +306,9 @@ export interface RoadStop {
  * printed address); `unresolved` (operating status not confirmed); `settled` (closed, moved, a duplicate or not a
  * taproom). withHours = listed + notPlaced + outside. total is the sum of the five.
  */
-export interface Cohort { total: number; withHours: number; listed: number; notPlaced: number; outside: number; unresolved: number; settled: number }
+export interface Cohort { total: number; withHours: number; listed: number; notPlaced: number; outside: number; unresolved: number; settled: number; /** suspended after a monthly re-check, pending review; present only when there are some */ suspended?: number }
 /** A candidate with published hours that is not on the list, and why, in words fit to print. */
-export interface NotListed { id: number | string; name: string; why: 'notPlaced' | 'outside'; reason: string }
+export interface NotListed { id: number | string; name: string; why: 'notPlaced' | 'outside' | 'suspended'; reason: string }
 export interface BuiltLeg { id: string; lengthMiles: number; line: LatLon[]; candidates: number; decided: number; cohort?: Cohort; joins?: number; joinedMiles?: number; widestJoinMiles?: number }
 /** What the build step writes: stops with their place on the road, and a thinned line for drawing. */
 export interface BuiltRoad { slug: string; built: string; legs: BuiltLeg[]; stops: RoadStop[]; unplaced?: number; cohort?: Cohort; notListed?: NotListed[]; /** Directory ids this road checked and does not list (for the cross-road gate). */ checkedNotListed?: number[] }
@@ -439,6 +440,8 @@ export const verifierExit = (c: { total: number; missing: number; unread: number
 const round = (n: number, places: number) => Math.round(n * 10 ** places) / 10 ** places;
 const PAST_END_MILES = 0.25;
 /** Statuses that settle a candidate without listing it. UNCONFIRMED settles nothing. */
+/** The status a row is given by data/roads/<slug>/suspended.json (see applySuspensions). */
+export const SUSPENDED = 'SUSPENDED';
 export const DECIDED_NOT_LISTED = ['CLOSED', 'MOVED/RENAMED', 'MOVED', 'RENAMED', 'DUPLICATE', 'NOT A BREWERY TAPROOM'];
 
 export function segmentAt(leg: RoadLegConfig, mile: number): RoadSegmentConfig {
@@ -546,7 +549,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
   }
   const usesGeocode = (id: Id) => method.get(id) === 'census' || method.get(id) === 'reviewed';
   const seen = new Set<Id>(), decided = new Set<Id>(), stops: RoadStop[] = [];
-  const fate = new Map<Id, 'listed' | 'notPlaced' | 'outside'>(), notListed: NotListed[] = [];
+  const fate = new Map<Id, 'listed' | 'notPlaced' | 'outside' | 'suspended'>(), notListed: NotListed[] = [];
   for (const row of verified) {
     const label = String(row?.name || `id ${row?.id}`);
     const leave = (reason: string) => report.left.push({ id: row?.id, name: label, reason });
@@ -554,6 +557,12 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     if (!at) { leave('not among the directory candidates for this road (or no coordinates)'); continue; }
     if (seen.has(row.id)) { leave('second row for the same brewery id'); continue; }
     seen.add(row.id);
+    if (row.status === SUSPENDED) {
+      // Listed until a monthly re-check found, twice, that its cited page no longer supports it. Pending review: not a
+      // decision, and never counted as closed.
+      fate.set(row.id, 'suspended'); notListed.push({ id: row.id, name: label, why: 'suspended', reason: String(row.suspended_reason || 'suspended after a monthly re-check, pending review') });
+      leave('suspended after a monthly re-check, pending review'); continue;
+    }
     if (row.status !== 'OPEN') {
       if (DECIDED_NOT_LISTED.includes(String(row.status))) decided.add(row.id);
       leave(`status ${row.status || 'missing'}`); continue;
@@ -602,10 +611,12 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
   // printed address later put it. The six counts add up to the total.
   const tally = (ids: CandidateRow[]): Cohort => {
     const c: Cohort = { total: 0, withHours: 0, listed: 0, notPlaced: 0, outside: 0, unresolved: 0, settled: 0 };
+    const bump = () => { c.suspended = (c.suspended ?? 0) + 1; };
     for (const cand of ids) {
       c.total++;
       const row = rowFor.get(cand.id), f = fate.get(cand.id);
       if (f === 'listed') { c.listed++; c.withHours++; } else if (f === 'notPlaced') { c.notPlaced++; c.withHours++; } else if (f === 'outside') { c.outside++; c.withHours++; }
+      else if (f === 'suspended') bump();
       else if (row && DECIDED_NOT_LISTED.includes(String(row.status))) c.settled++; else c.unresolved++;
     }
     return c;
@@ -939,10 +950,26 @@ export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verifi
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
+// Suspended stops (data/roads/<slug>/suspended.json, written by the monthly check)
+
+/**
+ * One suspended stop: `id` is the row's id (the directory id, or the key on a road of stand-alone stops); `date` the
+ * day it was suspended; `reason` plain words for the page; `firstSeen` and `confirmed` the two valid observations,
+ * at least 48 hours apart, that it rests on. Removing the record and rebuilding puts the stop back.
+ */
+export interface Suspension { id: number | string; name: string; date: string; reason: string; firstSeen: string; confirmed: string }
+/** The rows with every suspended one marked: it is left off the list and counted under its own heading. `unmatched` names records with no row. */
+export function applySuspensions(rows: VerifiedRow[], suspended: Suspension[] = []): { rows: VerifiedRow[]; unmatched: string[] } {
+  const by = new Map(suspended.map((x) => [String(x.id), x])), hit = new Set<string>();
+  const out = rows.map((r) => { const x = by.get(String(r?.id)); if (!x) return r; hit.add(String(r.id)); return { ...r, status: SUSPENDED, suspended_reason: `suspended on ${x.date} after a monthly re-check, pending review: ${x.reason}` }; });
+  return { rows: out, unmatched: [...by.keys()].filter((k) => !hit.has(k)) };
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
 // Dated updates to a page that was already public
 
-/** A stop as an update records it: enough to say what was listed, where, and how it was measured. */
-export interface UpdateStop { breweryId: number; name: string; town: string; mile: number; detourMiles: number }
+/** A stop as an update records it: enough to say what was listed, where, and how it was measured. `key` identifies a stop that has no directory id. */
+export interface UpdateStop { breweryId?: number; key?: string; name: string; town: string; mile: number; detourMiles: number }
 /**
  * One completed update to a public page, written once (scripts/record-road-update.mjs) and never recomputed: the list
  * before and after, why each stop left or joined, and what was re-measured. The page renders its dated notice and its
@@ -951,26 +978,29 @@ export interface UpdateStop { breweryId: number; name: string; town: string; mil
 export interface UpdateEvent {
   date: string; what: string;
   before: UpdateStop[]; after: UpdateStop[];
-  removed: (UpdateStop & { why: 'notPlaced' | 'outside' | ''; reason: string })[];
+  removed: (UpdateStop & { why: 'notPlaced' | 'outside' | 'suspended' | ''; reason: string })[];
   added: (UpdateStop & { laterCheck: boolean })[];
   /** Mile moved by half a mile or more, or straight-line distance by a quarter of a mile or more. */
-  measured: { breweryId: number; name: string; was: { mile: number; detourMiles: number }; is: { mile: number; detourMiles: number } }[];
+  measured: { breweryId?: number; key?: string; name: string; was: { mile: number; detourMiles: number }; is: { mile: number; detourMiles: number } }[];
   slight: number;              // stops whose figures moved by less than that
-  towns: { breweryId: number; name: string; was: string; is: string }[];
+  towns: { breweryId?: number; key?: string; name: string; was: string; is: string }[];
 }
 /** Works an update out from the list as it was and the list as it is at the moment of recording. */
 export function makeUpdateEvent(date: string, what: string, before: UpdateStop[], stops: RoadStop[], notListed: NotListed[] = []): UpdateEvent {
-  const slim = (s: RoadStop): UpdateStop => ({ breweryId: s.breweryId as number, name: s.name, town: s.town, mile: s.mile, detourMiles: s.detourMiles });
-  const listed = stops.filter((s) => s.breweryId !== undefined), now = new Map(listed.map((s) => [s.breweryId as number, s])), was = new Map(before.map((x) => [x.breweryId, x]));
-  const kept = before.filter((x) => now.has(x.breweryId)).map((x) => ({ was: x, is: now.get(x.breweryId)! }));
+  // A directory stop is known by its directory id; a stand-alone stop by its key.
+  const id = (x: { breweryId?: number; key?: string }) => (x.breweryId !== undefined ? `id:${x.breweryId}` : `key:${x.key}`);
+  const ref = (x: { breweryId?: number; key?: string }) => (x.breweryId !== undefined ? { breweryId: x.breweryId } : { key: x.key });
+  const slim = (s: RoadStop): UpdateStop => ({ ...ref(s), name: s.name, town: s.town, mile: s.mile, detourMiles: s.detourMiles });
+  const now = new Map(stops.map((s) => [id(s), s])), was = new Map(before.map((x) => [id(x), x]));
+  const kept = before.filter((x) => now.has(id(x))).map((x) => ({ was: x, is: now.get(id(x))! }));
   const material = (k: { was: UpdateStop; is: RoadStop }) => Math.abs(k.was.mile - k.is.mile) >= 0.5 || Math.abs(k.was.detourMiles - k.is.detourMiles) >= 0.25;
   return {
-    date, what, before: before.map((x) => ({ ...x })), after: listed.map(slim),
-    removed: before.filter((x) => !now.has(x.breweryId)).map((x) => { const n = notListed.find((y) => y.id === x.breweryId); return { ...x, why: n?.why ?? '', reason: n?.reason ?? '' }; }),
-    added: listed.filter((s) => !was.has(s.breweryId as number)).map((s) => ({ ...slim(s), laterCheck: !!s.checkFrom })),
-    measured: kept.filter(material).map(({ was: w, is }) => ({ breweryId: w.breweryId, name: is.name, was: { mile: w.mile, detourMiles: w.detourMiles }, is: { mile: is.mile, detourMiles: is.detourMiles } })),
+    date, what, before: before.map((x) => ({ ...x })), after: stops.map(slim),
+    removed: before.filter((x) => !now.has(id(x))).map((x) => { const n = notListed.find((y) => String(y.id) === String(x.breweryId ?? x.key)); return { ...x, why: n?.why ?? '', reason: n?.reason ?? '' }; }),
+    added: stops.filter((s) => !was.has(id(s))).map((s) => ({ ...slim(s), laterCheck: !!s.checkFrom })),
+    measured: kept.filter(material).map(({ was: w, is }) => ({ ...ref(w), name: is.name, was: { mile: w.mile, detourMiles: w.detourMiles }, is: { mile: is.mile, detourMiles: is.detourMiles } })),
     slight: kept.filter((k) => !material(k) && (k.was.mile !== k.is.mile || k.was.detourMiles !== k.is.detourMiles)).length,
-    towns: kept.filter(({ was: w, is }) => w.town !== is.town).map(({ was: w, is }) => ({ breweryId: w.breweryId, name: is.name, was: w.town, is: is.town })),
+    towns: kept.filter(({ was: w, is }) => w.town !== is.town).map(({ was: w, is }) => ({ ...ref(w), name: is.name, was: w.town, is: is.town })),
   };
 }
 

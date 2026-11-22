@@ -24,7 +24,7 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2], check = process.argv.includes('--check');
 if (!slug || !/^[a-z0-9-]+$/.test(slug)) { console.error('usage: node scripts/build-road-trip.mjs <slug> [--check]'); process.exit(2); }
-const { buildRoad, normaliseCheckerFiles, applyRowEdits, shareRows, crossRoadDifferences, sharedStopIds } = await import(join(root, 'src/lib/road-trip.ts'));
+const { buildRoad, normaliseCheckerFiles, applyRowEdits, applySuspensions, shareRows, crossRoadDifferences, sharedStopIds } = await import(join(root, 'src/lib/road-trip.ts'));
 const configModule = await import(join(root, `src/data/roads/${slug}.ts`));
 const config = Object.values(configModule).find((v) => v && typeof v === 'object' && v.slug === slug);
 if (!config) { console.error(`no road config with slug ${slug} in src/data/roads/${slug}.ts`); process.exit(2); }
@@ -64,6 +64,15 @@ if (config.ingest === 'checker-files') {
     verified = shared.rows;
     if (shared.taken.length) console.log(`  ${shared.taken.length} rows taken from ${from} (${mode}): ${shared.taken.join(', ')}`);
   }
+}
+
+// suspended.json (optional, written by the monthly check): stops taken off after two valid observations, at least 48
+// hours apart, that the cited page no longer supports the listing. Applied last, so a stop shared with another road
+// is suspended on each road that has the record.
+if (existsSync(join(dir, 'suspended.json'))) {
+  const sus = applySuspensions(verified, read('suspended.json'));
+  if (sus.unmatched.length) { console.error(`suspended.json names rows that do not exist: ${sus.unmatched.join(', ')}`); process.exit(2); }
+  verified = sus.rows;
 }
 
 const out = join(root, `src/data/roads/${slug}.built.ts`);

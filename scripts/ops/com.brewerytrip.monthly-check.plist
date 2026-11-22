@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  The Brewery Trip monthly re-check. Full run on the 1st at 04:20; confirming pass on the 4th at 04:20 (the wrapper
+  passes the confirm option on the 4th). Read docs/monthly-check.md before installing.
+  Install (by a person):  cp scripts/ops/com.brewerytrip.monthly-check.plist ~/Library/LaunchAgents/
+                          launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.brewerytrip.monthly-check.plist
+  Publishing is off. To turn it on, add under EnvironmentVariables:  <key>MONTHLY_AUTOPUBLISH</key><string>1</string>
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.brewerytrip.monthly-check</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/auto1/CascadeProjects/ohiobrewpath/scripts/ops/monthly-check.sh</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/auto1/CascadeProjects/ohiobrewpath</string>
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>4</integer><key>Minute</key><integer>20</integer></dict>
+    <dict><key>Day</key><integer>4</integer><key>Hour</key><integer>4</integer><key>Minute</key><integer>20</integer></dict>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>MONTHLY_REPO</key><string>/Users/auto1/CascadeProjects/ohiobrewpath</string>
+    <key>MONTHLY_LOG_DIR</key><string>/Users/auto1/logs</string>
+  </dict>
+  <key>StandardOutPath</key><string>/Users/auto1/logs/brewerytrip-monthly-check.out.log</string>
+  <key>StandardErrorPath</key><string>/Users/auto1/logs/brewerytrip-monthly-check.err.log</string>
+  <key>RunAtLoad</key><false/>
+</dict>
+</plist>
