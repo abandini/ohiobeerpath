@@ -12,12 +12,12 @@ export const I_71_BUILT: BuiltRoad = {
       "lengthMiles": 140.8,
       "line": [[41.47939,-81.69324],[41.4667,-81.69308],[41.45757,-81.69848],[41.45173,-81.73161],[41.44712,-81.74023],[41.44905,-81.75178],[41.44589,-81.76107],[41.44527,-81.78024],[41.43887,-81.792],[41.43865,-81.80672],[41.42483,-81.82075],[41.3944,-81.8157],[41.36477,-81.82159],[41.32742,-81.81618],[41.305,-81.80891],[41.25567,-81.80396],[41.22519,-81.79424],[41.15854,-81.786],[41.12811,-81.79945],[41.06817,-81.84777],[41.03842,-81.87806],[41.0309,-81.89001],[41.00057,-81.96859],[40.9969,-82.01146],[40.99305,-82.02567],[40.95282,-82.07179],[40.9323,-82.11596],[40.9118,-82.141],[40.90084,-82.17144],[40.87797,-82.20532],[40.86527,-82.24595],[40.84487,-82.27508],[40.80756,-82.37485],[40.79479,-82.40041],[40.76067,-82.43054],[40.72973,-82.47289],[40.70601,-82.49427],[40.68631,-82.52331],[40.63532,-82.55364],[40.61556,-82.57479],[40.57849,-82.60453],[40.55774,-82.64488],[40.50511,-82.70318],[40.43222,-82.81434],[40.41971,-82.82082],[40.37612,-82.82757],[40.31486,-82.91274],[40.30077,-82.92337],[40.20501,-82.93172],[40.15982,-82.96822],[40.11833,-82.97375],[40.09694,-82.98582],[40.07242,-82.98898],[40.06081,-82.99827],[40.01677,-82.99493],[40.00618,-82.9848],[39.9609,-82.9827],[39.95527,-82.98506],[39.9529,-83.00061]],
       "candidates": 81,
-      "decided": 57,
+      "decided": 56,
       "cohort": {
         "total": 81,
         "withHours": 46,
-        "listed": 44,
-        "notPlaced": 2,
+        "listed": 43,
+        "notPlaced": 3,
         "outside": 0,
         "unresolved": 22,
         "settled": 13
@@ -31,12 +31,12 @@ export const I_71_BUILT: BuiltRoad = {
       "lengthMiles": 107,
       "line": [[39.9529,-83.00061],[39.95289,-83.00946],[39.94992,-83.01517],[39.9377,-83.00927],[39.91556,-83.0155],[39.88867,-83.04218],[39.86984,-83.05617],[39.83478,-83.09744],[39.82506,-83.12787],[39.82491,-83.15303],[39.82144,-83.16852],[39.74049,-83.34081],[39.72462,-83.39123],[39.69017,-83.47019],[39.65013,-83.53815],[39.62909,-83.59032],[39.55423,-83.72609],[39.52356,-83.83301],[39.48403,-83.94678],[39.45841,-83.99345],[39.43629,-84.06642],[39.41728,-84.10987],[39.41128,-84.16579],[39.38713,-84.2081],[39.37711,-84.24128],[39.34166,-84.2788],[39.3203,-84.28875],[39.30425,-84.30179],[39.26543,-84.35717],[39.25159,-84.36501],[39.22545,-84.36667],[39.20468,-84.37228],[39.1963,-84.37681],[39.19228,-84.3869],[39.18373,-84.39531],[39.173,-84.39945],[39.17017,-84.41816],[39.16337,-84.43404],[39.15044,-84.44491],[39.14362,-84.45909],[39.14297,-84.48151],[39.13333,-84.49389],[39.09964,-84.50413],[39.097,-84.52054],[39.09221,-84.52249]],
       "candidates": 57,
-      "decided": 41,
+      "decided": 40,
       "cohort": {
         "total": 58,
         "withHours": 33,
-        "listed": 29,
-        "notPlaced": 3,
+        "listed": 28,
+        "notPlaced": 4,
         "outside": 1,
         "unresolved": 13,
         "settled": 12
@@ -883,31 +883,6 @@ export const I_71_BUILT: BuiltRoad = {
       "placedBy": "census"
     },
     {
-      "key": "2463",
-      "breweryId": 2463,
-      "name": "Zaftig Brewing Co.",
-      "town": "Worthington",
-      "state": "OH",
-      "lat": 40.106304342439,
-      "lon": -82.998058112042,
-      "status": "OPEN",
-      "website": "https://www.drinkzaftig.com/",
-      "address": "7020-A Huntley Rd. Worthington, OH 43229",
-      "addressSourceUrl": "https://www.drinkzaftig.com/",
-      "evidence": "Taproom Hours Monday Tuesday Wednesday Thursday Friday Saturday Sunday 3:00 - 9:00 PM 3:00 - 9:00 PM 3:00 - 9:00 PM 3:00 - 10:00 PM",
-      "evidenceUrl": "https://www.drinkzaftig.com/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "Zaftig Brewing Company is Worthington's only craft brewery",
-      "quoteSourceUrl": "https://www.drinkzaftig.com/",
-      "checked": "2026-11-22",
-      "legId": "cleveland-columbus",
-      "mile": 129.4,
-      "detourMiles": 0.83,
-      "pastEnd": "",
-      "placedBy": "reviewed",
-      "placedNote": "Printed \"7020-A Huntley Rd. Worthington, OH 43229\"; the geocoder matched \"7020 HUNTLEY RD, COLUMBUS, OH, 43229\". Same street number, street and ZIP code. The differences are the unit letter \"-A\" and the city name written for ZIP 43229."
-    },
-    {
       "key": "119",
       "breweryId": 119,
       "name": "Forbidden Root (Columbus)",
@@ -1513,31 +1488,6 @@ export const I_71_BUILT: BuiltRoad = {
       "placedBy": "census"
     },
     {
-      "key": "312",
-      "breweryId": 312,
-      "name": "Third Eye Brewing Company",
-      "town": "Sharonville",
-      "state": "OH",
-      "lat": 39.278524804701,
-      "lon": -84.443601517913,
-      "status": "OPEN",
-      "website": "https://thirdeyebrewingco.com/",
-      "address": "11276 Chester Road Sharonville, OH 45246",
-      "addressSourceUrl": "https://thirdeyebrewingco.com/",
-      "evidence": "SHARONVILLE TAPROOM HOURS Monday: Closed Tuesday: 3pm-10pm Wednesday: 3pm-10pm Thursday: 12pm-10pm Friday: 12pm-11pm Saturday: 12pm-11pm Sunday: 11am-8pm",
-      "evidenceUrl": "https://thirdeyebrewingco.com/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "",
-      "quoteSourceUrl": "",
-      "checked": "2026-11-22",
-      "legId": "columbus-cincinnati",
-      "mile": 90.8,
-      "detourMiles": 4.58,
-      "pastEnd": "",
-      "placedBy": "reviewed",
-      "placedNote": "Printed \"11276 Chester Road Sharonville, OH 45246\"; the geocoder matched \"11276 CHESTER RD, CINCINNATI, OH, 45246\". Same street number, street and ZIP code. The only difference is the city name written for ZIP 45246."
-    },
-    {
       "key": "196",
       "breweryId": 196,
       "name": "Little Miami Brewing Company",
@@ -2052,13 +2002,19 @@ export const I_71_BUILT: BuiltRoad = {
   "cohort": {
     "total": 157,
     "withHours": 87,
-    "listed": 81,
-    "notPlaced": 5,
+    "listed": 79,
+    "notPlaced": 7,
     "outside": 1,
     "unresolved": 40,
     "settled": 30
   },
   "notListed": [
+    {
+      "id": 2463,
+      "name": "Zaftig Brewing Co.",
+      "why": "notPlaced",
+      "reason": "the geocoder matched a slightly different address (7020 HUNTLEY RD, COLUMBUS, OH, 43229); flagged for review, and not used without a recorded decision"
+    },
     {
       "id": 12,
       "name": "Antiques on High",
@@ -2082,6 +2038,12 @@ export const I_71_BUILT: BuiltRoad = {
       "name": "Fifty West Deerfield",
       "why": "notPlaced",
       "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+    },
+    {
+      "id": 312,
+      "name": "Third Eye Brewing Company",
+      "why": "notPlaced",
+      "reason": "the geocoder matched a slightly different address (11276 CHESTER RD, CINCINNATI, OH, 45246); flagged for review, and not used without a recorded decision"
     },
     {
       "id": 25,
@@ -2130,6 +2092,7 @@ export const I_71_BUILT: BuiltRoad = {
     278,
     287,
     292,
+    312,
     324,
     327,
     338,
@@ -2172,6 +2135,7 @@ export const I_71_BUILT: BuiltRoad = {
     2455,
     2456,
     2458,
+    2463,
     2464
   ]
 };

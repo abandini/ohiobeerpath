@@ -1224,7 +1224,7 @@ describe('location identity on a directory road', () => {
     expect([cbc.placedBy, cbc.address, cbc.addressSourceUrl, cbc.placedNote]).toEqual(['census', '2555 Harrison Rd. Columbus, OH 43204', 'https://columbusbrewing.com/contact/', undefined]);
     // The exceptions on record: none rests on what a geocoder returns for a varied query.
     const decisions = ['i-71', 'us-422'].flatMap((r) => JSON.parse(readFileSync(join(__dirname, `../../data/roads/${r}/decisions.json`), 'utf8')) as { match: number; acceptPlacement?: { evidence: string } }[]).filter((d) => d.acceptPlacement);
-    expect(decisions.map((d) => d.match).sort((a, b) => a - b)).toEqual([169, 293, 308, 312, 2463]);
+    expect(decisions.map((d) => d.match).sort((a, b) => a - b)).toEqual([169, 293, 308] /* Zaftig (2463) and Third Eye (312) were removed on the outside reviewer's word in round 3: a matching street line and ZIP do not show that two locality names are one address */);
     for (const d of decisions) expect(d.acceptPlacement!.evidence, String(d.match)).not.toMatch(/single match|returns/i);
     expect(decisions.find((d) => d.match === 308)!.acceptPlacement!.evidence).toContain('7524 Father Frascati Drive');
     for (const b of [US_422_BUILT, I_71_BUILT]) for (const s of b.stops) expect(['census', 'directory', 'reviewed'], s.name).toContain(s.placedBy);
