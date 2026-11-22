@@ -41,9 +41,25 @@
   },
   {
     "match": 183,
-    "reason": "editor: reviewed placement exception, a stray word in how one address is written",
+    "reason": "editor: reviewed placement exception, a stray word in how one address is written (accepted by the coordinator 2026-11-22); its two hours blocks disagree on the Friday and Saturday closing time",
     "acceptPlacement": {
       "evidence": "Printed \"145 S. Main Street Downtown Bowling Green, OH\"; the geocoder matched \"145 S MAIN ST, BOWLING GREEN, OH, 43402\". Same number, street, town and state. The only difference is the word \"Downtown\" before the town."
-    }
+    },
+    "twoTimes": true
+  },
+  {
+    "match": 177,
+    "reason": "coordinator 2026-11-22: held until the hours table is read in a browser",
+    "hold": "its hours table could not be read in order by our script; awaiting a read by a person"
+  },
+  {
+    "match": 175,
+    "reason": "coordinator 2026-11-22: held until the hours table is read in a browser",
+    "hold": "its hours table could not be read in order by our script; awaiting a read by a person"
+  },
+  {
+    "match": 80,
+    "reason": "editor: its home page says it opens at 11:00 AM and its locations page says 11:30am",
+    "twoTimes": true
   }
 ]

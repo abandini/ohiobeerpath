@@ -237,6 +237,8 @@ export const quoteAdds = (s: StopView): boolean => s.quote.trim().length >= 45 &
 
 /** "hours" unless the checker's row says the evidence is a dated notice or event. */
 const evidenceHeading = (s: StopView) => `Operating evidence: ${s.evidenceKind === 'notice' ? 'event notice' : 'hours'} read on ${s.evidenceChecked}`;
+/** Said under a stop whose own site prints two different times for the same day. */
+export const TWO_TIMES_LABEL = 'This brewery’s site prints two different times for this day; we show the one on the page we cite. Check before you go.';
 /** Said under a stop whose cited page prints hours that change with the season or on holidays. */
 export const SEASONAL_LABEL = 'Seasonal or holiday hours: the page says these hours change by season or on holidays.';
 /** Said under a stop that is listed on a notice, not on hours. */
@@ -272,7 +274,8 @@ function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
               <p class="rt-src">${h(NOTICE_LABEL)}${s.noticeContext ? ` ${h(s.noticeContext)}` : ''}</p>` : ''}
               <blockquote>“${h(s.evidence)}”</blockquote>
               <p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))}. Check current opening information with the brewery before you travel.</p>${s.seasonal ? `
-              <p class="rt-src"><strong>${h(SEASONAL_LABEL)}</strong></p>` : ''}
+              <p class="rt-src"><strong>${h(SEASONAL_LABEL)}</strong></p>` : ''}${s.twoTimes ? `
+              <p class="rt-src"><strong>${h(TWO_TIMES_LABEL)}</strong></p>` : ''}
               ${quoteAdds(s) ? `<blockquote>“${h(s.quote)}”</blockquote>
               <p class="rt-src">Also read on ${ext(quoteUrl, hostOf(quoteUrl))}, ${h(s.checked)}</p>` : ''}
               ${placedLabel(s) ? `<p class="rt-src">${h(placedLabel(s))}</p>` : ''}
@@ -322,6 +325,7 @@ export function cohortBreakdown(c: Cohort, limit: number): string[] {
   return [
     c.unresolved ? `${c.unresolved} with operating status unresolved (we could not confirm published visiting hours)` : '',
     c.notPlaced ? `${c.notPlaced} with published visiting hours but no location we could tie to the printed address` : '',
+    c.held ? `${c.held} with published visiting hours, held until a person has read the page` : '',
     c.outside ? `${c.outside} with published visiting hours, placed by the printed address, but then more than ${limit} straight-line miles from our mapped line` : '',
     c.settled ? `${c.settled} found closed, moved, a duplicate of another listing or not a taproom` : '',
   ].filter(Boolean);

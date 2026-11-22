@@ -1403,7 +1403,12 @@ describe('Interstate 75 (src/data/roads/i-75)', () => {
   });
   it('tells coverage by cohort, names the breweries with hours that are not listed, and labels seasonal hours', () => {
     const k = road.cohort!;
-    expect(k.total).toBe(137); expect(k.listed).toBe(road.stops.length); expect(k.withHours).toBe(k.listed + k.notPlaced + k.outside); expect(k.listed + k.notPlaced + k.outside + k.unresolved + k.settled).toBe(k.total);
+    expect(k.total).toBe(137); expect(k.listed).toBe(road.stops.length); expect(k.held).toBe(2); expect(k.withHours).toBe(k.listed + k.notPlaced + k.outside + k.held!); expect(k.listed + k.notPlaced + k.outside + k.held! + k.unresolved + k.settled).toBe(k.total);
+    // Inside the Five: hours found, but the table reads out of order as text, so both are held and named with that reason
+    expect(road.notListed.filter((x) => x.why === 'held').map((x) => [x.id, x.reason])).toEqual([[177, 'its hours table could not be read in order by our script; awaiting a read by a person'], [175, 'its hours table could not be read in order by our script; awaiting a read by a person']]);
+    expect(ids.has(177) || ids.has(175)).toBe(false); expect(text).toContain('2 with published visiting hours, held until a person has read the page');
+    // two stops whose own sites print two different times say so
+    expect(road.stops.filter((s) => s.twoTimes).map((s) => s.breweryId).sort()).toEqual([183, 80]); expect(main.match(/This brewery’s site prints two different times for this day; we show the one on the page we cite\. Check before you go\./g)).toHaveLength(2);
     expect(road.legs.reduce((n, l) => n + l.cohort!.total, 0)).toBe(137);
     expect(text).toContain(`We checked 137 directory candidates on 2026-11-22 and found published visiting hours for ${k.withHours}; ${k.listed} meet this page’s location and distance requirements.`);
     expect(road.notListed.filter((x) => x.why === 'outside').map((x) => x.id).sort()).toEqual([2390, 643]);
@@ -1459,7 +1464,7 @@ describe('roads that list the same brewery agree about it', () => {
     expect(crossRoadDifferences(pair({ mile: 99, detourMiles: 4, legId: 'x', segmentId: 'y', key: 'k' }))).toEqual([]);
     const changes: Partial<RoadStop>[] = [{ name: 'Other' }, { town: 'Lakewood' }, { state: 'PA' }, { address: '1 Other St' }, { addressSourceUrl: 'https://example.com/a' }, { website: 'https://example.com' },
       { evidence: 'Mon 1-2' }, { evidenceUrl: 'https://example.com/h' }, { evidenceChecked: '2026-11-01' }, { evidenceKind: 'notice' }, { lat: 1 }, { lon: 2 }, { placedBy: 'directory' }, { placedNote: 'x' }, { browserChecked: '2026-11-22' },
-      { quote: 'Other words.' }, { quoteSourceUrl: 'https://example.com/q' }, { checked: '2026-10-01' }, { noticeContext: 'the page names another year' }, { seasonal: true }];
+      { quote: 'Other words.' }, { quoteSourceUrl: 'https://example.com/q' }, { checked: '2026-10-01' }, { noticeContext: 'the page names another year' }, { seasonal: true }, { twoTimes: true }];
     expect(changes.map((c) => Object.keys(c)[0]).sort()).toEqual([...SHARED_STOP_FIELDS].sort());   // every compared field is tried
     for (const c of changes) { const d = crossRoadDifferences(pair(c)); expect(d, JSON.stringify(c)).toHaveLength(1); expect(d[0]).toMatch(new RegExp(`^130 .*: ${Object.keys(c)[0]} is .* on a but .* on b$`)); }
     for (const c of changes) expect(crossRoadDifferences(pair(c), [`130:${Object.keys(c)[0]}`]), JSON.stringify(c)).toEqual([]);   // unless recorded

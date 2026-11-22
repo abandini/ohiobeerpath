@@ -50,15 +50,16 @@ export const I_75_BUILT: BuiltRoad = {
       "lengthMiles": 157.8,
       "line": [[41.73209,-83.48899],[41.72034,-83.50191],[41.69334,-83.50407],[41.68684,-83.55219],[41.68828,-83.56215],[41.68172,-83.57068],[41.66955,-83.57202],[41.66504,-83.56448],[41.65857,-83.56253],[41.65066,-83.54894],[41.64166,-83.54862],[41.63375,-83.54212],[41.61169,-83.54044],[41.59236,-83.55594],[41.53761,-83.61574],[41.52645,-83.62118],[41.44673,-83.62207],[41.42756,-83.6155],[41.37253,-83.61611],[41.33873,-83.62534],[41.30844,-83.62713],[41.26713,-83.64781],[41.24925,-83.64853],[41.23613,-83.65405],[41.21676,-83.64975],[41.17192,-83.64916],[41.14907,-83.65863],[41.07648,-83.65997],[41.05005,-83.67252],[41.02776,-83.67321],[41.01771,-83.68689],[41.00134,-83.68708],[40.97196,-83.73724],[40.92144,-83.80563],[40.91443,-83.82345],[40.91261,-83.84079],[40.88557,-83.87663],[40.88154,-83.90141],[40.84218,-83.95921],[40.82906,-83.96373],[40.826,-83.98636],[40.76901,-84.0729],[40.76414,-84.07541],[40.70298,-84.07563],[40.69906,-84.08173],[40.69787,-84.11027],[40.68227,-84.12713],[40.67284,-84.13129],[40.63897,-84.13216],[40.57637,-84.16907],[40.42144,-84.16913],[40.39606,-84.16109],[40.33073,-84.15892],[40.32321,-84.16236],[40.30805,-84.17953],[40.25278,-84.18337],[40.23424,-84.19588],[40.19654,-84.20717],[40.16768,-84.22383],[40.12862,-84.21538],[40.0841,-84.23368],[40.00946,-84.22937],[39.97934,-84.19438],[39.97066,-84.18969],[39.79949,-84.18978],[39.78838,-84.18368],[39.77416,-84.18638],[39.76893,-84.19743],[39.76097,-84.20095]],
       "candidates": 28,
-      "decided": 19,
+      "decided": 17,
       "cohort": {
         "total": 28,
         "withHours": 20,
-        "listed": 16,
+        "listed": 14,
         "notPlaced": 4,
         "outside": 0,
         "unresolved": 5,
-        "settled": 3
+        "settled": 3,
+        "held": 2
       },
       "joins": 1,
       "joinedMiles": 0.01,
@@ -493,31 +494,6 @@ export const I_75_BUILT: BuiltRoad = {
       "placedBy": "census"
     },
     {
-      "key": "177",
-      "breweryId": 177,
-      "name": "Inside The Five Brewing - The Fieldhouse",
-      "town": "Toledo",
-      "state": "OH",
-      "lat": 41.65041538574,
-      "lon": -83.606536907878,
-      "status": "OPEN",
-      "website": "https://www.insidethefivebrewing.com/fieldhouse",
-      "address": "1040 N. WESTWOOD AVE., TOLEDO, OH 43607",
-      "addressSourceUrl": "https://www.insidethefivebrewing.com/fieldhouse",
-      "evidence": "hours MONDAY TUESDAY WEDNESDAY THURSDAY FRIDAY 4pm-12am SATURDAY SUNDAY CLOSED CLOSED 4-10pm 4-10pm 12pm-12am",
-      "evidenceUrl": "https://www.insidethefivebrewing.com/fieldhouse",
-      "evidenceChecked": "2026-11-22",
-      "quote": "A premier taproom within Inside the Five’s brewing facility located in Toledo, OH",
-      "quoteSourceUrl": "https://www.insidethefivebrewing.com/fieldhouse",
-      "checked": "2026-11-22",
-      "legId": "ohio-line-dayton",
-      "mile": 7.7,
-      "detourMiles": 2.22,
-      "pastEnd": "",
-      "outer": true,
-      "placedBy": "census"
-    },
-    {
       "key": "209",
       "breweryId": 209,
       "name": "Maumee Bay Brewing Co.",
@@ -567,30 +543,6 @@ export const I_75_BUILT: BuiltRoad = {
       "placedBy": "census"
     },
     {
-      "key": "175",
-      "breweryId": 175,
-      "name": "Inside The Five Brewing",
-      "town": "Perrysburg",
-      "state": "OH",
-      "lat": 41.557847922375,
-      "lon": -83.630080587169,
-      "status": "OPEN",
-      "website": "https://www.insidethefivebrewing.com/perrysburg",
-      "address": "127 w. third Street, perrysburg, Oh 43551",
-      "addressSourceUrl": "https://www.insidethefivebrewing.com/perrysburg",
-      "evidence": "hours 4-10pm MONDAY TUESDAY 11am-10pm WEDNESDAY 11am-10pm 11am-10pm THURSDAY FRIDAY 11am-11pm 11am-11pm SATURDAY BRUNCH 10am-2pm DINNER 2-10pm SUNDAY",
-      "evidenceUrl": "https://www.insidethefivebrewing.com/perrysburg",
-      "evidenceChecked": "2026-11-22",
-      "quote": "",
-      "quoteSourceUrl": "",
-      "checked": "2026-11-22",
-      "legId": "ohio-line-dayton",
-      "mile": 18.1,
-      "detourMiles": 1.43,
-      "pastEnd": "",
-      "placedBy": "census"
-    },
-    {
       "key": "183",
       "breweryId": 183,
       "name": "Juniper Brewing Company",
@@ -613,7 +565,8 @@ export const I_75_BUILT: BuiltRoad = {
       "detourMiles": 1.74,
       "pastEnd": "",
       "placedBy": "reviewed",
-      "placedNote": "Printed \"145 S. Main Street Downtown Bowling Green, OH\"; the geocoder matched \"145 S MAIN ST, BOWLING GREEN, OH, 43402\". Same number, street, town and state. The only difference is the word \"Downtown\" before the town."
+      "placedNote": "Printed \"145 S. Main Street Downtown Bowling Green, OH\"; the geocoder matched \"145 S MAIN ST, BOWLING GREEN, OH, 43402\". Same number, street, town and state. The only difference is the word \"Downtown\" before the town.",
+      "twoTimes": true
     },
     {
       "key": "107",
@@ -685,7 +638,8 @@ export const I_75_BUILT: BuiltRoad = {
       "mile": 129.5,
       "detourMiles": 1.06,
       "pastEnd": "",
-      "placedBy": "census"
+      "placedBy": "census",
+      "twoTimes": true
     },
     {
       "key": "141",
@@ -1612,11 +1566,12 @@ export const I_75_BUILT: BuiltRoad = {
   "cohort": {
     "total": 137,
     "withHours": 76,
-    "listed": 61,
+    "listed": 59,
     "notPlaced": 13,
     "outside": 2,
     "unresolved": 42,
-    "settled": 19
+    "settled": 19,
+    "held": 2
   },
   "notListed": [
     {
@@ -1674,10 +1629,22 @@ export const I_75_BUILT: BuiltRoad = {
       "reason": "the geocoder matched a slightly different address (5002 SEAMAN ST, OREGON, OH, 43616); flagged for review, and not used without a recorded decision"
     },
     {
+      "id": 177,
+      "name": "Inside The Five Brewing - The Fieldhouse",
+      "why": "held",
+      "reason": "its hours table could not be read in order by our script; awaiting a read by a person"
+    },
+    {
       "id": 98,
       "name": "Earnest Brew Works Downtown",
       "why": "notPlaced",
       "reason": "the geocoder matched a slightly different address (25 S SAINT CLAIR ST, TOLEDO, OH, 43604); flagged for review, and not used without a recorded decision"
+    },
+    {
+      "id": 175,
+      "name": "Inside The Five Brewing",
+      "why": "held",
+      "reason": "its hours table could not be read in order by our script; awaiting a read by a person"
     },
     {
       "id": 449,
@@ -1725,6 +1692,8 @@ export const I_75_BUILT: BuiltRoad = {
     129,
     134,
     135,
+    175,
+    177,
     199,
     201,
     221,
