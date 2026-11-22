@@ -864,7 +864,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     description: seoDescription,
     image: ogImage,
     url: pageUrl,
-    extraCss: ['/assets/css/pages/brewery.css'],
+    // ?v= must be bumped whenever assets/css/pages/brewery.css changes: the file is served from R2 with a one-year cache and CI does not upload it.
+    extraCss: ['/assets/css/pages/brewery.css?v=2'],
     noindex: !!brewery.closed_at,
   });
 }
