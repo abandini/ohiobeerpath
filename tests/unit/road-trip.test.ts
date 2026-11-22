@@ -248,9 +248,9 @@ describe('road trip page', () => {
   it('shows the operating evidence as the reason a stop is listed, with its page and date', () => {
     for (const s of v.stops) {
       const li = item(s.breweryId);
-      expect(li).toContain(`<strong>Why we list it as open on ${TODAY}:</strong>`);
+      expect(li).toContain(`<strong>Operating evidence: hours read on ${TODAY}</strong>`);
       expect(li).toContain(`“${s.evidence}”`); expect(li).toContain(`href="${s.evidenceUrl}"`);
-      expect(li).toContain(`on ${TODAY}. Check current opening information with the brewery before you travel.`);
+      expect(li).toContain(`</a>. Check current opening information with the brewery before you travel.`);
       expect(li).toContain(`href="/brewery/${s.breweryId}"`); expect(li).toContain(`href="${s.website}"`);
       expect(li).toContain(s.address); expect(li).toContain(`href="${s.addressSourceUrl}"`);
       expect(li).toContain(`nearest point on our mapped line: mile ${s.mile.toFixed(1)} from Westend, ${s.milesFromEnd.toFixed(1)} from Eastend`);
@@ -275,7 +275,8 @@ describe('road trip page', () => {
   });
   it('never claims driving order, detours, or that a place is on the road', () => {
     for (const page of [main, roadsIndexPage([v]).slice(roadsIndexPage([v]).indexOf('<h1'))]) {
-      expect(page).not.toMatch(/driving order|in the order you reach|detour|on the road:|pick one or two|drive will be longer/i);
+      // also: the date is when we read the hours, never a claim the place was open that day
+      expect(page).not.toMatch(/driving order|in the order you reach|detour|on the road:|pick one or two|drive will be longer|confirmed open|open on \d{4}|list it as open|listed as open|was operating when|operating on the date/i);
       expect(page).toContain('ordered by their nearest point along');
       expect(page).toMatch(/not driving distances/);
     }
@@ -285,19 +286,35 @@ describe('road trip page', () => {
   it('marks the long gap and the leg totals as being about listed stops on our line', () => {
     expect(main).toMatch(/<strong>21\.2 miles<\/strong> along our mapped line from here \(mile 5\.3\) to the next listed stop, with nothing on this list in between\./);
     expect(main).toMatch(/52\.9 miles on our mapped line · 4 listed stops in 4 towns · longest gap between listed stops along our mapped line: 21\.2 miles \(mile 5\.3 to 26\.5\)/);
+    // The ends of the line are not stops. Two stops 5 miles apart near the west end: the 42-mile run to the east end is
+    // noted on its own and does not become the "longest gap between listed stops".
+    const west = view([ok(12), ok(1)]), wl = west.legs[0], wHtml = roadTripPage(west);
+    expect(wl.longestGap).toEqual({ fromMile: 0, toMile: 5.3, miles: 5.3 });
+    expect(wl.stops[1].gapAfterMiles).toBeCloseTo(0.9 * DEG_LON, 1);
+    expect(wHtml).toContain('longest gap between listed stops along our mapped line: 5.3 miles (mile 0.0 to 5.3)');
+    expect(wHtml).toMatch(/<strong>47\.6 miles<\/strong> along our mapped line from here \(mile 5\.3\) to the end of the line at Eastend/);
+    // and a long run from the start to the first stop is labelled as that
+    const east = view([ok(2), ok(3)]), eHtml = roadTripPage(east);
+    expect(east.legs[0].longestGap).toEqual({ fromMile: 26.5, toMile: 47.6, miles: 21.1 }); expect(east.legs[0].leadGapMiles).toBeCloseTo(0.5 * DEG_LON, 1);
+    expect(eHtml).toMatch(/<strong>26\.5 miles<\/strong> along our mapped line from its start at Westend to the first listed stop\./);
+    expect(eHtml).toContain('longest gap between listed stops along our mapped line: 21.1 miles (mile 26.5 to 47.6)');
+    // one stop: no such figure at all
+    const one = view([ok(2)]), oHtml = roadTripPage(one);
+    expect(one.legs[0].longestGap).toBeNull();
+    expect(oHtml).not.toContain('longest gap between listed stops'); expect(oHtml).toContain('1 listed stop in 1 town');
+    expect(oHtml).toContain('from its start at Westend to the first listed stop'); expect(oHtml).toContain('to the end of the line at Eastend');
     expect(main).not.toMatch(/longest stretch with no stop/);
   });
   it('says what the list is, in the past tense, with honest dates and coverage', () => {
-    expect(roadSummary(v)).toBe('4 breweries from our directory within 5 straight-line miles of our mapped line of FR 1, ordered by their nearest point along it; these are not driving distances. Each was operating when we read the source linked under it (on 2026-11-22).');
+    expect(roadSummary(v)).toBe('4 breweries from our directory within 5 straight-line miles of our mapped line of FR 1, ordered by their nearest point along it; these are not driving distances. Each listing is supported by published visiting hours read on the date shown.');
     expect(main).toContain(roadSummary(v)); expect(main).toContain('It is not every brewery near the road.');
     expect(main).toMatch(/Source-check dates <b[^>]*>2026-11-22<\/b>/); expect(main).not.toContain('Last checked');
     expect(main).toContain('Our directory has 13 breweries within 5 straight-line miles of our mapped line of FR 1. We reached a decision on 6 of them. The other 7 could not be confirmed either way and are not listed.');
     expect(main).not.toMatch(/\b(every|all) (the )?brewer(y|ies) (on|along)\b/i);
     expect(main).not.toMatch(/passed our check|have been checked one at a time|confirmed open/);
     const mixed = view([ok(1), ok(2, { operating_evidence: { excerpt: 'Open daily 12-9', url: 'https://example.com/2', checked: '2026-11-20' } })]);
-    expect(roadSummary(mixed)).toContain('(between 2026-11-20 and 2026-11-22)');
     expect(roadTripPage(mixed)).toMatch(/Source-check dates <b[^>]*>2026-11-20 to 2026-11-22<\/b>/);
-    expect(roadTripPage(mixed)).toContain(`<strong>Why we list it as open on 2026-11-20:</strong>`);
+    expect(roadTripPage(mixed)).toContain(`<strong>Operating evidence: hours read on 2026-11-20</strong>`);
   });
   it('coverage wording never implies a full review unless the counts say so', () => {
     expect(coverageText(3, 3, 5, 'this leg')).toBe('Our directory has 3 breweries within 5 straight-line miles of this leg. We reached a decision on all 3: listed here, or found closed, moved, a duplicate or not a taproom.');
@@ -327,17 +344,17 @@ describe('road trip page', () => {
     const none = roadTripPage(view([ok(1, { address_as_printed: null, address_source_url: null, official_url: null })]));
     expect(none).toContain('We do not have a sourced street address for this listing.');
     expect(none).not.toMatch(/printed on its site|did not find a street address/);
-    expect(main).toContain('They are not a current timetable. Check current opening information with the brewery before you travel.');
+    expect(main).toContain('They support listing the brewery as operating. They do not mean it was open on that date, and they are not a current timetable. Check current opening information with the brewery before you travel.');
   });
   it('names third-party sources, and pages a person read by eye, in the method notes', () => {
     expect(main).not.toContain('is not the brewery\'s own site');
     const w = view([ok(1), ok(2, { operating_evidence: { excerpt: 'Hours Monday Closed Tuesday 11:30AM - 11PM', url: 'https://untappd.com/v/fixture/2', checked: TODAY } }), ok(3, { browser_checked: TODAY })]);
     const out = roadTripPage(w);
-    expect(roadSummary(w)).toContain("Each was operating when we read the source linked under it (on 2026-11-22); for 1, that source is not the brewery's own site.");
+    expect(roadSummary(w)).toContain("Each listing is supported by published visiting hours read on the date shown. For 1, the source is not the brewery's own site.");
     expect(out).toContain("For 1 stop the source is not the brewery's own site: Untappd (untappd.com).");
     expect(out).toContain('1 page could only be read in a browser; a person read it, not our checking script.');
-    expect(roadsBlurb([w])).toBe('Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listed brewery has a dated check against the source linked under it; some sources are third-party.');
-    expect(roadsBlurb([v])).toBe('Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listed brewery has a dated check against the source linked under it.');
+    expect(roadsBlurb([w])).toBe('Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listing is supported by published visiting hours read on the date shown; some sources are third-party.');
+    expect(roadsBlurb([v])).toBe('Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listing is supported by published visiting hours read on the date shown.');
   });
   it('credits OpenStreetMap beside the map and in the method notes, and loads nothing for the map', () => {
     expect(OSM_ATTRIBUTION).toBe('© OpenStreetMap contributors');
@@ -553,7 +570,8 @@ describe('/roads index', () => {
   it('a listed stop\'s brewery page links to its road list; others do not', () => {
     const card = roadCallout(2, [a]);
     expect(card).toContain('href="/roads/fixture-road#stop-2"');
-    expect(card).toContain('Its nearest point on our mapped line of FR 1 is mile 26.5 of the Westend to Eastend leg; it is 1.4 miles from that line, straight-line (not a driving distance). Listed as open on 2026-11-22.');
+    expect(card).toContain('Its nearest point on our mapped line of FR 1 is mile 26.5 of the Westend to Eastend leg; it is 1.4 miles from that line, straight-line (not a driving distance). Its listing there is supported by published visiting hours read on 2026-11-22.');
+    expect(card).not.toMatch(/open on \d{4}|confirmed open|was operating/i);
     expect(card).not.toMatch(/detour|driving order/i);
     expect(roadCallout(4, [a])).toBe(''); expect(roadStopFor(2, [empty])).toBeNull();
   });

@@ -18,7 +18,7 @@ import planRoutes from './routes/plan';
 import agentRoutes from './routes/agent';
 import { truncateDescription } from './templates/utils';
 import { availableRoads } from './data/roads';
-import { roadsBlurb, roadSummary, DRIVING_NOTICE } from './templates/road-trip';
+import { roadsBlurb, roadSummary, checkedPhrase, DRIVING_NOTICE } from './templates/road-trip';
 
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -220,7 +220,7 @@ app.get('/llms.txt', async (c) => {
   const roads = baseUrl === 'https://brewerytrip.com' ? availableRoads() : [];
   const roadLines = roads.length
     ? `- Single-road brewery lists: ${baseUrl}/roads (${roadsBlurb(roads)} ${DRIVING_NOTICE})\n` +
-      roads.map((r) => `  - ${r.config.name}: ${baseUrl}/roads/${r.config.slug} (${roadSummary(r)})\n`).join('')
+      roads.map((r) => `  - ${r.config.name}: ${baseUrl}/roads/${r.config.slug} (${roadSummary(r)} Hours read ${checkedPhrase(r)}.)\n`).join('')
     : '';
   const body = `# ${siteName}
 

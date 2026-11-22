@@ -199,7 +199,7 @@ export interface RoadStop {
   website: string;             // the brewery's own site as the checker found it ('' when none)
   address: string;             // as printed at addressSourceUrl ('' when there is no sourced address)
   addressSourceUrl: string;
-  evidence: string; evidenceUrl: string; evidenceChecked: string; // why it is listed as open: excerpt, page, day read
+  evidence: string; evidenceUrl: string; evidenceChecked: string; // what supports the listing: excerpt (published hours), page, day we read it
   quote: string; quoteSourceUrl: string; // an optional descriptive quote ('' when none) and its page
   checked: string;             // the day the checker's row was made
   legId: string;
@@ -398,7 +398,7 @@ export interface LegView {
   candidates: number; decided: number; // directory breweries within the limit of this leg, and how many have a completed decision
   stops: StopView[]; segments: SegmentView[]; towns: number;
   leadGapMiles: number | null; // start of the leg to the first listed stop, when long enough to note
-  longestGap: { fromMile: number; toMile: number; miles: number } | null;
+  longestGap: { fromMile: number; toMile: number; miles: number } | null; // between consecutive listed stops; null with fewer than two
 }
 export interface RoadView {
   config: RoadConfig; legs: LegView[]; stops: StopView[];
@@ -429,9 +429,10 @@ export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = c
       .slice().sort((a, c) => a.mile - c.mile || a.detourMiles - c.detourMiles || a.name.localeCompare(c.name));
     const note = (gap: number) => (gap >= config.gapNoteMiles ? round(gap, 1) : null);
     const stops: StopView[] = shown.map((s, i) => ({ ...s, n: ++n, milesFromEnd: round(length - s.mile, 1), gapAfterMiles: note((i + 1 < shown.length ? shown[i + 1].mile : length) - s.mile) }));
-    const marks = [0, ...stops.map((s) => s.mile), length];
+    // Between consecutive listed stops only. The ends of the line are not stops: the stretches from the start to the
+    // first stop and from the last stop to the end are noted separately (leadGapMiles, the last stop's gapAfterMiles).
     let longestGap: LegView['longestGap'] = null;
-    if (stops.length) for (let i = 1; i < marks.length; i++) { const miles = round(marks[i] - marks[i - 1], 1); if (!longestGap || miles > longestGap.miles) longestGap = { fromMile: marks[i - 1], toMile: marks[i], miles }; }
+    for (let i = 1; i < stops.length; i++) { const miles = round(stops[i].mile - stops[i - 1].mile, 1); if (!longestGap || miles > longestGap.miles) longestGap = { fromMile: stops[i - 1].mile, toMile: stops[i].mile, miles }; }
     const segments: SegmentView[] = segs.map((g, i) => {
       const fromMile = i ? segs[i - 1].toMile! : 0, toMile = g.toMile ?? length;
       const mine = stops.filter((s) => segmentAt(safeLeg, s.mile).id === g.id);

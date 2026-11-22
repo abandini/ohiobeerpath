@@ -234,9 +234,9 @@ function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
                 ? `<p>${h(s.address)} <span class="rt-src">(as printed on ${ext(addressUrl, hostOf(addressUrl))})</span></p>`
                 : `<p class="rt-src">We do not have a sourced street address for this listing.</p>`}
               ${marks(s, o)}
-              <p class="rt-why"><strong>Why we list it as open on ${h(s.evidenceChecked)}:</strong></p>
+              <p class="rt-why"><strong>Operating evidence: hours read on ${h(s.evidenceChecked)}</strong></p>
               <blockquote>“${h(s.evidence)}”</blockquote>
-              <p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))} on ${h(s.evidenceChecked)}. Check current opening information with the brewery before you travel.</p>
+              <p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))}. Check current opening information with the brewery before you travel.</p>
               ${quoteAdds(s) ? `<blockquote>“${h(s.quote)}”</blockquote>
               <p class="rt-src">Also read on ${ext(quoteUrl, hostOf(quoteUrl))}, ${h(s.checked)}</p>` : ''}
               <p class="rt-links"><a href="/brewery/${s.breweryId}">Brewery Trip page</a>${site ? ext(site, 'Its own site') : ''}${directions ? gmaps(directions, 'Directions (opens Google Maps)') : ''}</p>
@@ -300,19 +300,20 @@ export const fromOwnSite = (s: StopView) => !!hostOf(s.website) && hostOf(s.webs
 export const thirdPartyHosts = (road: RoadView) => [...new Set(road.stops.filter((s) => !fromOwnSite(s)).map((s) => hostOf(s.evidenceUrl)).filter(Boolean))].sort();
 /**
  * One plain sentence pair saying exactly what the list is. Used on the page, in the meta description, on the index,
- * and in llms.txt. Past tense, tied to the check dates; straight-line, not driving; provenance stated when it is mixed.
+ * and in llms.txt. The date is when we read the hours, never a claim the place was open that day; straight-line, not
+ * driving; provenance stated when it is mixed.
  */
 export const roadSummary = (road: RoadView) => {
   const n = road.stops.length, other = road.stops.filter((s) => !fromOwnSite(s)).length;
   return `${plural(n, 'brewery', 'breweries')} from our directory within ${road.config.maxDetourMiles} straight-line miles of our mapped line of ${road.config.shortName}, ordered by their nearest point along it; these are not driving distances. `
-    + `${n === 1 ? 'It was' : 'Each was'} operating when we read the source linked under it (${checkedPhrase(road)})${other ? `; for ${other}, that source is not the brewery's own site` : ''}.`;
+    + `Each listing is supported by published visiting hours read on the date shown.${other ? ` For ${other}, the source is not the brewery's own site.` : ''}`;
 };
 /**
  * The section in one or two sentences, for places that link to it (/trails, llms.txt). Says the same thing as the pages
  * do: ordered by nearest point, dated source checks, and third-party sources only when there are some.
  */
 export const roadsBlurb = (roads: RoadView[]) =>
-  `Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listed brewery has a dated check against the source linked under it${roads.some((r) => thirdPartyHosts(r).length) ? '; some sources are third-party' : ''}.`;
+  `Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listing is supported by published visiting hours read on the date shown${roads.some((r) => thirdPartyHosts(r).length) ? '; some sources are third-party' : ''}.`;
 
 export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
   const c = road.config, url = `${SITE}/roads/${c.slug}`, title = roadTitle(road);
@@ -350,11 +351,11 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
           <li><strong>The road.</strong> ${h(c.geometry.source)} on ${h(c.geometry.downloaded)}. ${OSM_LINK}; the data is available under the Open Database License. Where the road has two carriageways we measure along one. This is our mapped line.</li>
           <li><strong>Order and miles.</strong> Stops are ordered by their nearest point along our mapped line. The mile beside each stop is the distance along that line from the start of the leg to that nearest point. It is our calculation, not a milepost, and it is not the order or the distance you would drive.</li>
           <li><strong>Distance from the road.</strong> A straight line from the brewery to the nearest point on our mapped line. Driving distance and access may differ substantially.</li>
-          <li><strong>Who is listed.</strong> A brewery is here when it is in our directory, sits within ${c.maxDetourMiles} straight-line miles of our mapped line, and a source showed it operating on the date given: visiting hours as printed, or a dated notice. Ones we found closed or moved, and ones we could not confirm, are left out.</li>
+          <li><strong>Who is listed.</strong> A brewery is here when it is in our directory, sits within ${c.maxDetourMiles} straight-line miles of our mapped line, and its listing is supported by published visiting hours that we read on the date shown. Ones we found closed or moved, and ones we could not confirm, are left out.</li>
           <li><strong>Sources.</strong> Each excerpt is copied from the page linked under it, on the date shown. Addresses are copied from the page named beside them.${others.length ? ` For ${plural(road.stops.filter((s) => !fromOwnSite(s)).length, 'stop')} the source is not the brewery's own site: ${h(others.map((x) => (x === 'untappd.com' ? 'Untappd (untappd.com)' : x)).join(', '))}.` : ''}${byEye ? ` ${plural(byEye, 'page')} could only be read in a browser; a person read ${byEye === 1 ? 'it' : 'those'}, not our checking script.` : ''}</li>
           <li><strong>Towns.</strong> Town names are the ones in our directory. A brewery's printed address sometimes names a different post-office town.</li>
           <li><strong>Google Maps links.</strong> We send Google the brewery name and sourced address where available. Otherwise we use its name and directory town and state; town and state may also supplement an incomplete address. Check the destination before travelling. Google chooses the route, which may not follow the road.</li>
-          <li><strong>Opening hours.</strong> Any hours shown are quoted as the source printed them on the date given, as evidence the brewery was operating then. They are not a current timetable. Check current opening information with the brewery before you travel.</li>
+          <li><strong>Opening hours.</strong> The hours under each stop are quoted as the source printed them on the date we read them. They support listing the brewery as operating. They do not mean it was open on that date, and they are not a current timetable. Check current opening information with the brewery before you travel.</li>
         </ul>
         <details>
           <summary>Sources for what we say about the road</summary>
@@ -394,7 +395,7 @@ export function roadsIndexPage(roads: RoadView[], subdomain?: SubdomainContext):
   <div class="trail-hero">
     <div class="container">${breadcrumb([{ name: 'Home', href: '/' }, { name: 'Road trips' }])}
       <h1 style="color: #fff;">Brewery road trips, one road at a time</h1>
-      <p style="opacity: 0.92; max-width: 40rem;">Each page lists breweries from our directory near one road, ordered by their nearest point along our mapped line of that road, with the straight-line distance from the line and the dated source that showed each one operating. These are not driving distances.</p>
+      <p style="opacity: 0.92; max-width: 40rem;">Each page lists breweries from our directory near one road, ordered by their nearest point along our mapped line of that road, with the straight-line distance from the line and the published visiting hours that support each listing, with the date we read them. These are not driving distances.</p>
     </div>
   </div>
   <div class="container my-4 rt">
@@ -406,7 +407,7 @@ export function roadsIndexPage(roads: RoadView[], subdomain?: SubdomainContext):
         <ul>
           <li>A road page is published only after an editor has reviewed it. Each page says how many of our directory's nearby breweries we reached a decision on. It is not a claim that every brewery near the road was reviewed.</li>
           <li>Stops are ordered by their nearest point along our mapped line of the road, with the straight-line distance from that line. These are not driving distances. Long gaps between listed stops are marked.</li>
-          <li>Each stop carries a dated excerpt from the source that showed it operating, and a link to that page. Check current opening information with the brewery before you travel.</li>
+          <li>Each stop carries the published visiting hours that support its listing, the date we read them, and a link to that page. Check current opening information with the brewery before you travel.</li>
           <li>Road lines come from OpenStreetMap, ${OSM_LINK}.</li>
         </ul>
         <p>Planning around a city instead? Try the <a href="/plan">trip planner</a>, the <a href="/trails">trails</a> or the full <a href="/breweries">brewery directory</a>.</p>
@@ -419,7 +420,7 @@ export function roadsIndexPage(roads: RoadView[], subdomain?: SubdomainContext):
   })}</script>
   <script type="application/ld+json">${jsonLd(breadcrumbLd([{ name: 'Home', url: `${SITE}/` }, { name: 'Road trips', url }]))}</script>`;
   return layout('Brewery road trips, one road at a time', content, {
-    description: 'Breweries near one road, ordered by their nearest point along our mapped line, with straight-line distances and the dated source that showed each one operating.',
+    description: 'Breweries near one road, ordered by their nearest point along our mapped line, with straight-line distances and published visiting hours read on the date shown.',
     url, subdomain,
   });
 }
