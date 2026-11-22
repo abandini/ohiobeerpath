@@ -1,0 +1,60 @@
+-- Five US 422 listings flagged as renamed or moved. Each was re-checked first-hand on 2026-11-22 (plain fetch, User-Agent
+-- "BreweryTripBot/1.0 (+https://brewerytrip.com/about)"). Rule applied: a different owner or brand is a different listing,
+-- never a rename; the old listing is retired only with a quoted source that it closed or was replaced.
+-- closed_at is the review date (2026-11-22), as in 0021 and 0029. Previous value for every retired row: closed_at NULL.
+-- "Read" means the page was fetched on 2026-11-22 and the quoted words were found on it.
+--
+-- RETIRED (successor is a different business; successors are LEADS to add separately, not done here)
+--
+-- 1153 Mount Gretna Craft Brewery, 2701 Horseshoe Pike, Palmyra. Read:
+--   LebTown (17 Feb 2023): "abruptly closed its doors this week and its owners do not plan to reopen."
+--   https://lebtown.com/2023/02/17/mount-gretna-craft-brewery-abruptly-closes-its-doors-after-nearly-6-years/
+--   Replacement: Breweries in PA (22 Dec 2023): "2701 Horseshoe Pike in Palmyra, PA (the former home of Mt. Gretna Brewing)"
+--   https://breweriesinpa.com/snitz-creek-officially-opens-taproom-in-former-home-of-mt-gretna-craft-brewery/
+-- 1031 Crowded Castle Brewing Co. Inc., 242 Bridge St, Phoenixville. Read:
+--   Breweries in PA (30 Jun 2021): "recently announced they would be closing their business in 2021."
+--   https://breweriesinpa.com/crowded-castle-announces-closing-of-their-brewery-in-phoenixville/
+--   WhatNow (1 Jul 2022): "another popular taproom and brewery that sadly close its doors for good last year"
+--   (sic; the page's own wording)  https://whatnow.com/philadelphia/restaurants/rebel-hill-brewing-company-prepares-expansion-into-phoenixville/
+-- 958 Appalachian Brewing Co - Collegeville, 50 W Third Ave. Read:
+--   Patch: "Appalachian closed its Collegeville location for good in January; a new spot was opened in West Chester."
+--   (summary line of the linked story "Collegeville's Appalachian Brewing Company Closes", on
+--   https://patch.com/pennsylvania/phoenixville/new-brewery-opening-collegeville-replacing-appalachian )
+--   Replacement: same Patch page, headline "New Brewery Opening In Collegeville, Replacing Appalachian"; Montco Today (30 Sep 2019):
+--   "the shuttered Appalachian Brewing Co. location"  https://montco.today/2019/09/troubles-end-brewing-to-open-in-former-appalachian-brewing-location/
+-- 1142 McKenzie Brew House (#3), 324 W Swedesford Rd, Berwyn. Read:
+--   Philadelphia Inquirer (28 Jan 2022): "McKenzie Brew House in Berwyn has been converted into a \"neighborhood hangout\" called Will's + Bill's."
+--   and "The McKenzie Brew Houses in Chadds Ford and Malvern remain."
+--   https://www.inquirer.com/food/wills-bills-mckenzie-brewpub-main-line-20220128.html
+--   (The article says the owners converted it; the brand and concept changed, so by the site rule it is a new listing.)
+UPDATE breweries SET closed_at = '2026-11-22' WHERE id = 1153 AND name = 'Mount Gretna Craft Brewery' AND closed_at IS NULL;
+UPDATE breweries SET closed_at = '2026-11-22' WHERE id = 1031 AND name = 'Crowded Castle Brewing Co. Inc.' AND closed_at IS NULL;
+UPDATE breweries SET closed_at = '2026-11-22' WHERE id = 958 AND name = 'Appalachian Brewing Co - Collegeville' AND closed_at IS NULL;
+UPDATE breweries SET closed_at = '2026-11-22' WHERE id = 1142 AND name = 'McKenzie Brew House (#3)' AND closed_at IS NULL;
+--
+-- UPDATED IN PLACE (same business, new address)
+--
+-- 1014 Coal Country Brewing. Previous street: '625 W High St' (postal_code 15931 unchanged, website_url unchanged).
+--   Own site https://www.coalcountrybrewing.net/ , read: "Now Located At: 2343 Ben Franklin Hwy Ebensburg, PA 15931" and
+--   "WE'RE BACK! Now open at our new location right off of 422 located in the back of the building, Coal Country Brewing is back
+--   in a bigger facility". Brews on site (16 beers listed on tap). Site is marked "Updated: October 11, 2025".
+--   NOT changed here, for a human: latitude/longitude still point at the old address; phone and hours were not found on the site
+--   (it sends visitors to Facebook for daily changes), so they are left as they are.
+UPDATE breweries SET street = '2343 Ben Franklin Hwy' WHERE id = 1014 AND name = 'Coal Country Brewing' AND street = '625 W High St';
+--
+-- LEADS for the retired listings (to be added separately after review; nothing is inserted here). Each own site was read on 2026-11-22.
+--   Snitz Creek Brewery - Palmyra, 2701 Horseshoe Pike, Palmyra PA 17078; https://www.snitzcreekbrewery.com/ ; own site prints
+--     "Palmyra Brewery 2701 Horseshoe Pike Palmyra, Pa 17078 HOURS Sunday - Thursday 11:30am - 9pm Friday & Saturday 11:30am - 10pm".
+--     Brewery with food menu. CONFLICT: the Visit Hershey Harrisburg trail page lists "Snitz Creek - Palmyra - Temporarily Closed"
+--     (https://www.visithersheyharrisburg.org/trails/brew-barons-beer-trail/breweries/ ). Confirm by phone before listing as open.
+--   Rebel Hill Brewing Company - Brewery on Bridge, 242 Bridge Street, Phoenixville PA 19460; https://www.rebelhillbrewing.com/ ;
+--     own page https://www.rebelhillbrewing.com/visit-rebelhill : "10 bbl brewhouse is located in the heart of downtown Phoenixville, PA"
+--     and "craft beer brewed on site, specialty cocktails, and a full kitchen"; hours "Tue 5-10 PM ... Wed-Thur 5-10 PM Fri-Sat 12-11 PM Sun 12-8 PM".
+--     Patch (after the 420 Taproom closed Feb 22) says the Bridge St brewery "remains open"; a MapQuest listing shows it closed (not read by me). Confirm.
+--   Troubles End Brewing, 50 West Third Avenue Ste 310, Collegeville PA 19426; https://www.troublesendbrewing.com/ ; (484) 902-8076;
+--     own site: House Taps page and full food menu; hours "Monday 11:30 AM - 9PM Tuesday - Thursday 11:30 AM - 10PM Friday 11:30 AM - MIDNIGHT
+--     Saturday 11:30AM - MIDNIGHT Sunday 10:30 AM - 9 PM"; banner "We will be Closed on Thanksgiving Thursday November 26th".
+--   Will's & Bill's, 324 Swedesford Road, Berwyn PA 19312; https://www.wills-bills.com/ ; own site: "Will's & Bill's is a family-owned
+--     brewery, oyster bar, and gastropub on Swedesford Road in Berwyn"; "Rotating ales, lagers, and IPAs crafted on-site"; happy hour
+--     "Tuesday - Sunday 4-6 pm". A brewpub, so it fits the directory. Not read: a full hours page (only happy hour and bar hours seen earlier).
+-- Not changed: website_url of 1153, 1031, 958, 1142 (already NULL or ABC's own site for 958); the directory should not link the successors from the retired rows.
