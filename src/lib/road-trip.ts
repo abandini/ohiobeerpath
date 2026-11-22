@@ -1,5 +1,5 @@
 // Single-road brewery trips (/roads): the road-line maths, the build step that turns checked rows into stops, and the
-// gate that decides what may be shown. Pure functions and types, NO imports, so the build script
+// gate that decides what may be shown (a stop needs dated evidence that the place was operating). Pure functions and types, NO imports, so the build script
 // (scripts/build-road-trip.mjs, plain Node) and the unit tests run exactly this code.
 //
 // A road arrives as an unordered pile of OpenStreetMap ways, each a list of [lat, lon] points, with both carriageways
@@ -151,7 +151,7 @@ export interface QuoteSource { quote: string; url: string; checked: string }
 
 /**
  * A stretch of a leg. `toMile` is where it ends along the leg; null means "to the end". Without a `name` the page names
- * it by the towns of its stops, so a heading never names a town that has no checked stop.
+ * it by the towns of its stops, so a heading never names a town that has no listed stop.
  */
 export interface RoadSegmentConfig { id: string; name?: string; toMile: number | null; maxDetourMiles?: number; link?: { href: string; text: string } }
 export interface RoadLegConfig {
@@ -166,51 +166,68 @@ export interface RoadConfig {
   slug: string;
   name: string;            // "US Route 422"
   shortName: string;       // "US 422"
+  /**
+   * The editor's say-so. A road has a page, links, a sitemap entry and brewery-page cards only when this is exactly
+   * true AND it has listed stops. Having stops is never enough on its own: set this after the page has been reviewed.
+   */
+  publish: boolean;
   headline?: boolean;      // the trip the /roads index leads with
-  maxDetourMiles: number;  // straight-line distance from the road within which a brewery is listed
-  gapNoteMiles: number;    // a stretch at least this long with no stop gets a note
+  maxDetourMiles: number;  // straight-line distance from the mapped line within which a brewery is listed
+  gapNoteMiles: number;    // a gap at least this long between listed stops gets a note
   geometry: { source: string; downloaded: string };
   about: string;           // what the page says about the road itself; every statement in it is supported by roadSources
   roadSources: QuoteSource[];
   legs: RoadLegConfig[];
 }
 
-/** A row from the brewery directory that lies near the road. Not shown anywhere until a checked row says it is open. */
+/** A row from the brewery directory that lies near the road. Not shown anywhere until a checked row qualifies it. */
 export interface CandidateRow { id: number; name: string; city: string; state: string; latitude: number; longitude: number }
-/** A checker's finding for one candidate. Only status OPEN with a quote, its source and a check date becomes a stop. */
+/** Proof the place was operating: a verbatim excerpt (printed visiting hours, a dated notice), its page, the day read. */
+export interface OperatingEvidence { excerpt?: string | null; url?: string | null; checked?: string | null }
+/** A checker's finding for one candidate. Only status OPEN with operating evidence becomes a stop. */
 export interface VerifiedRow {
   id: number; name?: string | null; status?: string | null; official_url?: string | null;
   address_as_printed?: string | null; address_source_url?: string | null;
   quote?: string | null; quote_source_url?: string | null; notes?: string | null; checked?: string | null;
-  browser_checked?: string | null; // the day a person read the quote (and address) on the rendered page, for sites a script cannot read
+  operating_evidence?: OperatingEvidence | null;
+  browser_checked?: string | null; // the day a person read the row's sources on the rendered page, for sites a script cannot read
 }
 
 export interface RoadStop {
   breweryId: number; name: string; town: string; state: string; lat: number; lon: number;
   status: string;              // as the checker recorded it; only "OPEN" is ever shown
   website: string;             // the brewery's own site as the checker found it ('' when none)
-  address: string;             // as printed at addressSourceUrl ('' when the checker found no printed address)
+  address: string;             // as printed at addressSourceUrl ('' when there is no sourced address)
   addressSourceUrl: string;
-  quote: string; quoteSourceUrl: string; checked: string;
+  evidence: string; evidenceUrl: string; evidenceChecked: string; // why it is listed as open: excerpt, page, day read
+  quote: string; quoteSourceUrl: string; // an optional descriptive quote ('' when none) and its page
+  checked: string;             // the day the checker's row was made
   legId: string;
-  mile: number;                // along the leg from its start
-  detourMiles: number;         // straight-line distance to the nearest part of the road
-  pastEnd: '' | 'start' | 'end'; // the brewery sits beyond the end of the road, so its nearest point is the end itself
+  mile: number;                // along the leg's mapped line from its start, at the point nearest the brewery
+  detourMiles: number;         // straight-line distance to that nearest point (not a driving distance)
+  pastEnd: '' | 'start' | 'end'; // the nearest point on the line is the end of the line itself
   browserChecked?: string;     // set only when the checker's row records a browser check on a real date
 }
-export interface BuiltLeg { id: string; lengthMiles: number; line: LatLon[]; rowsChecked: number }
+/** `candidates`: directory breweries within the limit of this leg. `decided`: how many of those have a completed decision. */
+export interface BuiltLeg { id: string; lengthMiles: number; line: LatLon[]; candidates: number; decided: number }
 /** What the build step writes: stops with their place on the road, and a thinned line for drawing. */
 export interface BuiltRoad { slug: string; built: string; legs: BuiltLeg[]; stops: RoadStop[] }
-export interface BuildReport { left: { id: number; name: string; reason: string }[]; legs: { id: string; lengthMiles: number; bridges: number; bridgedMiles: number; points: number }[] }
+export interface BuildReport {
+  left: { id: number; name: string; reason: string }[];
+  undecided: { id: number; name: string; why: string }[];
+  legs: { id: string; lengthMiles: number; bridges: number; bridgedMiles: number; points: number }[];
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
 // The gate
 
+/** Today as YYYY-MM-DD. Call it while handling a request: at a Worker's top level the clock reads 1970. */
+export const currentDate = (): string => new Date().toISOString().slice(0, 10);
 const httpUrl = (v: unknown): string => {
   if (typeof v !== 'string' || !v.trim()) return '';
   try { const u = new URL(v.trim()); return u.protocol === 'https:' || u.protocol === 'http:' ? u.href : ''; } catch { return ''; }
 };
-const calendarDate = (v: unknown): boolean => {
+const calendarDate = (v: unknown): v is string => {
   if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
   const d = new Date(v + 'T00:00:00Z');
   return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v;
@@ -220,19 +237,47 @@ const BARRED_HOSTS = /(^|\.)(facebook\.com|fb\.com|reddit\.com|nextdoor\.com)$/i
 const citable = (v: unknown): string => { const u = httpUrl(v); return u && !BARRED_HOSTS.test(new URL(u).hostname) ? u : ''; };
 
 /**
- * The one rule for what may appear as a stop: the checker found it OPEN, and there is a quote, the page it came from
- * and the day it was read. Everything else (closed, moved, unconfirmed, unchecked, or missing any of the three) is
- * left out. The build step applies this, and so does the page, so a hand-edited data file cannot get around it.
+ * The one rule for what may appear as a stop: the checker found it OPEN, and there is operating evidence (an excerpt
+ * showing the place was operating, the page it came from, and the day it was read), with no date in the future.
+ * A quote alone is not enough. Everything else (closed, moved, unconfirmed, unchecked, or missing any part of the
+ * evidence) is left out. The build step applies this, and so does the page each time it is made, so a hand-edited data
+ * file cannot get around it. With the clock unset (1970, a Worker's top level) every date is in the future: nothing shows.
  */
-export function isShowableStop(s: Partial<RoadStop> | null | undefined): s is RoadStop {
+export function isShowableStop(s: Partial<RoadStop> | null | undefined, today: string = currentDate()): s is RoadStop {
   return !!s && s.status === 'OPEN'
     && Number.isInteger(s.breweryId) && (s.breweryId as number) > 0
     && typeof s.name === 'string' && s.name.trim() !== ''
-    && typeof s.quote === 'string' && s.quote.trim() !== ''
-    && citable(s.quoteSourceUrl) !== ''
-    && calendarDate(s.checked)
+    && typeof s.evidence === 'string' && s.evidence.trim() !== ''
+    && citable(s.evidenceUrl) !== ''
+    && calendarDate(s.evidenceChecked) && s.evidenceChecked <= today
+    && calendarDate(s.checked) && s.checked <= today
     && Number.isFinite(s.mile) && Number.isFinite(s.detourMiles) && (s.detourMiles as number) >= 0
     && typeof s.legId === 'string';
+}
+
+const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/** A link inside this site: one leading slash, then plain path characters. No scheme, no "//", no backslash, no control characters. '' when it is anything else. */
+export function safeSitePath(href: unknown): string {
+  return typeof href === 'string' && /^\/(?!\/)[A-Za-z0-9\-._~/?#=&%+]*$/.test(href) && !href.includes('\\') ? href : '';
+}
+/** What is wrong with a road's config, as plain sentences; empty when it is fit to use. A road with problems is never available. */
+export function roadConfigProblems(c: RoadConfig): string[] {
+  const out: string[] = [];
+  if (!ID.test(String(c?.slug ?? ''))) out.push(`slug ${JSON.stringify(c?.slug)} must be lower-case letters, digits and single hyphens`);
+  if (!(c?.maxDetourMiles > 0) || !(c?.gapNoteMiles > 0)) out.push('maxDetourMiles and gapNoteMiles must be positive numbers');
+  const legIds = new Set<string>();
+  for (const leg of c?.legs ?? []) {
+    if (!ID.test(String(leg.id))) out.push(`leg id ${JSON.stringify(leg.id)} must be lower-case letters, digits and single hyphens`);
+    if (legIds.has(leg.id)) out.push(`leg id ${leg.id} is used twice`); legIds.add(leg.id);
+    const segIds = new Set<string>();
+    for (const g of leg.segments ?? []) {
+      if (!ID.test(String(g.id))) out.push(`segment id ${JSON.stringify(g.id)} must be lower-case letters, digits and single hyphens`);
+      if (segIds.has(g.id)) out.push(`segment id ${g.id} is used twice in leg ${leg.id}`); segIds.add(g.id);
+      if (g.link && !safeSitePath(g.link.href)) out.push(`segment ${g.id}: link ${JSON.stringify(g.link.href)} must be a path on this site starting with one "/"`);
+    }
+  }
+  if (!c?.legs?.length) out.push('a road needs at least one leg');
+  return out;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -252,17 +297,21 @@ export function unreadVerdict(browserChecked: string | null | undefined, today: 
 export const verifierExit = (c: { total: number; missing: number; unread: number; stale: number }): 0 | 2 => (c.total > 0 && !c.missing && !c.unread && !c.stale ? 0 : 2);
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Build: checked rows + directory coordinates + the road's ways -> stops in driving order
+// Build: checked rows + directory coordinates + the road's ways -> stops ordered by nearest point along the line
 
 const round = (n: number, places: number) => Math.round(n * 10 ** places) / 10 ** places;
 const PAST_END_MILES = 0.25;
+/** Statuses that settle a candidate without listing it. UNCONFIRMED settles nothing. */
+export const DECIDED_NOT_LISTED = ['CLOSED', 'MOVED/RENAMED', 'DUPLICATE', 'NOT A BREWERY TAPROOM'];
 
 export function segmentAt(leg: RoadLegConfig, mile: number): RoadSegmentConfig {
   return leg.segments.find((g) => g.toMile === null || mile < g.toMile) || leg.segments[leg.segments.length - 1];
 }
 
-export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: CandidateRow[], verified: VerifiedRow[], built: string): { road: BuiltRoad; report: BuildReport } {
-  const report: BuildReport = { left: [], legs: [] };
+export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: CandidateRow[], verified: VerifiedRow[], built: string, today: string = currentDate()): { road: BuiltRoad; report: BuildReport } {
+  const problems = roadConfigProblems(config);
+  if (problems.length) throw new Error(`road config: ${problems.join('; ')}`);
+  const report: BuildReport = { left: [], undecided: [], legs: [] };
   const legs = config.legs.map((leg) => {
     const legWays = ways.filter((w) => w.length > 0 && w[0][1] >= leg.lonRange[0] && w[0][1] < leg.lonRange[1]);
     const st = stitchLeg(legWays, leg.start, leg.end);
@@ -271,49 +320,68 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     if (!leg.segments.length || leg.segments[leg.segments.length - 1].toMile !== null) throw new Error(`${config.slug}/${leg.id}: the last segment must run to the end (toMile: null)`);
     leg.segments.forEach((g, i) => { const prev = i ? leg.segments[i - 1].toMile! : 0; if (g.toMile !== null && (g.toMile <= prev || g.toMile >= st.lengthMiles)) throw new Error(`${config.slug}/${leg.id}/${g.id}: toMile ${g.toMile} is out of order or past the end (${st.lengthMiles.toFixed(1)} mi)`); });
     report.legs.push({ id: leg.id, lengthMiles: st.lengthMiles, bridges: st.bridges, bridgedMiles: st.bridgedMiles, points: st.line.length });
-    return { leg, st, cum: cumulativeMiles(st.line), rowsChecked: 0 };
+    return { leg, st, cum: cumulativeMiles(st.line), candidates: 0, decided: 0 };
   });
 
-  const byId = new Map(candidates.map((c) => [c.id, c]));
-  const seen = new Set<number>(), stops: RoadStop[] = [];
+  // Where each directory candidate falls: its nearest leg, the mile there, and the straight-line distance to the line.
+  const placed = new Map<number, { cand: CandidateRow; l: (typeof legs)[number]; along: number; detour: number; within: boolean }>();
+  for (const cand of candidates) {
+    if (!Number.isInteger(cand?.id) || placed.has(cand.id) || !Number.isFinite(cand.latitude) || !Number.isFinite(cand.longitude)) continue;
+    const p: LatLon = [cand.latitude, cand.longitude];
+    const near = legs.map((l) => ({ l, on: projectOntoLine(p, l.st.line, l.cum) })).sort((a, b) => a.on.detour - b.on.detour)[0];
+    const limit = segmentAt(near.l.leg, near.on.along).maxDetourMiles ?? config.maxDetourMiles;
+    placed.set(cand.id, { cand, l: near.l, along: near.on.along, detour: near.on.detour, within: near.on.detour <= limit });
+  }
+
+  const seen = new Set<number>(), decided = new Set<number>(), stops: RoadStop[] = [];
   for (const row of verified) {
     const label = String(row?.name || `id ${row?.id}`);
     const leave = (reason: string) => report.left.push({ id: row?.id, name: label, reason });
-    const cand = byId.get(row?.id);
-    if (!cand) { leave('not among the directory candidates for this road'); continue; }
-    if (!Number.isFinite(cand.latitude) || !Number.isFinite(cand.longitude)) { leave('no coordinates in the directory'); continue; }
-    const p: LatLon = [cand.latitude, cand.longitude];
-    // Nearest leg. The detour is measured to the same stitched line the miles are measured along.
-    const near = legs.map((l) => ({ l, on: projectOntoLine(p, l.st.line, l.cum) })).sort((a, b) => a.on.detour - b.on.detour)[0];
-    const on = near.on;
-    near.l.rowsChecked++;
+    const at = placed.get(row?.id);
+    if (!at) { leave('not among the directory candidates for this road (or no coordinates)'); continue; }
     if (seen.has(row.id)) { leave('second row for the same brewery id'); continue; }
     seen.add(row.id);
-    if (row.status !== 'OPEN') { leave(`status ${row.status || 'missing'}`); continue; }
-    const mile = round(on.along, 1), detourMiles = round(on.detour, 2);
-    const limit = segmentAt(near.l.leg, on.along).maxDetourMiles ?? config.maxDetourMiles;
-    if (on.detour > limit) { leave(`${detourMiles} mi from the road, over the ${limit} mi limit`); continue; }
-    const atStart = on.along < 0.02, atEnd = on.along > near.l.st.lengthMiles - 0.02;
+    if (row.status !== 'OPEN') {
+      if (DECIDED_NOT_LISTED.includes(String(row.status))) decided.add(row.id);
+      leave(`status ${row.status || 'missing'}`); continue;
+    }
+    const { cand, l, along, detour } = at;
+    const mile = round(along, 1), detourMiles = round(detour, 2);
+    if (!at.within) { decided.add(row.id); leave(`${detourMiles} mi from the mapped line, over the limit`); continue; }
+    const atStart = along < 0.02, atEnd = along > l.st.lengthMiles - 0.02;
+    const ev = row.operating_evidence || {};
+    const quoteUrl = citable(row.quote_source_url), quote = quoteUrl ? String(row.quote || '').trim() : '';
     const stop: RoadStop = {
       breweryId: row.id, name: String(row.name || cand.name || '').trim(), town: String(cand.city || '').trim(), state: String(cand.state || '').trim(),
       lat: cand.latitude, lon: cand.longitude, status: 'OPEN',
       website: citable(row.official_url),
       address: citable(row.address_source_url) ? String(row.address_as_printed || '').trim() : '',
       addressSourceUrl: String(row.address_as_printed || '').trim() ? citable(row.address_source_url) : '',
-      quote: String(row.quote || '').trim(), quoteSourceUrl: citable(row.quote_source_url), checked: String(row.checked || '').trim(),
-      legId: near.l.leg.id, mile, detourMiles,
-      pastEnd: on.detour > PAST_END_MILES && (atStart || atEnd) ? (atStart ? 'start' : 'end') : '',
+      evidence: String(ev.excerpt || '').trim(), evidenceUrl: citable(ev.url), evidenceChecked: String(ev.checked || '').trim(),
+      quote, quoteSourceUrl: quote ? quoteUrl : '', checked: String(row.checked || '').trim(),
+      legId: l.leg.id, mile, detourMiles,
+      pastEnd: detour > PAST_END_MILES && (atStart || atEnd) ? (atStart ? 'start' : 'end') : '',
       ...(calendarDate(row.browser_checked) ? { browserChecked: row.browser_checked as string } : {}),
     };
-    if (!isShowableStop(stop)) { leave('OPEN, but the quote, its source URL or the check date is missing or not citable'); continue; }
+    if (!isShowableStop(stop, today)) { leave('marked OPEN, but there is no usable operating evidence (excerpt, citable URL and a check date that is not in the future)'); continue; }
+    decided.add(row.id);
     stops.push(stop);
+  }
+  // Coverage: of the directory candidates within the limit, how many have a completed decision (listed, or settled as
+  // closed, moved, duplicate or not a taproom). Unconfirmed rows, rows marked OPEN without evidence and candidates with
+  // no row at all are undecided.
+  for (const [id, at] of placed) {
+    if (!at.within) continue;
+    at.l.candidates++;
+    if (decided.has(id)) at.l.decided++;
+    else report.undecided.push({ id, name: at.cand.name, why: seen.has(id) ? 'checked without a completed decision' : 'no checked row' });
   }
   const order = new Map(config.legs.map((l, i) => [l.id, i]));
   stops.sort((a, b) => order.get(a.legId)! - order.get(b.legId)! || a.mile - b.mile || a.detourMiles - b.detourMiles || a.name.localeCompare(b.name));
   return {
     road: {
       slug: config.slug, built,
-      legs: legs.map((l) => ({ id: l.leg.id, lengthMiles: round(l.st.lengthMiles, 1), line: simplifyLine(l.st.line, 0.12).map((q) => [round(q[0], 5), round(q[1], 5)] as LatLon), rowsChecked: l.rowsChecked })),
+      legs: legs.map((l) => ({ id: l.leg.id, lengthMiles: round(l.st.lengthMiles, 1), line: simplifyLine(l.st.line, 0.12).map((q) => [round(q[0], 5), round(q[1], 5)] as LatLon), candidates: l.candidates, decided: l.decided })),
       stops,
     },
     report,
@@ -327,18 +395,21 @@ export interface StopView extends RoadStop { n: number; milesFromEnd: number; ga
 export interface SegmentView { id: string; name: string; fromMile: number; toMile: number; link?: { href: string; text: string }; stops: StopView[] }
 export interface LegView {
   id: string; from: string; to: string; lengthMiles: number; line: LatLon[];
-  checked: boolean;            // false when no checked rows have been built for this leg yet
+  candidates: number; decided: number; // directory breweries within the limit of this leg, and how many have a completed decision
   stops: StopView[]; segments: SegmentView[]; towns: number;
-  leadGapMiles: number | null; // start of the leg to the first stop, when long enough to note
+  leadGapMiles: number | null; // start of the leg to the first listed stop, when long enough to note
   longestGap: { fromMile: number; toMile: number; miles: number } | null;
 }
 export interface RoadView {
   config: RoadConfig; legs: LegView[]; stops: StopView[];
-  available: boolean;          // at least one stop passes the gate; an unavailable road has no page and no links
-  lastChecked: string; firstChecked: string;
+  candidates: number; decided: number;
+  problems: string[];          // what is wrong with the config, if anything
+  /** Published: the config says publish: true, the config is sound, and at least one stop passes the gate. One decision, used by every route, link and listing. */
+  available: boolean;
+  checkedFrom: string; checkedTo: string; // earliest and latest date among the listed stops' source checks
 }
 
-/** "Warren", "Warren and Youngstown", "A, B and C", or "A to D" for four or more towns, in driving order. */
+/** "Warren", "Warren and Youngstown", "A, B and C", or "A to D" for four or more towns, in list order. */
 export function townsName(towns: string[]): string {
   const t = towns.filter((x, i) => x && towns.indexOf(x) === i);
   if (t.length <= 1) return t[0] || '';
@@ -347,29 +418,38 @@ export function townsName(towns: string[]): string {
   return `${t[0]} to ${t[t.length - 1]}`;
 }
 
-export function viewRoad(config: RoadConfig, built: BuiltRoad): RoadView {
+export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = currentDate()): RoadView {
+  const problems = roadConfigProblems(config);
   let n = 0;
-  const legs: LegView[] = config.legs.map((leg) => {
+  const legs: LegView[] = (config.legs ?? []).map((leg) => {
     const b = built.legs.find((x) => x.id === leg.id);
-    const length = b?.lengthMiles ?? 0;
-    const shown = built.stops.filter((s) => isShowableStop(s) && s.legId === leg.id && s.mile >= 0 && s.mile <= length + 0.05 && s.detourMiles <= (segmentAt(leg, s.mile).maxDetourMiles ?? config.maxDetourMiles))
+    const length = b?.lengthMiles ?? 0, segs = leg.segments?.length ? leg.segments : [{ id: 'all', toMile: null }];
+    const safeLeg = { ...leg, segments: segs };
+    const shown = problems.length ? [] : built.stops.filter((s) => isShowableStop(s, today) && s.legId === leg.id && s.mile >= 0 && s.mile <= length + 0.05 && s.detourMiles <= (segmentAt(safeLeg, s.mile).maxDetourMiles ?? config.maxDetourMiles))
       .slice().sort((a, c) => a.mile - c.mile || a.detourMiles - c.detourMiles || a.name.localeCompare(c.name));
     const note = (gap: number) => (gap >= config.gapNoteMiles ? round(gap, 1) : null);
     const stops: StopView[] = shown.map((s, i) => ({ ...s, n: ++n, milesFromEnd: round(length - s.mile, 1), gapAfterMiles: note((i + 1 < shown.length ? shown[i + 1].mile : length) - s.mile) }));
     const marks = [0, ...stops.map((s) => s.mile), length];
     let longestGap: LegView['longestGap'] = null;
     if (stops.length) for (let i = 1; i < marks.length; i++) { const miles = round(marks[i] - marks[i - 1], 1); if (!longestGap || miles > longestGap.miles) longestGap = { fromMile: marks[i - 1], toMile: marks[i], miles }; }
-    const segments: SegmentView[] = leg.segments.map((g, i) => {
-      const fromMile = i ? leg.segments[i - 1].toMile! : 0, toMile = g.toMile ?? length;
-      const mine = stops.filter((s) => segmentAt(leg, s.mile).id === g.id);
-      return { id: g.id, name: g.name || townsName(mine.map((s) => s.town)) || `Mile ${Math.round(fromMile)} to ${Math.round(toMile)}`, fromMile, toMile, link: g.link, stops: mine };
+    const segments: SegmentView[] = segs.map((g, i) => {
+      const fromMile = i ? segs[i - 1].toMile! : 0, toMile = g.toMile ?? length;
+      const mine = stops.filter((s) => segmentAt(safeLeg, s.mile).id === g.id);
+      const href = safeSitePath(g.link?.href);
+      return { id: g.id, name: g.name || townsName(mine.map((s) => s.town)) || `Mile ${Math.round(fromMile)} to ${Math.round(toMile)}`, fromMile, toMile, link: g.link && href ? { href, text: g.link.text } : undefined, stops: mine };
     });
+    const candidates = Math.max(0, b?.candidates ?? 0), decided = Math.min(candidates, Math.max(0, b?.decided ?? 0));
     return {
-      id: leg.id, from: leg.from, to: leg.to, lengthMiles: length, line: b?.line ?? [], checked: (b?.rowsChecked ?? 0) > 0,
+      id: leg.id, from: leg.from, to: leg.to, lengthMiles: length, line: b?.line ?? [], candidates, decided,
       stops, segments, towns: new Set(stops.map((s) => `${s.town}, ${s.state}`)).size,
       leadGapMiles: stops.length ? note(stops[0].mile) : null, longestGap,
     };
   });
-  const stops = legs.flatMap((l) => l.stops), dates = stops.map((s) => s.checked).sort();
-  return { config, legs, stops, available: stops.length > 0, lastChecked: dates[dates.length - 1] || '', firstChecked: dates[0] || '' };
+  const stops = legs.flatMap((l) => l.stops), dates = stops.flatMap((s) => [s.evidenceChecked]).sort();
+  return {
+    config, legs, stops, problems,
+    candidates: legs.reduce((a, l) => a + l.candidates, 0), decided: legs.reduce((a, l) => a + l.decided, 0),
+    available: config.publish === true && problems.length === 0 && stops.length > 0,
+    checkedFrom: dates[0] || '', checkedTo: dates[dates.length - 1] || '',
+  };
 }

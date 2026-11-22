@@ -119,7 +119,7 @@ function tourCallout(id: number): string {
           </div>`;
 }
 
-// A brewery that is a checked stop on a single-road trip links to it, with its place on the road.
+// A brewery that is a listed stop on a published single-road list links to it, with its nearest point on our mapped line.
 export function roadCallout(id: number, roads?: Parameters<typeof roadStopFor>[1]): string {
   const hit = roadStopFor(id, roads);
   if (!hit) return '';
@@ -127,8 +127,8 @@ export function roadCallout(id: number, roads?: Parameters<typeof roadStopFor>[1
   return `
           <div class="content-card">
             <h2><i class="bi bi-signpost text-warning" aria-hidden="true"></i> On our ${escapeHtml(road.config.name)} list</h2>
-            <p>Mile ${stop.mile.toFixed(1)} of the ${escapeHtml(leg.from.split(',')[0])} to ${escapeHtml(leg.to.split(',')[0])} leg, ${stop.detourMiles < 0.1 ? 'under 0.1' : stop.detourMiles.toFixed(1)} miles off the road in a straight line. Checked ${escapeHtml(stop.checked)}.</p>
-            <a href="/roads/${escapeAttr(road.config.slug)}#stop-${stop.breweryId}" class="btn btn-warning">See the road trip</a>
+            <p>Its nearest point on our mapped line of ${escapeHtml(road.config.shortName)} is mile ${stop.mile.toFixed(1)} of the ${escapeHtml(leg.from.split(',')[0])} to ${escapeHtml(leg.to.split(',')[0])} leg; it is ${stop.detourMiles < 0.1 ? 'under 0.1' : stop.detourMiles.toFixed(1)} miles from that line, straight-line (not a driving distance). Listed as open on ${escapeHtml(stop.evidenceChecked)}.</p>
+            <a href="/roads/${escapeAttr(road.config.slug)}#stop-${stop.breweryId}" class="btn btn-warning">See the list</a>
           </div>`;
 }
 

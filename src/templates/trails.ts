@@ -1,6 +1,8 @@
 import { layout } from './layout';
 import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
 import { availableRoads } from '../data/roads';
+import { roadsBlurb } from './road-trip';
+import { escapeHtml } from './utils';
 import type { Brewery, SubdomainContext } from '../types';
 
 export interface Trail {
@@ -40,7 +42,7 @@ export function trailsPage(trails: Trail[], subdomain?: SubdomainContext): strin
       </div>
     </a>
 
-    ${availableRoads().length ? `<p class="mb-5"><a href="/roads"><strong>Driving one road end to end?</strong> See the single-road trips</a>: breweries along one road in driving order, each checked against its own site.</p>` : ''}
+    ${availableRoads().length ? `<p class="mb-5"><a href="/roads"><strong>Following one road?</strong> See the single-road lists</a>. ${escapeHtml(roadsBlurb(availableRoads()))}</p>` : ''}
 
     ${featuredTrails.length > 0 ? `
     <h2 class="mb-4" style="font-weight: 700;"><i class="bi bi-star-fill text-warning"></i> Featured Trails</h2>

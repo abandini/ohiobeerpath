@@ -11,6 +11,10 @@ export const US_422: RoadConfig = {
   slug: 'us-422',
   name: 'US Route 422',
   shortName: 'US 422',
+  // Editorial approval to publish. Set true on 2026-11-22 after the pre-launch review round: every listed stop carries
+  // operating evidence (printed visiting hours read on its own site that day), the source verifier passes, and the page
+  // states how many nearby directory breweries we reached a decision on. Set it false to take the road down everywhere.
+  publish: true,
   // Listed when within this straight-line distance of the road. Five miles is the low end of the "road-trip pace"
   // detours other route tools offer (see the research note "Single road brewery trips/landscape.md", section 7).
   maxDetourMiles: 5,

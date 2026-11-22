@@ -18,6 +18,7 @@ import planRoutes from './routes/plan';
 import agentRoutes from './routes/agent';
 import { truncateDescription } from './templates/utils';
 import { availableRoads } from './data/roads';
+import { roadsBlurb, roadSummary, DRIVING_NOTICE } from './templates/road-trip';
 
 // Create Hono app with subdomain context
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -214,10 +215,12 @@ app.get('/llms.txt', async (c) => {
   const agentLines = baseUrl === 'https://brewerytrip.com'
     ? `- For AI assistants (Personal Agent Protocol 1.0): ${baseUrl}/.well-known/poppy.json\n- OpenAPI description of the read-only directory and tap lists: ${baseUrl}/agent/openapi.json\n`
     : '';
-  // Single-road trips live on the national site; each line says what the list is and when it was checked.
-  const roadLines = baseUrl === 'https://brewerytrip.com' && availableRoads().length
-    ? `- Single-road brewery trips (stops in driving order, each checked against the brewery's own site): ${baseUrl}/roads\n` +
-      availableRoads().map((r) => `  - ${r.config.name}: ${baseUrl}/roads/${r.config.slug} (${r.stops.length} stops, last checked ${r.lastChecked})\n`).join('')
+  // Single-road lists live on the national site. The wording comes from the same functions the pages use, so this file
+  // cannot claim more than they do (order is by nearest point on our mapped line; sources are dated; not driving distances).
+  const roads = baseUrl === 'https://brewerytrip.com' ? availableRoads() : [];
+  const roadLines = roads.length
+    ? `- Single-road brewery lists: ${baseUrl}/roads (${roadsBlurb(roads)} ${DRIVING_NOTICE})\n` +
+      roads.map((r) => `  - ${r.config.name}: ${baseUrl}/roads/${r.config.slug} (${roadSummary(r)})\n`).join('')
     : '';
   const body = `# ${siteName}
 
@@ -317,10 +320,10 @@ app.get('/sitemap.xml', async (c) => {
       { url: '/blog/ohio-christmas-ales', priority: '0.6', changefreq: 'weekly', lastmod: '2026-10-31' },
       { url: '/blog/dog-friendly-ohio-breweries', priority: '0.6', changefreq: 'monthly', lastmod: '2026-10-31' },
     ] : []),
-    // Single-road trips cross state lines, so they belong to the national site only; a road is listed once it has checked stops
+    // Single-road lists cross state lines, so they belong to the national site only; a road is listed only while it is published (availableRoads)
     ...(!subdomain.stateName && availableRoads().length ? [
-      { url: '/roads', priority: '0.7', changefreq: 'monthly', lastmod: availableRoads().map((r) => r.lastChecked).sort().pop() || '' },
-      ...availableRoads().map((r) => ({ url: `/roads/${r.config.slug}`, priority: '0.7', changefreq: 'monthly', lastmod: r.lastChecked })),
+      { url: '/roads', priority: '0.7', changefreq: 'monthly', lastmod: availableRoads().map((r) => r.checkedTo).sort().pop() || '' },
+      ...availableRoads().map((r) => ({ url: `/roads/${r.config.slug}`, priority: '0.7', changefreq: 'monthly', lastmod: r.checkedTo })),
     ] : []),
     { url: '/nearby', priority: '0.7', changefreq: 'weekly', lastmod: latest },
     { url: '/blog', priority: '0.6', changefreq: 'weekly', lastmod: '' },

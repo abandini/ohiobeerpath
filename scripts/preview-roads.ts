@@ -28,7 +28,8 @@ if (process.argv.includes('--fixtures')) {
   const candidates: CandidateRow[] = JSON.parse(readFileSync(join(dir, 'candidates.json'), 'utf8'));
   const rows: VerifiedRow[] = candidates.map((c) => ({
     id: c.id, name: c.name, status: 'OPEN', official_url: 'https://example.com/', address_as_printed: c.id % 5 ? `${c.id} Fixture Street, ${c.city}, ${c.state}` : null, address_source_url: 'https://example.com/visit',
-    quote: 'FIXTURE: this is not a real quote. It stands in for the sentence a checker would copy from the brewery site.', quote_source_url: 'https://example.com/about', checked: '2026-11-22',
+    quote: 'FIXTURE: this is not a real quote. It stands in for a sentence a checker would copy from the brewery site.', quote_source_url: 'https://example.com/about', checked: '2026-11-22',
+    operating_evidence: { excerpt: 'FIXTURE: not real hours. Monday: Closed Tuesday: 12pm - 10pm', url: 'https://example.com/hours', checked: '2026-11-22' },
   }));
   const view = viewRoad(US_422, buildRoad(US_422, JSON.parse(readFileSync(join(dir, 'osm-ways.json'), 'utf8')), candidates, rows, '2026-11-22').road);
   const banner = '<div role="alert" style="background:#9e3b26;color:#fff;padding:.75rem 1rem;font-weight:700;text-align:center">PREVIEW WITH FIXTURE DATA: these breweries have NOT been checked and the quotes are made up. Not for publication.</div>';

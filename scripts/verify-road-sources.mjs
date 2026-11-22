@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// Re-checks every quote on a single-road trip page against the page it cites: each stop's quote, each stop's printed
-// address, and the quotes behind what we say about the road. One request per URL, honest user agent.
+// Re-checks every excerpt on a single-road trip page against the page it cites: each stop's operating evidence (why it
+// is listed as open), its descriptive quote if it has one, its printed address, and the quotes behind what we say
+// about the road. One request per URL, honest user agent.
 //   node scripts/verify-road-sources.mjs us-422
 // "ok" means the text was found on the live page ("ok-meta": only in the page's description tag). "MISSING" means the page was read and the text is not there.
 // "unread" means the page could not be read (an error, a refusal, or a page that only renders in a browser); it is
@@ -20,15 +21,17 @@ const config = pick(await import(join(root, `src/data/roads/${slug}.ts`)), (v) =
 const built = pick(await import(join(root, `src/data/roads/${slug}.built.ts`)), (v) => Array.isArray(v.stops));
 if (!config || !built) { console.error(`road ${slug}: config or built data not found`); process.exit(2); }
 
-const stops = built.stops.filter(isShowableStop);
+const stops = built.stops.filter((s) => isShowableStop(s));
+if (stops.length !== built.stops.length) { console.error(`${built.stops.length - stops.length} stop(s) in the built file do not pass the gate: rebuild before verifying`); process.exit(2); }
 const pairs = [
   ...config.roadSources.map((s) => ({ what: 'road', quote: s.quote, url: s.url })),
   ...stops.flatMap((s) => [
-    { what: `stop ${s.breweryId} quote`, quote: s.quote, url: s.quoteSourceUrl, browser: s.browserChecked },
+    { what: `stop ${s.breweryId} operating evidence`, quote: s.evidence, url: s.evidenceUrl, browser: s.browserChecked },
+    ...(s.quote ? [{ what: `stop ${s.breweryId} quote`, quote: s.quote, url: s.quoteSourceUrl, browser: s.browserChecked }] : []),
     ...(s.address ? [{ what: `stop ${s.breweryId} address`, quote: s.address, url: s.addressSourceUrl, browser: s.browserChecked }] : []),
   ]),
 ];
-const expected = config.roadSources.length + stops.length + stops.filter((s) => s.address).length;
+const expected = config.roadSources.length + stops.length + stops.filter((s) => s.quote).length + stops.filter((s) => s.address).length;
 if (!pairs.length || pairs.length !== expected || pairs.some((p) => !p.quote || !/^https?:\/\//.test(p.url || ''))) { console.error(`expected ${expected} sources with a quote and a URL, got ${pairs.length}`); process.exit(2); }
 
 const ENT = { amp: '&', nbsp: ' ', quot: '"', apos: "'", lt: '<', gt: '>', rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“', ndash: '–', mdash: '—', hellip: '…', eacute: 'é', copy: '©', reg: '®', trade: '™', deg: '°', middot: '·', bull: '•' };

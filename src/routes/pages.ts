@@ -271,8 +271,8 @@ pages.get('/trails', async (c) => {
 pages.get('/trails/downtown-cleveland', (c) => c.html(downtownTourPage(c.get('subdomain'))));
 pages.get('/cleveland-beer-of-the-month', (c) => c.html(beerOfTheMonthPage(c.get('subdomain'))));
 
-// Single-road trips. A road has a page only while at least one of its stops is a checked, sourced, open brewery;
-// with none, both routes answer 404 and nothing links here.
+// Single-road lists. A road has a page only while it is published: its config says publish: true and at least one
+// stop has dated operating evidence (availableRoads). Otherwise both routes answer 404 and nothing links here.
 pages.get('/roads', (c) => {
   const roads = availableRoads();
   return roads.length ? c.html(roadsIndexPage(roads, c.get('subdomain'))) : c.notFound();
