@@ -1,0 +1,589 @@
+[
+ {
+  "id": 300,
+  "name": "Standardized Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.standardizedbrewing.com/",
+  "address_as_printed": "5920 Evans Farm Dr. Suite A Lewis Center, OH 43035",
+  "address_source_url": "https://www.standardizedbrewing.com/info",
+  "operating_evidence": {
+   "excerpt": "Hours Day Open Close Sunday 9:00 am 9:00 pm Monday 7:00 am 10:00 pm Tuesday 7:00 am 10:00 pm Wednesday 7:00 am 10:00 pm",
+   "url": "https://www.standardizedbrewing.com/info",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location. Taproom plus coffee bar; food trucks; page copyright 2025. Page does not explicitly say beer is brewed on site (beer page not read in depth).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 249,
+  "name": "Olentangy River Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.olentangybrew.com/",
+  "address_as_printed": "303 Green Meadows Drive South Lewis Center, OH 43035",
+  "address_source_url": "https://www.olentangybrew.com/",
+  "operating_evidence": {
+   "excerpt": "Location 303 Green Meadows Drive South Lewis Center, OH 43035 Hours Mon: 7am-9pm Tues-Thur: 7am-10pm Fri: 7am-11pm Sat: 8am-11pm Sun: 8am-9pm",
+   "url": "https://www.olentangybrew.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "We proudly can our beers on site in our brewhouse.",
+  "quote_source_url": "https://www.olentangybrew.com/",
+  "notes": "Single location; brews and cans on site; coffee bar (Roosevelt Coffee) and rotating food trucks.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 138,
+  "name": "Grizzlybird Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.grizzlybirdbrew.com/",
+  "address_as_printed": "5901 Chandler Court Westerville, OH 43082",
+  "address_source_url": "https://www.grizzlybirdbrew.com/",
+  "operating_evidence": {
+   "excerpt": "OPENING HOURS: Tuesday: 3:00pm-10:00pm Wednesday: 3.00pm - 10.00pm Thursday: 3.00pm - 10.00pm",
+   "url": "https://www.grizzlybirdbrew.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Listing had no website; official site found by search and its address/brand match. Page footer says 2023, so hours may be stale; page title also reads 'Galena Brewing Company | Westerville' (sister Johnstown brewery history). Phone printed (614) 392-0478 differs from listing (614-392-1430).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 297,
+  "name": "Spires Social Brewing Co.",
+  "status": "OPEN",
+  "official_url": "https://www.spiressocial.com/",
+  "address_as_printed": "8757 Sancus Blvd, Columbus, OH, 43240",
+  "address_source_url": "https://www.spiressocial.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Mon: Closed Tues-Thurs: 3:00-10:00 Fri: 3:00-11:00 Sat: 12:00-11:00 Sun: 12:00-8:00",
+   "url": "https://www.spiressocial.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location; brews on premises (also brew-your-own classes); kitchen added.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2441,
+  "name": "Temperance Row Brewing and Uptown Deli",
+  "status": "OPEN",
+  "official_url": "https://www.uptowndeliandbrew.com/",
+  "address_as_printed": "41 N. State Street Westerville, OH 43081",
+  "address_source_url": "https://www.uptowndeliandbrew.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Mon-Thur: 11am-10pm Fri-Sat: 11am-Midnight Sun: 11am-10pm",
+   "url": "https://www.uptowndeliandbrew.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Temperance Row Brewing Company is the first brewery in Westerville.",
+  "quote_source_url": "https://www.uptowndeliandbrew.com/",
+  "notes": "Brewpub in the rear of Uptown Deli and Brew; hours printed are for the deli complex. Full deli menu.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2463,
+  "name": "Zaftig Brewing Co.",
+  "status": "OPEN",
+  "official_url": "https://www.drinkzaftig.com/",
+  "address_as_printed": "7020-A Huntley Rd. Worthington, OH 43229",
+  "address_source_url": "https://www.drinkzaftig.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Monday Tuesday Wednesday Thursday Friday Saturday Sunday 3:00 - 9:00 PM 3:00 - 9:00 PM 3:00 - 9:00 PM 3:00 - 10:00 PM",
+   "url": "https://www.drinkzaftig.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Zaftig Brewing Company is Worthington's only craft brewery",
+  "quote_source_url": "https://www.drinkzaftig.com/",
+  "notes": "Hours table prints day names in one row and times in another; full times: Mon-Wed 3-9 PM, Thu-Fri 3-10 PM, Sat 11 AM-10 PM, Sun 12-7 PM. Footer copyright 2025. Food trucks. Same place as row 350.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 350,
+  "name": "Zaftig Brewing",
+  "status": "DUPLICATE",
+  "official_url": "https://www.drinkzaftig.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Duplicate of id 2463 (Zaftig Brewing Co., 7020 Huntley Rd): same website, same phone 614-636-2537, coordinates 0.03 mi apart. Keep 2463.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 292,
+  "name": "Somewhere in Particular Brewing",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No first-hand source reachable. Listing had no website. sipbrew.com (the domain a search names for it) does not resolve today, and sipbrewing.com is a GoDaddy for-sale parked page: do not link either. Search results only show third-party aggregators (their stated hours are not usable). Listed address per directory aggregators 5055 Dierker Rd. A person should check its Instagram/the brewery directly. second_signal OPERATIONAL.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 119,
+  "name": "Forbidden Root (Columbus)",
+  "status": "OPEN",
+  "official_url": "https://forbiddenroot.com/restaurants/columbus-ohio/",
+  "address_as_printed": "4080 WORTH AVE COLUMBUS, OH 43219",
+  "address_source_url": "https://forbiddenroot.com/restaurants/columbus-ohio/",
+  "operating_evidence": {
+   "excerpt": "Restaurant & Brewery Hours Monday - 12pm - 9:00PM (Last Call) Tuesday - 12pm - 9:00PM (Last Call) Wednesday - 12pm - 9:00PM (Last Call)",
+   "url": "https://forbiddenroot.com/restaurants/columbus-ohio/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location brand (Chicago West Town, Cultivate Chicago, Columbus); every field here is from the Columbus (Easton Town Center) page: 4080 Worth Ave, phone (614) 414-6127 matches listing. Brewery and restaurant, full dinner menu.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 75,
+  "name": "Combustion Brewery & Taproom - Clintonville",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.combustionbrewing.com/",
+  "address_as_printed": "2971 N High St • Columbus, OH 43202",
+  "address_source_url": "https://www.combustionbrewing.com/visit-us",
+  "operating_evidence": null,
+  "notes": "script-rendered. Site has an age gate and the Visit Us page (https://www.combustionbrewing.com/visit-us) prints only addresses/phones for Clintonville (2971 N High St, 614-914-5112) and Pickerington (80 W Church St): no hours text on the page. Squarespace page data carries site-wide business hours but not tied to a location, so not used. A person should open Visit Us then the Clintonville Taproom button. Multi-location: Pickerington is a different brewery site, not in this segment.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 349,
+  "name": "Yellow Springs Brewery - Columbus",
+  "status": "OPEN",
+  "official_url": "https://www.yellowspringsbrewery.com/locations/columbus",
+  "address_as_printed": "2855 Indianola ave Columbus, OH 43202",
+  "address_source_url": "https://www.yellowspringsbrewery.com/locations/columbus",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Tues-Thursday: 3 – 10pm Friday: 3 – 10pm Saturday: 12 – 10pm Sunday: 12 – 8pm",
+   "url": "https://www.yellowspringsbrewery.com/locations/columbus",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location (original taproom is in Yellow Springs, plus The Barrel Room); fields here are for the Clintonville Columbus Taproom + Kitchen (Indianola Ave). Site describes a taproom and kitchen serving Yellow Springs Brewery beer; no on-site brewing is stated, so treat as taproom not brewhouse. Full kitchen.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 89,
+  "name": "Derive Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.derivebeer.com/",
+  "address_as_printed": "2808 N High St Columbus, OH 43203",
+  "address_source_url": "https://www.derivebeer.com/",
+  "operating_evidence": {
+   "excerpt": "VISIT US 2808 N High St Columbus, OH 43203 Tel: 614-732-4186 HOURS Mon-Thurs: 4pm -11pm Fri: 2pm -12am Sat: 12pm -12am Sun:12pm - 9pm",
+   "url": "https://www.derivebeer.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "We are an award winning brewery, taproom and kitchen",
+  "quote_source_url": "https://www.derivebeer.com/",
+  "notes": "Single location; brewery, taproom and kitchen. Footer copyright 2023, but hours printed on the live page. Phone 614-732-4186 is the same number the directory gives for Endeavor (row 103): a directory data error on one row.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 324,
+  "name": "Understory",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://www.understorycbus.com/",
+  "address_as_printed": "2571 Neil Ave Columbus, OH 43202",
+  "address_source_url": "https://www.understorycbus.com/",
+  "operating_evidence": null,
+  "notes": "Restaurant and cocktail bar (Lounge, Commons, patio) in the historic Open Air School, a sister concept of Wolf's Ridge; its own site does not claim brewing. Wolf's Ridge beer is brewed at 215 N. 4th St (row 343). The directory row carries Wolf's Ridge's phone 614-429-3936 and a latitude that does not obviously match Neil Ave; treat the row as a mislabelled Wolf's Ridge sister venue.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 103,
+  "name": "Endeavor Brewing Company (Grandview taproom)",
+  "status": "CLOSED",
+  "official_url": "https://www.endeavorbrewing.com/",
+  "address_as_printed": "909 W 5th Ave Columbus, OH 43212",
+  "address_source_url": "https://www.endeavorbrewing.com/",
+  "operating_evidence": null,
+  "quote": "Our Grandview Taproom is closed to the public. It is for Events only.",
+  "quote_source_url": "https://www.endeavorbrewing.com/",
+  "notes": "CLOSED QUOTE (own site, home page): 'After nearly Ten years of proudly serving our community, we are closing our Grandview Taproom. Our final day will be Thursday, October 29th.' The same page says its Linworth location, Barrel & Bloom (2365 W. Dublin Granville Rd, a different address and a separate row/location), 'will operate normally'. This row (Grandview, 909 W 5th Ave) is closed to the public. Note directory phone 614-732-4186 is Derive's number.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 161,
+  "name": "Hoof Hearted Brewing - 5th Ave.",
+  "status": "OPEN",
+  "official_url": "https://www.hoofheartedbrewing.com/",
+  "address_as_printed": "26 E 5th Ave Columbus , OH 43201",
+  "address_source_url": "https://www.hoofheartedbrewing.com/contact/",
+  "operating_evidence": {
+   "excerpt": "Hoof Hearted Brewing (5th Ave) 26 E 5th Ave Columbus , OH 43201 Get Directions Telephone: (614) 670-7422 Taproom Hours: Monday: Closed Tuesday: Closed Wednesday: 4PM-11PM Thursday: 4PM-11PM",
+   "url": "https://www.hoofheartedbrewing.com/contact/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location: main brewery and taproom is in Marengo (300 County Rd 26); this row is the Columbus 5th Ave taproom only. Page does not say whether beer is brewed at 5th Ave. Rest of hours: Fri 2PM-11PM, Sat 12PM-11PM, Sun 12PM-7PM.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2313,
+  "name": "Actual Brewing Company, LLC",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": "655 N James Rd (listing)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "The space was formerly home to Actual Brewing, which shuttered in 2019.",
+  "quote_source_url": "https://breakfastwithnick.com/2024/04/12/hoster-brewing-columbus-ohio/",
+  "notes": "CLOSED QUOTE (Breakfast with Nick, 2024-04-12, on Hoster Brewing taking over '653 N. James Rd.'): 'The space was formerly home to Actual Brewing, which shuttered in 2019.' actualbeer.com now serves a parked page (redirects to /lander): do not link it. second_signal CLOSED_PERMANENTLY agrees.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2430,
+  "name": "Seventh Son Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.seventhsonbrewing.com/",
+  "address_as_printed": "1101 N. 4TH ST. COLUMBUS, OH 43201",
+  "address_source_url": "https://www.seventhsonbrewing.com/info",
+  "operating_evidence": {
+   "excerpt": "Hours Monday-Wednesday 3:30pm -11 pm Thursday 3:30pm - Midnight Friday/Saturday 11am - 2am Sunday 11am - 11pm",
+   "url": "https://www.seventhsonbrewing.com/info",
+   "checked": "2026-11-22"
+  },
+  "notes": "Italian Village brewpub; site has an age gate. Sister breweries Antiques on High (714 S High St, row 12) and Getaway Brewing are separate locations. Keep this row over 287.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 287,
+  "name": "Seventh Son Brewing",
+  "status": "DUPLICATE",
+  "official_url": "https://www.seventhsonbrewing.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Duplicate of id 2430 (Seventh Son Brewing Co, 1101 N 4th St): same website, same phone (614) 421-2337, 0.1 mi apart. Keep 2430.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2370,
+  "name": "Knotty Pine Brewing",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.knottypinebrewing.net/",
+  "address_as_printed": "1765 West 3rd Ave. Columbus, OH 43212",
+  "address_source_url": "https://www.knottypinebrewing.net/contact",
+  "operating_evidence": null,
+  "notes": "Site is live but the only hours printed are KITCHEN HOURS ('Sunday 10am - 9pm Monday 4pm - 9pm Tuesday 3pm - 9pm Wednesday 3pm - 9pm Thursday 3pm - 9pm Friday 3pm - 10am Saturday 10am - 10am'), with an evident typo in the Friday and Saturday lines and a 2018 copyright; no dated 2026 item. A person should confirm taproom hours. Brewpub; site describes 'mindfully crafted Knotty Pine beers'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 282,
+  "name": "Saucy Brew Works Columbus",
+  "status": "OPEN",
+  "official_url": "https://www.saucybrewworks.com/columbus/",
+  "address_as_printed": "443 W Third Ave, Columbus, OH 43201",
+  "address_source_url": "https://www.saucybrewworks.com/columbus/",
+  "operating_evidence": {
+   "excerpt": "COLUMBUS BREWPUB & COFFEEHOUSE HOURS Sunday – Thursday: 7am – 10pm Friday – Saturday: 7am – 12am CONTACT 443 W Third Ave, Columbus, OH 43201",
+   "url": "https://www.saucybrewworks.com/columbus/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location (Cleveland, Ohio City, Put-in-Bay); fields are from the Columbus page (Harrison West, 443 W Third Ave, 614-696-5100). Brewpub and coffeehouse with apizza menu; site says 'house-brewed' beers; beer is branded 'Brewed in Cleveland' so on-site brewing at Columbus is not confirmed.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 244,
+  "name": "Ohio Brewing Company - Columbus",
+  "status": "OPEN",
+  "official_url": "https://ohiobrewingcolumbus.com/",
+  "address_as_printed": "421 East 2nd Ave, Columbus, OH 43201",
+  "address_source_url": "https://ohiobrewingcolumbus.com/contact-us/",
+  "operating_evidence": {
+   "excerpt": "Openning Hours Monday - Friday 4PM - CLOSE Saturday 10AM - CLOSE Sunday 10AM - CLOSE Our Address 421 East 2nd Ave, Columbus, OH 43201",
+   "url": "https://ohiobrewingcolumbus.com/contact-us/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location brand (Cuyahoga Falls); this is the Milo-Grogan Columbus brewpub only. Footer copyright 2022, so hours may be stale. Do not link ohiobrewingcompany.com: it redirects to a parked /lander page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2361,
+  "name": "Hofbrauhaus Columbus",
+  "status": "OPEN",
+  "official_url": "https://www.hofbrauhauscolumbus.com/",
+  "address_as_printed": "800 Goodale Blvd. Columbus, OH 43212",
+  "address_source_url": "https://www.hofbrauhauscolumbus.com/",
+  "operating_evidence": {
+   "excerpt": "Hofbräuhaus Columbus Grandview Yard 800 Goodale Blvd. Columbus, OH 43212 (614) 294-2437 Get Directions Hours Sun – Thu: 11am – 10pm",
+   "url": "https://www.hofbrauhauscolumbus.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Head Brewer Jason Ryan provides an inside look at the brewery",
+  "quote_source_url": "https://www.hofbrauhauscolumbus.com/",
+  "notes": "Multi-location Hofbrauhaus brand (Newport, Cleveland, etc.); this is the Grandview Yard location only. Restaurant-scale beer hall with on-site brewery (head brewer named on page). Rest of hours: Fri 11am-11pm, Sat 11am-12am.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 155,
+  "name": "Hofbräuhaus Columbus",
+  "status": "DUPLICATE",
+  "official_url": "https://www.hofbrauhauscolumbus.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Duplicate of id 2361: same website and phone (614) 294-2437, 0.1 mi apart. Keep 2361.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2317,
+  "name": "Barley's Brewing Company (Ale House No. 1)",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Refused: https://www.barleysbrewing.com returns 403 with a Cloudflare 'Just a moment' bot challenge; not worked around. A person should open barleysbrewing.com in a browser (467 N High St per directory). second_signal OPERATIONAL.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 19,
+  "name": "Barley’s Brewing Company",
+  "status": "DUPLICATE",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Duplicate of id 2317 (same name, 467 N High St, same phone 614-228-2537/2537, 0.0 mi apart). Site refused automated requests (403 bot challenge). Keep 2317.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2338,
+  "name": "Columbus Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://columbusbrewing.com/",
+  "address_as_printed": "2555 Harrison Dr. Columbus, OH 43204",
+  "address_source_url": "https://columbusbrewing.com/location/taproom/",
+  "operating_evidence": {
+   "excerpt": "Stop by 2555 Harrison Dr. Columbus, OH 43204 614-224-3626 Directions Taproom hours Monday - Wednesday: Closed Thursday - Friday: 2pm - 9pm Saturday: 12pm - 9pm Sunday: 12pm - 8pm",
+   "url": "https://columbusbrewing.com/location/taproom/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Two locations: this row is the Harrison Road Taproom (2555 Harrison Dr, site's spelling of the directory's 'Harrison Rd'); the Beer Hall at 200 Kelton Ave (614-274-5199) is a different location not in this row. Taproom was closed in a 2023 renovation and has reopened per its own page. CBC brews its beer at its production brewery.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 343,
+  "name": "Wolf’s Ridge Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.wolfsridgebrewing.com/",
+  "address_as_printed": "215 N. 4th Street Columbus, OH 43215",
+  "address_source_url": "https://www.wolfsridgebrewing.com/taproom-main",
+  "operating_evidence": {
+   "excerpt": "WOLF’S RIDGE BREWING 215 N. 4th Street Columbus, OH 43215 info@wolfsridgebrewing.com 614-429-3936 TAPROOM HOURS Monday | Closed* Tuesday-Friday | 3p - 10p Saturday | 12p - 10p Sunday | 12p - 9p",
+   "url": "https://www.wolfsridgebrewing.com/taproom-main",
+   "checked": "2026-11-22"
+  },
+  "notes": "Downtown brewery, taproom, dining room and Hickory Room at 215 N 4th St. Sister venues Understory (Neil Ave) and Wolf's Ridge at Worthington Inn are other locations. Site also advertises a holiday gift card sale (2026 season).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 316,
+  "name": "Thunderwing Brewing",
+  "status": "OPEN",
+  "official_url": "https://thunderwingbrewing.com/",
+  "address_as_printed": "2419 Scioto Harper Drive Columbus OH 43204",
+  "address_source_url": "https://thunderwingbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "TAPROOM HOURS Wednesday: 4PM – 9PM Thursday: 4PM – 9PM Friday: 4PM – 10PM Saturday: 12PM – 10PM Sunday: 3PM – 8PM",
+   "url": "https://thunderwingbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location; page footer reads 2026. The hours block also carries a stale 'Presidents Day Tuesday Feb 16th' line, so the page is not freshly edited; brews on site per its 'operating out of the west side of Columbus' text; food trucks.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 178,
+  "name": "Jackie O's On Fourth",
+  "status": "OPEN",
+  "official_url": "https://jackieos.com/location/columbus/",
+  "address_as_printed": "171 North Fourth Street Columbus, OH 43215",
+  "address_source_url": "https://jackieos.com/location/columbus/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday 3pm – 10pm Tuesday 3pm – 10pm Wednesday 3pm – 10pm Thursday 3pm – 11pm Friday 1pm – 12am Saturday 11am – 12am Sunday 11am – 10pm",
+   "url": "https://jackieos.com/location/columbus/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location brand (Athens Public House, Uptown Brewpub, Taproom & Brewery); this is the Columbus 'On Fourth' page only, 171 N Fourth St, 1 (614) 929-5265. The Athens Public House Restaurant shows 'TEMPORARILY CLOSED' on the same site; that is a different location. Ohio Magazine says this space is the former Elevator production facility.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2345,
+  "name": "Elevator Brewing Co - Production facility",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": "165 N 4th St (listing)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "Jackie O’s Brewery announced today that they have acquired the Elevator Brewing Company production facility in Downtown Columbus.",
+  "quote_source_url": "https://drinkupcolumbus.com/2020/10/07/jackie-o-columbus",
+  "notes": "REPLACED AT THIS ADDRESS (Drink Up Columbus, 2020-10-07): 'Jackie O’s will take over the 5,800 square foot facility at 165 North Fourth Street which houses a 15-barrel brewhouse.' It now operates as Jackie O's On Fourth (row 178, 171 N Fourth St). Production-only site, no taproom of its own.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2344,
+  "name": "Elevator Brewery and Draught Haus",
+  "status": "OPEN",
+  "official_url": "https://www.elevatorbrewing.com/",
+  "address_as_printed": "161 North High Street Columbus, Ohio 43215",
+  "address_source_url": "https://www.elevatorbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "161 North High Street Columbus, Ohio 43215 (614) 228 - 0500 Get Directions HOURS MONDAY | 4:30PM — 9:00PM TUESDAY — THURSDAY | 11AM — 9:00PM",
+   "url": "https://www.elevatorbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Downtown brewpub and restaurant at 161 N High St (different building from the 165 N 4th production site, row 2345, which is now Jackie O's). Site says 'beers brewed on-site'; offers $35 gift card promo.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 126,
+  "name": "Gemut Biergarten",
+  "status": "OPEN",
+  "official_url": "https://www.gemutbiergarten.com/",
+  "address_as_printed": "734 Oak Street Columbus, OH 43205",
+  "address_source_url": "https://www.gemutbiergarten.com/",
+  "operating_evidence": {
+   "excerpt": "Location Olde Towne East 734 Oak Street Columbus, OH 43205 614-725-1725 Hours of Operation Mon-Tues 4pm-10pm, Kitchen Close at 9pm Weds-Thur 4pm-11pm",
+   "url": "https://www.gemutbiergarten.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "German-style beer brewed fresh in Columbus, Ohio",
+  "quote_source_url": "https://www.gemutbiergarten.com/",
+  "notes": "Single location (Olde Towne East); full food menu and brunch.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2369,
+  "name": "Kindred Beer",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No first-hand source. kindredbeer.com is a HugeDomains for-sale page: do not link. 750 Cross Pointe Rd is described by Drink Up Columbus (2023-02-17, https://drinkupcolumbus.com/2023/02/17/heart-state-brewing-returns-home/) as the production facility of Heart State Brewing ('After pouring beer at the old Kindred Brewing taproom for the past 11 months, Heart State Brewing is returning on Sunday to their production facility at 750 Cross Point in Gahanna'), which suggests Kindred is not operating at this address, but that article does not itself say Kindred closed, so left UNCONFIRMED (likely CLOSED/replaced; a person should confirm). second_signal NOT_FOUND.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 188,
+  "name": "Land-Grant Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://landgrantbrewing.com/",
+  "address_as_printed": "424 W. TOWN STREET COLUMBUS, OHIO 43215",
+  "address_source_url": "https://landgrantbrewing.com/taproom/",
+  "operating_evidence": {
+   "excerpt": "THURSDAY HOURS 11:00a – 10:00p FOOD (Click/Tap for Info) Ray Ray’s Buck City Sammies Hai Poke WHAT’S HAPPENING Music Trivia / 7:00p Wintergarden FRIDAY HOURS 11:00a – Midnight",
+   "url": "https://landgrantbrewing.com/taproom/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Row is the original Franklinton taproom and beer garden at 424 W Town St (Land-Grant also runs The Extension and Gravity Park nearby and now owns the former Nocterra Powell space; none of those are this row). Same page says 'Wintergarden reservations are open for the 2026/2027 season!'. Use landgrantbrewing.com without www (the www host has a mismatched certificate and fails).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2339,
+  "name": "Commonhouse Ales",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": "535 Short St (listing)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "Commonhouse Ales announced this week that it has ceased operations.",
+  "quote_source_url": "https://breakfastwithnick.com/2021/01/08/friday-food-bites-january-8-2021/",
+  "notes": "CLOSED QUOTE (Breakfast with Nick, 2021-01-08). commonhouseales.com does not respond; do not link it.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 238,
+  "name": "Nocterra Brewing Co - Audubon",
+  "status": "CLOSED",
+  "official_url": "https://nocterrabrewing.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "The Audubon location closed on Saturday and the Powell location closed on Sunday.",
+  "quote_source_url": "https://www.wosu.org/2026-08-31/nocterra-brewing-co-unexpectedly-closes-both-locations",
+  "notes": "CLOSED QUOTE (WOSU, 2026-08-31, on both Nocterra taprooms). Nocterra's own site (nocterrabrewing.com) now says Land-Grant acquired the brand to reopen only the Powell taproom: 'The Audubon location isn't part of this transition'. The Powell taproom is outside this segment's rows. The site's official_url is the Nocterra brand site, not an Audubon page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 258,
+  "name": "Parsons North Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.parsonsnorth.com/",
+  "address_as_printed": "685 Parsons Avenue Columbus, OH 43206",
+  "address_source_url": "https://www.parsonsnorth.com/contact",
+  "operating_evidence": null,
+  "notes": "Live site, address and phone match, but its hours section says 'Please check Google, Yelp!, or Apple Maps for updated hours and special events', no hours printed, 2023 copyright, no dated 2026 item. Not eligible as OPEN under the brief. A person should confirm hours by phone (614) 824-4208. Also has The Den at 689 Parsons Ave next door.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 12,
+  "name": "Antiques on High",
+  "status": "OPEN",
+  "official_url": "https://www.antiquesonhigh.com/",
+  "address_as_printed": "714 S. High St.",
+  "address_source_url": "https://www.antiquesonhigh.com/homepage",
+  "operating_evidence": {
+   "excerpt": "Address: 714 S. High St. HOURS MON: 4pm-11pm TUE: 4pm-11pm WED: 4pm-11pm THR: 4pm-midnight FRI: 4pm-2am SAT: 12pm-2am SUN: 12pm-11pm",
+   "url": "https://www.antiquesonhigh.com/homepage",
+   "checked": "2026-11-22"
+  },
+  "notes": "Sister brewery of Seventh Son (row 2430), at 714 S High St in the Brewery District; sour/wild and hazy beers, wine and cocktails on draft, pizza box food. Site opens behind an age gate; hours are on /homepage.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 83,
+  "name": "Dafuque Beer Company",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No working site: dafuquebeer.com returns a Wix 'ConnectYourDomain Error' (404): do not link. Ohio Brew Week lists it at 745 Taylor Ave but that is not a first-hand operating source. second_signal CLOSED_TEMPORARILY; no closure statement found. Needs a human check.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2443,
+  "name": "The Brew Brothers / Scioto Downs Racino",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": "6000 S. High Street (listing)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Refused or unreachable: caesars.com/scioto-downs/restaurants/the-brew-brothers loops on an Incapsula bot-challenge redirect and sciotodowns.com did not connect; not worked around. A person should open the Caesars/Eldorado Scioto Downs Brew Brothers page in a browser. A casino brewpub inside Scioto Downs; whether it brews on site is unconfirmed by a first-hand page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 342,
+  "name": "Wild Ohio Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "wildohiobrewing.com serves a Shopify 'Store unavailable' page: do not link. No first-hand source for either operating or closure; second_signal CLOSED_PERMANENTLY. Search listings describe a gluten-free beer/hard tea producer at 2025 S High St, possibly production-only (not a taproom). Needs a human check.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 139,
+  "name": "Grove City Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://grovecitybrewery.com/",
+  "address_as_printed": "3946 Broadway Grove City, OH 43123",
+  "address_source_url": "https://grovecitybrewery.com/contact/",
+  "operating_evidence": {
+   "excerpt": "Hours of Operation Mon Closed Tue – Thu 11am – 10pm Fri – Sat 11am – 11pm Sun 11am – 8pm",
+   "url": "https://grovecitybrewery.com/hours-of-operation/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Brewpub with full kitchen, shared with Plum Run Winery under one roof. Hours page also lists Thanksgiving, Christmas holiday closures; its events list includes Nov 22 (2026) workshops.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 38,
+  "name": "Brew Brothers",
+  "status": "DUPLICATE",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Duplicate of id 2443 (The Brew Brothers at Scioto Downs): same phone 614-295-4700 (the casino's main line) and the same venue. brewbrothersbeer.com is a French-language 'Coming soon' WordPress page for an unrelated site: do not link it. Keep 2443 (UNCONFIRMED, site refused).",
+  "checked": "2026-11-22"
+ }
+]

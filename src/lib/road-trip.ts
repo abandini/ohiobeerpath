@@ -224,6 +224,14 @@ export interface RoadConfig {
   distanceTo?: 'line' | 'any-way';
   /** Where the candidates came from when it is not this site's directory, for the coverage sentences ("the Open Brewery DB and our checkers' own finds"). */
   startingList?: string;
+  /**
+   * A directory road built by the location-identity rule. A stop is measured from Census coordinates for its printed
+   * address when the geocoder matched that address in full (geocodes.json); else from the directory's coordinates,
+   * when the printed address is the directory's street line, town and state in full (sameLocation); else it stays
+   * off, unless a looser Census match falls within a quarter of a mile of the directory's point. The town shown is the
+   * one the printed address names. Roads built from checker files always place stops by the printed address.
+   */
+  addressMustMatch?: boolean;
   /** Show each leg as a closed <details> with a summary line, for a road too long to scroll (default false). */
   collapseLegs?: boolean;
   methodNotes?: string[];      // extra plain-text points for "How this list was made"
@@ -237,7 +245,9 @@ export interface RoadConfig {
 }
 
 /** A row from the brewery directory that lies near the road. Not shown anywhere until a checked row qualifies it. */
-export interface CandidateRow { id: number | string; name: string; city: string; state: string; latitude: number; longitude: number }
+export interface CandidateRow { id: number | string; name: string; city: string; state: string; latitude: number; longitude: number; street?: string | null }
+/** Coordinates for a printed address from the US Census geocoder, keyed by row id (written by scripts/geocode-road-addresses.mjs). */
+export interface AddressGeocode { id: number | string; address: string; lat: number | null; lon: number | null; matched?: string | null; source?: string; checked?: string }
 /** Proof the place was operating: a verbatim excerpt (printed visiting hours, a dated notice), its page, the day read. */
 export interface OperatingEvidence { excerpt?: string | null; url?: string | null; checked?: string | null }
 /** A checker's finding for one candidate. Only status OPEN with operating evidence becomes a stop. */
@@ -277,6 +287,7 @@ export interface BuiltLeg { id: string; lengthMiles: number; line: LatLon[]; can
 /** What the build step writes: stops with their place on the road, and a thinned line for drawing. */
 export interface BuiltRoad { slug: string; built: string; legs: BuiltLeg[]; stops: RoadStop[]; unplaced?: number }
 export interface BuildReport {
+  geocoded: (number | string)[]; // stops placed by Census coordinates for the printed address, not the directory's point
   left: { id: number | string; name: string; reason: string }[];
   undecided: { id: number | string; name: string; why: string }[];
   legs: { id: string; lengthMiles: number; bridges: number; bridgedMiles: number; points: number; joins: { from: LatLon; to: LatLon; miles: number }[] }[];
@@ -409,10 +420,10 @@ export function segmentAt(leg: RoadLegConfig, mile: number): RoadSegmentConfig {
   return leg.segments.find((g) => g.toMile === null || mile < g.toMile) || leg.segments[leg.segments.length - 1];
 }
 
-export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: CandidateRow[], verified: VerifiedRow[], built: string, today: string = currentDate()): { road: BuiltRoad; report: BuildReport } {
+export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: CandidateRow[], verified: VerifiedRow[], built: string, today: string = currentDate(), geocodes: AddressGeocode[] = []): { road: BuiltRoad; report: BuildReport } {
   const problems = roadConfigProblems(config);
   if (problems.length) throw new Error(`road config: ${problems.join('; ')}`);
-  const report: BuildReport = { left: [], undecided: [], legs: [] };
+  const report: BuildReport = { geocoded: [], left: [], undecided: [], legs: [] };
   const legs = config.legs.map((leg) => {
     const range = leg.lonRange;
     const legWays = range ? ways.filter((w) => w.length > 0 && w[0][1] >= range[0] && w[0][1] < range[1]) : ways;
@@ -437,10 +448,35 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
   // alignment is not penalised; its mile is still its nearest point on the leg's one chosen line.
   type Id = number | string;
   const validId = (id: unknown): id is Id => (Number.isInteger(id) && (id as number) > 0) || (typeof id === 'string' && ID.test(id));
+  // The location-identity rule for a directory road (addressMustMatch): a row that will be listed is measured from
+  // coordinates tied to the address it prints (see the order below), or it is left off. Rows that will not be listed
+  // keep the directory's point, so they still count in the coverage figures.
+  const strict = config.addressMustMatch === true && config.ingest !== 'checker-files';
+  const geo = new Map(geocodes.filter((g) => typeof g?.lat === 'number' && typeof g?.lon === 'number' && Number.isFinite(g.lat) && Number.isFinite(g.lon)).map((g) => [String(g.id), g]));
+  const rowFor = new Map<Id, VerifiedRow>(); for (const r of verified) if (r && !rowFor.has(r.id)) rowFor.set(r.id, r);
+  const towns = strict ? [...new Set(candidates.map((x) => String(x?.city ?? '').trim()).filter(Boolean))] : [];
+  const noPlace = new Map<Id, string>(), byGeocode = new Set<Id>();
   const placed = new Map<Id, { cand: CandidateRow; l: (typeof legs)[number]; along: number; detour: number; lineDetour: number; within: boolean; outer: boolean; unmeasured: string }>();
   for (const cand of candidates) {
     if (!validId(cand?.id) || placed.has(cand.id) || !Number.isFinite(cand.latitude) || !Number.isFinite(cand.longitude)) continue;
-    const p: LatLon = [cand.latitude, cand.longitude];
+    let p: LatLon = [cand.latitude, cand.longitude];
+    const row = rowFor.get(cand.id);
+    if (strict && row?.status === 'OPEN') {
+      // In order: (1) Census coordinates, when the address the geocoder matched is the printed address in full;
+      // (2) the directory's point, when the printed address is the directory's address in full; (3) Census coordinates
+      // from a looser match, but only within a quarter of a mile of the directory's point, where two independent
+      // sources agree; (4) otherwise the row cannot be placed. A geocode counts only for the address printed today.
+      const printed = String(row.address_as_printed ?? '').trim();
+      const g = geo.get(String(cand.id)), mine = !!g && String(g.address ?? '').trim() === printed;
+      const parts = String(g?.matched ?? '').split(',').map((x) => x.trim());
+      const exact = mine && parts.length >= 3 && sameLocation(printed, { address_1: parts[0], city: parts[1], state: parts[2] });
+      const same = sameLocation(printed, { address_1: cand.street, city: cand.city, state: cand.state });
+      const close = mine && milesBetween([g!.lat as number, g!.lon as number], p) <= 0.25;
+      if (exact || (!same && close)) { p = [g!.lat as number, g!.lon as number]; byGeocode.add(cand.id); }
+      else if (!same) noPlace.set(cand.id, !printed ? 'no printed address to check against the directory, and no geocoded coordinates'
+        : mine ? `the printed address is not the directory's in full, and the Census geocoder matched a different address (${g!.matched}) ${milesBetween([g!.lat as number, g!.lon as number], p).toFixed(2)} miles from the directory's point`
+          : 'the printed address is not a full match for the directory\'s (street line, town or state differ or cannot be compared), and there are no Census coordinates for it');
+    }
     const near = legs.map((l) => ({ l, on: projectOntoLine(p, l.st.line, l.cum) })).sort((a, b) => a.on.detour - b.on.detour)[0];
     const seg = segmentAt(near.l.leg, near.on.along);
     // 'any-way': the advertised distance is to mapped ways alone, never to a join the stitched line makes across a gap.
@@ -473,14 +509,15 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     }
     const { cand, l, along, detour } = at;
     const mile = round(along, 1), detourMiles = round(detour, 2);
+    if (noPlace.has(row.id)) { leave(`marked OPEN, but ${noPlace.get(row.id)}`); continue; }
     if (!at.within) { decided.add(row.id); leave(`${detourMiles} mi from the mapped line, over the limit`); continue; }
     const atStart = along < 0.02 && !at.unmeasured, atEnd = along > l.st.lengthMiles - 0.02 && !at.unmeasured;
     const ev = row.operating_evidence || {};
     const quoteUrl = citable(row.quote_source_url), quote = quoteUrl ? String(row.quote || '').trim() : '';
     const stop: RoadStop = {
       key: String(row.id), ...(config.stopsHavePages !== false && typeof row.id === 'number' ? { breweryId: row.id } : {}),
-      name: String(row.name || cand.name || '').trim(), town: String(cand.city || '').trim(), state: String(cand.state || '').trim(),
-      lat: cand.latitude, lon: cand.longitude, status: 'OPEN',
+      name: String(row.name || cand.name || '').trim(), town: (strict ? townInAddress(row.address_as_printed, towns, String(cand.city || '').trim(), String(cand.state || '')) : null) ?? String(cand.city || '').trim(), state: String(cand.state || '').trim(),
+      lat: byGeocode.has(row.id) ? (geo.get(String(row.id))!.lat as number) : cand.latitude, lon: byGeocode.has(row.id) ? (geo.get(String(row.id))!.lon as number) : cand.longitude, status: 'OPEN',
       website: citable(row.official_url),
       address: citable(row.address_source_url) ? String(row.address_as_printed || '').trim() : '',
       addressSourceUrl: String(row.address_as_printed || '').trim() ? citable(row.address_source_url) : '',
@@ -495,6 +532,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     const wrong = stopProblems(stop, config, today);
     if (wrong.length) { leave(`marked OPEN with evidence, but ${wrong.join('; ')}`); continue; }
     decided.add(row.id);
+    if (byGeocode.has(row.id)) report.geocoded.push(row.id);
     stops.push(stop);
   }
   // Coverage: of the directory candidates within the limit, how many have a completed decision (listed, or settled as
@@ -523,7 +561,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
 // Ingest for roads outside the directory: the regional checkers' files -> the same candidate and verified rows the
 // build step takes. The checkers' files are never edited; this reads their slightly different shapes.
 
-const STATE_ABBR: Record<string, string> = { illinois: 'IL', missouri: 'MO', kansas: 'KS', oklahoma: 'OK', texas: 'TX', 'new mexico': 'NM', arizona: 'AZ', california: 'CA' };
+const STATE_ABBR: Record<string, string> = { 'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR', 'california': 'CA', 'colorado': 'CO', 'connecticut': 'CT', 'delaware': 'DE', 'florida': 'FL', 'georgia': 'GA', 'hawaii': 'HI', 'idaho': 'ID', 'illinois': 'IL', 'indiana': 'IN', 'iowa': 'IA', 'kansas': 'KS', 'kentucky': 'KY', 'louisiana': 'LA', 'maine': 'ME', 'maryland': 'MD', 'massachusetts': 'MA', 'michigan': 'MI', 'minnesota': 'MN', 'mississippi': 'MS', 'missouri': 'MO', 'montana': 'MT', 'nebraska': 'NE', 'nevada': 'NV', 'new hampshire': 'NH', 'new jersey': 'NJ', 'new mexico': 'NM', 'new york': 'NY', 'north carolina': 'NC', 'north dakota': 'ND', 'ohio': 'OH', 'oklahoma': 'OK', 'oregon': 'OR', 'pennsylvania': 'PA', 'rhode island': 'RI', 'south carolina': 'SC', 'south dakota': 'SD', 'tennessee': 'TN', 'texas': 'TX', 'utah': 'UT', 'vermont': 'VT', 'virginia': 'VA', 'washington': 'WA', 'west virginia': 'WV', 'wisconsin': 'WI', 'wyoming': 'WY' };
 export const stateAbbr = (v: unknown): string => { const t = String(v ?? '').trim(); return /^[A-Za-z]{2}$/.test(t) ? t.toUpperCase() : STATE_ABBR[t.toLowerCase()] ?? t; };
 /** "Bummin' Beaver Brewery", "Auburn Twp." -> "bummin-beaver-brewery-auburn-twp". Plain ASCII, safe as an id. */
 export const stopKey = (name: unknown, city: unknown): string =>
@@ -620,6 +658,28 @@ export interface RowDecision {
  * from the checkers' files. A row whose evidence is corrected to null has no operating evidence and is not listed.
  */
 export interface RowCorrection { key: string; field: 'evidence' | 'address' | 'quote'; value: string | null; url?: string; reason: string }
+/**
+ * A directory road's checked rows with the editor's rulings (decisions.json, matched by directory id) and the
+ * corrections (corrections.json, keyed by the id as text) applied. The checkers' files themselves are never edited.
+ * `unmatched` lists rulings and corrections that name no row.
+ */
+export function applyRowEdits(rows: VerifiedRow[], decisions: RowDecision[] = [], corrections: RowCorrection[] = []): { rows: VerifiedRow[]; applied: { id: number | string; name: string; status: string; reason: string }[]; unmatched: string[] } {
+  const applied: { id: number | string; name: string; status: string; reason: string }[] = [], hit = new Set<string>();
+  const out = rows.map((r) => {
+    let row = r;
+    const d = decisions.find((x) => String(x.match) === String(r.id));
+    if (d) { hit.add(`d:${d.match}`); row = { ...row, status: d.status ?? row.status, notes: `${d.reason} | ${row.notes ?? ''}`, ...(d.evidence ? { operating_evidence: { ...d.evidence } } : {}) }; applied.push({ id: r.id, name: String(r.name ?? ''), status: String(row.status ?? ''), reason: d.reason }); }
+    for (const c of corrections.filter((x) => x.key === String(r.id))) {
+      hit.add(`c:${c.key}:${c.field}`);
+      if (c.field === 'evidence') row = { ...row, operating_evidence: c.value && row.operating_evidence ? { ...row.operating_evidence, excerpt: c.value, ...(c.url ? { url: c.url } : {}) } : null };
+      else if (c.field === 'address') row = { ...row, address_as_printed: c.value, address_source_url: c.value ? row.address_source_url : null };
+      else row = { ...row, quote: c.value, quote_source_url: c.value ? row.quote_source_url : null };
+    }
+    return row;
+  });
+  return { rows: out, applied, unmatched: [...decisions.filter((d) => !hit.has(`d:${d.match}`)).map((d) => String(d.match)), ...corrections.filter((c) => !hit.has(`c:${c.key}:${c.field}`)).map((c) => `correction:${c.key}`)] };
+}
+
 export interface IngestResult {
   candidates: CandidateRow[]; verified: VerifiedRow[];
   unplaced: { key: string; name: string; city: string; state: string; why: string }[];
@@ -627,12 +687,12 @@ export interface IngestResult {
   unmatchedDecisions: string[];
   retowned: { key: string; name: string; from: string; to: string }[]; // town taken from the printed address, not the row
 }
-const STREET_WORDS: Record<string, string> = { street: 'st', avenue: 'ave', av: 'ave', road: 'rd', boulevard: 'blvd', drive: 'dr', lane: 'ln', highway: 'hwy', parkway: 'pkwy', place: 'pl', court: 'ct', route: 'rte', rt: 'rte', terrace: 'ter', circle: 'cir', square: 'sq',
+const STREET_WORDS: Record<string, string> = { street: 'st', avenue: 'ave', av: 'ave', road: 'rd', boulevard: 'blvd', drive: 'dr', lane: 'ln', highway: 'hwy', parkway: 'pkwy', place: 'pl', court: 'ct', route: 'rte', rt: 'rte', terrace: 'ter', circle: 'cir', square: 'sq', mt: 'mount', ft: 'fort', saint: 'st',
   north: 'n', south: 's', east: 'e', west: 'w', northeast: 'ne', northwest: 'nw', southeast: 'se', southwest: 'sw', first: '1st', second: '2nd', third: '3rd', fourth: '4th', fifth: '5th', sixth: '6th', seventh: '7th', eighth: '8th', ninth: '9th' };
 const STREET_SUFFIX = new Set(['st', 'ave', 'rd', 'blvd', 'dr', 'ln', 'hwy', 'pkwy', 'pl', 'ct', 'way', 'rte', 'ter', 'cir', 'sq']);
 const DIRECTIONS = new Set(['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw']);
 const TOWN_ALIASES: Record<string, string> = { okc: 'oklahoma city', la: 'los angeles', abq: 'albuquerque', stl: 'st louis' };
-const STATE_NAMES = 'Illinois|Missouri|Kansas|Oklahoma|Texas|New Mexico|Arizona|California';
+const STATE_NAMES = 'North Carolina|South Carolina|Massachusetts|New Hampshire|West Virginia|North Dakota|Pennsylvania|Rhode Island|South Dakota|Connecticut|Mississippi|California|New Jersey|New Mexico|Washington|Louisiana|Minnesota|Tennessee|Wisconsin|Arkansas|Colorado|Delaware|Illinois|Kentucky|Maryland|Michigan|Missouri|Nebraska|New York|Oklahoma|Virginia|Alabama|Arizona|Florida|Georgia|Indiana|Montana|Vermont|Wyoming|Alaska|Hawaii|Kansas|Nevada|Oregon|Idaho|Maine|Texas|Iowa|Ohio|Utah';
 const plainTown = (t: string) => t.toLowerCase().replace(/\bsaint\b/g, 'st').replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
 const US_STATES = new Set('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY DC'.split(' '));
 const UNIT = /#\s*[\w&-]+|\b(?:suite|ste|unit|apt|bldg|building)\b\.?\s*#?\s*[\w&-]+/gi;
@@ -670,7 +730,7 @@ function endsWithTown(head: string, town: string): boolean {
  * units are dropped, the usual abbreviations are made one, and punctuation is gone ("S.W." is "sw").
  */
 function streetWords(street: string): string[] {
-  const words = dropUnits(street).toLowerCase().replace(/\./g, '').replace(/[,;·]/g, ' ').split(/\s+/).filter(Boolean).map((w) => STREET_WORDS[w] ?? w);
+  const words = dropUnits(street).toLowerCase().replace(/\./g, '').replace(/[,;·]/g, ' ').replace(/([a-z])-(?=[a-z])/g, '$1 ').split(/\s+/).filter(Boolean).map((w) => STREET_WORDS[w] ?? w);
   const at = words.findIndex((w) => /^\d+[a-z]?$/.test(w));
   return at < 0 ? [] : words.slice(at);
 }

@@ -1,0 +1,897 @@
+[
+ {
+  "id": 191,
+  "name": "Lebanon Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.lebanonbrewingco.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Monday : Closed Tues-Wed: 3:00pm - 9 pm Thursday: 11:00 am - 9 pm Friday - Saturday: 11:00 am - 10 pm Sunday: 11:00 am - 9 pm",
+   "url": "https://www.lebanonbrewingco.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Built in our decommissioned \"Station 41\" Fire Station, our taproom offers a full line of Beer, Hard Seltzer, small batch soda and hand-crafted cocktails, all made right here.",
+  "quote_source_url": "https://www.lebanonbrewingco.com/our-taproom",
+  "notes": "Street address not printed on the pages read (site says 'located right downtown in the heart of Lebanon', in a decommissioned fire station). Evidence is printed hours only; site footer says (c)2021 and no 2026 item found. Beer and seltzer made on site per site copy. URL was not in the listing; found by trying lebanonbrewingco.com, which is the Lebanon Brewing Company's own Wix site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 22,
+  "name": "BC's Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.bcsbrewing.com/",
+  "address_as_printed": "4064 US-42, Mason, OH 45036",
+  "address_source_url": "https://www.bcsbrewing.com/visit",
+  "operating_evidence": {
+   "excerpt": "3-10 M-Th, 11a-11p F-Sat, 11a-8p Sun",
+   "url": "https://www.bcsbrewing.com/visit",
+   "checked": "2026-11-22"
+  },
+  "notes": "Site calls this 'The Flagship Brewery' with taproom and patio; brews on site per site copy. This row is the Mason flagship.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 132,
+  "name": "Grainworks Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://grainworks.beer/",
+  "address_as_printed": "7790 Service Center Drive, West Chester, OH 45069",
+  "address_source_url": "https://grainworks.beer/about/contact/",
+  "operating_evidence": {
+   "excerpt": "Hours M: Closed | T/W: 4-10pm Th: 3-11pm | F: 12-11pm Sat: 11am-11pm | Sun: 12-8pm Kitchen closes 1 hour before bar, except on Sunday.",
+   "url": "https://grainworks.beer/",
+   "checked": "2026-11-22"
+  },
+  "quote": "OUR TAPROOM IS LOCATED IN WEST CHESTER, OHIO, RIGHT OFF I-75 EXIT 25 (LIBERTY WAY).",
+  "quote_source_url": "https://grainworks.beer/about/contact/",
+  "notes": "Footer (c) 2026 and a dated events calendar (11/27/2026). Taproom and kitchen. Listing website_url was blank; found grainworks.beer.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 76,
+  "name": "The Common Beer Company",
+  "status": "OPEN",
+  "official_url": "https://commonbeercompany.com/",
+  "address_as_printed": "126 E Main St Mason, OH 45040",
+  "address_source_url": "https://commonbeercompany.com/find-us/",
+  "operating_evidence": {
+   "excerpt": "Hours: Monday | closed Tuesday | 3-10 Wednesday | 3-10 Thursday | 2-11 Friday | 2-12 Saturday | 12-12 Sunday | 12-8",
+   "url": "https://commonbeercompany.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Evidence is printed hours only (home page template stamp is 2022; no dated 2026 item found). Serves food per site. Printed phone 513-204-0023 differs from listing phone.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 88,
+  "name": "Depot Brewing Company, LLC",
+  "status": "OPEN",
+  "official_url": "https://www.depotbrewing.com/",
+  "address_as_printed": "240 Main Street, Morrow, OH 45152",
+  "address_source_url": "https://www.depotbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Mon – Thurs | 3pm – 10pm Fri – Sat | 11am – 11pm Sun | 11am - 9pm",
+   "url": "https://www.depotbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Craft Brewery & Taproom in Historic Morrow, OH",
+  "quote_source_url": "https://www.depotbrewing.com/",
+  "notes": "Food from partner The Barking Burger Company. Home page also prints 'Typical Hours: Mon-Thurs: 5-9pm Fri-Sat: 12-10pm Sun: 12-8pm' next to the food menu, so the two hour blocks differ.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 338,
+  "name": "Warped Wing Brewpub & Smokery",
+  "status": "UNCONFIRMED",
+  "official_url": "https://warpedwing.com/mason",
+  "address_as_printed": "5650 TYLERSVILLE ROAD – MASON, OHIO 45040",
+  "address_source_url": "https://warpedwing.com/mason",
+  "operating_evidence": null,
+  "notes": "script-rendered: the Mason page (https://warpedwing.com/mason) prints the address and 'Mason Taproom' phone option but no visiting hours in its static text; the page's 'Visit us' / 'Launch Navigation' blocks are widgets. A person should open https://warpedwing.com/mason. Mason brewpub and smokery only; Dayton, Springboro and Huber Heights are other locations. The happy-hour page prints times only for happy hour.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 66,
+  "name": "Cartridge Brewing",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.cartridgebrewing.com/",
+  "address_as_printed": "1411 Grandin Rd, Maineville, OH 45039",
+  "address_source_url": "https://www.cartridgebrewing.com/contact/",
+  "operating_evidence": null,
+  "notes": "Own site is live with a taproom, menu, tours and an events page but no visiting hours or dated 2026 item appeared in the text of the home, contact, brewery or news pages read (hours may be in an image or widget). A person should open https://www.cartridgebrewing.com/ and check. Listing website_url was blank; site found by trying cartridgebrewing.com.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 293,
+  "name": "Sonder Brewing",
+  "status": "OPEN",
+  "official_url": "https://sonderbrewing.com/about-sonder-mason",
+  "address_as_printed": "8584 Duke Boulevard in Mason, Ohio",
+  "address_source_url": "https://sonderbrewing.com/welcome",
+  "operating_evidence": {
+   "excerpt": "HOURS Monday - Thursday - 11 am to 10 pm Friday & Saturday - 11 am to 11 pm Sunday - 11 am to 9 pm BRUNCH: Saturday & Sunday - 11 am to 2 pm",
+   "url": "https://sonderbrewing.com/about-sonder-mason",
+   "checked": "2026-11-22"
+  },
+  "quote": "Sonder Brewing is a craft brewery in Mason, Ohio, dedicated to brewing high-quality beer rooted in story, community, and connection.",
+  "quote_source_url": "https://sonderbrewing.com/welcome",
+  "notes": "Mason Taproom only (Sonder also has a West Chester Taphaus, not this row). Listed website sonderbrewery.com does not resolve; the brewery's own site is sonderbrewing.com. 30-barrel brewhouse on site per site copy.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 115,
+  "name": "Fifty West Deerfield",
+  "status": "OPEN",
+  "official_url": "https://www.fiftywestbrew.com/locations",
+  "address_as_printed": "5224 District Park Drive, Mason, OH 45040",
+  "address_source_url": "https://www.fiftywestbrew.com/locations",
+  "operating_evidence": {
+   "excerpt": "Deerfield 5224 District Park Drive, Mason, OH 45040 Mon 11am–11pm Tue 11am–11pm Wed 11am–11pm Thu 11am–11pm Fri 11am–11pm Sat 11am–11pm Sun 11am–9pm",
+   "url": "https://www.fiftywestbrew.com/locations",
+   "checked": "2026-11-22"
+  },
+  "notes": "Deerfield location only. Locations page banner says 'Deerfield opens Nov 27' next to an ice-skating promo; that appears to refer to the skating, but a person should confirm. Taproom with kitchen; brewing on site not stated in text read.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 203,
+  "name": "March First Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.marchfirstbrewing.com/",
+  "address_as_printed": "7885 E KEMPER RD CINCINNATI, OH 45249",
+  "address_source_url": "https://www.marchfirstbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "HOURS MON-THURS: 11:30AM-11PM FRI-SAT: 11:30AM-12AM SUN: 11:30AM-10PM",
+   "url": "https://www.marchfirstbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our taproom brings it all together with fresh beer, seltzer, and craft spirits on draft or to-go, plus a world-class pizza kitchen.",
+  "quote_source_url": "https://www.marchfirstbrewing.com/",
+  "notes": "Brewpub with pizza kitchen; also makes Astra hard seltzer and Cincinnati Distilling spirits. Wix site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 312,
+  "name": "Third Eye Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://thirdeyebrewingco.com/",
+  "address_as_printed": "11276 Chester Road Sharonville, OH 45246",
+  "address_source_url": "https://thirdeyebrewingco.com/",
+  "operating_evidence": {
+   "excerpt": "SHARONVILLE TAPROOM HOURS Monday: Closed Tuesday: 3pm-10pm Wednesday: 3pm-10pm Thursday: 12pm-10pm Friday: 12pm-11pm Saturday: 12pm-11pm Sunday: 11am-8pm",
+   "url": "https://thirdeyebrewingco.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "This row is the Sharonville taproom (a second Hamilton taproom at 850 S. Erie Blvd is not this row). Site footer carries (c)2026 and 2026 event banners. Kitchen on site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 230,
+  "name": "Narrow Path Brewing Company",
+  "status": "OPEN",
+  "official_url": "http://www.narrowpathbrewing.com/",
+  "address_as_printed": "106 Karl Brown Way, Loveland, OH 45140",
+  "address_source_url": "http://www.narrowpathbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Monday - Noon-8pm Tuesday - Noon-9pm Wednesday - Noon-9pm Thursday - Noon-9pm Friday - Noon-11pm Saturday - Noon-11pm Sunday - Noon-8pm",
+   "url": "http://www.narrowpathbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Site is http (no https redirect observed); official_url recorded as served. Brews on site per site copy.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 123,
+  "name": "Fretboard Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.fretboardbrewing.com/blue-ash",
+  "address_as_printed": "5800 CREEK RD - BLUE ASH, OH 45242",
+  "address_source_url": "https://www.fretboardbrewing.com/blue-ash",
+  "operating_evidence": {
+   "excerpt": "HOURS OF OPERATION MON - THURS: 3PM-10PM FRI - SAT: 12PM-11PM SUN: 12PM-8PM",
+   "url": "https://www.fretboardbrewing.com/blue-ash",
+   "checked": "2026-11-22"
+  },
+  "notes": "This row is the Blue Ash location (the site prints 5800 Creek Rd as Blue Ash; home page lists it as Cincinnati, OH 45242). Has Taproom + BBQ kitchen. Other locations (Norwood, Harrison) are separate rows/not this row. Listing lat/long not cross-checked beyond address.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 95,
+  "name": "DVD Brew",
+  "status": "OPEN",
+  "official_url": "https://dvdbrew.com/",
+  "address_as_printed": "1555 Loveland Madeira Rd Loveland, OH",
+  "address_source_url": "https://dvdbrew.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Mon-Thu 4:00 PM - 10:00 PM Fri-Sun 12:00 PM - 10:00 PM",
+   "url": "https://dvdbrew.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Printed address has no ZIP. Site offers food, drinks and online ordering; it does not state on the pages read whether beer is brewed on site, so brewpub status unverified. Printed phone (513)-677-2739.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 224,
+  "name": "MPH Brewing",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "refused: https://mphbrew.com/ (the brewery's own site, named in search results) returned HTTP 403 to the BreweryTripBot user agent; no workaround attempted. A person should read mphbrew.com in a browser. Listing website_url was blank; address from other sources is 7880 Remington Rd, Montgomery (not verified first-hand).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 33,
+  "name": "Bocce Brewing Co.",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No working official site found: the two domains it appeared under both redirect to a /lander parked page (lapsed domains). Do not link either. No first-hand source for hours; a person should check the cafe it sits in (515 Wyoming Ave, Wyoming, OH) directly.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2460,
+  "name": "Wiedemann Brewing Co, LLC",
+  "status": "OPEN",
+  "official_url": "https://wiedemannsfinebeer.com/",
+  "address_as_printed": "4811 Vine Street, Cincinnati, OH 45217",
+  "address_source_url": "https://wiedemannsfinebeer.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Tue, Wed, Thur 3:30 PM - 10:00 PM Fri 11:30 AM - 11:00 PM Sat 12:00 PM - 11:00 PM Sun 12:00 PM - 8:00 PM",
+   "url": "https://wiedemannsfinebeer.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our brewery complex features a cozy tavern-like taproom, full-service kitchen, spacious sundeck and tree-lined beer garden.",
+  "quote_source_url": "https://wiedemannsfinebeer.com/",
+  "notes": "Brewery complex with taproom, full-service kitchen and beer garden per site. Same address as row 341; this row kept as the record, 341 marked DUPLICATE. Listing lat/long for this row is off from the address (St. Bernard).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 150,
+  "name": "HighGrain Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.highgrainbrewing.com/locations/silverton",
+  "address_as_printed": "6860 Plainfield Road, Cincinnati, OH 45236",
+  "address_source_url": "https://www.highgrainbrewing.com/locations/silverton",
+  "operating_evidence": {
+   "excerpt": "Hours Mon 3–9 PM / Tue 3–10 PM / Wed 11 AM–10 PM / Thu 11 AM–10 PM / Fri 11 AM–11 PM / Sat 10 AM–11 PM / Sun 10 AM–9 PM",
+   "url": "https://www.highgrainbrewing.com/locations/silverton",
+   "checked": "2026-11-22"
+  },
+  "notes": "This row is the Silverton Taproom + Kitchen (6860 Plainfield Rd). HighGrain's other location, the Brentwood Brewpub (9176 Winton Rd), is not this row. Home page shows dated 2026 events (Brentwood).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2383,
+  "name": "MadTree Brewing 2.0",
+  "status": "UNCONFIRMED",
+  "official_url": "https://madtree.com/",
+  "address_as_printed": "5164 Kennedy Ave, Cincinnati (listing address)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "The official site (locations, contact-us, our-story pages) does not print 5164 Kennedy Ave and lists only Oakley Taproom, Alcove-OTR, Parks & Rec and Alcove-Summit Park. No visiting hours for this address found. A person should confirm whether this address still operates.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 234,
+  "name": "Nine Giant Brewing",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.ninegiant.com/",
+  "address_as_printed": "6095 Montgomery Rd, Cincinnati, OH 45213",
+  "address_source_url": "https://www.ninegiant.com/",
+  "operating_evidence": null,
+  "notes": "Brewpub (6095 Montgomery Rd) is described as 'Brewery + Kitchen'; a separate Fermentorium is at 6111 Ridge Ave. The site prints no hours as text: the page carries only a hours graphic image (NG Website Hours Graphic 070523.png), so no text evidence. Person should open https://www.ninegiant.com/ to read the hours image and check its date.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 196,
+  "name": "Little Miami Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://littlemiamibrewing.com/",
+  "address_as_printed": "208 Mill Street, Milford, OH 45150",
+  "address_source_url": "https://littlemiamibrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours (Kitchen closes 1 hour earlier) Monday 11:00am – 09:30pm TUESDAY 11:00am – 09:30pm WEDNESDAY 11:00am – 09:30pm THURSDAY 11:00am – 10:00pm",
+   "url": "https://littlemiamibrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Brewpub with kitchen; home page also carries dated 2026 items (e.g. November 14, 2026). Whether a post date or event date was not read.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 341,
+  "name": "Wiedemann Brewery & Bohemian Beer Garden",
+  "status": "DUPLICATE",
+  "official_url": "https://wiedemannsfinebeer.com/",
+  "address_as_printed": "4811 Vine Street, Cincinnati, OH 45217",
+  "address_source_url": "https://wiedemannsfinebeer.com/",
+  "operating_evidence": null,
+  "notes": "Same brewery and address as row 2460 (Wiedemann's Brewery & Taproom, 4811 Vine St, St. Bernard area). Evidence recorded on 2460.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 327,
+  "name": "Urban Artifact",
+  "status": "UNCONFIRMED",
+  "official_url": "https://artifactbeer.com/",
+  "address_as_printed": "1660 Blue Rock Street, Cincinnati (Northside)",
+  "address_source_url": "https://artifactbeer.com/pages/taproom-menu",
+  "operating_evidence": null,
+  "notes": "script-rendered: the taproom hours are an Elfsight widget on https://artifactbeer.com/pages/taproom-menu. Static text only says 'The taproom is open Tuesday through Sunday' (https://artifactbeer.com/pages/contact-us), no times. Site prints '1660 Blue Rock Street, in Northside', no kitchen.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 121,
+  "name": "Fretboard Brewing at Factory 52",
+  "status": "OPEN",
+  "official_url": "https://www.fretboardbrewing.com/norwood",
+  "address_as_printed": "2750 PARK AVE SUITE O, NORWOOD, OH 45212",
+  "address_source_url": "https://www.fretboardbrewing.com/norwood",
+  "operating_evidence": {
+   "excerpt": "HOURS OF OPERATION MON - THURS: 12PM - 10PM FRI & SAT: 12PM - 12AM SUN: 11:30AM - 9PM",
+   "url": "https://www.fretboardbrewing.com/norwood",
+   "checked": "2026-11-22"
+  },
+  "notes": "Norwood / Factory 52 location only; evidence is from the Norwood page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 201,
+  "name": "MadTree Brewing Company",
+  "status": "DUPLICATE",
+  "official_url": "https://madtree.com/",
+  "address_as_printed": "3301 Madison Road Cincinnati, OH 45209",
+  "address_source_url": "https://madtree.com/about/contact-us/",
+  "operating_evidence": null,
+  "notes": "Coordinates (39.1566,-84.4241) match the Oakley Taproom at 3301 Madison Rd, the same place as row 2382. Evidence on 2382.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2382,
+  "name": "MadTree Brewing",
+  "status": "OPEN",
+  "official_url": "https://madtree.com/locations/oakley-taproom/",
+  "address_as_printed": "3301 Madison Road Cincinnati, OH 45209",
+  "address_source_url": "https://madtree.com/about/contact-us/",
+  "operating_evidence": {
+   "excerpt": "Hours of Operation: Monday – Thursday 11AM – 11PM Friday 11AM – 12AM Saturday 10AM – 12AM Sunday 10AM – 11PM",
+   "url": "https://madtree.com/locations/oakley-taproom/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Cincinnati's favorite patio and taproom.",
+  "quote_source_url": "https://madtree.com/locations/oakley-taproom/",
+  "notes": "Oakley Taproom, 'Brewery + Restaurant' (renovated airplane hangar opened 2017), full restaurant. Site lists other locations (Alcove-OTR, Parks & Rec Blue Ash, Alcove-Summit Park) that are not this row. Row 201 is the same address.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 113,
+  "name": "Fifty West Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.fiftywestbrew.com/locations",
+  "address_as_printed": "7605 Wooster Pike, Cincinnati, OH 45227",
+  "address_source_url": "https://www.fiftywestbrew.com/locations",
+  "operating_evidence": {
+   "excerpt": "Wooster Pike 7605 Wooster Pike, Cincinnati, OH 45227 Mon 11am–11pm Tue 11am–11pm Wed 11am–11pm Thu 11am–11pm Fri 11am–11pm Sat 11am–11pm Sun 11am–9pm",
+   "url": "https://www.fiftywestbrew.com/locations",
+   "checked": "2026-11-22"
+  },
+  "notes": "Wooster Pike location (Fifty West's original brewery/brewpub site, with kitchen; the locations page also carries an ice-skating promo). Chillicothe and Deerfield are other locations. Brewing on site not stated in the text read.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 184,
+  "name": "Karrikin Spirits Company",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://karrikinspirits.com/",
+  "address_as_printed": "3717 Jonlen Drive Fairfax, OH 45227",
+  "address_source_url": "https://karrikinspirits.com/",
+  "operating_evidence": null,
+  "quote": "We are currently only hosting events.",
+  "quote_source_url": "https://karrikinspirits.com/",
+  "notes": "Site calls itself a 'Cincinnati Distillery' and events venue; Hours section reads 'We are currently only hosting events. Please reach out by email at info@karrikinspirits.com or call us during the day at 513-561-5000 .' No public taproom hours. The page has (c) 2026.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 68,
+  "name": "Cincinnati Beverage Company",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No working official site: its listed domain redirects to a /lander parked page (do not link). Web search (not first-hand) describes CinBev's brewery as production-only with no taproom; not enough to mark NOT A BREWERY TAPROOM. Listing address blank.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2395,
+  "name": "Northern Row Brewery & Distillery",
+  "status": "OPEN",
+  "official_url": "https://www.northernrow.com/",
+  "address_as_printed": "111 W McMicken Ave, Cincinnati, OH 45202",
+  "address_source_url": "https://www.northernrow.com/",
+  "operating_evidence": {
+   "excerpt": "TAPROOM HOURS: Mon/Tues: Closed Wed: 4pm - 9pm Thurs: 4pm - 10pm Fri: 12pm - 10pm Sat: 12pm - 11pm Sun: 12pm - 6pm",
+   "url": "https://www.northernrow.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Brewery and distillery with kitchen (kitchen hours printed). Row 241 is the same venue.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 241,
+  "name": "Northern Row",
+  "status": "DUPLICATE",
+  "official_url": "https://www.northernrow.com/",
+  "address_as_printed": "111 W McMicken Ave, Cincinnati, OH 45202",
+  "address_source_url": "https://www.northernrow.com/",
+  "operating_evidence": null,
+  "notes": "Same venue as row 2395 (phone 513-620-8302 is the taproom phone printed at 111 W McMicken Ave; coordinates match). Evidence on 2395.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 269,
+  "name": "Rhinegeist",
+  "status": "OPEN",
+  "official_url": "https://rhinegeist.com/taproom/",
+  "address_as_printed": "1910 Elm Street Cincinnati, OH 45202",
+  "address_source_url": "https://rhinegeist.com/taproom/",
+  "operating_evidence": {
+   "excerpt": "Monday – Thursday 3:00 PM – 10:00 PM Friday 12:00 PM – 12:00 AM Saturday 12:00 PM – 12:00 AM Sunday 12:00 PM – 9:00 PM",
+   "url": "https://rhinegeist.com/taproom/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Rhinegeist sits inside a 25,000 square foot pre-Prohibition bottling plant in Cincinnati’s historic Over-the-Rhine neighborhood.",
+  "quote_source_url": "https://rhinegeist.com/taproom/",
+  "notes": "Over-the-Rhine brewery and taproom in a pre-Prohibition bottling plant; dated 2026 event listings on the site (Nov 23, 2026 etc.).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2334,
+  "name": "Christian Moerlein Brewing Co",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://www.christianmoerlein.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "Christian Moerlein Brewing has been a fixture of the Cincinnati landscape (and the underground) for over 150 years.",
+  "quote_source_url": "https://www.christianmoerlein.com/",
+  "notes": "Brand site: beer finder, merch, FAQ; prints 'Cincinnati, Ohio' and a marketing phone, no street address, no taproom or visiting hours. Beers are distributed (FAQ: 'Check out the Beer Finder'). Site does not say where it brews; second signal was NOT_FOUND. Moerlein Lager House (row 221) is separate.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2321,
+  "name": "Boston Beer Co - DBA Samuel Adams Brewing Co",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://www.samueladams.com/taprooms/sam-adams-cincinnati",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "The Samuel Adams Cincinnati Brewery has become our main production brewery for Samuel Adams beers.",
+  "quote_source_url": "https://www.samueladams.com/taprooms/sam-adams-cincinnati",
+  "notes": "1625 Central Pkwy is the production brewery: Sam Adams page says 'The Samuel Adams Cincinnati Brewery has become our main production brewery' and offers production brewery tours. The public Cincinnati Taproom is at a different address, 1727 Logan St., Cincinnati, OH 45202 (page prints 'Tuesday - Thursday: 11:00am - 9:00pm Friday - Saturday: 11:00am - 10:00pm Sunday: 11:00am - 6:00pm', checked 2026-11-22), which is not a row in candidates.json; consider adding it. Street address of the production brewery is not printed on that page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 9,
+  "name": "Alcove by MadTree",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://madtree.com/locations/alcove-bar-restaurant/",
+  "address_as_printed": "1410 Vine Street Cincinnati, OH 45202",
+  "address_source_url": "https://madtree.com/locations/alcove-bar-restaurant/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday – Thursday: 11am – 10pm Friday: 11am – 11pm Saturday: 10am – 11pm Sunday: 10am – 9pm",
+   "url": "https://madtree.com/locations/alcove-bar-restaurant/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Site describes it as 'Restaurant + Bar' (Alcove by MadTree, OTR); it did not say beer is brewed here (MadTree brews at its Oakley location). Hours printed on the combined Alcove page cover the restaurant. Human may want to confirm whether it counts for a brewery road page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2451,
+  "name": "Three Points Urban Brewery",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": "331 E 13th St, Cincinnati (listing address)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No usable first-hand source. The brewery's old domain its old domain now redirects to a gambling page (do not link). Search results (Yelp, RateBeer, BeerAdvocate, none usable as sources) all show it closed; second signal NOT_FOUND. Needs a local news or guild closure quote before marking CLOSED.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 304,
+  "name": "Streetside Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.streetsidebrewery.com/",
+  "address_as_printed": "4003 EASTERN AVE. CINCINNATI, OH 45226",
+  "address_source_url": "https://www.streetsidebrewery.com/",
+  "operating_evidence": {
+   "excerpt": "HOURS: MON 3-10 TUE 3-10 WED 11-10 THU 11-10 FRI 11-11 SAT 10-11 SUN 10-9",
+   "url": "https://www.streetsidebrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "WE MAKE BEER HERE.",
+  "quote_source_url": "https://www.streetsidebrewery.com/",
+  "notes": "Site also carries 2026 items (2026 Beer Advent Calendar, (c)2026). Brews on site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2421,
+  "name": "Revel Urban Winery / Revel OTR",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://revelotr.com/",
+  "address_as_printed": "111 E 12TH ST · CINCINNATI OH",
+  "address_source_url": "https://revelotr.com/",
+  "operating_evidence": {
+   "excerpt": "HOURS Tue–Wed: 5pm–10pm Thu: 5pm–11pm Fri: 5pm–1am Sat: 2pm–1am Sun: 3pm–8pm",
+   "url": "https://revelotr.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Urban winery (wine, events); no beer brewing mentioned anywhere on the pages read. Listing type 'brewpub' appears wrong.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 25,
+  "name": "Big Ash Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.bigashbrewing.com/",
+  "address_as_printed": "5230 BEECHMONT AVE CINCINNATI, OHIO 45230",
+  "address_source_url": "https://www.bigashbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "HOURS Monday 11am-10pm Tuesday 11am-10PM Wednesday 11am-10PM Thursday 11am-10PM Friday 11am-12AM",
+   "url": "https://www.bigashbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Home page still contains unfilled template text ('Lorem ipsum') in places. Brews on site not confirmed in text read.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 908,
+  "name": "Darkness Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.darknessbrewing.com/",
+  "address_as_printed": "224 Fairfield Ave Bellevue, KY 41073",
+  "address_source_url": "https://www.darknessbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Open 7 days a week! Sunday 1-8 pm Monday-Thursday 3-10 pm Friday 3 pm-12 am Saturday 12 pm-12 am",
+   "url": "https://www.darknessbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "your neighborhood craft brewery",
+  "quote_source_url": "https://www.darknessbrewing.com/",
+  "notes": "Printed address is Fairfield Ave (listing says Fairfax Ave). Site says 'We brew delicious craft beer'; food from the Darkness Diner food truck. Page also prints a dated tap list heading 'TAP LIST 11/21/26', one day before this check.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 212,
+  "name": "mellotone beer project",
+  "status": "OPEN",
+  "official_url": "https://www.mellotonebeer.com/",
+  "address_as_printed": "1429 Race Street Cincinnati, OH 45202",
+  "address_source_url": "https://www.mellotonebeer.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Tuesday — Thursday 4pm — 10pm Friday 12pm — 11PM Saturday 11am — 11PM Sunday 11am — 10pm",
+   "url": "https://www.mellotonebeer.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Site footer (c)2026. URL found by trying mellotonebeer.com, listing blank. Brewing on site not checked.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2390,
+  "name": "Mt. Carmel Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.mtcarmelbrewing.com/",
+  "address_as_printed": "4362 Mt. Carmel-Tobasco Rd. Cincinnati, Ohio 45244",
+  "address_source_url": "https://www.mtcarmelbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Tuesday-Thursday: 11am - 10pm (Kitchen Seating 11am - 9pm) Friday: 11am - 11pm (Kitchen Seating 11am - 10pm)",
+   "url": "https://www.mtcarmelbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Brewpub with kitchen; page also prints 'Mon da y: Closed'. Home page has an undated November burger special. No 2026 date found; evidence is printed hours only.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 221,
+  "name": "Moerlein Lager House",
+  "status": "UNCONFIRMED",
+  "official_url": "http://www.moerleinlagerhouse.com",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Site refused automated requests (HTTP 403 on http://www.moerleinlagerhouse.com/ with the BreweryTripBot user agent); no workaround attempted. A person should read it in a browser. Listing address not checked.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 921,
+  "name": "Hofbrauhaus Newport",
+  "status": "OPEN",
+  "official_url": "https://www.hofbrauhausnewport.com/",
+  "address_as_printed": "200 E 3rd St., Newport",
+  "address_source_url": "https://www.hofbrauhausnewport.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Sun – Thu: 11am – 11pm (kitchen closes at 9pm) (last call at 10:30pm) Fri – Sat: 11am – 12am",
+   "url": "https://www.hofbrauhausnewport.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Beer hall and restaurant with full kitchen; site says its members get access to 'freshly-brewed biers' and carries a dated News & Events item of October 22, 2026. Part of the Hofbrauhaus chain; this row is the Newport location only.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 899,
+  "name": "Bircus Brewing",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.bircus.com/",
+  "address_as_printed": "322 Elm Street, Ludlow, KY 41016",
+  "address_source_url": "https://www.bircus.com/",
+  "operating_evidence": {
+   "excerpt": "TAPROOM: THURSDAY – 4 PM – 10 PM FRIDAY – 4PM – 12 AM SATURDAY – NOON – 12 AM",
+   "url": "https://www.bircus.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "signals conflict: own site still prints taproom hours, but its page footer reads 'Copyright ©2022' and nothing is dated 2026, and the internal second signal was CLOSED_PERMANENTLY. A web search found only third-party listings (MapQuest 'CLOSED'), no official or dated closure statement, so not marked CLOSED. A person should check.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 946,
+  "name": "Wooden Cask Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.woodencask.com/york-street-brewery",
+  "address_as_printed": "629 York St. Newport, KY 41071",
+  "address_source_url": "https://www.woodencask.com/",
+  "operating_evidence": {
+   "excerpt": "York Hours We are closed on Monday. Kitchen closes one hour before closing time on weekdays, 9:00pm on Friday and Saturday, 7:00pm on Sunday. Tuesday-Thursday 11:30AM-10PM Friday 11:30AM-12AM",
+   "url": "https://www.woodencask.com/york-street-brewery",
+   "checked": "2026-11-22"
+  },
+  "quote": "Wooden Cask Brewing Company is a modern microbrewery designed to honor traditional English pubs.",
+  "quote_source_url": "https://www.woodencask.com/",
+  "notes": "Microbrewery with 4,000 sq ft taproom and kitchen per site; the York Street page labels the hours as York Hours.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 902,
+  "name": "Braxton Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://braxtonbrewing.com/pages/braxton-covington",
+  "address_as_printed": "27 West 7th Street, Covington, KY 41011",
+  "address_source_url": "https://braxtonbrewing.com/pages/braxton-covington",
+  "operating_evidence": {
+   "excerpt": "Hours Monday 3:00pm–10:00pm Tuesday 11:00am–10:00pm Wednesday 11:00am–10:00pm Thursday 11:00am–10:00pm Friday 11:00am–12:00am Saturday 11:00am–12:00am Sunday 11:00am–9:00pm",
+   "url": "https://braxtonbrewing.com/pages/braxton-covington",
+   "checked": "2026-11-22"
+  },
+  "notes": "Covington taproom page; the same page set includes a rooftop. Page also carries a dated event (Wed, December 16, 2026 at 8:00pm). Kitchen on site not checked.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 929,
+  "name": "Mash Cult Brewing",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": "6823 Burlington Pike, Florence, KY (listing address)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No official site found (mashcultbrewing.com does not resolve). Search results describe it as a nanobrewery inside the Party Town warehouse with no taproom, and one directory (not first-hand) says it closed. No first-hand source, so not marked CLOSED or NOT A TAPROOM.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 864,
+  "name": "The Red Yeti",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://redyetijeff.com/",
+  "address_as_printed": "256 Spring St Jeffersonville, IN 47130",
+  "address_source_url": "https://redyetijeff.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Mon - Thu: 11am - 9pm Fri - Sat: 11am - 10pm Sun: 10am-9pm (brunch: 10am - 2pm)",
+   "url": "https://redyetijeff.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "A unique and extraordinary dining experience just minutes from downtown Louisville.",
+  "quote_source_url": "https://redyetijeff.com/",
+  "notes": "Restaurant with a bar; site describes 'a wide variety of craft beers and scratch cocktails' with house syrups and says nothing about brewing beer. Listing type 'brewpub' not supported by the site. Footer (c) 2025.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 893,
+  "name": "Against the Grain Production Facility",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://atgbrewery.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "Today, the same spirit that built our taproom powers our full-service production and beverage manufacturing operation.",
+  "quote_source_url": "https://atgbrewery.com/",
+  "notes": "Site describes a 'full-service production and beverage manufacturing operation' (contract brewing, THC and other beverages, dock sales) and says the taproom closed; no public visiting hours and no street address printed. Footer (c) 2026. Quote: 'In 2025, we closed the taproom doors'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 922,
+  "name": "Holsopple Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.holsopplebrewing.com/",
+  "address_as_printed": "8023 Catherine Lane Lyndon, Kentucky 40222",
+  "address_source_url": "https://www.holsopplebrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Mon – Thurs 4PM – 10PM Fri – Sat 2PM – 11PM Sunday 2PM – 8PM",
+   "url": "https://www.holsopplebrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our taproom is proudly located in the Lyndon neighborhood of Louisville, KY.",
+  "quote_source_url": "https://www.holsopplebrewing.com/",
+  "notes": "Page title 'Craft Brewery & Taproom in Lyndon, Louisville KY'; footer (c) 2026 and an events list. Food page exists. Brewing on site implied by title, not detailed in the text read.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 897,
+  "name": "Apocalypse Brew Works",
+  "status": "OPEN",
+  "official_url": "http://apocalypsebrewworks.com/",
+  "address_as_printed": "1612 Mellwood Ave., Louisville, KY 40206",
+  "address_source_url": "http://apocalypsebrewworks.com/",
+  "operating_evidence": {
+   "excerpt": "Open: Monday 4pm – 9pm Tuesday closed Wednesday 4pm – 9pm Thursday 4pm – 9pm Friday 4pm – 10pm Saturday 4pm – 10pm Sunday 2pm – 9pm",
+   "url": "http://apocalypsebrewworks.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our brewery and Taproom, “the Fallout Shelter” opened in May of 2012, producing beer for the masses and your survival.",
+  "quote_source_url": "http://apocalypsebrewworks.com/",
+  "notes": "Site is served over http only (https did not connect); home page shows 'Posted on May 11, 2012 May 4, 2026' (a modified date, no event). Printed hours only. Phone printed 502.792.0090.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 892,
+  "name": "Against the Grain Brewery",
+  "status": "CLOSED",
+  "official_url": "https://atgbrewery.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "In 2025, we closed the taproom doors — but we didn’t go far.",
+  "quote_source_url": "https://atgbrewery.com/",
+  "notes": "CLOSED: the brewery's own site says 'In 2025, we closed the taproom doors — but we didn’t go far. We’re still right down the street...' and 'The taproom may be gone'. Address 401 E Main St is not printed on the page read; the quote is about the Against the Grain taproom in general, which the listing places at 401 E Main St. The production facility (row 893) continues.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 894,
+  "name": "Akasha Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.akashabrewing.com/",
+  "address_as_printed": "Akasha Brewing Company, 909 E Market St Ste 700, Louisville, KY 40206",
+  "address_source_url": "https://www.akashabrewing.com/",
+  "operating_evidence": {
+   "excerpt": "HOURS Monday Closed Tuesday 5-10 Wednesday 5-10 Thursday 5-10 Friday 3-11 Saturday 1-11 Sunday 2-9",
+   "url": "https://www.akashabrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Brewery and taproom; food not checked.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 913,
+  "name": "Falls City Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://fallscitybeer.com/",
+  "address_as_printed": "901 East Liberty Street Louisville, KY",
+  "address_source_url": "https://fallscitybeer.com/",
+  "operating_evidence": {
+   "excerpt": "Tap Room Open Guest Hours: Thursday: 4pm - 10pm Friday: 4pm - 10pm Saturday: 12pm - 10pm Sunday: 12pm - 6pm",
+   "url": "https://fallscitybeer.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Come out to the Falls City Tap Room and experience 16 fresh, locally brewed craft beers on tap.",
+  "quote_source_url": "https://fallscitybeer.com/",
+  "notes": "Taproom plus private event space; brews locally per site ('16 fresh, locally brewed craft beers on tap'). Holiday-party banner on page is undated.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 917,
+  "name": "Gravely Brewing Co.",
+  "status": "UNCONFIRMED",
+  "official_url": "https://gravelybrewing.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "refused: https://gravelybrewing.com/ returned HTTP 403 to the BreweryTripBot user agent; no workaround attempted. Lead only (third-party search, not first-hand): a WDRB report says Gravely moved its taproom from 514 Baxter Ave to a NuLu address (901 E Main St); the listing still shows 514 Baxter Ave. A person should read the site in a browser and confirm the address.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 930,
+  "name": "Mile Wide Beer Co.",
+  "status": "OPEN",
+  "official_url": "https://milewidebeer.com/",
+  "address_as_printed": "636 Barret Avenue, Louisville, KY 40204",
+  "address_source_url": "https://milewidebeer.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday - Thursday 3:00 PM - 10:00 PM Friday - Saturday 12:00 PM - 11:00 PM Sunday 12:00 PM - 8:00 PM",
+   "url": "https://milewidebeer.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Taproom; brewing on site not stated in the text read.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 923,
+  "name": "Hopcat - Louisville",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://www.hopcat.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "Welcome to HopCat, your craft kitchen & bar with 40 taps, cocktails, and scratch-made food for every craving.",
+  "quote_source_url": "https://www.hopcat.com/",
+  "notes": "HopCat describes itself as a 'craft kitchen & bar'; its own locations menu lists Ann Arbor, Auburn Hills, Beltline, Detroit, East Lansing, Grand Rapids, Holland, Kalamazoo, Lincoln, Livonia, Partridge Creek, Royal Oak, Southgate and no Louisville, so the Bardstown Rd HopCat is no longer a listed location (second signal NOT_FOUND). It is a bar and restaurant, not a brewery. No Louisville street address on its own site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 933,
+  "name": "Old Louisville Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.oldlouisvillebrewery.com/faqs",
+  "address_as_printed": "625 W Magnolia Ave. Louisville, KY 40208",
+  "address_source_url": "https://www.oldlouisvillebrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Tue-Thursday 5-10ish Friday 5-11ish Sat 2-11ish Sun 2-10ish.",
+   "url": "https://www.oldlouisvillebrewery.com/faqs",
+   "checked": "2026-11-22"
+  },
+  "notes": "Hours on the FAQ page are approximate ('ISH principle'); home page carries a dated Louisville Beer Week item (October 20-25, no year printed). Brewing on site not stated in the text read; no kitchen.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 919,
+  "name": "Great Flood Brewing- Production Facility",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": "629 Bergman St, Louisville (listing address)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No usable first-hand source. The brewery's old domain its old domain now redirects to a gambling page (do not link). Second signal NOT_FOUND. Local report (louisville.am) says Great Flood's Bardstown Rd site became Big Rock Bar & Brewery with beer now brewed off-site; it says nothing about the Bergman St facility.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 918,
+  "name": "Great Flood Brewing",
+  "status": "MOVED/RENAMED",
+  "official_url": null,
+  "address_as_printed": "2120 Bardstown Rd, Louisville (listing address)",
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "the original concept has been rebranded as Big Rock Bar & Brewery, with new owners",
+  "quote_source_url": "https://louisville.am/great-flood-brewing-rebrands-to-big-rock-bar-brew/",
+  "notes": "RENAMED: louisville.am (a Louisville food and dining magazine): 'the original concept has been rebranded as Big Rock Bar & Brewery, with new owners' and co-owner Nik Heberlein: 'We’re brewing off-site now, and we turned the old brewing area into the kitchen.' Article said a grand reopening would wait on the kitchen; whether Big Rock is open to the public is not confirmed first-hand. Do not link its old domain (gambling page).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 932,
+  "name": "Monnik Beer Company",
+  "status": "OPEN",
+  "official_url": "https://www.monnikbeer.com/",
+  "address_as_printed": "1036 E Burnett Avenue Louisville, KY 40217",
+  "address_source_url": "https://www.monnikbeer.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Sun-Thurs: 11am - 10pm Fri-Sat: 11am - 12am",
+   "url": "https://www.monnikbeer.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Monnik Beer Co. is a brewery and restaurant in the Schnitzelburg neighborhood of Louisville, Kentucky.",
+  "quote_source_url": "https://www.monnikbeer.com/",
+  "notes": "Brewpub with kitchen. Listing website monnikbeerco.com does not resolve; the live site is monnikbeer.com.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 939,
+  "name": "Sterling Beer Co.",
+  "status": "UNCONFIRMED",
+  "official_url": "http://www.sterlingbeer.com",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "script-rendered/cookie wall: sterlingbeer.com only serves an age-verification page that needs cookies ('your browser isn't accepting cookies'); not worked around. Second signal CLOSED_PERMANENTLY and listing type 'contract'; web results say out of business but no first-hand or dated closure quote. A person should open http://www.sterlingbeer.com in a browser.",
+  "checked": "2026-11-22"
+ }
+]

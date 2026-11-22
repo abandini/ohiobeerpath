@@ -1,0 +1,736 @@
+[
+ {
+  "id": 130,
+  "name": "Goldhorn Brewery",
+  "status": "OPEN",
+  "official_url": "https://goldhornbrewery.com/",
+  "address_as_printed": "1361 E 55th St Cleveland, OH 44103",
+  "address_source_url": "https://goldhornbrewery.com/",
+  "quote": "We believe beer is more than just a beverage; it’s a shared experience between brewer, buyer and community.",
+  "quote_source_url": "https://goldhornbrewery.com/",
+  "notes": "WEAK currency evidence: site is live with a current-looking hours block and menu, but no 2026-dated item was found and I found no 2026 news elsewhere. Hub 55 complex; opened July 2016; food and private event spaces. Hours as printed: 'Tuesday: 11 AM to 2 PM'; 'Wednesday: 11 AM to 2 PM'; 'Thursday: 11 AM to 9 PM'; 'Friday: 11 AM to 10 PM'; 'Saturday: Noon to 10 PM'; 'Sunday: Noon to 8 PM'. Quick human/phone check recommended.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Tuesday: 11 AM to 2 PM Wednesday: 11 AM to 2 PM Thursday: 11 AM to 9 PM Friday: 11 AM to 10 PM Saturday: Noon to 10 PM Sunday: Noon to 8 PM",
+   "url": "https://goldhornbrewery.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 182,
+  "name": "The Jolly Scholar",
+  "status": "OPEN",
+  "official_url": "https://thejollyscholar.com/",
+  "address_as_printed": "11111 Euclid Avenue Cleveland, OH 44106",
+  "address_source_url": "https://thejollyscholar.com/",
+  "quote": "The Jolly Scholar is a brewpub on the campus of Case Western Reserve University that creates traditional and experimental beers.",
+  "quote_source_url": "https://thejollyscholar.com/",
+  "notes": "WEAK currency evidence: live site with hours, beer list, order/reserve links; no 2026-dated item found. On the CWRU campus (a campus pub; hours skew late: 'Thur, Fri 11:00 AM - 2:00 AM'). Phone (216)-368-0090.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Mon, Tue, Wed 11:00 AM - 11:00 PM Thur, Fri 11:00 AM - 2:00 AM Sat 12:00 PM - 2:00 AM Sun 12:00 PM - 11:00 PM",
+   "url": "https://thejollyscholar.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 154,
+  "name": "Hofbräuhaus Cleveland",
+  "status": "OPEN",
+  "official_url": "https://www.hofbrauhauscleveland.com/",
+  "address_as_printed": "1550 Chester Ave Cleveland, OH 44114",
+  "address_source_url": "https://www.hofbrauhauscleveland.com/",
+  "quote": "Modeled after the legendary 400+ year-old Hofbräuhaus in Munich, Germany!",
+  "quote_source_url": "https://www.hofbrauhauscleveland.com/",
+  "notes": "SECOND LOCATION / licensed outpost of the Munich Hofbräuhaus; German restaurant with on-site brewery. Current signs: Alex Meixner Holiday Show, holiday events, 'Named 2025 Greater Cleveland Brewery of the year!'. Hours as printed: 'Monday - Thursday: 11:00am-10:00pm'; 'Friday & Saturday: 11:00am-12:00am'; 'Sunday: 10:00am-8:00pm'. Row 2360 is a duplicate. Phone 216.621.BEER (2337).",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday - Thursday: 11:00am-10:00pm Friday & Saturday: 11:00am-12:00am Sunday: 10:00am-8:00pm",
+   "url": "https://www.hofbrauhauscleveland.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 208,
+  "name": "Masthead Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.mastheadbrewingco.com/",
+  "address_as_printed": "1261 Superior Ave, Cleveland, OH 44114",
+  "address_source_url": "https://www.mastheadbrewingco.com/",
+  "quote": "Sunday, November 29: Open noon-start of game (8:20pm)",
+  "quote_source_url": "https://www.mastheadbrewingco.com/",
+  "notes": "Current signs: special hours for Sunday Nov 29 (2026) and Browns home games. Hours as printed: 'Tues-Thurs | 11:30AM - 10PM', 'Fri-Sat | 11:30AM - 11PM', 'Sun | Noon - 8PM', Mon closed; 'Kitchen closes 1 hour before bar'. Brewery, taproom and kitchen/menu; shipping dock is at the rear.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Mon | CLOSED Tues-Thurs | 11:30AM - 10PM Fri-Sat | 11:30AM - 11PM Sun | Noon - 8PM",
+   "url": "https://www.mastheadbrewingco.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 296,
+  "name": "Southern Tier Brewing Co. Cleveland",
+  "status": "OPEN",
+  "official_url": "https://cleveland.stbcbeer.com/",
+  "address_as_printed": "811 Prospect Ave E, Cleveland, OH 44115",
+  "address_source_url": "https://cleveland.stbcbeer.com/",
+  "quote": "Welcome to our exceptional craft beer taproom in Downtown Cleveland!",
+  "quote_source_url": "https://cleveland.stbcbeer.com/",
+  "notes": "SECOND LOCATION of Southern Tier Brewing (site calls it Southern Tier's 'second satellite taproom'); has its own small brewhouse for 'Cleveland Brew'd' beers plus guest taps and a food menu. Hours as printed: 'Monday – Thursday: 11am – 10pm. Friday & Saturday: 11 am – 12 am. Sunday: 11 am – 9 pm'. No 2026-dated item found; live site with taproom events and merch.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday – Thursday: 11am – 10pm. Friday & Saturday: 11 am – 12 am. Sunday: 11 am – 9 pm",
+   "url": "https://cleveland.stbcbeer.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 72,
+  "name": "Collision Bend Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://collisionbendbrewery.com/",
+  "address_as_printed": "1250 Old River Road Cleveland, OH 44113",
+  "address_source_url": "https://collisionbendbrewery.com/",
+  "quote": "Collision Bend Brewing Company would be honored to host your special event.",
+  "quote_source_url": "https://collisionbendbrewery.com/",
+  "notes": "Directory had no street. Redirects http://www.collisionbendbrewery.com -> https://collisionbendbrewery.com/. 2026-dated news (Mug Club Nov 17, 2026; winter releases Nov 1, 2026). Brunch at the Cleveland location Saturdays 11:30am-3:00pm and all day Sunday; restaurant/event spaces. Same company also has Euclid (1261 Babbitt Rd) and Lorain (2000 Root Rd) taprooms; Cleveland is the flagship, not a second location. Taproom hours line not on the home page.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday - Thursday: 11:30am - 9pm Friday - Saturday: 11:30am - 11pm Sunday: 11:30am - 5pm",
+   "url": "https://collisionbendbrewery.com/location/cleveland-ohio-11716",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 280,
+  "name": "Saucy Brew Works",
+  "status": "OPEN",
+  "official_url": "https://www.saucybrewworks.com/",
+  "address_as_printed": "2885 Detroit Ave Cleveland, OH 44113",
+  "address_source_url": "https://www.saucybrewworks.com/",
+  "quote": "At Saucy Brew Works, we don’t just brew beer—we craft experiences.",
+  "quote_source_url": "https://www.saucybrewworks.com/",
+  "notes": "Brewery plus full restaurant and coffeehouse; site lists Cleveland, Columbus and Put-in-Bay locations (Cleveland is the original, opened 2017). Phone 216-666-2568. Taproom hours not printed on the home page and I did not find a dated 2026 item; operating signs are the live location list, shop and reservations links. Low-risk but a hours line should be taken from the Visit page before publishing.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "HOURS Sunday – Thursday: 11am – 10pm Friday – Saturday: 11am – 12am",
+   "url": "https://www.saucybrewworks.com/ohio-city/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 51,
+  "name": "Brick and Barrel",
+  "status": "OPEN",
+  "official_url": "https://brickandbarrelbrewery.com/",
+  "address_as_printed": "1844 COLUMBUS RD, CLEVELAND, OH 44113, US",
+  "address_source_url": "https://brickandbarrelbrewery.com/",
+  "quote": "Brick and Barrel Brewing offers a unique blend of handcrafted beers and delicious comfort food in a cozy atmosphere.",
+  "quote_source_url": "https://brickandbarrelbrewery.com/",
+  "notes": "Live site with hours and '2026 Powered by Shift4' footer; no 2026-dated event found. Hours as printed: 'Monday - Thursday 4-10', 'Friday 4-11', 'Saturday 12- 11', 'Sunday 12 - 8'. Craft beer plus comfort food, in the Flats.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday - Thursday 4-10 Friday 4-11 Saturday 12- 11 Sunday 12 - 8",
+   "url": "https://brickandbarrelbrewery.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 308,
+  "name": "Terrestrial Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://terrestrialbrewing.com/",
+  "address_as_printed": "7524 Father Frascati, Cleveland, OH 44102",
+  "address_source_url": "https://terrestrialbrewing.com/contact/",
+  "quote": "Welcome to Terrestrial Brewing Company, where craft beer meets the great outdoors.",
+  "quote_source_url": "https://terrestrialbrewing.com/",
+  "notes": "Directory had no street; site prints it on /contact/. Battery Park neighborhood. Current signs: 2026-dated news (Doggie Turkey Trot, November 2026 wing special). Hours line (home page): 'Mon - Thu 4pm -11 PM (kitchen till at 10)'; 'Friday 4pm - 12 AM (kitchen till at 11)'; 'Saturday 10 AM- 12 PM (kitchen 11-11)'; 'Sunday 10 AM – 10 PM (kitchen 11-9)'. Full food menu, Sunday brunch, 100% dog-friendly, two patios.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "HOURS Mon - Thu 4pm -11 PM (kitchen till at 10) Friday 4pm - 12 AM (kitchen till at 11) Saturday 10 AM- 12 PM (kitchen 11-11) Sunday 10 AM – 10 PM",
+   "url": "https://terrestrialbrewing.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 207,
+  "name": "Market Garden Brewpub",
+  "status": "OPEN",
+  "official_url": "https://www.marketgardenbrewery.com/",
+  "address_as_printed": "1947 W 25th St, Cleveland, OH 44113",
+  "address_source_url": "https://www.marketgardenbrewery.com/visit",
+  "quote": "The dry rice lager with real Japanese yuzu juice ... a medal nobody saw coming.",
+  "quote_source_url": "https://www.marketgardenbrewery.com/",
+  "notes": "Current signs: World Beer Cup 2026 gold medal item, holiday beers, '© 2026'. Home page is behind a 21+ age gate. Brewpub (restaurant + bar) hours per /visit: 'Wed–Thu 12pm – 10pm'; 'Fri 12pm – 12am'; 'Sat 11am – 12am Brunch 11am–3pm'; 'Sun 11am – 9pm Brunch 11am–3pm'; closed Mon-Tue; pan pizza and cocktails. Same company runs the Irishtown Bend Taproom (production brewery + taproom, 1849 W 24th St, Cleveland 44113), which is not a separate row here; consider adding.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "HOURS Mon–Tue Closed Wed–Thu 12pm – 10pm Fri 12pm – 12am Sat 11am – 12am Brunch 11am–3pm Sun 11am – 9pm",
+   "url": "https://www.marketgardenbrewery.com/visit",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 136,
+  "name": "Great Lakes Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.greatlakesbrewing.com/",
+  "address_as_printed": "2516 Market Ave. Cleveland Ohio 44113",
+  "address_source_url": "https://www.greatlakesbrewing.com/",
+  "quote": "Ohio's Original Craft Brewery. Cleveland Crafted Since 1988.",
+  "quote_source_url": "https://www.greatlakesbrewing.com/",
+  "notes": "Current signs: 2026-dated items (Food Drive 2026, Nov 28-Dec 10; Brewing Good Day Dec 10). Brewpub hours as printed: 'MONDAY – THURSDAY: 11:30 AM – 9:00 PM (BAR 10:00 PM)'; 'FRIDAY & SATURDAY: 11:30 AM – 10:00 PM (BAR 11:00 PM)'; 'SUNDAY: 11:00 AM – 3:00 PM (BAR 4:00 PM)'. Brewpub with food, brewery tours, gift shop, Hop College classes. Phone 216.771.4404.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "BREWPUB HOURS MONDAY – THURSDAY: 11:30 AM – 9:00 PM (BAR 10:00 PM) FRIDAY & SATURDAY: 11:30 AM – 10:00 PM (BAR 11:00 PM) SUNDAY: 11:00 AM – 3:00 PM",
+   "url": "https://www.greatlakesbrewing.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 2356,
+  "name": "Hansa Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.hansabrewery.com/",
+  "address_as_printed": "2717 Lorain Avenue Cleveland, OH, 44113",
+  "address_source_url": "https://www.hansabrewery.com/",
+  "quote": "We specialize in European cuisine and feature an array of European-style beer.",
+  "quote_source_url": "https://www.hansabrewery.com/",
+  "notes": "WEAK currency evidence: site is live with a beer list, prices and hours, but footer reads 'Copyright © 2016' and I found no 2026-dated item. A Cleveland.co guide labels it Closed (unverified). Hours as printed: 'Wednesday - Thursday 12.00PM - 7PM (Bar until 8PM)'; 'Friday - Saturday 12.00PM - 8PM (Bar until 9PM)'; closed Sunday-Tuesday. Eastern European restaurant plus brewery. Recommend a quick human/phone check.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Open Hours Sunday Closed Mondays - Tuesday Closed Wednesday - Thursday 12.00PM - 7PM (Bar until 8PM) Friday - Saturday 12.00PM - 8PM",
+   "url": "https://www.hansabrewery.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 120,
+  "name": "Forest City Brewery",
+  "status": "OPEN",
+  "official_url": "http://www.forestcitybrewery.com",
+  "address_as_printed": "2135 Columbus Road Cleveland, OH 44113",
+  "address_source_url": "http://www.forestcitybrewery.com",
+  "quote": "Building entrance is located on Freeman Avenue.",
+  "quote_source_url": "http://www.forestcitybrewery.com",
+  "notes": "Live site with hours, menus, happy hour, upcoming events; no explicit 2026 date seen. Hours as printed: 'Tues- Thurs 4-11pm', 'Fri 4pm-12am', 'Sat 12pm-12am', 'Sun 12-8pm'. All guests must be 16+. Waldorf Beer Hall and Clubhouse event spaces. Final URL stays on http.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Tues- Thurs 4-11pm Fri 4pm-12am Sat 12pm-12am Sun 12-8pm",
+   "url": "https://www.forestcitybrewery.com/visit",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 235,
+  "name": "Noble Beast Brewing Co.",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.noblebeastbeer.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "script-rendered. Home page is a Square Online template whose embedded hours data is placeholder (San Francisco address, Mon-Fri 9-5); real hours not readable without a browser. A person should open https://www.noblebeastbeer.com/ and read the Location & Hours block. Directory address 1470 Lakeside Ave E not printed in fetched HTML. Brews on site (per the Anthology site: \"main brewery and restaurant in downtown Cleveland at 1470 Lakeside Ave\"), which is a statement on a sister site, not hours.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2360,
+  "name": "Hofbrauhaus Cleveland / Cincinatti Restaurant Group",
+  "status": "DUPLICATE",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "Duplicate of id 154 Hofbräuhaus Cleveland (same address 1550 Chester Ave, same site; id 154 already verified OPEN for US 422). Use id 154.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2343,
+  "name": "Earlybird Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "Listed site earlybirdbrewing.com gave no response (connection failure). Only third-party search listing seen (contract brewery per Brewbound, not a taproom); no first-hand source. second_signal NOT_FOUND. Likely a contract brand: if confirmed it would be NOT A BREWERY TAPROOM. Do not link.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 62,
+  "name": "Butcher & the Brewer",
+  "status": "OPEN",
+  "official_url": "https://www.butcherandthebrewer.com/",
+  "address_as_printed": "2043 E. 4th Street Cleveland, OH 44115",
+  "address_source_url": "https://www.butcherandthebrewer.com/contact-us",
+  "operating_evidence": {
+   "excerpt": "MON: CLOSED open for major RMFH events TUE-THUR: 4pm-11pm FRI-SAT: 12pm-11pm SUN: 3pm-9pm",
+   "url": "https://www.butcherandthebrewer.com/contact-us",
+   "checked": "2026-11-22"
+  },
+  "quote": "Butcher and the Brewer is a brewery and restaurant in the heart of downtown Cleveland, Ohio.",
+  "quote_source_url": "https://www.butcherandthebrewer.com/",
+  "notes": "Brewery-restaurant (meta description says \"brewery and restaurant\"); contact email domain clebrewing.com (Cleveland Brewing Company). Food: full restaurant. Site is a Wix template with leftover placeholder text on the home page (BaroQue, San Francisco address, \"Open from 6pm to 2am\", 123-456-7890): ignore it; the real hours are on /contact-us. No 2026 date printed, so hours are the only evidence. On-site brewing not independently confirmed beyond the site description. Same venue as id 2336.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2336,
+  "name": "Cleveland Brewing Company @ Butcher and The Brewer",
+  "status": "DUPLICATE",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "Same venue as id 62 Butcher & the Brewer (2043 E 4th St; contact email on its site is info@clebrewing.com, Cleveland Brewing Company). Use id 62. clebrewing.com itself has a self-signed certificate (not fetched, not linked).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 44,
+  "name": "BrewDog Cleveland Outpost",
+  "status": "UNCONFIRMED",
+  "official_url": "https://usa.brewdog.com/pages/bars/cleveland-outpost",
+  "address_as_printed": "1956 Carter Rd, Cleveland, OH 44113",
+  "address_source_url": "https://usa.brewdog.com/pages/bars/cleveland-outpost",
+  "quote": "With 28 taps pouring BrewDog and local craft brews, plus a patio packed with river views, fire pits, and outdoor games.",
+  "quote_source_url": "https://usa.brewdog.com/pages/bars/cleveland-outpost",
+  "notes": "script-rendered. Hours load by script (\"Checking hours...\", \"Loading hours...\"); a person should open https://usa.brewdog.com/pages/bars/cleveland-outpost and click \"View opening hours\". Page footer shows 2015-2026. Does not say it brews on site (taps BrewDog and local beer): if it does not brew it would be NOT A BREWERY TAPROOM.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2464,
+  "name": "Anthology Cask House",
+  "status": "UNCONFIRMED",
+  "official_url": "https://anthologycaskhouse.com",
+  "address_as_printed": "1526 W25th St., Cleveland, OH 44114",
+  "address_source_url": "https://anthologycaskhouse.com",
+  "quote": "Belgian ales, imported European drafts, and hand-pulled cask beer brewed by Noble Beast Brewing Company. A kitchen to match. NOW OPEN in Ohio City, Cleveland.",
+  "quote_source_url": "https://anthologycaskhouse.com",
+  "notes": "script-rendered. Hours are behind an \"All hours\" widget (page shows only a live \"Closed • Opens Sunday at 11AM\" line, not a schedule); no dated 2026 item. A person should open https://anthologycaskhouse.com and click \"Location and Hours\". Cask beer is \"brewed by Noble Beast Brewing Company\" (sister brewery, id 235); on-site brewing not stated on the page. Takes over former Bookhouse Brewing space.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 173,
+  "name": "Immigrant Son Brewery",
+  "status": "OPEN",
+  "official_url": "https://immigrantsonbrewing.com/",
+  "address_as_printed": "18120 SLOANE AVE LAKEWOOD, OHIO 44107",
+  "address_source_url": "https://immigrantsonbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "MON-THURS 3PM–10PM FRIDAY 3PM-11PM SATURDAY 10AM-11PM; Brunch 10AM-3PM SUNDAY 10AM-9PM; Brunch 10AM-3PM",
+   "url": "https://immigrantsonbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "We feel the world is a better place with beer, and hope you’ll ask to have another.",
+  "quote_source_url": "https://immigrantsonbrewing.com/",
+  "notes": "Brewpub with food (weekend brunch, happy hour menu, trivia). Page footer © 2026. Directory street was blank; address as printed on site. Brewing on site implied by \"Brewpub\" nav and brewery name, not separately quoted.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 229,
+  "name": "Nano Brew Cleveland",
+  "status": "OPEN",
+  "official_url": "https://www.nanobrewcleveland.com/",
+  "address_as_printed": "1859 West 25th Street, Cleveland",
+  "address_source_url": "https://www.nanobrewcleveland.com/our-story",
+  "operating_evidence": {
+   "excerpt": "BAR: Wed 4–10 pm Thu 4 pm–12 am Fri 12 pm–2 am Sat 11 am–2 am Sun 11 am–10 pm Mon + Tue closed",
+   "url": "https://www.nanobrewcleveland.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Beside the bar sits a one-barrel brewhouse, about 20 gallons a batch.",
+  "quote_source_url": "https://www.nanobrewcleveland.com/our-story",
+  "notes": "Part of the Market Garden / Ohio City family. Currently branded \"Nano Holiday Land\" (seasonal) but same address and domain; open 7 days in December; food (burgers, brunch Sat+Sun 11-3). Brews on site in a 1-barrel brewhouse, but the page also says \"Our 1-barrel is between batches. Stay tuned.\" (draft copy), so it may not be brewing right now. Our-story page contains visible internal editing notes (\"OK to say..?\"), a sign of a work-in-progress page. Footer © 2026.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2458,
+  "name": "West East Brewing Co",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "No website and no first-hand source found. Search shows 4125 Lorain Ave is Platform Beer Co. (taproom reported closed in 2023, third-party only), not a \"West East\" brand. second_signal NOT_FOUND. DO NOT LINK platformbeerco.com: it now serves an Indonesian gambling page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2331,
+  "name": "Buckeye Beer Engine",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://buckeyebeerengine.com/",
+  "address_as_printed": "15315 Madison Ave. Lakewood, OH 44107",
+  "address_source_url": "https://buckeyebeerengine.com/",
+  "operating_evidence": {
+   "excerpt": "Monday-Thursday: 12 pm – 11 pm Friday: 12 pm – 1 am Saturday: 10 am – 1 am Sunday: 10 am – 10 pm",
+   "url": "https://buckeyebeerengine.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "BE is a locally owned, neighborhood restaurant and bar that prides itself on gourmet burgers and gourmet beer.",
+  "quote_source_url": "https://buckeyebeerengine.com/about/",
+  "notes": "Open (hours printed, © 2026) but a restaurant and beer bar that does not brew. Its about page says the concept began in 1997 as \"Buckeye Brewing\" in Bedford Heights, a brew-on-premise location; the Lakewood bar opened 2007 and describes only a draft/cask/bottle program.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2322,
+  "name": "BottleHouse Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.bottlehouse.co/",
+  "address_as_printed": "13368 Madison Ave, Lakewood",
+  "address_source_url": "https://www.bottlehouse.co/hours-locations",
+  "operating_evidence": {
+   "excerpt": "BottleHouse Brewery & Mead Hall 13368 Madison Ave Lakewood, OH HOURS Monday -Closed- Tuesday 5pm-11pm Wednesday 5pm-11pm Thursday 5pm-11pm Friday 4pm-12am Saturday 2pm-12am Sunday 2pm -10pm",
+   "url": "https://www.bottlehouse.co/hours-locations",
+   "checked": "2026-11-22"
+  },
+  "quote": "From the very beginning, the BottleHouse was about one thing, community.",
+  "quote_source_url": "https://www.bottlehouse.co/about",
+  "notes": "Lakewood is the \"Brewery & Mead Hall\"; the flagship Brewery & Meadery is in Cleveland Heights (2050 Lee Rd). Brewhouse is described in the shared Our Story page; whether Lakewood itself brews is not stated. Lakewood page lists Tuesday trivia 7-9pm. Food: To-Go food page exists. Directory site thebottlehousebrewingcompany.com now serves a bare hosting default page: do not link. Also, the Lakewood phone on site is 216-214-2120.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 272,
+  "name": "Rocky River Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.rockyriverbrewco.com/",
+  "address_as_printed": "21290 Center Ridge Road Rocky River, OH 44116",
+  "address_source_url": "https://www.rockyriverbrewco.com/contact",
+  "operating_evidence": {
+   "excerpt": "Sun: 11:30 am–9:00 pm Mon–Thur: 11:30 am–10:00 pm Fri. & Sat: 11:30 am–11:00 pm",
+   "url": "https://www.rockyriverbrewco.com/contact",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our exceptionally hand-crafted beers are brewed with expertise by our talented brewmaster, Vaughn Stewart.",
+  "quote_source_url": "https://www.rockyriverbrewco.com/",
+  "notes": "Brewpub with full restaurant menu; \"Welcome Back ... Rebuilt with gratitude, reopened\" on the home page (reopened after rebuild). Footer ©2026.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 110,
+  "name": "Fat Head’s North Olmsted",
+  "status": "OPEN",
+  "official_url": "https://fatheads.com/north-olmsted/",
+  "address_as_printed": "24581 Lorain Rd North Olmsted, OH 44070",
+  "address_source_url": "https://fatheads.com/north-olmsted/",
+  "operating_evidence": {
+   "excerpt": "Thanksgiving Nov 26 Closed ... Mon 12:00 pm–9:00 pm Tue 12:00 pm–9:00 pm Wed 12:00 pm–9:00 pm Thu 12:00 pm–9:00 pm Fri 12:00 pm–10:00 pm Sat 11:00 am–10:00 pm Sun 11:00 am–8:00 pm",
+   "url": "https://fatheads.com/north-olmsted/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our flagship brewpub in North Olmsted started Fat Head’s on its path to brewing success and is still the OG for Northeast Ohio craft beer lovers.",
+  "quote_source_url": "https://fatheads.com/north-olmsted/",
+  "notes": "THIS location only (Fat Head's has several). Brewery & Saloon, full food menu, head brewer named. Excerpt abridged with \"...\" around holiday closures; Nov 26 Thanksgiving closure is the 2026 holiday date.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 284,
+  "name": "Schnitz Ale Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.schnitzalebrewery.com",
+  "address_as_printed": "5729 Pearl Rd Parma, OH 44129",
+  "address_source_url": "https://www.schnitzalebrewery.com",
+  "operating_evidence": {
+   "excerpt": "Mon, Tue, Wed, Thur 11:00 AM - 10:00 PM Fri 11:00 AM - 11:00 PM Sat 12:00 PM - 11:00 PM Sun 12:00 PM - 9:00 PM",
+   "url": "https://www.schnitzalebrewery.com",
+   "checked": "2026-11-22"
+  },
+  "quote": "Guests can enjoy a variety of craft beers brewed on-premises, as well as a menu of delicious dishes that combine traditional German flavors with modern culinary techniques.",
+  "quote_source_url": "https://www.schnitzalebrewery.com",
+  "notes": "German restaurant-brewery, opened Nov 2021 per its site; home page carries a holiday-party banner for the coming Nov/Dec. Site is built by SpotHopper and posts a Facebook/Yelp link; none used as a source. Parma (this location only).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 108,
+  "name": "Fat Head’s Middleburg Heights",
+  "status": "OPEN",
+  "official_url": "https://fatheads.com/middleburg-heights/",
+  "address_as_printed": "17450 Engle Lake Dr, Middleburg Heights, OH 44130",
+  "address_source_url": "https://fatheads.com/middleburg-heights/",
+  "operating_evidence": {
+   "excerpt": "Mon 12:00 pm–9:00 pm Tue 12:00 pm–9:00 pm Wed 12:00 pm–9:00 pm Thu 12:00 pm–9:00 pm Fri 12:00 pm–10:00 pm Sat 11:00 am–10:00 pm Sun 11:00 am–9:00 pm",
+   "url": "https://fatheads.com/middleburg-heights/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Opened in 2018, the Brewery, Beer Hall, and Gift Shop at Middleburg Heights allowed us to expand our base of operations in a transformative way.",
+  "quote_source_url": "https://fatheads.com/middleburg-heights/",
+  "notes": "THIS location only: production HQ brewery + 250-seat beer hall with full food menu and 20 taps. Footer © 2026.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2422,
+  "name": "Rivals Sports Grille",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "Site rivalscleveland.com refused a secure connection (TLS certificate hostname mismatch for both www and bare host); not worked around. Name indicates a sports bar/grille, not a brewery: if confirmed not to brew it is NOT A BREWERY TAPROOM. A person should check the venue.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 77,
+  "name": "Cornerstone Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "The directory/brewbound domain cornerstonebrewing.com now redirects to bmkgbanawa.com, an Indonesian gambling page: DO NOT LINK cornerstonebrewing.com. No first-hand source found. Third-party listings (58 Front St, Berea) show it only as \"Closed\" with no date; no closure article found. Human check needed.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2444,
+  "name": "The Brew Kettle, Taproom and Smokehouse",
+  "status": "OPEN",
+  "official_url": "https://thebrewkettle.com/brewpubs/strongsville/",
+  "address_as_printed": "8377 Pearl Rd, Strongsville, OH 44136",
+  "address_source_url": "https://thebrewkettle.com/brewpubs/strongsville/",
+  "operating_evidence": {
+   "excerpt": "Hours Sun-Thur 11am-10pm Friday-Sat 11am-11pm Kitchen open till close. Happy Hour Mon – Fri 2-6 PM",
+   "url": "https://thebrewkettle.com/brewpubs/strongsville/",
+   "checked": "2026-11-22"
+  },
+  "quote": "The Brew Kettle Strongsville Brewpub is a destination for craft beer lovers, barbecue fans, and anyone looking for a great night out.",
+  "quote_source_url": "https://thebrewkettle.com/brewpubs/strongsville/",
+  "notes": "THIS location only (Brew Kettle also has Brunswick, Canton, Hudson pubs). Brewpub with smokehouse menu and Topgolf swing suites; site news items dated Nov 2026. Brewing: the company is Ohio's first brew-on-premise microbrewery (1995) and its brewery is the Production Works; whether this pub brews on site is not stated on the page fetched.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 32,
+  "name": "Blue Monkey Brewing Co.",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.bluemonkeybrewing.com",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "Stale or pre-opening site. Page behind a 21+ gate; embedded page data prints hours (Wednesday 4pm-9pm, Thursday 4pm-9pm, Friday 4pm-10pm, Saturday 12pm-10pm, Sunday special events/private parties) but the site is headed \"Something is Brewing in North Royalton\" (reads as a pre-opening page), is © 2019, prints no street address, and has no 2026 item. Not accepted as operating evidence. A person should open the site and call (440) 628-9152.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2326,
+  "name": "Brew Kettle - Production Works",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://thebrewkettle.com/production/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "quote": "The Brew Kettle Production Works (Brewery) has been producing award-winning beers and serving the craft beer community since 1995.",
+  "quote_source_url": "https://thebrewkettle.com/production/",
+  "notes": "Production brewery with no visiting hours printed and the address (20102 Progress Dr) is not on the page; public pubs are the separate Brew Kettle taprooms (see id 2444). second_signal CLOSED_PERMANENTLY, but no closure source found, and the brewery page is current (news items dated Nov 2026) so it is not recorded as CLOSED. Same entity as id 39.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2449,
+  "name": "The Vine N Hop Shop",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "vinehop.com now redirects to a /lander parking page: DO NOT LINK vinehop.com. Only a BBB listing (1327 N Carpenter Rd, Brunswick) found; no first-hand source. second_signal NOT_FOUND.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 169,
+  "name": "Ignite Brewing Company - Brunswick",
+  "status": "OPEN",
+  "official_url": "https://www.ignite.beer/brunswick-taproom/",
+  "address_as_printed": "1255 N CARPENTER RD SUITE 100 BRUNSWICK, OH 44212",
+  "address_source_url": "https://www.ignite.beer/brunswick-taproom/",
+  "operating_evidence": {
+   "excerpt": "Brunswick Taproom Hours Mon-Tue: CLOSED Wed-Thu: 3pm – 10pm Fri: 3pm – 11pm Sat: 12pm – 11pm Sun: 12pm – 8pm",
+   "url": "https://www.ignite.beer/brunswick-taproom/",
+   "checked": "2026-11-22"
+  },
+  "notes": "THIS location only (Brunswick taproom; the brewery is in Barberton, 600 W Tuscarawas Ave). Has a separate kitchen (Wed-Fri 5-9pm, Sat 1-9pm, Sun 1-6pm). Whether Brunswick brews on site is not stated on the page: treat as taproom. Footer © 2026. Home page news shows events dated July 2025 only.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2372,
+  "name": "Lager Heads Smokehouse",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://lagerheadsbbq.com/",
+  "address_as_printed": "2832 Abbeyville Rd, Medina, OH 44256",
+  "address_source_url": "https://lagerheadsbbq.com/",
+  "operating_evidence": {
+   "excerpt": "Smokehouse Hours Monday - Saturday: 11AM - 10PM Sunday: 11AM -9PM",
+   "url": "https://lagerheadsbbq.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "A BBQ restaurant (sister to Lager Heads Brewing Co., id 2371, which has its own site lagerheads.us). Its own site mentions no brewing. Footer © 2023; reviews dated 2022. Open per printed hours but not a brewery taproom.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 200,
+  "name": "MAD Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://madbrewingcompany.com",
+  "address_as_printed": "333 Foundry Street Medina, Ohio 44256",
+  "address_source_url": "https://madbrewingcompany.com",
+  "operating_evidence": {
+   "excerpt": "TAPROOM HOURS Monday : Closed Tuesday : 4pm – 10pm Wednesday : 4pm – 10pm Thursday : 4pm – 10pm Friday : 4pm – 11pm Saturday : 11am – 11pm Sunday : 11am – 8pm",
+   "url": "https://madbrewingcompany.com",
+   "checked": "2026-11-22"
+  },
+  "quote": "By brewing great beer, and by providing teaching opportunities for our staff and those who desire to know more about brewing craft beer, we share our passion by sharing our knowledge.",
+  "quote_source_url": "https://madbrewingcompany.com",
+  "notes": "Taproom inside the Foundry Social / High Voltage Karting complex; also taps other independent breweries. Site has leftover lorem-ipsum template text; no 2026 date, so hours are the only evidence. Food not described on the home page (Foundry Social is on site).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2371,
+  "name": "Lager Heads Brewing Co.",
+  "status": "OPEN",
+  "official_url": "https://lagerheads.us/",
+  "address_as_printed": "325 W. Smith Rd. Medina, Ohio 44256",
+  "address_source_url": "https://lagerheads.us/contact/",
+  "operating_evidence": {
+   "excerpt": "Tap Room Hours Monday 4:00pm - 9:00pm Tuesday 4:00pm - 9:00pm Wednesday 4:00pm - 9:00pm Thursday 4:00pm - 10:00pm Friday 12:00pm - 10:00pm Saturday 12:00pm - 10:00pm Sunday 12:00pm - 6:00pm",
+   "url": "https://lagerheads.us/contact/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Brewery and taproom with pizza menu (\"Best Pizza In Medina\"); events listed on the home page are dated 2025 (last: Dec 18, 2025), so no 2026 item; hours are printed. Phone on site 330-721-2337. Note the site is a different business from Lager Heads BBQ Smokehouse (id 2372).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 211,
+  "name": "Medina Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.medinabrewing.co/",
+  "address_as_printed": "320 S Court Street G9 Medina, OH 44256",
+  "address_source_url": "https://www.medinabrewing.co/locations",
+  "quote": "We craft memorable moments with seasonal in-house brews.",
+  "quote_source_url": "https://www.medinabrewing.co/",
+  "notes": "Site prints no visiting hours (hours are not on home, locations or contact pages fetched, possibly behind the Order Now button) and no 2026 item (footer © 2025). Multi-location brand (Avon, Lorain, Medina): the Medina location is in the Medina Farmers Exchange on S Court Street. A person should open https://www.medinabrewing.co/locations.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 31,
+  "name": "Blue Heron Brewery",
+  "status": "OPEN",
+  "official_url": "https://blueheronmedina.com/brewery/",
+  "address_as_printed": "3227 Blue Heron Trace, Medina, OH 44256",
+  "address_source_url": "https://blueheronmedina.com/brewery/visit/",
+  "operating_evidence": {
+   "excerpt": "Brewpub Hours Tuesday through Thursday: 4 p.m. to 9 p.m. Friday: 4 p.m. to 10 p.m. Saturday: 12 p.m. to 10 p.m. Sunday: 11 a.m. to 7 p.m.",
+   "url": "https://blueheronmedina.com/brewery/visit/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Brewpub + event center with brunch and a food menu. The visit page prints two hours blocks that differ on Saturday opening (12 p.m. vs 11 a.m.); the first is quoted. Footer ©2021, no 2026 date, so printed hours are the only evidence; the \"Now on Tap\" list includes a seasonal \"Reindeer Punch\". Check Saturday opening time before publishing.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 325,
+  "name": "Uniontown Brewing Co.",
+  "status": "OPEN",
+  "official_url": "https://www.uniontownbrewing.com/",
+  "address_as_printed": "105 West Main Street Ashland, Ohio 44805",
+  "address_source_url": "https://www.uniontownbrewing.com/hours-location",
+  "operating_evidence": {
+   "excerpt": "Uniontown Brewing Company hours: Sunday: Closed Monday: Closed Tuesday: 11:00AM - 9:00 PM Wednesday: 11:00AM - 9:00 PM Thursday: 11:00AM - 9:00 PM Friday: 11:00AM - 10:30 PM Saturday: 11:00AM - 10:30 PM",
+   "url": "https://www.uniontownbrewing.com/hours-location",
+   "checked": "2026-11-22"
+  },
+  "quote": "We’re a family owned and operated brew pub located in the heart of downtown Ashland, Ohio.",
+  "quote_source_url": "https://www.uniontownbrewing.com/",
+  "notes": "Brewpub with kitchen and a separate bar called The Third Place (Thu-Sat 4-9/10pm). Home page banner: \"Join us on Saturday, December 19th for our 9 Year Anniversary Celebration\" (no year printed). Excerpt trimmed to the brewpub hours.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2456,
+  "name": "Veteran Brewhouse",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "Listed domain veteranbrewhouse.com does not resolve (DNS failure). No first-hand source found; second_signal NOT_FOUND; search shows no brewery at 829 CR 801. Do not link.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 260,
+  "name": "The Phoenix Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.phoenixbrewing.com/",
+  "address_as_printed": "131 North Diamond Street Mansfield, Ohio 44902",
+  "address_source_url": "https://www.phoenixbrewing.com/contact",
+  "quote": "The Phoenix Brewing Company®, located in Downtown Mansfield, Ohio offers 16 taps of hand-crafted, award-winning beers brewed on-site, and features local Ohio wines and spirits.",
+  "quote_source_url": "https://www.phoenixbrewing.com/home-1/",
+  "notes": "Clearly alive (nav shows FRIENDSGIVING 11/25, BLACK FRIDAY BREAKFAST 11/27, Ninny Muggins Pop-Up Bar 12/1-12/31, SKI CLUB 2026-2027) but no visiting hours printed on the pages fetched, and the dated items carry no year except the ski club, so not recorded as OPEN. A person can almost certainly confirm in a minute at https://www.phoenixbrewing.com/ (events calendar / taproom hours). Brews on site per its own text. 21+ age gate on site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2373,
+  "name": "Laxton Hollow Brewing Works",
+  "status": "UNCONFIRMED",
+  "official_url": "http://www.laxtonhollow.com/",
+  "address_as_printed": "302 East Main Street Lexington, OH 44904",
+  "address_source_url": "http://www.laxtonhollow.com/visit-or-contact.html",
+  "notes": "Site prints no hours and is © 2015-2018 (stale). second_signal CLOSED_TEMPORARILY. No closure source found; no first-hand operating evidence. Printed address says Lexington, OH 44904 while the directory says Mansfield. Human check needed (call 419-525-2842).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2455,
+  "name": "Valley Vineyards Winery & Cellar Dweller Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.valleyvineyards.com/",
+  "address_as_printed": "2276 US-22, Morrow, OH 45152",
+  "address_source_url": "https://www.valleyvineyards.com/visit-us",
+  "operating_evidence": {
+   "excerpt": "Hours Monday: Closed Tuesday: Closed Wednesday: 4:00 PM - 9:00 PM Thursday: 3:00 PM - 10:00 PM Friday: 11:00 AM - 11:00 PM Saturday: 11:00 AM - 11:00 PM Sunday: 1:00 PM - 8:00 PM",
+   "url": "https://www.valleyvineyards.com/visit-us",
+   "checked": "2026-11-22"
+  },
+  "quote": "Experience the taste of locally brewed Ohio craft beers",
+  "quote_source_url": "https://www.valleyvineyards.com/craft-beers",
+  "notes": "GEOCODE PROBLEM: the directory coordinates (40.457, -82.777) are near Lexington/Mansfield, but the printed address is Morrow, OH 45152 (Warren County, SW Ohio, about 39.35 N), so this row belongs to the SOUTH segment geographically. Winery + restaurant (cookout) with craft beer under the Cellar Dweller Brewery name; beers listed (VV IPA, Dunkel, etc.). Whether the beer is brewed at the Morrow site is implied (\"Cellar Dweller Brewery\") but not stated outright. Footer shows Nov 26 Thanksgiving closure (2026).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 39,
+  "name": "The Brew Kettle Production Works",
+  "status": "DUPLICATE",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "Duplicate of id 2326 (Brew Kettle - Production Works): same name and phone 440-239-8788 as the Strongsville Brew Kettle. Directory coordinates (40.4172871, -82.907123) are a placeholder shared with id 278, not the real location. See id 2326 for status (NOT A BREWERY TAPROOM).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 278,
+  "name": "Samuel Adams Brewery",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "Directory row is unusable: city says Columbus but the phone is a 513 (Cincinnati) number and the coordinates (40.4172871, -82.907123) are a placeholder shared with id 39. No website listed; the samueladams.com Cincinnati page I tried returned 404. Boston Beer brewery in Cincinnati is a different (south) location; if it is meant, the south checker should handle it. second_signal NOT_FOUND.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 160,
+  "name": "Hoof Hearted Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.hoofheartedbrewing.com/",
+  "address_as_printed": "300 County Rd 26 Marengo , OH 43334",
+  "address_source_url": "https://www.hoofheartedbrewing.com/contact/",
+  "operating_evidence": {
+   "excerpt": "Hoof Hearted Brewing (Marengo) ... Taproom Hours: Monday: Closed Tuesday: Closed Wednesday: Closed Thursday: 4PM-10PM Friday: 2PM-10PM Saturday: 12PM–10PM Sunday: 12PM–7PM",
+   "url": "https://www.hoofheartedbrewing.com/contact/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Here at Hoof Hearted Brewing we've been turning tanks like cassette tapes since late 2011.",
+  "quote_source_url": "https://www.hoofheartedbrewing.com/",
+  "notes": "THIS location only: the Marengo production brewery and taproom (the brand also has a Columbus 5th Ave taproom, which is not this row). Food not described. Phone 567-233-3115.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 148,
+  "name": "Henmick Farm & Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.henmick.com/",
+  "address_as_printed": "4380 North Old State Road, Delaware, OH, 43015",
+  "address_source_url": "https://www.henmick.com/home",
+  "operating_evidence": {
+   "excerpt": "2026 SPECIAL EVENTS 11/22 Thanksgiving Pop-Up Market, 12-6p, free admission 11/25 Pre-Thanksgiving Cheers, Open Wed, 4-10p",
+   "url": "https://www.henmick.com/2026-events",
+   "checked": "2026-11-22"
+  },
+  "notes": "Farm brewery with taproom; operating evidence is a dated 2026 events page (no weekly hours printed in fetched text; hours block is empty). 21+ age gate. On-site brewing implied by the name and a \"Brewery\" nav page, not separately quoted.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2355,
+  "name": "Gypsy Brewery",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "notes": "No website listed and no first-hand source found. Only a Cleveland Magazine article ties Gypsy Brewery to the former Leisy bottling plant on Vega Ave (undated, third-party). second_signal NOT_FOUND. Human check needed; likely a defunct or contract brand.",
+  "checked": "2026-11-22"
+ }
+]

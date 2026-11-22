@@ -1,0 +1,785 @@
+[
+  {
+    "id": 12,
+    "address": "714 S. High St.",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 22,
+    "address": "4064 US-42, Mason, OH 45036",
+    "lat": 39.378046200928,
+    "lon": -84.278349813991,
+    "matched": "4064 US HWY 42, MASON, OH, 45036",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 25,
+    "address": "5230 BEECHMONT AVE CINCINNATI, OHIO 45230",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 31,
+    "address": "3227 Blue Heron Trace, Medina, OH 44256",
+    "lat": 41.110812573212,
+    "lon": -81.80436430554,
+    "matched": "3227 BLUE HERON TRCE, MEDINA, OH, 44256",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 51,
+    "address": "1844 COLUMBUS RD, CLEVELAND, OH 44113, US",
+    "lat": 41.490024686326,
+    "lon": -81.700542310332,
+    "matched": "1844 COLUMBUS RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 62,
+    "address": "2043 E. 4th Street Cleveland, OH 44115",
+    "lat": 41.499098530435,
+    "lon": -81.690090350329,
+    "matched": "2043 E 4TH ST, CLEVELAND, OH, 44115",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 72,
+    "address": "1250 Old River Road Cleveland, OH 44113",
+    "lat": 41.49893509274,
+    "lon": -81.70403286028,
+    "matched": "1250 OLD RIVER RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 76,
+    "address": "126 E Main St Mason, OH 45040",
+    "lat": 39.360957252945,
+    "lon": -84.307527620773,
+    "matched": "126 E MAIN ST, MASON, OH, 45040",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 88,
+    "address": "240 Main Street Morrow, OH 45152",
+    "lat": 39.354578984391,
+    "lon": -84.133033553027,
+    "matched": "240 MAIN ST, MORROW, OH, 45152",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 89,
+    "address": "2808 N High St Columbus, OH 43203",
+    "lat": 40.01958604636,
+    "lon": -83.012623972004,
+    "matched": "2808 N HIGH ST, COLUMBUS, OH, 43202",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 95,
+    "address": "1555 Loveland Madeira Rd Loveland, OH",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 108,
+    "address": "17450 Engle Lake Dr, Middleburg Heights, OH 44130",
+    "lat": 41.377433290582,
+    "lon": -81.822284249876,
+    "matched": "17450 ENGLE LAKE DR, MIDDLEBURG HEIGHTS, OH, 44130",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 110,
+    "address": "24581 Lorain Rd North Olmsted, OH 44070",
+    "lat": 41.426322118349,
+    "lon": -81.895294156728,
+    "matched": "24581 LORAIN RD, NORTH OLMSTED, OH, 44070",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 113,
+    "address": "7605 Wooster Pike, Cincinnati, OH 45227",
+    "lat": 39.1396500989,
+    "lon": -84.355057167411,
+    "matched": "7605 WOOSTER PIKE, CINCINNATI, OH, 45227",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 115,
+    "address": "5224 District Park Drive, Mason, OH 45040",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 119,
+    "address": "4080 WORTH AVE COLUMBUS, OH 43219",
+    "lat": 40.054375230402,
+    "lon": -82.912895738576,
+    "matched": "4080 WORTH AVE, COLUMBUS, OH, 43219",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 120,
+    "address": "2135 Columbus Road Cleveland, OH 44113",
+    "lat": 41.483171245822,
+    "lon": -81.700384663327,
+    "matched": "2135 COLUMBUS RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 121,
+    "address": "2750 PARK AVE SUITE O, NORWOOD, OH 45212",
+    "lat": 39.159196473727,
+    "lon": -84.443950800606,
+    "matched": "2750 PARK AVE, NORWOOD, OH, 45212",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 123,
+    "address": "5800 CREEK RD - BLUE ASH, OH 45242",
+    "lat": 39.259765004544,
+    "lon": -84.367480456749,
+    "matched": "5800 CREEK RD, BLUE ASH, OH, 45242",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 126,
+    "address": "734 Oak Street Columbus, OH 43205",
+    "lat": 39.96317155784,
+    "lon": -82.980439813245,
+    "matched": "734 OAK ST, COLUMBUS, OH, 43205",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 130,
+    "address": "1361 E 55th St Cleveland, OH 44103",
+    "lat": 41.52327863149,
+    "lon": -81.651856538264,
+    "matched": "1361 E 55TH ST, CLEVELAND, OH, 44103",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 132,
+    "address": "7790 Service Center Drive, West Chester, OH 45069",
+    "lat": 39.364392056238,
+    "lon": -84.363767821067,
+    "matched": "7790 SERVICE CENTER DR, WEST CHESTER, OH, 45069",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 136,
+    "address": "2516 Market Ave. Cleveland Ohio 44113",
+    "lat": 41.484553760182,
+    "lon": -81.703959291599,
+    "matched": "2516 MARKET AVE, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 138,
+    "address": "5901 Chandler Court Westerville, OH 43082",
+    "lat": 40.154152729383,
+    "lon": -82.92417555858,
+    "matched": "5901 CHANDLER CT, WESTERVILLE, OH, 43082",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 139,
+    "address": "3946 Broadway Grove City, OH 43123",
+    "lat": 39.883687500868,
+    "lon": -83.09222968685,
+    "matched": "3946 BROADWAY, GROVE CITY, OH, 43123",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 148,
+    "address": "4380 North Old State Road, Delaware, OH, 43015",
+    "lat": 40.334639016049,
+    "lon": -82.956253305201,
+    "matched": "4380 N OLD STATE RD, DELAWARE, OH, 43015",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 150,
+    "address": "6860 Plainfield Road Cincinnati, OH 45236",
+    "lat": 39.192567403282,
+    "lon": -84.400562787987,
+    "matched": "6860 PLAINFIELD RD, CINCINNATI, OH, 45236",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 154,
+    "address": "1550 Chester Ave Cleveland, OH 44114",
+    "lat": 41.503129261485,
+    "lon": -81.681207637898,
+    "matched": "1550 CHESTER AVE, CLEVELAND, OH, 44114",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 160,
+    "address": "300 County Rd 26 Marengo , OH 43334",
+    "lat": 40.364451257773,
+    "lon": -82.816759532075,
+    "matched": "300 CO RD 26, MARENGO, OH, 43334",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 161,
+    "address": "26 E 5th Ave Columbus , OH 43201",
+    "lat": 39.987126200115,
+    "lon": -83.00451311776,
+    "matched": "26 E 5TH AVE, COLUMBUS, OH, 43201",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 169,
+    "address": "1255 N CARPENTER RD SUITE 100 BRUNSWICK, OH 44212",
+    "lat": 41.241744106237,
+    "lon": -81.807980868097,
+    "matched": "1255 CARPENTER RD N, BRUNSWICK, OH, 44212",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 173,
+    "address": "18120 SLOANE AVE LAKEWOOD, OHIO 44107",
+    "lat": 41.486298009745,
+    "lon": -81.823121253058,
+    "matched": "18120 SLOANE AVE, LAKEWOOD, OH, 44107",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 178,
+    "address": "171 North Fourth Street Columbus, OH 43215",
+    "lat": 39.966313348539,
+    "lon": -82.997017067858,
+    "matched": "171 N 4TH ST, COLUMBUS, OH, 43215",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 182,
+    "address": "11111 Euclid Avenue Cleveland, OH 44106",
+    "lat": 41.506807166059,
+    "lon": -81.608135958854,
+    "matched": "11111 EUCLID AVE, CLEVELAND, OH, 44106",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 188,
+    "address": "424 W. TOWN STREET COLUMBUS, OHIO 43215",
+    "lat": 39.957540217388,
+    "lon": -83.011584818805,
+    "matched": "424 W TOWN ST, COLUMBUS, OH, 43215",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 196,
+    "address": "208 Mill Street, Milford, OH 45150",
+    "lat": 39.171803987913,
+    "lon": -84.296683204226,
+    "matched": "208 MILL ST, MILFORD, OH, 45150",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 200,
+    "address": "333 Foundry Street Medina, Ohio 44256",
+    "lat": 41.142043709312,
+    "lon": -81.87293024511,
+    "matched": "333 FOUNDRY ST, MEDINA, OH, 44256",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 203,
+    "address": "7885 E KEMPER RD CINCINNATI, OH 45249",
+    "lat": 39.279519102962,
+    "lon": -84.348362719798,
+    "matched": "7885 E KEMPER RD, CINCINNATI, OH, 45249",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 207,
+    "address": "1947 W 25th St, Cleveland, OH 44113",
+    "lat": 41.48482045004,
+    "lon": -81.703802788977,
+    "matched": "1947 W 25TH ST, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 208,
+    "address": "1261 Superior Ave, Cleveland, OH 44114",
+    "lat": 41.503731594636,
+    "lon": -81.685773349974,
+    "matched": "1261 E SUPERIOR AVE, CLEVELAND, OH, 44114",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 212,
+    "address": "1429 Race Street Cincinnati, OH 45202",
+    "lat": 39.110687789703,
+    "lon": -84.517126202167,
+    "matched": "1429 RACE ST, CINCINNATI, OH, 45202",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 229,
+    "address": "1859 West 25th Street, Cleveland",
+    "lat": 41.485790665717,
+    "lon": -81.704569162867,
+    "matched": "1859 W 25TH ST, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 230,
+    "address": "106 Karl Brown Way Loveland, OH 45140",
+    "lat": 39.268043182595,
+    "lon": -84.259348289673,
+    "matched": "106 KARL BROWN WAY, LOVELAND, OH, 45140",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 244,
+    "address": "421 East 2nd Ave, Columbus, OH 43201",
+    "lat": 39.981961358725,
+    "lon": -82.993535966778,
+    "matched": "421 E 2ND AVE, COLUMBUS, OH, 43201",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 249,
+    "address": "303 Green Meadows Drive South Lewis Center, OH 43035",
+    "lat": 40.154711859741,
+    "lon": -83.012856033275,
+    "matched": "303 GREEN MEADOWS DR S, LEWIS CENTER, OH, 43035",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 269,
+    "address": "1910 Elm Street Cincinnati, OH 45202",
+    "lat": 39.1168053228,
+    "lon": -84.520206903077,
+    "matched": "1910 ELM ST, CINCINNATI, OH, 45202",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 272,
+    "address": "21290 Center Ridge Road Rocky River, OH 44116",
+    "lat": 41.460906751815,
+    "lon": -81.855541014999,
+    "matched": "21290 CENTER RIDGE RD, ROCKY RIVER, OH, 44116",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 280,
+    "address": "2885 Detroit Ave Cleveland, OH 44113",
+    "lat": 41.489891554902,
+    "lon": -81.710728794504,
+    "matched": "2885 DETROIT RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 282,
+    "address": "443 W Third Ave, Columbus, OH 43201",
+    "lat": 39.983850313285,
+    "lon": -83.017107905936,
+    "matched": "443 W 3RD AVE, COLUMBUS, OH, 43201",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 284,
+    "address": "5729 Pearl Rd Parma, OH 44129",
+    "lat": 41.406340491461,
+    "lon": -81.742293468646,
+    "matched": "5729 PEARL RD, PARMA, OH, 44129",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 293,
+    "address": "8584 Duke Boulevard in Mason, Ohio",
+    "lat": 39.312940093742,
+    "lon": -84.303490069031,
+    "matched": "8584 DUKE BLVD, MASON, OH, 45040",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 296,
+    "address": "811 Prospect Ave E, Cleveland, OH 44115",
+    "lat": 41.498837277811,
+    "lon": -81.686940611873,
+    "matched": "811 PROSPECT AVE E, CLEVELAND, OH, 44115",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 297,
+    "address": "8757 Sancus Blvd, Columbus, OH, 43240",
+    "lat": 40.142109827468,
+    "lon": -82.990274154857,
+    "matched": "8757 SANCUS BLVD, COLUMBUS, OH, 43240",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 300,
+    "address": "5920 Evans Farm Dr. Suite A Lewis Center, OH 43035",
+    "lat": 40.199991124146,
+    "lon": -83.002729448545,
+    "matched": "5920 EVANS FARM DR, LEWIS CENTER, OH, 43035",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 304,
+    "address": "4003 EASTERN AVE. CINCINNATI, OH 45226",
+    "lat": 39.109258468365,
+    "lon": -84.432982412919,
+    "matched": "4003 EASTERN AVE, CINCINNATI, OH, 45226",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 308,
+    "address": "7524 Father Frascati, Cleveland, OH 44102",
+    "lat": 41.486971498729,
+    "lon": -81.736705549595,
+    "matched": "7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 312,
+    "address": "11276 Chester Road Sharonville, OH 45246",
+    "lat": 39.278524804701,
+    "lon": -84.443601517913,
+    "matched": "11276 CHESTER RD, CINCINNATI, OH, 45246",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 316,
+    "address": "2419 Scioto Harper Drive Columbus OH 43204",
+    "lat": 39.967256003895,
+    "lon": -83.066211006975,
+    "matched": "2419 SCIOTO HARPER DR, COLUMBUS, OH, 43204",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 325,
+    "address": "105 West Main Street Ashland, Ohio 44805",
+    "lat": 40.868650896002,
+    "lon": -82.316484934353,
+    "matched": "105 W MAIN ST, ASHLAND, OH, 44805",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 343,
+    "address": "215 N. 4th Street Columbus, OH 43215",
+    "lat": 39.967383988307,
+    "lon": -82.997223103944,
+    "matched": "215 N 4TH ST, COLUMBUS, OH, 43215",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 349,
+    "address": "2855 Indianola ave Columbus, OH 43202",
+    "lat": 40.021859237296,
+    "lon": -83.001858230165,
+    "matched": "2855 INDIANOLA AVE, COLUMBUS, OH, 43202",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 894,
+    "address": "Akasha Brewing Company, 909 E Market St Ste 700, Louisville, KY 40206",
+    "lat": 38.252997656779,
+    "lon": -85.735783388983,
+    "matched": "909 E MARKET ST, LOUISVILLE, KY, 40206",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 897,
+    "address": "1612 Mellwood Ave., Louisville, KY 40206",
+    "lat": 38.256780390781,
+    "lon": -85.720528339332,
+    "matched": "1612 MELLWOOD AVE, LOUISVILLE, KY, 40206",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 902,
+    "address": "27 West 7th Street, Covington, KY 41011",
+    "lat": 39.083282130986,
+    "lon": -84.510556636712,
+    "matched": "27 W 7TH ST, COVINGTON, KY, 41011",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 908,
+    "address": "224 Fairfield Ave Bellevue, KY 41073",
+    "lat": 39.10500216604,
+    "lon": -84.484733647291,
+    "matched": "224 FAIRFIELD AVE, BELLEVUE, KY, 41073",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 913,
+    "address": "901 East Liberty Street Louisville, KY",
+    "lat": 38.250278957834,
+    "lon": -85.736417744942,
+    "matched": "901 E LIBERTY ST, LOUISVILLE, KY, 40204",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 921,
+    "address": "200 E 3rd St. Newport",
+    "lat": 39.094921131176,
+    "lon": -84.49444871657,
+    "matched": "200 E 3RD ST, NEWPORT, KY, 41071",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 922,
+    "address": "8023 Catherine Lane Lyndon, Kentucky 40222",
+    "lat": 38.259374607721,
+    "lon": -85.605725451409,
+    "matched": "8023 CATHERINE LN, LYNDON, KY, 40222",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 930,
+    "address": "636 Barret Avenue, Louisville, KY 40204",
+    "lat": 38.245745338811,
+    "lon": -85.73248692688,
+    "matched": "636 BARRET AVE, LOUISVILLE, KY, 40204",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 932,
+    "address": "1036 E Burnett Avenue Louisville, KY 40217",
+    "lat": 38.22325643207,
+    "lon": -85.739987241717,
+    "matched": "1036 E BURNETT AVE, LOUISVILLE, KY, 40217",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 933,
+    "address": "625 W Magnolia Ave. Louisville, KY 40208",
+    "lat": 38.229581673989,
+    "lon": -85.765799046879,
+    "matched": "625 W MAGNOLIA AVE, LOUISVILLE, KY, 40208",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 946,
+    "address": "629 York St. Newport, KY 41071",
+    "lat": 39.090157883677,
+    "lon": -84.494198019047,
+    "matched": "629 YORK ST, NEWPORT, KY, 41071",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2322,
+    "address": "13368 Madison Ave, Lakewood",
+    "lat": 41.477084695878,
+    "lon": -81.784303058973,
+    "matched": "13368 MADISON AVE, LAKEWOOD, OH, 44107",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2338,
+    "address": "2555 Harrison Dr. Columbus, OH 43204",
+    "lat": 39.968185221797,
+    "lon": -83.070167736462,
+    "matched": "2555 HARRISON RD, COLUMBUS, OH, 43204",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2344,
+    "address": "161 North High Street Columbus, Ohio 43215",
+    "lat": 39.965674657075,
+    "lon": -83.001384716763,
+    "matched": "161 N HIGH ST, COLUMBUS, OH, 43215",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2356,
+    "address": "2717 Lorain Avenue Cleveland, OH, 44113",
+    "lat": 41.483457402074,
+    "lon": -81.704821388631,
+    "matched": "2717 LORAIN AVE, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2361,
+    "address": "800 Goodale Blvd. Columbus, OH 43212",
+    "lat": 39.97423827546,
+    "lon": -83.024496669874,
+    "matched": "800 GOODALE BLVD, COLUMBUS, OH, 43212",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2371,
+    "address": "325 W. Smith Rd. Medina, Ohio 44256",
+    "lat": 41.136309018445,
+    "lon": -81.868378002759,
+    "matched": "325 W SMITH RD, MEDINA, OH, 44256",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2382,
+    "address": "3301 Madison Road Cincinnati, OH 45209",
+    "lat": 39.156004911232,
+    "lon": -84.425296288261,
+    "matched": "3301 MADISON RD, CINCINNATI, OH, 45209",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2390,
+    "address": "4362 Mt. Carmel-Tobasco Rd. Cincinnati, Ohio 45244",
+    "lat": 39.093610132076,
+    "lon": -84.30054007476,
+    "matched": "4362 MOUNT CARMEL TOBASCO RD, CINCINNATI, OH, 45244",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2395,
+    "address": "111 W McMicken Ave, Cincinnati, OH 45202",
+    "lat": 39.118573000277,
+    "lon": -84.519737781195,
+    "matched": "111 W MCMICKEN AVE, CINCINNATI, OH, 45202",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2430,
+    "address": "1101 N. 4TH ST. COLUMBUS, OH 43201",
+    "lat": 39.985577900664,
+    "lon": -82.999409957664,
+    "matched": "1101 N 4TH ST, COLUMBUS, OH, 43201",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2441,
+    "address": "41 N. State Street Westerville, OH 43081",
+    "lat": 40.127192445255,
+    "lon": -82.932159975418,
+    "matched": "41 N STATE ST, WESTERVILLE, OH, 43081",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2444,
+    "address": "8377 Pearl Rd, Strongsville, OH 44136",
+    "lat": 41.348032876256,
+    "lon": -81.822431154881,
+    "matched": "8377 PEARL RD, STRONGSVILLE, OH, 44136",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2455,
+    "address": "2276 US-22, Morrow, OH 45152",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2460,
+    "address": "4811 Vine Street, Cincinnati, OH 45217",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2463,
+    "address": "7020-A Huntley Rd. Worthington, OH 43229",
+    "lat": 40.106304342439,
+    "lon": -82.998058112042,
+    "matched": "7020 HUNTLEY RD, COLUMBUS, OH, 43229",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  }
+]

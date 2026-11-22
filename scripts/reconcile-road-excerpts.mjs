@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// For a road built from the regional checkers' files: re-reads every cited page and writes
+// Re-reads every page a road's listable rows cite and writes
 // data/roads/<slug>/corrections.json, so that what the page shows is word for word what the source prints.
 //   node scripts/reconcile-road-excerpts.mjs route-66      then: node scripts/build-road-trip.mjs route-66
 // The checkers sometimes tidied what they copied (added commas to an address, skipped a phone number or a
@@ -14,12 +14,19 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
 if (!slug || !/^[a-z0-9-]+$/.test(slug)) { console.error('usage: node scripts/reconcile-road-excerpts.mjs <slug>'); process.exit(2); }
-const { normaliseCheckerFiles, pageText, asPrinted, hoursOnly, excerptFound } = await import(join(root, 'src/lib/road-trip.ts'));
+const { normaliseCheckerFiles, applyRowEdits, pageText, asPrinted, hoursOnly, excerptFound } = await import(join(root, 'src/lib/road-trip.ts'));
 const dir = join(root, 'data/roads', slug);
 const read = (f) => JSON.parse(readFileSync(join(dir, f), 'utf8'));
 const all = readdirSync(dir).sort(), list = (re) => all.filter((f) => re.test(f));
 // The rows as the checkers wrote them, with the editor's rulings applied but no earlier corrections.
-const { verified } = normaliseCheckerFiles(read('candidates.json'), list(/^verified_.*\.json$/).flatMap(read), list(/^leads_.*\.json$/).flatMap(read), existsSync(join(dir, 'decisions.json')) ? read('decisions.json') : []);
+// The rows with the editor's rulings applied but no earlier corrections. A road built from checker files is read
+// through normaliseCheckerFiles; a directory road's rows are used as they are, keyed by directory id.
+const configModule = await import(join(root, `src/data/roads/${slug}.ts`));
+const config = Object.values(configModule).find((v) => v && typeof v === 'object' && v.slug === slug);
+const decisions = existsSync(join(dir, 'decisions.json')) ? read('decisions.json') : [];
+const verified = config?.ingest === 'checker-files'
+  ? normaliseCheckerFiles(read('candidates.json'), list(/^verified_.*\.json$/).flatMap(read), list(/^leads_.*\.json$/).flatMap(read), decisions).verified
+  : applyRowEdits(list(/^verified.*\.json$/).flatMap(read), decisions).rows.map((r) => ({ ...r, id: String(r.id) }));
 const today = new Date().toISOString().slice(0, 10);
 const pages = new Map(), out = [];
 const linksOf = new Map();

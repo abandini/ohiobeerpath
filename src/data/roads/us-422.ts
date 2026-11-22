@@ -15,12 +15,19 @@ export const US_422: RoadConfig = {
   // operating evidence (printed visiting hours read on its own site that day), the source verifier passes, and the page
   // states how many nearby directory breweries we reached a decision on. Set it false to take the road down everywhere.
   publish: true,
+  // Location identity: a stop is measured from coordinates tied to the address it prints (Census coordinates for
+  // that address, data/roads/us-422/geocodes.json, or the directory's point when the address is the directory's in
+  // full), or it stays off. See addressMustMatch in src/lib/road-trip.ts for the exact order.
+  addressMustMatch: true,
   // Listed when within this straight-line distance of the road. Five miles is the low end of the "road-trip pace"
   // detours other route tools offer (see the research note "Single road brewery trips/landscape.md", section 7).
   maxDetourMiles: 5,
   gapNoteMiles: 15,
   geometry: { source: 'OpenStreetMap ways tagged as US 422, downloaded through the Overpass API', downloaded: '2026-11-22' },
   about: 'US 422 is one number on two roads that do not meet. The western one runs from downtown Cleveland, Ohio, east to Ebensburg, Pennsylvania. The eastern one is entirely in Pennsylvania, from Hershey east to King of Prussia, near Philadelphia. This page treats them as two legs.',
+  methodNotes: [
+    'Placing a brewery. A stop is measured from coordinates tied to the address the brewery prints. First choice: the US Census geocoder’s coordinates for that address, when the address it matched is the printed one in full (street number, direction, street name, suffix, town and state). Second: our directory’s map point, when the printed address is the directory’s address in full. A looser geocoder match is used only when it falls within a quarter of a mile of the directory’s point. A brewery with none of these is left off.',
+  ],
   roadSources: [
     { quote: 'split into two segments in the U.S. states of Ohio and Pennsylvania', url: WIKI, checked: C },
     { quote: 'The western segment of US 422 runs from downtown Cleveland, Ohio, east to Ebensburg, Pennsylvania.', url: WIKI, checked: C },

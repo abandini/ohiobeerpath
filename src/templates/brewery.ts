@@ -1,6 +1,6 @@
 import { layout } from './layout';
 import { DOWNTOWN_TOUR } from '../data/tours/downtown-cleveland';
-import { roadStopFor } from '../data/roads';
+import { roadStopFor, roadStopsFor } from '../data/roads';
 import { medalBadges, medalList } from './downtown-tour';
 import type { Brewery } from '../types';
 import type { TapList } from '../services/taplist';
@@ -121,15 +121,13 @@ function tourCallout(id: number): string {
 
 // A brewery that is a listed stop on a published single-road list links to it, with its nearest point on our mapped line.
 export function roadCallout(id: number, roads?: Parameters<typeof roadStopFor>[1]): string {
-  const hit = roadStopFor(id, roads);
-  if (!hit) return '';
-  const { road, stop } = hit, leg = road.legs.find((l) => l.id === stop.legId)!;
-  return `
+  // One card for each road the brewery is a listed stop on.
+  return roadStopsFor(id, roads).map(({ road, stop }) => { const leg = road.legs.find((l) => l.id === stop.legId)!; return `
           <div class="content-card">
             <h2><i class="bi bi-signpost text-warning" aria-hidden="true"></i> On our ${escapeHtml(road.config.name)} list</h2>
             <p>Its nearest point on our mapped line of ${escapeHtml(road.config.shortName)} is mile ${stop.mile.toFixed(1)} of the ${escapeHtml(leg.from.split(',')[0])} to ${escapeHtml(leg.to.split(',')[0])} leg; it is ${stop.detourMiles < 0.1 ? 'under 0.1' : stop.detourMiles.toFixed(1)} miles from that line, straight-line (not a driving distance). Its listing there is supported by published visiting hours read on ${escapeHtml(stop.evidenceChecked)}.</p>
             <a href="/roads/${escapeAttr(road.config.slug)}#stop-${stop.breweryId}" class="btn btn-warning">See the list</a>
-          </div>`;
+          </div>`; }).join('');
 }
 
 export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyBreweries?: Brewery[], reviews?: Review[], tapList?: TapList | null): string {

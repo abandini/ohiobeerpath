@@ -1,0 +1,299 @@
+[
+  {
+    "id": 26,
+    "address": "5700 PATRIOT BLVD. UNIT B, YOUNGSTOWN, OH 44515",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 51,
+    "address": "1844 COLUMBUS RD, CLEVELAND, OH 44113, US",
+    "lat": 41.490024686326,
+    "lon": -81.700542310332,
+    "matched": "1844 COLUMBUS RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 60,
+    "address": "11610 Washington Street, Chagrin Falls, OH 44023",
+    "lat": 41.387341406055,
+    "lon": -81.22325135962,
+    "matched": "11610 E WASHINGTON ST, CHAGRIN FALLS, OH, 44023",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 72,
+    "address": "1250 Old River Road Cleveland, OH 44113",
+    "lat": 41.49893509274,
+    "lon": -81.70403286028,
+    "matched": "1250 OLD RIVER RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 82,
+    "address": "8284 Washington St Chagrin Falls, Ohio 44023-4508",
+    "lat": 41.415269843895,
+    "lon": -81.346279965349,
+    "matched": "8284 WASHINGTON ST, CHAGRIN FALLS, OH, 44023",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 120,
+    "address": "2135 Columbus Road Cleveland, OH 44113",
+    "lat": 41.483171245822,
+    "lon": -81.700384663327,
+    "matched": "2135 COLUMBUS RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 130,
+    "address": "1361 E 55th St Cleveland, OH 44103",
+    "lat": 41.52327863149,
+    "lon": -81.651856538264,
+    "matched": "1361 E 55TH ST, CLEVELAND, OH, 44103",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 136,
+    "address": "2516 Market Ave. Cleveland Ohio 44113",
+    "lat": 41.484553760182,
+    "lon": -81.703959291599,
+    "matched": "2516 MARKET AVE, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 154,
+    "address": "1550 Chester Ave Cleveland, OH 44114",
+    "lat": 41.503129261485,
+    "lon": -81.681207637898,
+    "matched": "1550 CHESTER AVE, CLEVELAND, OH, 44114",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 182,
+    "address": "11111 Euclid Avenue Cleveland, OH 44106",
+    "lat": 41.506807166059,
+    "lon": -81.608135958854,
+    "matched": "11111 EUCLID AVE, CLEVELAND, OH, 44106",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 207,
+    "address": "1947 W 25th St, Cleveland, OH 44113",
+    "lat": 41.48482045004,
+    "lon": -81.703802788977,
+    "matched": "1947 W 25TH ST, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 208,
+    "address": "1261 Superior Ave, Cleveland, OH 44114",
+    "lat": 41.503731594636,
+    "lon": -81.685773349974,
+    "matched": "1261 E SUPERIOR AVE, CLEVELAND, OH, 44114",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 218,
+    "address": "125 David Grohl Alley Warren, OH 44481",
+    "lat": 41.235616998476,
+    "lon": -80.819450667721,
+    "matched": "125 DAVID GROHL ALY, WARREN, OH, 44481",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 259,
+    "address": "460 E FEDERAL ST YOUNGSTOWN, OHIO",
+    "lat": 41.096591977218,
+    "lon": -80.641190108193,
+    "matched": "460 FEDERAL PLZ E, YOUNGSTOWN, OH, 44503",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 280,
+    "address": "2885 Detroit Ave Cleveland, OH 44113",
+    "lat": 41.489891554902,
+    "lon": -81.710728794504,
+    "matched": "2885 DETROIT RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 296,
+    "address": "811 Prospect Ave E, Cleveland, OH 44115",
+    "lat": 41.498837277811,
+    "lon": -81.686940611873,
+    "matched": "811 PROSPECT AVE E, CLEVELAND, OH, 44115",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 308,
+    "address": "7524 Father Frascati, Cleveland, OH 44102",
+    "lat": 41.486971498729,
+    "lon": -81.736705549595,
+    "matched": "7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 992,
+    "address": "1474 State Route 208 Pulaski, PA 16143",
+    "lat": 41.106089841247,
+    "lon": -80.448360366832,
+    "matched": "1474 STATE RTE 208, PULASKI, PA, 16143",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1020,
+    "address": "3 DeKalb St Bridgeport, PA 19405",
+    "lat": 40.108299079854,
+    "lon": -75.345162119012,
+    "matched": "3 DEKALB ST, BRIDGEPORT, PA, 19405",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1030,
+    "address": "2516 Benjamin Franklin Hwy Edinburg, Pennsylvania",
+    "lat": 41.045194468886,
+    "lon": -80.425283871768,
+    "matched": "2516 BENJAMIN FRANKLIN HWY, EDINBURG, PA, 16116",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1082,
+    "address": "1808 W. SCHUYLKILL RD. DOUGLASSVILLE, PA 19518",
+    "lat": 40.248054941178,
+    "lon": -75.721109410851,
+    "matched": "1808 SCHUYLKILL RD, DOUGLASSVILLE, PA, 19518",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1115,
+    "address": "642 Lancaster Avenue, Berwyn, PA, 19312",
+    "lat": 40.047778788934,
+    "lon": -75.441660546327,
+    "matched": "642 LANCASTER AVE, BERWYN, PA, 19312",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1122,
+    "address": "1380 Wayne Ave Ste A Indiana, PA 15701",
+    "lat": 40.601061286976,
+    "lon": -79.162762433084,
+    "matched": "1380 WAYNE AVE, INDIANA, PA, 15701",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1184,
+    "address": "1747 N. Main St. Ext. Butler, PA 16001",
+    "lat": 40.908130182225,
+    "lon": -79.925687031392,
+    "matched": "1747 N MAIN ST, BUTLER, PA, 16001",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1196,
+    "address": "1 N Main St, Phoenixville, PA 19460",
+    "lat": 40.137954832296,
+    "lon": -75.515526976327,
+    "matched": "1 N MAIN ST, PHOENIXVILLE, PA, 19460",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1197,
+    "address": "245 W. Main Street Annville, PA 17003",
+    "lat": 40.328584395809,
+    "lon": -76.519813953924,
+    "matched": "245 W MAIN ST, ANNVILLE, PA, 17003",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1216,
+    "address": "520 Kimberton Rd. Phoenixville, PA 19460",
+    "lat": 40.129697790581,
+    "lon": -75.547354652254,
+    "matched": "520 KIMBERTON RD, PHOENIXVILLE, PA, 19460",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1217,
+    "address": "331 Circle of Progress Dr, Pottstown, PA 19464",
+    "lat": 40.263284099499,
+    "lon": -75.666373331863,
+    "matched": "331 CIRCLE OF PROGRESS DR, POTTSTOWN, PA, 19464",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1218,
+    "address": "7 North 9th Street Lebanon, Pa 17046",
+    "lat": 40.339347068246,
+    "lon": -76.426337334733,
+    "matched": "7 N 9TH ST, LEBANON, PA, 17046",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1228,
+    "address": "368 Bridge Street Phoenixville, PA 19460",
+    "lat": 40.132814307619,
+    "lon": -75.521156781919,
+    "matched": "368 BRIDGE ST, PHOENIXVILLE, PA, 19460",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 1261,
+    "address": "200 East Hershey Park Drive, Hershey, PA 17033",
+    "lat": 40.298047821278,
+    "lon": -76.643377684416,
+    "matched": "200 HERSHEY PARK DR, HERSHEY, PA, 17033",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2356,
+    "address": "2717 Lorain Avenue Cleveland, OH, 44113",
+    "lat": 41.483457402074,
+    "lon": -81.704821388631,
+    "matched": "2717 LORAIN AVE, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2394,
+    "address": "126 E Rayen Ave Youngstown, OH 44503",
+    "lat": 41.102368249487,
+    "lon": -80.645595012821,
+    "matched": "126 E RAYEN AVE, YOUNGSTOWN, OH, 44503",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  }
+]
