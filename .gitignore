@@ -51,7 +51,3 @@ data/breweries-export.json
 
 # Git worktrees
 .worktrees/
-
-# Monthly re-check: the directory-status detail is an internal lead and is never committed; proposals are local
-data/monthly/internal/
-data/monthly/proposed/

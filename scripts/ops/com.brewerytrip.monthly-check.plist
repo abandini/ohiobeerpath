@@ -3,9 +3,10 @@
 <!--
   The Brewery Trip monthly re-check. Full run on the 1st at 04:20; confirming pass on the 4th at 04:20 (the wrapper
   passes the confirm option on the 4th). Read docs/monthly-check.md before installing.
+  The job publishes nothing and changes no file in the checkout: it observes, keeps its state under
+  /Users/auto1/brewerytrip-monthly, and writes reports and proposals there for a person to read.
   Install (by a person):  cp scripts/ops/com.brewerytrip.monthly-check.plist ~/Library/LaunchAgents/
                           launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.brewerytrip.monthly-check.plist
-  Publishing is off. To turn it on, add under EnvironmentVariables:  <key>MONTHLY_AUTOPUBLISH</key><string>1</string>
 -->
 <plist version="1.0">
 <dict>
@@ -24,6 +25,7 @@
   <key>EnvironmentVariables</key>
   <dict>
     <key>MONTHLY_REPO</key><string>/Users/auto1/CascadeProjects/ohiobrewpath</string>
+    <key>MONTHLY_DATA_DIR</key><string>/Users/auto1/brewerytrip-monthly</string>
     <key>MONTHLY_LOG_DIR</key><string>/Users/auto1/logs</string>
   </dict>
   <key>StandardOutPath</key><string>/Users/auto1/logs/brewerytrip-monthly-check.out.log</string>
