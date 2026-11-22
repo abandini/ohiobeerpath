@@ -1,0 +1,218 @@
+[
+ {
+  "id": 656,
+  "name": "Soo Brewing Company",
+  "status": "MOVED/RENAMED",
+  "official_url": "https://soobrew.com/",
+  "address_as_printed": "100 West Portage Avenue Sault Ste. Marie, MI 49783",
+  "address_source_url": "https://soobrew.com/",
+  "operating_evidence": null,
+  "notes": "Directory lists 223 W Portage Ave; the brewery's own site now prints only 100 West Portage Avenue (the same address as row 559, Lockside Brewery / 1668 Winery) and names the business 'Soo Brewing Company and 1668 Winery'. The site does not say when or why it moved. No visiting hours or dated 2026 item printed on home, contact or food pages, so even at the new address it is not confirmed open. Footer also prints '100 W Portage Avenue Sault Sainte Marie, MI 49783'; contact page prints '100 West Portage Sault Ste. Marie, MI 49783'. Treat as the same business as row 559.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 559,
+  "name": "Lockside Brewery / 1668 Winery",
+  "status": "UNCONFIRMED",
+  "official_url": "https://soobrew.com/",
+  "address_as_printed": "100 West Portage Avenue Sault Ste. Marie, MI 49783",
+  "address_source_url": "https://soobrew.com/",
+  "operating_evidence": null,
+  "quote": "Soo Brewing Company / 1668 Winery produces beers and wines that the people of Sault Sainte Marie can be proud of",
+  "quote_source_url": "https://soobrew.com/",
+  "notes": "Listed URL http://1668winery.com/thebeers/ returns 403 Forbidden. The business at 100 W Portage now presents itself as 'Soo Brewing Company and 1668 Winery' on soobrew.com; the name 'Lockside Brewery' does not appear. No printed hours and no dated 2026 item on home, contact or food pages (footer copyright 2022). UNCONFIRMED: no operating evidence. A person could check whether hours are posted elsewhere. Row 656 (Soo Brewing, old address 223 W Portage) is the same business.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 391,
+  "name": "Biere De Mac Brew Works",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.bieredemac.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "script-rendered: the HTML is an empty React shell (page text is only the title). The site's JavaScript bundle (not citable as page text) contains an address '14277 Mackinaw Hwy / Mackinaw City, MI 49701' and an hours table: Monday Closed, Tuesday Closed, Wednesday 12:00 PM – 9:00 PM, Thursday 12:00 PM – 9:00 PM, Friday 12:00 PM – 10:00 PM, Saturday 12:00 PM – 10:00 PM, Sunday 12:00 PM – 7:00 PM, with no season stated. A person should open https://www.bieredemac.com/#visit in a browser and confirm the Hours & Location section. Directory street is '14277 N Mackinaw Hwy'. Brewery, restaurant and beer garden per meta description.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 655,
+  "name": "Snowbelt Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No website in the directory. snowbeltbrewery.com (the domain search results attribute to it) now serves only a script redirect to '/lander', a parked-domain page: do not link. The Toast online-ordering page returned 403 (bot challenge); not worked around. Gaylord tourism bureau page (https://www.gaylordmichigan.net/member/snowbelt-brewing-company/) lists 'Address: 132 W. Main St. Gaylord, MI 49735' and calls it a 'four season microbrewery' but prints no hours. Needs a human: no first-hand source readable.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 608,
+  "name": "Paddle Hard Brewing",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.paddlehardbrewing.com/",
+  "address_as_printed": "227 Michigan Ave Grayling, MI 49738",
+  "address_source_url": "https://www.paddlehardbrewing.com/",
+  "operating_evidence": null,
+  "quote": "Re-established in 2020, Paddle Hard Brewing aims to be a gathering place for those playing hard, relaxing hard, and of course, paddling hard.",
+  "quote_source_url": "https://www.paddlehardbrewing.com/",
+  "notes": "No visiting hours printed on home, brew-pub, food, beverages, now-pouring, the-yard or employment pages; the only 2026 is the Shopify footer copyright, which is not operating evidence. Directory street is 118 Michigan Ave; the site prints 227 Michigan Ave (address differs, site does not explain). Brew pub with house-made food, cocktails, cider; says it is open in Grayling 'year round'. Needs a person to find current hours.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 637,
+  "name": "Rolling Oak Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.rollingoakbrewing.com/",
+  "address_as_printed": "509 Norway St, Grayling, MI 49738",
+  "address_source_url": "https://www.rollingoakbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "509 Norway St. Grayling, MI 49748 Open: 12:00PM Close: 10:00PM Everyday. Food truck open Wednesday-Saturday.",
+   "url": "https://www.rollingoakbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location. The home page prints the address two ways: '509 Norway St. Grayling, MI 49748' beside the hours (ZIP typo, 49748) and '509 Norway St, Grayling, MI 49738' in the footer; the footer form (correct Grayling ZIP 49738) is recorded. Hours printed with no season stated. Food truck Wednesday-Saturday; flagship beers listed on site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 449,
+  "name": "Dead Bear Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.deadbearbrewing.net/",
+  "address_as_printed": "2552 South I-75 Business Loop Grayling, Michigan 49738",
+  "address_source_url": "https://www.deadbearbrewing.net/contact",
+  "operating_evidence": {
+   "excerpt": "Business Hours Monday Closed Tue - Thu 11:00 am - 9:00 pm Fri - Sat 11:00 am - 10:00 pm Sunday 11:00 am - 8:00 pm Extended summer hours between Memorial Week and Labor Day Week",
+   "url": "https://www.deadbearbrewing.net/contact",
+   "checked": "2026-11-22"
+  },
+  "notes": "Listed URL https://deadbearbrewing.com no longer resolves (DNS not found); the brewery's working site is deadbearbrewing.net. Seasonal note printed: 'Extended summer hours between Memorial Week and Labor Day Week' (the summer hours themselves are not printed). Brewpub with full food menu; rotating house brews ('Call ahead for current tap list') on /dead-bear-brews. Single location. Address printed the same way on home page footer and contact page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 681,
+  "name": "The Highway Brewing Co.",
+  "status": "OPEN",
+  "official_url": "https://highwaybrewingco.com/",
+  "address_as_printed": "209 W. Houghton Avenue, West Branch, MI 48661",
+  "address_source_url": "https://highwaybrewingco.com/",
+  "operating_evidence": {
+   "excerpt": "Come Visit Us! 209 W. Houghton Avenue, West Branch, MI 48661 989-701-2739 Wed - Mon 11AM - 9PM Closed Tuesdays",
+   "url": "https://highwaybrewingco.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "With several flagship brews and rotating seasonal offerings all brewed on site",
+  "quote_source_url": "https://highwaybrewingco.com/",
+  "notes": "Single location; brews on site; brewpub in the former West Branch Fire Hall with pub fare and 16 taps; opened January 2018.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 564,
+  "name": "Lumber Barons Brewery",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "closure_evidence": {
+   "excerpt": "They are housed in the same building that another brewery I visited years ago, Lumber Barons Brewery, used to be located in.",
+   "url": "https://www.betterondraft.com/blogs/brewery-reviews/w-h-ales-brewpub-in-bay-city",
+   "checked": "2026-11-22"
+  },
+  "notes": "Better On Draft (Michigan beer blog, published January 2, 2025) on W.H. Ales Brewpub, which held its grand opening June 10, 2024 in the Liberty Harbor Event Center on Midland Street, the former Lumber Barons building. Source is a beer blog, not news or the brewery itself; MLive's story on the same change returned 403 (not worked around). The old domain lumberbaronsbrewery.com now redirects to an Indonesian slot-gambling site (rtpslot828.com): DO NOT LINK. Lead for a later road: W.H. Ales Brewpub at 804 E Midland St is a different, newer business and was not checked here.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 702,
+  "name": "Tri City Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://tricitybrewing.com/",
+  "address_as_printed": "4170 Shrestha Drive, Bay City, MI 48706",
+  "address_source_url": "https://tricitybrewing.com/",
+  "operating_evidence": {
+   "excerpt": "TASTING ROOM HOURS Last Call 1/2 hour before close Tuesday, Wednesday & Thursday 3:00 pm-10:00 pm Friday Noon - 11:00 pm Saturday Noon - 11:00 pm Sunday Noon - 8:00 pm",
+   "url": "https://tricitybrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location tasting room; Monday not listed (closed). The home page prints the address twice: 'Come visit at 4170 Shrestha Drive Bay City, MI 48706' (no comma) and '4170 Shrestha Drive, Bay City, MI 48706'. Distributes beer; Now On Draft tab on site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 602,
+  "name": "Oracle Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.oraclebeer.com/",
+  "address_as_printed": "122 N Michigan Old Town Saginaw, MI 48602",
+  "address_source_url": "https://www.oraclebeer.com/",
+  "operating_evidence": {
+   "excerpt": "Come hang 122 N Michigan Old Town Saginaw, MI 48602 · 989-401-7446 Tue – Sat 4pm – 10pm Sunday 2pm – 8pm Monday Closed",
+   "url": "https://www.oraclebeer.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Hazy IPAs, crisp lagers, wild sours and big stouts, brewed and poured in Old Town Saginaw.",
+  "quote_source_url": "https://www.oraclebeer.com/",
+  "notes": "Single location; brews on site; no kitchen ('order from Old Town's kitchens or bring a picnic'). Address printed without 'Ave' ('122 N Michigan'); 'Old Town' is a neighborhood label printed between street and city.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 488,
+  "name": "Frankenmuth Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://frankenmuthbrewery.com/",
+  "address_as_printed": "425 South Main St. Frankenmuth, MI",
+  "address_source_url": "https://frankenmuthbrewery.com/contact/",
+  "operating_evidence": {
+   "excerpt": "Monday 11:30am - 9:00pm Tuesday Closed Wednesday 11:30am - 9:00pm Thursday 11:30am - 9:00pm Friday 11:30am - 10:00pm Saturday 11:30am - 10:00pm Sunday 11:30am - 9:00pm",
+   "url": "https://frankenmuthbrewery.com/contact/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our menu features family favorites, shareable plates, and fresh flavors that pair perfectly with our house-brewed beers.",
+  "quote_source_url": "https://frankenmuthbrewery.com/",
+  "notes": "Seasonal hours printed on the contact page: '* Our off season hours begin after New Year's. Beginning 1/4/2027, we will be open Thursdays through Sundays.' Also: closed Thanksgiving and Christmas Day. Brewery Location printed as '425 South Main St. Frankenmuth, MI' with no ZIP. Restaurant plus house-brewed beer; banquet venue (The River View) on site. Single location.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 628,
+  "name": "Redwood Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://redwoodflint.com/brewery",
+  "address_as_printed": "5304 Gateway Centre Drive Flint, MI 48507",
+  "address_source_url": "https://redwoodflint.com/brewery",
+  "operating_evidence": {
+   "excerpt": "Hours Monday – Thursday 11:00am – 9:00pm Friday 11:00am – 10:00pm Saturday 4:00pm – 10:00pm Sunday 11:00am – 4:00pm (Brunch)",
+   "url": "https://redwoodflint.com/brewery",
+   "checked": "2026-11-22"
+  },
+  "quote": "We started brewing the year we opened, and we never sent it out for someone else to make.",
+  "quote_source_url": "https://redwoodflint.com/brewery",
+  "notes": "Restaurant with an on-site brewhouse since 1996; single location. Holiday hours printed: Thanksgiving Thursday November 26 closed; Christmas Eve 12:00pm to 6:00pm; Christmas Day and New Year's Day closed.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 674,
+  "name": "Tenacity Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.tenacitybrewing.com/",
+  "address_as_printed": "119 N Grand Traverse St Flint, Michigan",
+  "address_source_url": "https://www.tenacitybrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday - Thursday 3:00pm - 10:00pm Friday 3:00pm - 12:00am Saturday 12:00pm - 12:00am Sunday Available for private events. Call to book.",
+   "url": "https://www.tenacitybrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location. Page prints no ZIP. Short one-page site; it does not state in readable text that beer is brewed on site (title says 'Craft Beers in Flint, MI'). Sunday is private events only.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 689,
+  "name": "The Red Baron",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://baronburger.com/",
+  "address_as_printed": "2495 s center rd burton MI 48519 us",
+  "address_source_url": "https://baronburger.com/contact-us.html",
+  "operating_evidence": null,
+  "quote": "We are dedicated to maintaining 56 pristine, rotating taps that celebrate local and regional brewing excellence, paired with a welcoming sports bar atmosphere",
+  "quote_source_url": "https://baronburger.com/about-us.html",
+  "notes": "Calls itself 'Brew Pub & Tap Room' but the about page describes a sports bar pouring 'Hand-Crafted Micro Brews from michigan and other great places'; nothing on the site says it brews its own beer, and the beers page is empty. Treated as a craft-beer bar, not a brewery. No hours printed (only daily specials from 6pm). A person could confirm whether any house beer is brewed.",
+  "checked": "2026-11-22"
+ }
+]

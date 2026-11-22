@@ -1,0 +1,49 @@
+[
+  {
+    "match": 545,
+    "status": "UNCONFIRMED",
+    "reason": "editor: hours not established. Its site prints only a same-day line (\"Open today until 10:00 pm\"), which is not printed visiting hours."
+  },
+  {
+    "match": 450,
+    "status": "UNCONFIRMED",
+    "reason": "editor: hours not established. The only hours on its site are in an undated FAQ answer."
+  },
+  {
+    "match": 34,
+    "status": "UNCONFIRMED",
+    "reason": "editor: not a healthy observation. The server answers every URL with HTTP 404 while printing the address and hours."
+  },
+  {
+    "match": 941,
+    "status": "NOT A BREWERY TAPROOM",
+    "reason": "editor: a visitor centre with brewery and distillery tours. Its pages (lexingtonbrewingco.com and /distilleries-tours, read 2026-11-22) print visitor-centre and tour hours and nowhere mention a taproom or tasting room with visiting hours."
+  },
+  {
+    "match": 302,
+    "status": "UNCONFIRMED",
+    "reason": "editor: not established as a brewery. Its own site (starcitybrewing.com, read 2026-11-22) prints hours and lists beers on tap but does not say beer is brewed there."
+  },
+  {
+    "match": 449,
+    "reason": "editor: seasonal hours, as the page prints them",
+    "seasonal": true
+  },
+  {
+    "match": 488,
+    "reason": "editor: seasonal hours, as the page prints them",
+    "seasonal": true
+  },
+  {
+    "match": 628,
+    "reason": "editor: holiday hours, as the page prints them",
+    "seasonal": true
+  },
+  {
+    "match": 183,
+    "reason": "editor: reviewed placement exception, a stray word in how one address is written",
+    "acceptPlacement": {
+      "evidence": "Printed \"145 S. Main Street Downtown Bowling Green, OH\"; the geocoder matched \"145 S MAIN ST, BOWLING GREEN, OH, 43402\". Same number, street, town and state. The only difference is the word \"Downtown\" before the town."
+    }
+  }
+]

@@ -237,6 +237,8 @@ export const quoteAdds = (s: StopView): boolean => s.quote.trim().length >= 45 &
 
 /** "hours" unless the checker's row says the evidence is a dated notice or event. */
 const evidenceHeading = (s: StopView) => `Operating evidence: ${s.evidenceKind === 'notice' ? 'event notice' : 'hours'} read on ${s.evidenceChecked}`;
+/** Said under a stop whose cited page prints hours that change with the season or on holidays. */
+export const SEASONAL_LABEL = 'Seasonal or holiday hours: the page says these hours change by season or on holidays.';
 /** Said under a stop that is listed on a notice, not on hours. */
 export const NOTICE_LABEL = 'Event notice; regular visiting hours not established here.';
 
@@ -269,7 +271,8 @@ function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
               <p class="rt-why"><strong>${h(evidenceHeading(s))}</strong></p>${s.evidenceKind === 'notice' ? `
               <p class="rt-src">${h(NOTICE_LABEL)}${s.noticeContext ? ` ${h(s.noticeContext)}` : ''}</p>` : ''}
               <blockquote>“${h(s.evidence)}”</blockquote>
-              <p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))}. Check current opening information with the brewery before you travel.</p>
+              <p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))}. Check current opening information with the brewery before you travel.</p>${s.seasonal ? `
+              <p class="rt-src"><strong>${h(SEASONAL_LABEL)}</strong></p>` : ''}
               ${quoteAdds(s) ? `<blockquote>“${h(s.quote)}”</blockquote>
               <p class="rt-src">Also read on ${ext(quoteUrl, hostOf(quoteUrl))}, ${h(s.checked)}</p>` : ''}
               ${placedLabel(s) ? `<p class="rt-src">${h(placedLabel(s))}</p>` : ''}

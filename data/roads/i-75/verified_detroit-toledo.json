@@ -1,0 +1,543 @@
+[
+ {
+  "id": 474,
+  "name": "Fenton Winery & Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.fentonbrewery.com/",
+  "address_as_printed": "1370 N Long Lake Rd Fenton Twp, MI 48430",
+  "address_source_url": "https://www.fentonbrewery.com/contact-us",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Tuesday - Thursday 3PM - 10PM Friday & Saturday 12PM - 10PM Sunday 11AM - 8PM Monday Closed",
+   "url": "https://www.fentonbrewery.com/contact-us",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location: taproom restaurant, winery, brewery and Dream Machine Distillery plus wedding venue. Address printed as 'Fenton Twp, MI'. Home page also lists dated events (November 22nd 2026 Open Tour Day; 4TH Sunday Bloody Mary Bar).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 611,
+  "name": "Parkers Hilltop Brewery",
+  "status": "OPEN",
+  "official_url": "https://hilltopbrew.com/",
+  "address_as_printed": "6110 Dixie Hwy – Clarkston, MI",
+  "address_source_url": "https://hilltopbrew.com/",
+  "operating_evidence": {
+   "excerpt": "Monday: CLOSED Tuesday: 4PM-9PM Wednesday: 4PM-9PM Thursday: 4PM-9PM Friday: 12PM-11PM Saturday: 12PM-11PM Sunday: 12PM-8PM",
+   "url": "https://hilltopbrew.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "We have, Beaten NEIPA, Bellas Blonde, and Mr. Hockey currenlty in the fermenter!",
+  "quote_source_url": "https://hilltopbrew.com/",
+  "notes": "Single location brewpub ('Local Brewpub in Clarkston'); brews on site (beers in the fermenter; 16 tap handles); full menu. Address printed with an en dash and no ZIP. Quote keeps the site's typo 'currenlty'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 643,
+  "name": "Rustic Leaf Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://rusticleafbrewing.com/",
+  "address_as_printed": "7200 Highland Road, Waterford, MI.",
+  "address_source_url": "https://rusticleafbrewing.com/contact-page/",
+  "operating_evidence": {
+   "excerpt": "Hours: Sunday: Closed Monday: Closed Tuesday: 3 PM – 10 PM Wednesday: 3 PM – 10 PM Thursday: 3 PM – 10 PM Friday: 3 PM – 10 PM Saturday: 12 PM – 10 PM",
+   "url": "https://rusticleafbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location. Address appears only in a sentence on the contact page ('Rustic Leaf Brewing Company is located at 7200 Highland Road, Waterford, MI.'), no ZIP printed. Taproom with tap list, menu and mug club.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 477,
+  "name": "Fillmore 13 Brewery",
+  "status": "OPEN",
+  "official_url": "https://fillmore13brewery.com/",
+  "address_as_printed": "7 North Saginaw Street Pontiac, Michigan 48342",
+  "address_source_url": "https://fillmore13brewery.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Mon: CLOSED Tuesday - Thursday 11:30am-10:00pm (kitchen closes at 9:50pm/last call 10:00pm) Friday & Saturday 11:30am-10:30pm (kitchen closes at 9:50pm/last call 10:30pm) Sun: CLOSED",
+   "url": "https://fillmore13brewery.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Microbrewery serving ales and lagers alongside fantastical brick oven pizzas and sandwiches.",
+  "quote_source_url": "https://fillmore13brewery.com/",
+  "notes": "Single location; brews on an in-house 7 BBL system; brick oven pizza and sandwiches.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 500,
+  "name": "Granite City Food & Brewery (#28)",
+  "status": "OPEN",
+  "official_url": "https://www.gcfb.com/location/troy-michigan/",
+  "address_as_printed": "699 W. Big Beaver Road Troy, Michigan 48084",
+  "address_source_url": "https://www.gcfb.com/location/troy-michigan/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday Open: 11:00AM-10:00PM Tuesday Open: 11:00AM-10:00PM Wednesday Open: 11:00AM-10:00PM Thursday Open: 11:00AM-10:00PM Friday Open: 11:00AM-10:00PM Saturday Open: 11:00AM-10:00PM Sunday Open: 9:00AM-9:00PM",
+   "url": "https://www.gcfb.com/location/troy-michigan/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location chain; every field is from the Troy location page. The page prints hours in three forms (summary 'Monday - Thursday 11AM - 10PM Friday - Saturday 11AM - 10PM Sunday 9AM - 9PM', a pipe-separated list, and the per-day 'Open:' list quoted). Page mentions 'booking a tour of our onsite brewery'; chain restaurant, so a reader may judge how much is brewed here. Listed URL gcfb.com is the chain home.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 397,
+  "name": "Big Rock Chop House & Brewery",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "closure_evidence": {
+   "excerpt": "the owners of Birmingham's Big Rock Chophouse now stated the restaurant will be closing its doors for the last time on Saturday, December 18.",
+   "url": "https://www.downtownpublications.com/single-post/big-rock-chophouse-closing-december-18",
+   "checked": "2026-11-22"
+  },
+  "notes": "Downtown Newsmagazine (Birmingham), Dec 10, 2021, by Lisa Brody: the chophouse at 245 S. Eton Street closed December 18, 2021. The space later reopened under other operators as Big Rock Italian Chophouse (per search results, not fetched); not a brewery. The listed domain bigrockchophouse.com now serves a TLS certificate for 375atthedistrict.com (an unrelated site): do not link. Directory type was already 'contract'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 509,
+  "name": "Griffin Claw Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://griffinclawbrewingcompany.com/location/birmingham/",
+  "address_as_printed": "575 South Eton Street Birmingham, MI 48009",
+  "address_source_url": "https://griffinclawbrewingcompany.com/location/birmingham/",
+  "operating_evidence": {
+   "excerpt": "Hours monday closed Tuesday 3pm – 11pm Wednesday 3pm – 11pm Thursday 12pm – 11pm Friday 12pm – 11pm Saturday 12pm – 11pm Sunday 12pm – 10pm",
+   "url": "https://griffinclawbrewingcompany.com/location/birmingham/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location brand (Birmingham and Rochester Hills); every field here is the Birmingham location's own page. The home page's 'Open today from 12pm - 10pm' line is a same-day line and was not used. Food menu at this location. The page does not itself say beer is brewed at the Birmingham address. The hours block is printed directly after the Birmingham address and phone (1 (248) 712-4050); the Rochester Hills block on the same page starts \"monday closed Tuesday 12pm\".",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 545,
+  "name": "Kuhnhenn Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.kbrewery.com/",
+  "address_as_printed": "5919 Chicago Rd, Warren, MI 48092",
+  "address_source_url": "https://www.kbrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Warren 5919 Chicago Rd, Warren, MI 48092 Open today until 10:00 pm Directions to Warren",
+   "url": "https://www.kbrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our own root beer, brewed in Warren on the same system as everything else we make.",
+  "quote_source_url": "https://www.kbrewery.com/",
+  "notes": "Two taprooms (Warren and Clinton Township); every field is about Warren. CAUTION: the site prints only a same-day line ('Open today until ...') per location, no weekly hours table; a re-check on another day may show a different time, so a person should re-read it when building. Footer prints the address a second way: '5919 Chicago Rd, Warren, MI 48092-1606, United States'. Brews in Warren (quote).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 455,
+  "name": "Dragonmead Microbrewery",
+  "status": "UNCONFIRMED",
+  "official_url": "https://dragonmead.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Site refused the automated request: HTTP 403 with a 'Just a moment...' bot challenge. Not worked around. A person should open https://dragonmead.com/ in a browser for hours and the 14600 E 11 Mile Rd address.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 640,
+  "name": "Royal Oak Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.royaloakbrewery.com/",
+  "address_as_printed": "215 E 4th Street Royal Oak, MI 48067",
+  "address_source_url": "https://www.royaloakbrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday - Thursday 11:30 AM - 10:00 PM Friday 11:30 AM - 11:00 PM Saturday 11:00 AM - 11:00 PM Sunday 11:00 AM - 9:00 PM",
+   "url": "https://www.royaloakbrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Royal Oak Brewery is Oakland County’s oldest brewpub and restaurant.",
+  "quote_source_url": "https://www.royaloakbrewery.com/",
+  "notes": "Single location brewpub and restaurant. Address also printed with a comma: '215 E 4th Street, Royal Oak, MI 48067'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 633,
+  "name": "Roak Brewing Co.",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "closure_evidence": {
+   "excerpt": "Roak Brewing Company, which has operated a taproom in the Oakland County city since 2015 announced online it wouldn't be reopening Feb. 1.",
+   "url": "https://www.fox2detroit.com/news/roak-brewing-in-royal-oak-announces-closing-of-taproom-feb-1",
+   "checked": "2026-11-22"
+  },
+  "notes": "FOX 2 Detroit, February 1, 2021: the Royal Oak taproom at 330 E Lincoln did not reopen; production moved to Marshall. Search results report Eastern Market Brewing Co. planned to expand into the former ROAK space (not fetched; a lead only, not this row).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 711,
+  "name": "Urbanrest Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.urbanrest.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": {
+   "excerpt": "HOURS OPEN Monday 4PM – 10PM Tuesday 4PM – 10PM Wednesday 4PM – 10PM Thursday 4PM – 11PM Friday 4PM – 12AM Saturday 12PM – 12AM Sunday 12PM – 9PM",
+   "url": "https://www.urbanrest.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Our space is designed to bring the consumer in to the brewing process while also providing a comfortable atmosphere",
+  "quote_source_url": "https://www.urbanrest.com/the-taproom-at-urbanrest/",
+  "notes": "Single location taproom at the brewery; food trucks and house charcuterie. No street address printed in readable text on the home, taproom, brewery, story or FAQ pages, so address_as_printed is null; a person should take the address from the site's map or confirm 2615 Wolcott St, Ferndale.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 725,
+  "name": "Woodward Avenue Brewers",
+  "status": "UNCONFIRMED",
+  "official_url": "http://www.thewabferndale.com/",
+  "address_as_printed": "22646 Woodward Avenue Ferndale, MI 48220",
+  "address_source_url": "http://www.thewabferndale.com/",
+  "operating_evidence": null,
+  "notes": "script-rendered (Squarespace): the visible page text is only 'Welcome Back to THE WAB!' plus address and phone 248-382-2888; no hours are printed. The page's embedded site settings carry business hours (Mon-Fri 4 pm to 2 am, Sat-Sun 12 pm to 2 am) and a different phone (248-546-3696), but that is not visible text. Nothing readable says the beer is still brewed on site. A person should open http://www.thewabferndale.com/ in a browser. Site serves over http only (no https redirect observed).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 369,
+  "name": "Atwater Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.atwaterbeer.com/about-us/location/",
+  "address_as_printed": "237 Jos Campau, Detroit, MI 48207",
+  "address_source_url": "https://www.atwaterbeer.com/about-us/location/",
+  "operating_evidence": {
+   "excerpt": "Stop by, say hello, we are open every day! 237 Jos Campau, Detroit, MI 48207 Menu Saturday-Friday 11AM-10PM; Sunday 11AM- 9PM",
+   "url": "https://www.atwaterbeer.com/about-us/location/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location brand (Detroit, Grosse Pointe Park, Grand Rapids tap rooms); every field is from the Detroit Tap Room page. Address printed as 'Jos Campau'. Hours printed oddly ('Saturday-Friday 11AM-10PM; Sunday 11AM- 9PM'), copied as printed. The page does not itself state that beer is brewed at this address.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 699,
+  "name": "Traffic Jam and Snug",
+  "status": "UNCONFIRMED",
+  "official_url": "http://www.trafficjamdetroit.com/",
+  "address_as_printed": "511 West Canfield St Detroit, MI 48201",
+  "address_source_url": "http://www.trafficjamdetroit.com/",
+  "operating_evidence": null,
+  "printed_hours_on_own_site": {
+   "excerpt": "Hours Wednesday 11A-8P Thursday 11A-8P Friday 11A-8P Saturday 11A-8P Sunday 11A-7P",
+   "url": "http://www.trafficjamdetroit.com/",
+   "checked": "2026-11-22"
+  },
+  "closure_evidence": {
+   "excerpt": "Once it cleared, it was obvious that Traffic Jam and Snug was a total loss.",
+   "url": "https://www.fox2detroit.com/news/detroit-loses-midtown-landmark-as-blaze-destroys-traffic-jam-snug-brewpub",
+   "checked": "2026-11-22"
+  },
+  "notes": "signals conflict. The own site still prints hours and 'We Miss You' text from the pandemic period (WECO Hospitality delivery partnership), but FOX 2 Detroit (May 27, 2022) reports the building was destroyed by fire and was a total loss. No report of reopening found. The brief requires UNCONFIRMED when the own site prints hours against a second same-day check that conflicted; a person should mark it CLOSED. Do not link the site; it shows stale hours.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 577,
+  "name": "Motor City Brewing Works",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.motorcitybeer.com/",
+  "address_as_printed": "470 W. Canfield, Detroit, MI 48201",
+  "address_source_url": "https://www.motorcitybeer.com/",
+  "operating_evidence": null,
+  "quote": "After February 8, the taproom will pause while we figure out what comes next.",
+  "quote_source_url": "https://www.motorcitybeer.com/",
+  "notes": "Own site is contradictory. It says the brewery 'marked 31 years of brewing on January 1, 2026', that the steam line powering the kettle was shut off on December 31, and that the taproom would pause after February 8. It also prints 'TEMPORARY SUMMER HOURS THROUGH JULY ... FRIDAY 3pm – 10pm SATURDAY Noon-10pm SUNDAY Noon- 8pm', which ran out in July; it is now November. Not confirmed open now: a person should check. Address also printed as '470 West Canfield Detroit, MI, 48201'. Beer distribution continues per the site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 578,
+  "name": "Motor City Brewing Works Warehouse",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No website listed; a second same-day check is on record. Motor City Brewing Works' own site prints only 470 W. Canfield and does not mention a separate warehouse taproom at 441 W Canfield. Probably a production/storage listing, not a public taproom, but no source says so. Not a stop.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 461,
+  "name": "Eastern Market Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.easternmarket.beer/",
+  "address_as_printed": "2515 Riopelle St Detroit, MI 48207",
+  "address_source_url": "https://www.easternmarket.beer/",
+  "operating_evidence": {
+   "excerpt": "hours Mon: Closed Tue - Fri: 4p - 10p Saturday: 10a - 10p Sunday: 11a - 7p taproom location 2515 Riopelle St Detroit, MI 48207",
+   "url": "https://www.easternmarket.beer/",
+   "checked": "2026-11-22"
+  },
+  "quote": "we’re a community-focused craft brewery and taproom in the heart of the eastern market",
+  "quote_source_url": "https://www.easternmarket.beer/",
+  "notes": "Every field is about the Riopelle St taproom. Pizza ordering; live music Fridays, trivia Wednesdays. Search results mention an expansion into the former ROAK space in Royal Oak (not checked).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 483,
+  "name": "Founders Brewing Co",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "closure_evidence": {
+   "excerpt": "FOX 2 (WJBK) - Founders Detroit Taproom announced it is permanently closing after six years.",
+   "url": "https://www.fox2detroit.com/news/founders-closes-detroit-taproom-citing-impact-of-pandemics-shutdown",
+   "checked": "2026-11-22"
+  },
+  "notes": "Detroit taproom on Charlotte Street closed May 1, 2023 (FOX 2 Detroit). Founders' own site now lists only the Grand Rapids taproom (235 Cesar E. Chavez Ave SW) and foundersbrewing.com/detroit/ returns 404. The Grand Rapids brewery is not on I-75; do not use its hours for this row. Brewbound's story returned 403 (not worked around).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 451,
+  "name": "Detroit Beer Co",
+  "status": "OPEN",
+  "official_url": "https://www.detroitbeerco.com/",
+  "address_as_printed": "1529 Broadway Street Detroit, MI 48226",
+  "address_source_url": "https://www.detroitbeerco.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday: Closed Tuesday - Thursday 11:00 am - 11:00 pm Friday - Saturday 11:00 am - Midnight Sunday - 10:00am- 10:00 pm",
+   "url": "https://www.detroitbeerco.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location in the Hartz Building, opened September 2003. Address also printed as '1529 Broadway Street, Detroit, MI 48226' (with commas) and '1529 Broadway Street, Detroit'. Game-day hours printed (Lions watch parties, Nov-Dec 2026 dates without year). The home page does not itself say beer is brewed on site ('beer' and 'What's On Tap' pages not read). Directory lists 'Ste 100'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 360,
+  "name": "American Badass Beer",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "americanbadassbeer.com timed out on connect (http and https). Directory lists it as a contract brand; a second same-day check is on record; no first-hand source read. Very likely NOT A BREWERY TAPROOM (contract brand, no taproom at 1401 Abbott St), but not confirmed by a source. Not a stop.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 381,
+  "name": "Batch Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.batchbrewingcompany.com/",
+  "address_as_printed": "1400 Porter St Detroit, MI 48216",
+  "address_source_url": "https://www.batchbrewingcompany.com/",
+  "operating_evidence": {
+   "excerpt": "Mon: 4pm-11pm (Boo's BBQ Pop-Up) Tue: 4pm-11pm (Limited kitchen Menu) Wed & Thu: 4pm-11pm Fri & Sat: 12pm-12am Sun: 12pm-8pm business hours",
+   "url": "https://www.batchbrewingcompany.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location brewery and restaurant in Corktown; Thanksgiving take-home meals advertised. Wix site with little readable text.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 453,
+  "name": "Downey Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.downeybrewingcompany.com/",
+  "address_as_printed": "13121 Prospect, Dearborn, MI 48126",
+  "address_source_url": "https://www.downeybrewingcompany.com/",
+  "operating_evidence": {
+   "excerpt": "TAPROOM HOURS TUES, WED, THUR, FRI, SAT 4 to 10",
+   "url": "https://www.downeybrewingcompany.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location in an east Dearborn warehouse district (shares a building with KDG Finishers Corp.). Address appears in a sentence: 'The address is 13121 Prospect, Dearborn, MI 48126.' The page also says 'Open Tuesday through Saturday 4 PM to 10 PM.'",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 450,
+  "name": "Dearborn Brewing",
+  "status": "OPEN",
+  "official_url": "https://dearbornbrewing.com/",
+  "address_as_printed": "21930 Michigan Ave Dearborn, MI 48124",
+  "address_source_url": "https://dearbornbrewing.com/contact-us-2",
+  "operating_evidence": {
+   "excerpt": "What are your hours? Our normal hours are 4:30pm-10pm Monday through Thursday, 4:30pm-Midnight on Friday and Saturday.",
+   "url": "https://dearbornbrewing.com/frequent-questions",
+   "checked": "2026-11-22"
+  },
+  "quote": "Dearborn Brewing is a small microbrewery that brews hand crafted beers with an on-site taproom.",
+  "quote_source_url": "https://dearbornbrewing.com/",
+  "notes": "Single location; brews on site. Hours are printed only in the FAQ (undated); home page does not print hours. Home page prints the address as '21930 Michigan Avenue in Downtown West Dearborn, MI'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 660,
+  "name": "Sports Brewpub",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No website listed; a second same-day check is on record. No own site found (sportsbrewpub.com does not resolve). michigan.org listing returned 403 (bot challenge; not worked around). Search results disagree on whether it is open. Needs a human.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 97,
+  "name": "Earnest Brew Works - Westgate",
+  "status": "OPEN",
+  "official_url": "https://www.earnestbrewworks.com/westgate/",
+  "address_as_printed": "3134 W Central Ave., Toledo, OH 43606",
+  "address_source_url": "https://www.earnestbrewworks.com/westgate/",
+  "operating_evidence": {
+   "excerpt": "hours + location Sunday: 1pm to 8pm Monday & Tuesday: 4pm to 9pm Wednesday & Thursday: 4pm to 10pm Friday: 2pm to 11pm Saturday: Noon to 11pm",
+   "url": "https://www.earnestbrewworks.com/westgate/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location brand (South Toledo, Downtown Toledo, Westgate, Wheelhouse in Swanton); every field is from the Westgate page. Address conflict on the brand's own site: the Westgate page prints 3134 W Central Ave. (twice), the home page prints '3142 W Central Ave., Toledo, OH'. The location page form is recorded; a person should confirm. Taproom with 18 drafts in Westgate Meadows plaza; food trucks.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2404,
+  "name": "Patron Saints Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.patronsaintsbrewery.com/",
+  "address_as_printed": "4730 W. Bancroft St. #8 Toledo, OH 43615",
+  "address_source_url": "https://www.patronsaintsbrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Monday: CLOSED Tuesday: CLOSED Wednesday: 5 - 10pm Thursday: 5 - 10pm Friday: 4 - 10pm Saturday: 12 - 10pm Sunday: 11 - 4pm",
+   "url": "https://www.patronsaintsbrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Single location.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 6,
+  "name": "60cc Brewing",
+  "status": "OPEN",
+  "official_url": "https://60ccbrewing.com/",
+  "address_as_printed": "2113 N. Reynolds Rd. Toledo, OH 43615",
+  "address_source_url": "https://60ccbrewing.com/info-%26-contact",
+  "operating_evidence": {
+   "excerpt": "taproom hours Wednesday: 4–10 PM Thursday: 4–10 PM Friday: 4–10 PM Saturday: 12–10 PM Sunday: 1–8 PM",
+   "url": "https://60ccbrewing.com/info-%26-contact",
+   "checked": "2026-11-22"
+  },
+  "notes": "No website in the directory; found at 60ccbrewing.com. Single location. Search results report a reopening under a new owner (The Brewer Magazine; not fetched).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 58,
+  "name": "Buffalo Rock Brewing Co - Bayside",
+  "status": "OPEN",
+  "official_url": "https://buffalorockbrewing.com/",
+  "address_as_printed": "5002 Seaman Road Oregon, Ohio 43616",
+  "address_source_url": "https://buffalorockbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Bayside / Oregon Sunday & Monday Closed Tuesday - Thursday 4-10 Friday 4-11 Saturday 12-11",
+   "url": "https://buffalorockbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Having a second Buffalo Rock production facility and taproom in the area has been a dream of ours",
+  "quote_source_url": "https://buffalorockbrewing.com/expanding-the-herd/",
+  "notes": "Two locations (Waterville and Bayside/Oregon); every field is about Bayside/Oregon, a production facility and taproom in the old fire station on Seaman Road. No website in the directory; found at buffalorockbrewing.com. Hours as printed have no am/pm.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 177,
+  "name": "Inside The Five Brewing - The Fieldhouse",
+  "status": "OPEN",
+  "official_url": "https://www.insidethefivebrewing.com/fieldhouse",
+  "address_as_printed": "1040 N. WESTWOOD AVE., TOLEDO, OH 43607",
+  "address_source_url": "https://www.insidethefivebrewing.com/fieldhouse",
+  "operating_evidence": {
+   "excerpt": "hours MONDAY TUESDAY WEDNESDAY THURSDAY FRIDAY 4pm-12am SATURDAY SUNDAY CLOSED CLOSED 4-10pm 4-10pm 12pm-12am",
+   "url": "https://www.insidethefivebrewing.com/fieldhouse",
+   "checked": "2026-11-22"
+  },
+  "quote": "A premier taproom within Inside the Five’s brewing facility located in Toledo, OH",
+  "quote_source_url": "https://www.insidethefivebrewing.com/fieldhouse",
+  "notes": "Multi-location brand (Sylvania, Perrysburg, Toledo Fieldhouse); every field is from the Fieldhouse page. The hours table reads out of order as page text; it appears to mean Mon-Tue closed, Wed-Thu 4-10pm, Fri 4pm-12am, Sat 12pm-12am, and a '12-8pm' printed after the food-truck note is probably Sunday. A person should read the table in a browser before publishing hours. Footer also prints '1040 N. WESTWOOD | TOLEDO, OH, 43607'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 98,
+  "name": "Earnest Brew Works Downtown",
+  "status": "OPEN",
+  "official_url": "https://www.earnestbrewworks.com/downtown-toledo/",
+  "address_as_printed": "25 S. St. Clair Toledo, OH 43604",
+  "address_source_url": "https://www.earnestbrewworks.com/downtown-toledo/",
+  "operating_evidence": {
+   "excerpt": "Sunday – Wednesday: Closed, unless the Walleye are playing in Toledo ... Thursday: 4pm to 10pm Friday: 2pm to 11pm Saturday: Noon to 11pm",
+   "url": "https://www.earnestbrewworks.com/downtown-toledo/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Every field is from the Downtown Toledo page (Warehouse District, 12 drafts). The page also prints '25 S. St. Clair, Toledo, OH' without ZIP. The excerpt leaves out '(subject to change, please see our Facebook page for opening confirmation details).'",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 209,
+  "name": "Maumee Bay Brewing Co.",
+  "status": "OPEN",
+  "official_url": "https://mbaybrew.com/",
+  "address_as_printed": "27 Broadway Street Toledo, OH 43604",
+  "address_source_url": "https://mbaybrew.com/",
+  "operating_evidence": {
+   "excerpt": "Maumee Bay Brewing 27 Broadway Street Toledo, OH 43604 Free Parking Hours Tues-Thu 11am-9pm Fri 11am-10pm Sat 10am-10pm Sun 10am-8pm",
+   "url": "https://mbaybrew.com/",
+   "checked": "2026-11-22"
+  },
+  "quote": "we make tasty beers and ciders in our 15 BBL copper brewhouse on display in the main brewpub.",
+  "quote_source_url": "https://mbaybrew.com/",
+  "notes": "Listed domain maumeebaybrewing.com no longer resolves (DNS not found); the brewery's site is mbaybrew.com. Brewpub in the Oliver House; footer prints hours as 'Tue-Thu' too. The brand also runs Shawnee Station near Dublin, OH (not this row).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 135,
+  "name": "Great Black Swamp Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Listed site greatblackswampbrewing.com: www returns a GoDaddy 404 page, the bare domain resets the connection. No other own site found. Search results place the current brewery and taproom at 2250 Tedrow Rd, Toledo (opened 2022) and report the Perrysburg site closed; not confirmed first-hand. Needs a human.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 96,
+  "name": "Earnest Brew Works",
+  "status": "OPEN",
+  "official_url": "https://www.earnestbrewworks.com/south-toledo/",
+  "address_as_printed": "4342 S. Detroit Ave., Toledo, OH 43614",
+  "address_source_url": "https://www.earnestbrewworks.com/south-toledo/",
+  "operating_evidence": {
+   "excerpt": "hours + location Sunday: 1pm to 8pm Monday & Tuesday: 4pm to 9pm Wednesday & Thursday: 4pm to 10pm Friday: 2pm to 11pm Saturday: Noon to 11pm",
+   "url": "https://www.earnestbrewworks.com/south-toledo/",
+   "checked": "2026-11-22"
+  },
+  "quote": "Earnest Brew Works South Toledo is our original location.",
+  "quote_source_url": "https://www.earnestbrewworks.com/south-toledo/",
+  "notes": "Directory row has no street; its coordinates match the South Toledo location, so this row is taken as South Toledo (4342 S. Detroit Ave.). Every field is from that page. No food served at this location per the page. Listed URL is the brand home page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2354,
+  "name": "Granite City Food & Brewery (#25)",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "A second same-day check is on record. Listed URL gcfb.net returns 403. The chain's own site has no Maumee page (https://www.gcfb.com/location/maumee-ohio/ is a 404) and its location search did not show it. WTOL reported 'Granite City shuts down' at The Shops at Fallen Timbers, but the article returned 403 (Access Denied; not worked around), and OpenTable timed out. Very likely CLOSED; a person should read the WTOL article and confirm.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 175,
+  "name": "Inside The Five Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.insidethefivebrewing.com/perrysburg",
+  "address_as_printed": "127 w. third Street, perrysburg, Oh 43551",
+  "address_source_url": "https://www.insidethefivebrewing.com/perrysburg",
+  "operating_evidence": {
+   "excerpt": "hours 4-10pm MONDAY TUESDAY 11am-10pm WEDNESDAY 11am-10pm 11am-10pm THURSDAY FRIDAY 11am-11pm 11am-11pm SATURDAY BRUNCH 10am-2pm DINNER 2-10pm SUNDAY",
+   "url": "https://www.insidethefivebrewing.com/perrysburg",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location brand; every field is from the Downtown Perrysburg brewpub page (directory row has no street; coordinates match downtown Perrysburg). The hours table reads out of order as page text; a person should read it in a browser before publishing hours. Footer prints the address as 'PERRYSBURG 127 W THIRD ST | PERRYSBURG, OH 43551'. Full-service brewpub with kitchen.",
+  "checked": "2026-11-22"
+ }
+]

@@ -20,6 +20,8 @@ import { ROUTE_66 } from '../../src/data/roads/route-66';
 import { ROUTE_66_BUILT } from '../../src/data/roads/route-66.built';
 import { I_71 } from '../../src/data/roads/i-71';
 import { I_71_BUILT } from '../../src/data/roads/i-71.built';
+import { I_75 } from '../../src/data/roads/i-75';
+import { I_75_BUILT } from '../../src/data/roads/i-75.built';
 import { roadCallout } from '../../src/templates/brewery';
 import { trailsPage } from '../../src/templates/trails';
 import pageRoutes from '../../src/routes/pages';
@@ -1242,7 +1244,7 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
   it('is a directory road in three legs, Cleveland to Columbus to Cincinnati to Louisville', () => {
     expect(roadConfigProblems(road.config)).toEqual([]); expect(road.config.stopsHavePages).not.toBe(false);
     expect(road.legs.map((l) => [l.from, l.to, Math.round(l.lengthMiles)])).toEqual([['Cleveland, Ohio', 'Columbus, Ohio', 141], ['Columbus, Ohio', 'Cincinnati, Ohio', 107], ['Cincinnati, Ohio', 'Louisville, Kentucky', 96]]);
-    expect(availableRoads().map((r) => r.config.slug)).toEqual(road.config.publish ? ['route-66', 'i-71', 'us-422'] : ['route-66', 'us-422']);
+    expect(availableRoads().map((r) => r.config.slug)).toEqual(road.config.publish ? ['route-66', 'i-71', 'i-75', 'us-422'] : ['route-66', 'i-75', 'us-422']);
   });
   it('every stop is a directory listing with a page, operating evidence, and coordinates tied to its printed address', () => {
     const geo = new Map((read('geocodes.json') as AddressGeocode[]).map((x) => [x.id, x]));
@@ -1339,11 +1341,108 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
   });
 });
 
+describe('Interstate 75 (src/data/roads/i-75)', () => {
+  const road = allRoads().find((r) => r.config.slug === 'i-75')!;
+  const dir = join(__dirname, '../../data/roads/i-75');
+  const read = (f: string) => JSON.parse(readFileSync(join(dir, f), 'utf8'));
+  const verified: VerifiedRow[] = readdirSync(dir).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(read);
+  const html = roadTripPage(road), main = html.slice(html.indexOf('<h1')), text = main.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+  const ids = new Set(road.stops.map((s) => s.breweryId));
+  it('is a directory road in five legs, Sault Ste. Marie to Richmond, Kentucky, and joins the index without taking the headline', () => {
+    expect(roadConfigProblems(road.config)).toEqual([]); expect(road.config.stopsHavePages).not.toBe(false); expect(road.config.headline).not.toBe(true);
+    expect(road.legs.map((l) => [l.from, l.to, Math.round(l.lengthMiles)])).toEqual([['Sault Ste. Marie, Michigan', 'Zilwaukee, Michigan', 241], ['Zilwaukee, Michigan', 'the Ohio line', 154], ['the Michigan line', 'Dayton, Ohio', 158], ['Dayton, Ohio', 'Cincinnati, Ohio', 54], ['Cincinnati, Ohio', 'Richmond, Kentucky', 103]]);
+    expect(availableRoads()[0].config.slug).toBe('route-66');
+    expect(roadsIndexPage(availableRoads())).toContain('href="/roads/i-75"');
+  });
+  it('every stop is a directory listing with a page, operating evidence, and coordinates tied to its printed address', () => {
+    const geo = new Map([...(read('geocodes.json') as AddressGeocode[]), ...(JSON.parse(readFileSync(join(dir, '../i-71/geocodes.json'), 'utf8')) as AddressGeocode[])].map((x) => [`${x.id}|${x.lat}|${x.lon}`, x]));
+    const cands = new Map((read('candidates.json') as CandidateRow[]).map((c) => [c.id, c]));
+    expect(road.stops.length).toBeGreaterThan(50);
+    for (const s of road.stops) {
+      expect(stopProblems(s, road.config), s.name).toEqual([]); expect(s.breweryId).toBeGreaterThan(0); expect(main).toContain(`href="/brewery/${s.breweryId}"`);
+      expect(['census', 'directory', 'reviewed'], s.name).toContain(s.placedBy);
+      const c = cands.get(s.breweryId!)!, fromCensus = geo.has(`${s.breweryId}|${s.lat}|${s.lon}`), fromDirectory = c.latitude === s.lat && c.longitude === s.lon;
+      expect(fromCensus || fromDirectory, s.name).toBe(true);
+      if (s.placedBy === 'directory') expect(sameLocation(s.address, { address_1: c.street, city: c.city, state: c.state }), `${s.name}: ${s.address} / ${c.street}`).toBe(true);
+    }
+    // each reviewed exception is a stray word, said under the stop; none rests on a locality name or on what a geocoder returns
+    const reviewed = road.stops.filter((s) => s.placedBy === 'reviewed');
+    expect(reviewed.map((s) => s.breweryId).sort()).toEqual([183, 293]);   // 293 Sonder is I-71's record, shared
+    expect(reviewed.find((s) => s.breweryId === 183)!.placedNote).toContain('The only difference is the word "Downtown" before the town.');
+    for (const s of reviewed) expect(s.placedNote, s.name).not.toMatch(/ZIP|single match|returns/);
+  });
+  it('leaves off the rows the checkers flagged, each for its own reason', () => {
+    // 711 no printed address; 545 a same-day line only; 450 hours only in an undated FAQ; 34 served with HTTP 404; 941 a visitor centre; 302 not established as a brewery
+    for (const id of [711, 545, 450, 34, 941, 302]) expect(ids.has(id), String(id)).toBe(false);
+    // unplaced: locality name, suffix or street form differs, or the geocoder had no match; and two beyond the limit once placed
+    for (const id of [474, 58, 98, 602, 449, 628, 453, 369, 10, 337, 115, 312, 643, 2390]) expect(ids.has(id), String(id)).toBe(false);
+    for (const r of verified.filter((x) => x.status !== 'OPEN')) expect(ids.has(r.id as number), String(r.name)).toBe(false);
+    const decided = read('decisions.json') as { match: number; status?: string; reason: string }[];
+    expect(decided.filter((d) => d.status).map((d) => [d.match, d.status]).sort((a, b) => (a[0] as number) - (b[0] as number))).toEqual([[34, 'UNCONFIRMED'], [302, 'UNCONFIRMED'], [450, 'UNCONFIRMED'], [545, 'UNCONFIRMED'], [941, 'NOT A BREWERY TAPROOM']]);
+    // placed by the form on the cited page: Earnest Westgate at 3134, Rolling Oak with the footer ZIP, Country Boy at its printed address, not the directory's
+    expect(road.stops.find((s) => s.breweryId === 97)!.address).toBe('3134 W Central Ave., Toledo, OH 43606'); expect(road.stops.find((s) => s.breweryId === 637)!.address).toBe('509 Norway St, Grayling, MI 49738');
+    const cb = road.stops.find((s) => s.breweryId === 906)!; expect([cb.address, cb.placedBy]).toEqual(['101 Innovation Way Georgetown, KY 40324', 'census']);
+    expect(JSON.stringify(read('candidates.json'))).not.toMatch(/second_signal|OPERATIONAL|CLOSED_PERMANENTLY/);
+    for (const f of readdirSync(dir).filter((x) => /^verified/.test(x))) expect(readFileSync(join(dir, f), 'utf8'), f).not.toMatch(/second signal|second_signal|CLOSED_PERMANENTLY|NOT_FOUND|status signal/i);
+    expect(main + roadsIndexPage([road])).not.toMatch(/second same-day|second_signal/i);
+  });
+  it('follows the rules the I-71 page passed review with', () => {
+    expect(main.match(/<details class="rt-fold">/g)).toHaveLength(5);
+    expect(main.slice(0, main.indexOf('id="how"'))).not.toMatch(/<img|shield/i);
+    expect(main).toContain('Exit numbers.'); expect(main.replace(/<blockquote>.*?<\/blockquote>/gs, '')).not.toMatch(/\bexit \d|\bat (the )?(an )?exit\b/i);
+    expect(main).not.toMatch(/Open stops|Open this stretch|travelmode|waypoints=/);
+    expect([...html.matchAll(/href="(https:\/\/www\.google\.com\/maps\/[^"]+)"/g)]).toHaveLength(road.stops.length);
+    expect(text).toContain(INTERSTATE_NOTICE.slice(0, INTERSTATE_NOTICE.indexOf(' If you drink'))); expect(text.indexOf('Nearest road points are not exits')).toBeLessThan(text.indexOf('Leg 1:'));
+    expect(text).toContain(`The legs. ${road.config.legsNote}`); expect(road.config.legsNote).toContain('at the Ohio River in Cincinnati'); expect(text.slice(0, text.indexOf('Leg 1:'))).not.toContain('editorial sections');
+    expect(text).toContain('Where this page stops. Interstate 75 runs on south to Florida.');
+    expect(main).toContain('Operating evidence: hours read on'); expect(main).not.toMatch(/driving order|detour|confirmed open|open on \d{4}/i);
+    expect(roadSummary(road)).toMatch(/^\d+ breweries from our directory within 5 straight-line miles of our mapped line of I-75; these are not driving distances\. Ordered by nearest mapped-road point within each displayed group; dense stretches show places within 2 straight-line miles first, followed by those over 2 and up to 5 miles away\./);
+    const dense = road.legs.flatMap((l) => l.segments.filter((g) => g.furtherOffMiles !== null));
+    expect(dense.map((g) => g.id)).toEqual(['toledo', 'dayton-south', 'cincinnati']);
+    for (const g of dense) { expect(g.stops.every((s) => s.detourMiles <= 2)).toBe(true); expect(g.outer.length).toBeGreaterThan(0); expect(g.outer.every((s) => s.detourMiles > 2 && s.detourMiles <= 5)).toBe(true); }
+  });
+  it('tells coverage by cohort, names the breweries with hours that are not listed, and labels seasonal hours', () => {
+    const k = road.cohort!;
+    expect(k.total).toBe(137); expect(k.listed).toBe(road.stops.length); expect(k.withHours).toBe(k.listed + k.notPlaced + k.outside); expect(k.listed + k.notPlaced + k.outside + k.unresolved + k.settled).toBe(k.total);
+    expect(road.legs.reduce((n, l) => n + l.cohort!.total, 0)).toBe(137);
+    expect(text).toContain(`We checked 137 directory candidates on 2026-11-22 and found published visiting hours for ${k.withHours}; ${k.listed} meet this page’s location and distance requirements.`);
+    expect(road.notListed.filter((x) => x.why === 'outside').map((x) => x.id).sort()).toEqual([2390, 643]);
+    for (const x of road.notListed) expect(text).toContain(`${x.name}: ${x.reason}.`);
+    expect(text).toContain('None of these is a finding that the brewery has closed.');
+    const by = (m: string) => road.stops.filter((s) => s.placedBy === m).length;
+    expect(text).toContain(`${by('census')} stops use the US Census geocoder’s point`); expect(text).toContain(`${by('directory')} stops use our directory’s map point`); expect(text).toContain('2 stops are reviewed exceptions');
+    // Frankenmuth prints off-season hours: labelled, and the line itself quoted from the page
+    const f = road.stops.find((s) => s.breweryId === 488)!;
+    expect(f.seasonal).toBe(true); expect(f.quote).toBe("* Our off season hours begin after New Year's. Beginning 1/4/2027, we will be open Thursdays through Sundays.");
+    expect(road.stops.filter((s) => s.seasonal).map((s) => s.breweryId)).toEqual([488]);
+    expect(main.match(/Seasonal or holiday hours: the page says these hours change by season or on holidays\./g)).toHaveLength(1);
+    for (const other of allRoads().filter((r) => r.config.slug !== 'i-75')) expect(roadTripPage(other)).not.toContain('Seasonal or holiday hours');
+  });
+  it('the built file is exactly what the build step makes, with the listings it shares with I-71 taken from that road', () => {
+    const edits = applyRowEdits(verified, read('decisions.json'), read('corrections.json'));
+    expect(edits.unmatched).toEqual([]);
+    const other = join(dir, '../i-71'), theirs = (f: string) => JSON.parse(readFileSync(join(other, f), 'utf8'));
+    const shared = shareRows(edits.rows, read('geocodes.json'), applyRowEdits(readdirSync(other).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(theirs), theirs('decisions.json'), theirs('corrections.json')).rows, theirs('geocodes.json'), 'prefer', 'i-71');
+    expect(I_75.sharedRowsFrom).toBe('i-71'); expect(shared.taken).toHaveLength(21);
+    expect(buildRoad(I_75, read('osm-ways.json'), read('candidates.json'), shared.rows, I_75_BUILT.built, undefined, shared.geocodes).road).toEqual(I_75_BUILT);
+  });
+  it('a brewery on I-71 and I-75 gets a card for each road on its own page', () => {
+    const both = roadCallout(269);                                     // Rhinegeist
+    expect(both).toContain('href="/roads/i-71'); expect(both).toContain('href="/roads/i-75');
+    expect(roadCallout(488)).toContain('href="/roads/i-75'); expect(roadCallout(488)).not.toContain('href="/roads/i-71');
+  });
+});
+
 describe('roads that list the same brewery agree about it', () => {
-  const builts = [ROUTE_66_BUILT, I_71_BUILT, US_422_BUILT];
+  const builts = [ROUTE_66_BUILT, I_71_BUILT, US_422_BUILT], all = [...builts, I_75_BUILT];
   const allowed = (JSON.parse(readFileSync(join(__dirname, '../../data/roads/shared-differences.json'), 'utf8')) as { allow: string; why: string }[]);
   it('the real roads: fifteen shared listings, no difference that is not recorded', () => {
     expect(sharedStopIds(builts)).toEqual([51, 62, 72, 120, 130, 136, 154, 182, 207, 208, 280, 296, 308, 2322, 2356]);
+    // I-75 shares its Cincinnati and northern Kentucky listings with I-71, and none with US 422 or Route 66
+    const withI75 = sharedStopIds([I_71_BUILT, I_75_BUILT]);
+    expect(withI75).toEqual([22, 76, 121, 123, 132, 150, 203, 212, 269, 293, 304, 902, 908, 921, 946, 2382, 2395, 2460]); expect(sharedStopIds([US_422_BUILT, I_75_BUILT])).toEqual([]);
+    expect(crossRoadDifferences(all, allowed.map((x) => x.allow))).toEqual([]);
+    for (const id of withI75) { const a = I_71_BUILT.stops.find((x) => x.breweryId === id)!, b = I_75_BUILT.stops.find((x) => x.breweryId === id)!; for (const f of SHARED_STOP_FIELDS) expect(a[f], `${id} ${f}`).toEqual(b[f]); }
     expect(crossRoadDifferences(builts, allowed.map((x) => x.allow))).toEqual([]);
     for (const x of allowed) expect(x.why.length, x.allow).toBeGreaterThan(40);
     // Each recorded difference is a real one: without the record the gate fails on it.
@@ -1360,7 +1459,7 @@ describe('roads that list the same brewery agree about it', () => {
     expect(crossRoadDifferences(pair({ mile: 99, detourMiles: 4, legId: 'x', segmentId: 'y', key: 'k' }))).toEqual([]);
     const changes: Partial<RoadStop>[] = [{ name: 'Other' }, { town: 'Lakewood' }, { state: 'PA' }, { address: '1 Other St' }, { addressSourceUrl: 'https://example.com/a' }, { website: 'https://example.com' },
       { evidence: 'Mon 1-2' }, { evidenceUrl: 'https://example.com/h' }, { evidenceChecked: '2026-11-01' }, { evidenceKind: 'notice' }, { lat: 1 }, { lon: 2 }, { placedBy: 'directory' }, { placedNote: 'x' }, { browserChecked: '2026-11-22' },
-      { quote: 'Other words.' }, { quoteSourceUrl: 'https://example.com/q' }, { checked: '2026-10-01' }, { noticeContext: 'the page names another year' }];
+      { quote: 'Other words.' }, { quoteSourceUrl: 'https://example.com/q' }, { checked: '2026-10-01' }, { noticeContext: 'the page names another year' }, { seasonal: true }];
     expect(changes.map((c) => Object.keys(c)[0]).sort()).toEqual([...SHARED_STOP_FIELDS].sort());   // every compared field is tried
     for (const c of changes) { const d = crossRoadDifferences(pair(c)); expect(d, JSON.stringify(c)).toHaveLength(1); expect(d[0]).toMatch(new RegExp(`^130 .*: ${Object.keys(c)[0]} is .* on a but .* on b$`)); }
     for (const c of changes) expect(crossRoadDifferences(pair(c), [`130:${Object.keys(c)[0]}`]), JSON.stringify(c)).toEqual([]);   // unless recorded

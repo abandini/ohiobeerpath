@@ -1,0 +1,95 @@
+[
+  {
+    "key": "132",
+    "field": "evidence",
+    "value": "Hours M: Closed | T/W: 4-10pm Th: 3-11pm | F: 12-11pm Sat: 11am-11pm | Sun: 12-8pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "150",
+    "field": "address",
+    "value": "6860 Plainfield Road Cincinnati, OH 45236",
+    "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
+  },
+  {
+    "key": "150",
+    "field": "evidence",
+    "value": "Hours Mon 3–9 PM Tue 3–10 PM Wed 11 AM–10 PM Thu 11 AM–10 PM Fri 11 AM–11 PM Sat 10 AM–11 PM Sun 10 AM–9 PM",
+    "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
+  },
+  {
+    "key": "22",
+    "field": "evidence",
+    "value": "3-10 M-Th, 11a-11p F-Sat, 11a-8p",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "2382",
+    "field": "quote",
+    "value": null,
+    "reason": "not found on the page when re-read 2026-11-22"
+  },
+  {
+    "key": "381",
+    "field": "evidence",
+    "value": "Mon: 4pm-11pm (Boo's BBQ Pop-Up) Tue: 4pm-11pm (Limited kitchen Menu) Wed & Thu: 4pm-11pm Fri & Sat: 12pm-12am Sun: 12pm-8pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "449",
+    "field": "evidence",
+    "value": "Business Hours Monday Closed Tue - Thu 11:00 am - 9:00 pm Fri - Sat 11:00 am - 10:00 pm Sunday 11:00 am - 8:00 pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "461",
+    "field": "evidence",
+    "value": "hours Mon: Closed Tue - Fri: 4p - 10p Saturday: 10a - 10p Sunday: 11a - 7p",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "477",
+    "field": "evidence",
+    "value": "Hours Mon: CLOSED Tuesday - Thursday 11:30am-10:00pm (kitchen closes at 9:50pm/last call 10:00pm) Friday & Saturday 11:30am-10:30pm (kitchen closes at 9:50pm/last call 10:30pm)",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "628",
+    "field": "evidence",
+    "value": "Hours Monday – Thursday 11:00am – 9:00pm Friday 11:00am – 10:00pm Saturday 4:00pm – 10:00pm Sunday 11:00am – 4:00pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "674",
+    "field": "evidence",
+    "value": "Hours Monday - Thursday 3:00pm - 10:00pm Friday 3:00pm - 12:00am Saturday 12:00pm - 12:00am",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "921",
+    "field": "address",
+    "value": "200 E 3rd St. Newport",
+    "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
+  },
+  {
+    "key": "449",
+    "field": "quote",
+    "value": "Extended summer hours between Memorial Week and Labor Day Week",
+    "url": "https://www.deadbearbrewing.net/contact",
+    "reason": "editor: the seasonal line the page prints after its hours, re-read 2026-11-22"
+  },
+  {
+    "key": "488",
+    "field": "quote",
+    "value": "* Our off season hours begin after New Year's. Beginning 1/4/2027, we will be open Thursdays through Sundays.",
+    "url": "https://frankenmuthbrewery.com/contact/",
+    "reason": "editor: the off-season line the page prints with its hours, re-read 2026-11-22"
+  },
+  {
+    "key": "628",
+    "field": "quote",
+    "value": "Holiday Hours Thanksgiving, Thursday, November 26 Closed Christmas Eve, Thursday, December 24 12:00pm to 6:00pm Christmas Day, Friday, December 25 Closed New Year's Day, Friday, January 1 Closed",
+    "url": "https://redwoodflint.com/brewery",
+    "reason": "editor: the holiday hours the page prints after its hours, re-read 2026-11-22"
+  }
+]

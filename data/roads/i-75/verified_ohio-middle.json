@@ -1,0 +1,405 @@
+[
+ {
+  "id": 50,
+  "name": "Brewing Green",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "No own website found: brewinggreen.com redirects to a domain-for-sale page (atom.com), so it must not be linked. Brewing Green is the new name of Bowling Green Beer Works at 322 N Grove St (see row 2323; BG Falcon Media, https://bgfalconmedia.com/97370/news/bgs-oldest-brewery-makes-new-changes). Third-party only: BG Independent News (2026-02-01) lists Brewing Green on the 2026 419 Ale Trail map, which is not first-hand operating evidence. A person should confirm hours with the brewery (listing phone 419-208-9411).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2323,
+  "name": "Bowling Green Beer Works",
+  "status": "MOVED/RENAMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "The purchase was finalized in February. Householder and Develvis wanted a fresh start for the business, including a new name, changing it from Bowling Green Brew Works to Brewing Green.",
+  "quote_source_url": "https://bgfalconmedia.com/97370/news/bgs-oldest-brewery-makes-new-changes/",
+  "notes": "Renamed Brewing Green under new owners (BG Falcon Media, article undated in page text; the business is row 50, same 322 N Grove St address). No website listed or found for the old name. Treat as a duplicate of row 50 on the map.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 183,
+  "name": "Juniper Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.juniperbrew.com/",
+  "address_as_printed": "145 S. Main Street Downtown Bowling Green, OH",
+  "address_source_url": "https://www.juniperbrew.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Sunday & Monday - 8am - 8pm Tuesday - Thursday - 8am - 10pm Friday & Saturday - 8am - 11pm",
+   "url": "https://www.juniperbrew.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Address printed without ZIP ('145 S. Main Street' / 'Downtown Bowling Green, OH'). Page prints two hours blocks that disagree on Friday & Saturday close (8am - 11pm in the first block, 8am - 10pm in the footer); excerpt is the first block. Also a coffee shop ('Coffee shop open daily 8am - 6pm') and kitchen. URL was not in the listing; juniperbrew.com found via search and is the brewery's own site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 14,
+  "name": "Arlyn's Good Beer",
+  "status": "UNCONFIRMED",
+  "official_url": "https://arlynsgoodbeer.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Own site (https://arlynsgoodbeer.com/) is an unfinished GoDaddy template: home page shows 'Coming Soon' blocks and 'Follow us on Facebook for updates.'; no hours, no address printed; the beer page still says 'Your Business Brewing Co.'. Live-music page says it hosts Jazz Night most Wednesdays (undated). Third-party: listed on the 2026 419 Ale Trail map (BG Independent News, 2026-02-01). Address from search listings is 520 Hankey Ave (not printed on own site). A person should confirm.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 107,
+  "name": "False Chord Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.falsechordbrewing.com/",
+  "address_as_printed": "326 S Main St Findlay, OH 45840",
+  "address_source_url": "https://www.falsechordbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Wednesday Thursday Friday Saturday 4:30pm - 10pm 4:30pm - 10pm 4:30pm - 10pm 2pm - 10pm",
+   "url": "https://www.falsechordbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Hours are laid out as a day column and a time column, so the page text reads days then times (Wed-Fri 4:30pm - 10pm, Sat 2pm - 10pm). Address also printed as '326 S Main St.' / 'Findlay, OH 45840' in the footer. Footer says (c) 2020; evidence is printed hours only. Taproom with pickup ordering; brews on site (craft beer made 'findlay FRESH').",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 117,
+  "name": "Findlay Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.findlaybrewing.com/",
+  "address_as_printed": "213 E. Crawford St. Findlay, Ohio 45840",
+  "address_source_url": "https://www.findlaybrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours 11 a.m. - 10 p.m. Tues. - Thurs. (Kitchen until 9 p.m.) 11 a.m. - 11 p.m. Fri. - Sat. (Kitchen until 10 p.m.) 11 a.m. - 9 p.m. Sun. (Kitchen until 8 p.m.)",
+   "url": "https://www.findlaybrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Page also prints 'Closed Monday' after the hours, and a dated item 'Hops & Holiday Wreaths - November 28th 2026'. Kitchen with full menu. Brewery taproom with house beer list.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 80,
+  "name": "Crooked Handle Brewing Co. Piqua",
+  "status": "OPEN",
+  "official_url": "https://crookedhandle.com/",
+  "address_as_printed": "123 North Main Street Piqua, OH 45356",
+  "address_source_url": "https://crookedhandle.com/",
+  "operating_evidence": {
+   "excerpt": "Piqua Hours: Closed Mondays Tues, Wed, Thurs 11:00 AM - 10 PM Fri, Sat 11:00 AM - 11 PM Sun 11:00 AM - 9 PM",
+   "url": "https://crookedhandle.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Multi-location brand (Piqua and Springboro); all fields are the Piqua taproom. Hours conflict: the home page prints Piqua opening at 11:00 AM, but the locations page (https://crookedhandle.com/piqua-crooked-handle-brewing-co-piqua-locations) prints 'Tue - Thur 11:30am - 10pm Fri - Sat 11:30am - 11pm' / 'Sun 11:30am - 9pm'. Address printed in two forms: '123 North Main Street Piqua, OH 45356' (home) and '123 N Main St, Piqua, OH 45356,' (locations page). Home page also carries a dated note: closed Thanksgiving Day, Thursday, November 26. Full kitchen (pizza, wings).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 141,
+  "name": "Hairless Hare Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.hairlessharebrewery.com/",
+  "address_as_printed": "738 W. National Rd. Vandalia, OH 45377",
+  "address_source_url": "https://www.hairlessharebrewery.com/hours-and-locatoin",
+  "operating_evidence": {
+   "excerpt": "SUN - TUES Closed WED - THURS 4 – 10 pm FRI - 4 - 10 pm SAT - 2 - 10 pm (Kitchen closes @ 9pm)",
+   "url": "https://www.hairlessharebrewery.com/hours-and-locatoin",
+   "checked": "2026-11-22"
+  },
+  "notes": "Hours page URL is spelled 'hours-and-locatoin' on the site. Footer also prints '738 W. National Rd. Vandalia, OH 45377' in one line with phone. Footer (c) 2016; evidence is printed hours only. Kitchen (take-out and delivery food menus, pizza).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 336,
+  "name": "Warped Wing Brewery & Smokery - Huber Heights",
+  "status": "UNCONFIRMED",
+  "official_url": "https://warpedwing.com/huberheights/",
+  "address_as_printed": "6602 EXECUTIVE BOULEVARD – HUBER HEIGHTS, OHIO 45424",
+  "address_source_url": "https://warpedwing.com/huberheights/",
+  "operating_evidence": null,
+  "notes": "Multi-location brand (Dayton, Springboro, Mason, Huber Heights); this row is Huber Heights only. Hours are published only as an image (huber_heights_taproom_hours_website.png, uploaded 2026/02), not as text, and no dated 2026 item for Huber Heights was found on the events page. A person should open https://warpedwing.com/huberheights/ and read the hours graphic. Smokery (food) on site; page says 'Visit our Huber Heights Taproom'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 10,
+  "name": "Alematic Artisan Ales",
+  "status": "OPEN",
+  "official_url": "https://www.alematicbrewing.com/",
+  "address_as_printed": "6182 Chambersburg Rd. Huber Heights, OH 45424",
+  "address_source_url": "https://www.alematicbrewing.com/visit-us/",
+  "operating_evidence": {
+   "excerpt": "Coffee Bar & Taproom Monday 8am – 3pm Tuesday 8am – 9pm Wednesday 8am – 10pm Thursday 8am – 10pm Friday 8am – 10pm Saturday 8am – 10pm Sunday 8am – 3pm",
+   "url": "https://www.alematicbrewing.com/visit-us/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Now trades as 'Alematic Brewery & Coffee Bar' / 'Alematic + B-Side' (brewery, B-Side coffee bar, kitchen). Visit page also prints separate kitchen hours. Home page says 'We brew here, cook here'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 195,
+  "name": "Little Fish Brewing Company - Dayton",
+  "status": "OPEN",
+  "official_url": "https://littlefishbrewing.com/",
+  "address_as_printed": "116 Webster Street Dayton, OH 45402",
+  "address_source_url": "https://littlefishbrewing.com/locations/",
+  "operating_evidence": {
+   "excerpt": "TUE-THU: NOON – 10PM FRI: NOON – 10PM SAT: 10AM – 10PM SUN: 10AM – 10PM MON: CLOSED",
+   "url": "https://littlefishbrewing.com/locations/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Two locations (Athens and Dayton); excerpt is the second hours block on the locations page, which sits under the Dayton heading and its Dayton menus. Brewery & restaurant; home page says it began as a production brewery in Athens; whether beer is brewed at the Dayton tap room is not stated.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2377,
+  "name": "Lock 27 Brewing",
+  "status": "CLOSED",
+  "official_url": "https://lock27brewing.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "Lock 27 Brewing, located at 329 E. First Street next to Day Air Ballpark, had a sign posted on its door Tuesday stating that the location is closed.",
+  "quote_source_url": "https://www.whio.com/news/local/popular-local-brewery-closes-downtown-dayton-location/QOOONTAM4FHE3GGLQHRZUMLTR4/",
+  "notes": "Closure source: WHIO, dated October 17, 2023. The brewery's own site now lists only the Centerville Brewpub (row 2376). Search snippets of Dayton Daily News say brewing might continue at this address, but the taproom is closed to the public; daytondailynews.com refused our fetch (HTTP 429), so not used.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2340,
+  "name": "Dayton Beer Co Production Brewery & Bierhall",
+  "status": "OPEN",
+  "official_url": "https://www.thedaytonbeerco.com/",
+  "address_as_printed": "41 Madison St. Dayton, OH, 45402",
+  "address_source_url": "https://www.thedaytonbeerco.com/",
+  "operating_evidence": {
+   "excerpt": "Hours: Monday: CLOSED Tuesday & Wednesday: 4 - 10 pm Thursday: 3 - 10pm Friday & Saturday : 12 - 11pm Sunday: Closed",
+   "url": "https://www.thedaytonbeerco.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Downtown Dayton location (41 Madison St.); the site's history mentions the original Kettering Tap Room (2012) but prints only this address. A second hours table lower on the page matches. Footer (c) 2016-2023; evidence is printed hours only. Has a kitchen ('The Kitchen at DBC'); production brewery on site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 337,
+  "name": "Warped Wing Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://warpedwing.com/dayton/",
+  "address_as_printed": "26 WYANDOT STREET – DAYTON, OHIO 45402",
+  "address_source_url": "https://warpedwing.com/dayton/",
+  "operating_evidence": {
+   "excerpt": "MONDAY: 4:00PM-9:00PM TUESDAY: 4:00PM-9:00PM WEDNESDAY: 4:00PM-9:00PM THURSDAY: 4:00PM-9:00PM FRIDAY: 3:00PM-11:00PM SATURDAY: 9:00AM-11:00PM SUNDAY: 11:00AM-8:00PM",
+   "url": "https://warpedwing.com/dayton/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Dayton Brewery & Taproom only (flagship and production brewery; brewery tours Sat & Sun 5pm). Listing URL warpedwing.com is the brand home; the Dayton page is cited. Events page (https://warpedwing.com/taproom-events-and-specials/) has dated items for the Dayton taproom (e.g. Whiskey Rebellion Day Saturday, December 5th; closed to the public Wednesday, December 2nd) and prints the same hours. Dayton page also says 'EARLY OPEN AT NOON ON LABOR DAY' (stale). Smokery food.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2396,
+  "name": "Nowhere In Particular Brewing Company",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://nipbrewco.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "Instead, he rents unused fermentation capacity at established breweries, filling otherwise empty fermenters with high-octane magic.",
+  "quote_source_url": "https://nipbrewco.com/",
+  "notes": "Gypsy/contract brand ('Hobo Brewery') with no taproom of its own, per its own site. Site is a partly unfinished template: lorem-ipsum text, 'Opening Hours | 10:00 - 12:00pm' and 'Location | Colombus, Ohio' placeholders, (c) 2015. Listing address 6826 Loop Rd is not printed. a second same-day check is on record.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 112,
+  "name": "Fifth Street Brewpub",
+  "status": "OPEN",
+  "official_url": "https://www.fifthstreetbrewpub.com/",
+  "address_as_printed": "1600 E. Fifth Street Dayton, Ohio 45403",
+  "address_source_url": "https://www.fifthstreetbrewpub.com/",
+  "operating_evidence": {
+   "excerpt": "Tuesday/Wednesday/Thursday | 2PM - 10PM Friday | 12PM - 11PM Saturday Brunch | 10AM - 3PM Saturday | 3PM - 11PM Sunday Brunch | 10AM - 4PM",
+   "url": "https://www.fifthstreetbrewpub.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Ohio's first cooperatively owned brewpub, house-brewed beers and scratch kitchen. Kitchen closes 1 hour before close Tue-Sat. Footer (c) 2026.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 317,
+  "name": "Toxic Brew Company",
+  "status": "OPEN",
+  "official_url": "https://www.toxicbrewcompany.com/",
+  "address_as_printed": "431 E 5th St, Dayton, OH 45402",
+  "address_source_url": "https://www.toxicbrewcompany.com/",
+  "operating_evidence": {
+   "excerpt": "Business Hours: Monday-Thursday 2:00PM-1:00AM Friday 2:00PM-2:00AM Saturday 12:00PM - 2:00AM Sunday 12:00PM - 1:00AM",
+   "url": "https://www.toxicbrewcompany.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Oregon District taproom; site calls itself \"Dayton's 1st Craft Brewery\" and also lists whiskey. Food not stated in the text read. Footer (c) 2026.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 37,
+  "name": "Branch & Bone Artisan Ales",
+  "status": "OPEN",
+  "official_url": "https://www.branchandboneales.com/",
+  "address_as_printed": "905 Wayne Avenue Dayton, OH, 45410",
+  "address_source_url": "https://www.branchandboneales.com/visit-us",
+  "operating_evidence": {
+   "excerpt": "OPEN HOURS: TUESDAY - THURSDAY 4PM - 10PM FRIDAY - SATURDAY 12PM - 11PM SUNDAY 12PM - 8PM",
+   "url": "https://www.branchandboneales.com/visit-us",
+   "checked": "2026-11-22"
+  },
+  "notes": "Address also printed as '905 WAYNE AVEDAYTON, OH 45410' (no space, header). Visit page shows 'MONDAY' after the hours (closed). Home page carries dated news, e.g. November 21, 2026: kitchen closed Sunday Nov 22nd for the Annual Chili Cookoff, taproom open normal hours. Brewery and winery; kitchen (taco menu).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 65,
+  "name": "Carillon Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://daytonhistory.org/dine/carillon-brewing-co/",
+  "address_as_printed": "1000 Carillon Blvd. Dayton, Ohio 45409",
+  "address_source_url": "https://daytonhistory.org/dine/carillon-brewing-co/",
+  "operating_evidence": {
+   "excerpt": "Hours of Operation Wednesday – Sunday 11 a.m. – 7 p.m",
+   "url": "https://daytonhistory.org/dine/carillon-brewing-co/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Listing URL carillonbrewingco.org redirects to Dayton History's page. A working 1850s-style production brewery inside Carillon Historical Park, with food. The page also prints park hours (Mon - Sat 9:30 a.m. - 5 p.m., Sun Noon - 5 p.m.) at '1000 Carillon Boulevard'; whether museum admission is needed to visit the brewery is not stated in the text read. Evidence is printed hours; page footer (c) 2026.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 106,
+  "name": "Eudora Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.eudorabrewing.com/",
+  "address_as_printed": "3022 Wilmington Pike Dayton, OH 45429",
+  "address_source_url": "https://www.eudorabrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours: 4:00pm-10:00pm Tuesday-Thursday 3:00pm-10:00pm Friday 12:00pm-10:00pm Saturday 12:00pm-8:00pm Sunday",
+   "url": "https://www.eudorabrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Brewery, taproom, kitchen and brew-your-own facility. A second, shorter hours block on the same page agrees. Page top still shows a stale banner ('Starting Friday, 9/11, ...'). Evidence is printed hours only.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2380,
+  "name": "Lucky Star Brewery",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Listed domain luckystarbrewery.com now serves an ad/parked redirect page (findresultszone.com) and must not be linked. No other own site found. Search results show a sale and new owners (Dayton Daily News, undated in snippet; daytondailynews.com refused our fetch with HTTP 429) and third-party event listings into 2026, none first-hand. A person should confirm whether 219 S 2nd St is operating.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2436,
+  "name": "Star City Brewing Company",
+  "status": "MOVED/RENAMED",
+  "official_url": "https://www.starcitybrewing.com/",
+  "address_as_printed": "319 S. 2nd St. Miamisburg, OH 45342",
+  "address_source_url": "https://www.starcitybrewing.com/",
+  "operating_evidence": null,
+  "quote": "Peerless Mill Inn & Brewery (formerly Star City Brewing Co)",
+  "quote_source_url": "https://www.starcitybrewing.com/",
+  "notes": "Renamed Peerless Mill Inn & Brewery at the same address; the operating business is row 302. Treat this row as replaced by row 302.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 302,
+  "name": "Peerless Mill Inn & Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.starcitybrewing.com/",
+  "address_as_printed": "319 S. 2nd St. Miamisburg, OH 45342",
+  "address_source_url": "https://www.starcitybrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Hours: Mon-Thurs: 4 PM - 10 PM Fri: 4 PM - 11 PM Sat: 1 PM - 11 PM Sun: 1 PM - 6 PM",
+   "url": "https://www.starcitybrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Formerly Star City Brewing Co (row 2436), 'Founded in November of 2025' per the site, in the historic Peerless Mill Inn building. Address also printed as '319 S. 2nd St. Miamisburg, OH' (no ZIP). 12 to 15 beers on tap plus house-made wines, cider, seltzer and mead; the text does not say outright that beer is brewed on site. Food trailer on site; full restaurant 'coming in January 2027'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 147,
+  "name": "Heavier Than Air Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://heavierthanairbrewing.com/",
+  "address_as_printed": "497 MIAMISBURG-CENTERVILLE RD, CENTERVILLE, OH 45459",
+  "address_source_url": "https://heavierthanairbrewing.com/taproom/",
+  "operating_evidence": {
+   "excerpt": "FALL HOURS Monday & Tuesday Closed (UNLESS SPECIAL EVENT) Wednesday 4-9pm Thursday 4-9pm Friday 4-10pm Saturday 12-10pm Sunday 1-6pm",
+   "url": "https://heavierthanairbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Home page also lists dated items: 'Thursday November 26th CLOSED THANKSGIVING', 'Black Friday Special Hours | Friday November 27th | 12-10p'. Footer 2017-2026. Address printed only on the taproom page.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 34,
+  "name": "Bock Family Brewing",
+  "status": "OPEN",
+  "official_url": "https://bockfamilybrewing.com/",
+  "address_as_printed": "8150 Washington Village Dr. Dayton, OH 45458",
+  "address_source_url": "https://bockfamilybrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday and Tuesday – Closed Wednesday – 5 – 9pm Thursday – 4 – 10pm Friday – 4 – 10pm Saturday – 12 – 10pm Sunday – 12 – 6pm",
+   "url": "https://bockfamilybrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "NEEDS HUMAN CHECK: the site answers every URL we tried with HTTP 404 and title 'Page not found - Bock Family Brewing', yet the same page body/footer prints the welcome text, address and hours; a person should open https://bockfamilybrewing.com/ in a browser to confirm it renders. Beer hand crafted in-house, 16 taps, German-style bier hall. URL was not in the listing; found via search.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 199,
+  "name": "Loose Ends Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": "https://looseendsbrewing.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "notes": "Refused: https://looseendsbrewing.com/ returned HTTP 403 to our bot; not worked around. URL from search (not in listing). Search results show 890 S Main St, Centerville and third-party 2026 event listings, none first-hand. A person should open the site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 2376,
+  "name": "Lock 27 Brewing",
+  "status": "OPEN",
+  "official_url": "https://lock27brewing.com/",
+  "address_as_printed": "1035 South Main Street Centerville, Ohio 45458",
+  "address_source_url": "https://lock27brewing.com/",
+  "operating_evidence": {
+   "excerpt": "MON 11AM – 10PM TUE 11AM – 10PM WED 11AM – 10PM THUR 11AM – 11PM FRI 11AM – 11PM SAT 11AM – 11PM SUN 11AM – 9PM",
+   "url": "https://lock27brewing.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Centerville Brewpub, now the brand's only public location (Dayton taproom closed, row 2377). Address printed in two forms: '1035 South Main Street Centerville, Ohio 45458' and, in the footer, '1035 E. Main St. Centerville, OH 45458' (the 'E.' appears to be a site error; listing says 1035 S Main St). Restaurant with food; brewing location not stated for this site.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 81,
+  "name": "Crooked Handle Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://crookedhandle.com/",
+  "address_as_printed": "760 N. Main Street Springboro, OH 45066",
+  "address_source_url": "https://crookedhandle.com/",
+  "operating_evidence": {
+   "excerpt": "Springboro Hours: Closed Mondays Tues, Wed, Thurs 4 PM - 10 PM Fri, Sat 1 PM - 11 PM Sun 1 PM - 8 PM",
+   "url": "https://crookedhandle.com/",
+   "checked": "2026-11-22"
+  },
+  "notes": "Springboro location of the two-location brand (Piqua is row 80). Springboro hours agree with the locations page except formatting ('Tue - Thur 4 - 10pm Fri - Sat 1 -11pm' / 'Sun 1 - 8pm'). Address also printed '760 N. Main Street, Springboro, OH 45066' on the locations page. Kitchen closes at 9pm Tue-Sat.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 335,
+  "name": "Warped Wing Barrel Room & Smokery",
+  "status": "UNCONFIRMED",
+  "official_url": "https://warpedwing.com/springboro/",
+  "address_as_printed": "25 WRIGHT STATION WAY – SPRINGBORO, OHIO 45066",
+  "address_source_url": "https://warpedwing.com/springboro/",
+  "operating_evidence": null,
+  "notes": "Springboro Barrel Room only (multi-location brand). Hours published only as an image (springboro_taproom_hours_website.png, uploaded 2026/02), no text hours and no dated 2026 Springboro item found. A person should open https://warpedwing.com/springboro/ and read the hours graphic.",
+  "checked": "2026-11-22"
+ }
+]

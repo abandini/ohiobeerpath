@@ -1,0 +1,668 @@
+[
+  {
+    "id": 6,
+    "address": "2113 N. Reynolds Rd. Toledo, OH 43615",
+    "lat": 41.66061391831,
+    "lon": -83.66772284428,
+    "matched": "2113 N REYNOLDS RD, TOLEDO, OH, 43615",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 22,
+    "address": "4064 US-42, Mason, OH 45036",
+    "lat": 39.378046200928,
+    "lon": -84.278349813991,
+    "matched": "4064 US HWY 42, MASON, OH, 45036",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 37,
+    "address": "905 Wayne Avenue Dayton, OH, 45410",
+    "lat": 39.752294522565,
+    "lon": -84.177257186619,
+    "matched": "905 WAYNE AVE, DAYTON, OH, 45410",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 54,
+    "address": "5905 Hamilton Ave. Cincinnati, OH 45224",
+    "lat": 39.198794185861,
+    "lon": -84.546796081343,
+    "matched": "5905 HAMILTON AVE, CINCINNATI, OH, 45224",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 58,
+    "address": "5002 Seaman Road Oregon, Ohio 43616",
+    "lat": 41.652269159854,
+    "lon": -83.428809536628,
+    "matched": "5002 SEAMAN ST, OREGON, OH, 43616",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 65,
+    "address": "1000 Carillon Blvd. Dayton, Ohio 45409",
+    "lat": 39.730237320074,
+    "lon": -84.200692038986,
+    "matched": "1000 CARILLON BLVD, DAYTON, OH, 45409",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 76,
+    "address": "126 E Main St Mason, OH 45040",
+    "lat": 39.360957252945,
+    "lon": -84.307527620773,
+    "matched": "126 E MAIN ST, MASON, OH, 45040",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 80,
+    "address": "123 North Main Street Piqua, OH 45356",
+    "lat": 40.147171606706,
+    "lon": -84.239493011003,
+    "matched": "123 N MAIN ST, PIQUA, OH, 45356",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 81,
+    "address": "760 N. Main Street Springboro, OH 45066",
+    "lat": 39.577467731277,
+    "lon": -84.230781684087,
+    "matched": "760 N MAIN ST, SPRINGBORO, OH, 45066",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 96,
+    "address": "4342 S. Detroit Ave., Toledo, OH 43614",
+    "lat": 41.591052344506,
+    "lon": -83.61455694816,
+    "matched": "4342 S DETROIT AVE, TOLEDO, OH, 43614",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 97,
+    "address": "3134 W Central Ave., Toledo, OH 43606",
+    "lat": 41.677453118136,
+    "lon": -83.621269373769,
+    "matched": "3134 W CENTRAL AVE, TOLEDO, OH, 43606",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 98,
+    "address": "25 S. St. Clair Toledo, OH 43604",
+    "lat": 41.647036112038,
+    "lon": -83.53838551879,
+    "matched": "25 S SAINT CLAIR ST, TOLEDO, OH, 43604",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 106,
+    "address": "3022 Wilmington Pike Dayton, OH 45429",
+    "lat": 39.703250684883,
+    "lon": -84.141777321623,
+    "matched": "3022 WILMINGTON PIKE, DAYTON, OH, 45429",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 107,
+    "address": "326 S Main St Findlay, OH 45840",
+    "lat": 41.038757689265,
+    "lon": -83.650324249339,
+    "matched": "326 S MAIN ST, FINDLAY, OH, 45840",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 111,
+    "address": "1445 Compton Rd Mount Healthy, OH",
+    "lat": 39.231653776955,
+    "lon": -84.540771340504,
+    "matched": "1445 COMPTON RD, MOUNT HEALTHY, OH, 45231",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 112,
+    "address": "1600 E. Fifth Street Dayton, Ohio 45403",
+    "lat": 39.758730846185,
+    "lon": -84.17211559973,
+    "matched": "1600 E FIFTH ST, DAYTON, OH, 45403",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 115,
+    "address": "5224 District Park Drive, Mason, OH 45040",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 117,
+    "address": "213 E. Crawford St. Findlay, Ohio 45840",
+    "lat": 41.037701347995,
+    "lon": -83.648239546946,
+    "matched": "213 E CRAWFORD ST, FINDLAY, OH, 45840",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 121,
+    "address": "2750 PARK AVE SUITE O, NORWOOD, OH 45212",
+    "lat": 39.159196473727,
+    "lon": -84.443950800606,
+    "matched": "2750 PARK AVE, NORWOOD, OH, 45212",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 123,
+    "address": "5800 CREEK RD - BLUE ASH, OH 45242",
+    "lat": 39.259765004544,
+    "lon": -84.367480456749,
+    "matched": "5800 CREEK RD, BLUE ASH, OH, 45242",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 132,
+    "address": "7790 Service Center Drive, West Chester, OH 45069",
+    "lat": 39.364392056238,
+    "lon": -84.363767821067,
+    "matched": "7790 SERVICE CENTER DR, WEST CHESTER, OH, 45069",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 141,
+    "address": "738 W. National Rd. Vandalia, OH 45377",
+    "lat": 39.889666843728,
+    "lon": -84.212148112235,
+    "matched": "738 W NATIONAL RD, VANDALIA, OH, 45377",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 147,
+    "address": "497 MIAMISBURG-CENTERVILLE RD, CENTERVILLE, OH 45459",
+    "lat": 39.627957768038,
+    "lon": -84.172788081389,
+    "matched": "497 MIAMISBURG CENTERVILLE RD, CENTERVILLE, OH, 45459",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 150,
+    "address": "6860 Plainfield Road Cincinnati, OH 45236",
+    "lat": 39.192567403282,
+    "lon": -84.400562787987,
+    "matched": "6860 PLAINFIELD RD, CINCINNATI, OH, 45236",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 151,
+    "address": "9176 Winton Road Cincinnati, OH 45231",
+    "lat": 39.233448348279,
+    "lon": -84.509580190764,
+    "matched": "9176 WINTON RD, CINCINNATI, OH, 45231",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 175,
+    "address": "127 w. third Street, perrysburg, Oh 43551",
+    "lat": 41.557847922375,
+    "lon": -83.630080587169,
+    "matched": "127 W 3RD ST, PERRYSBURG, OH, 43551",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 177,
+    "address": "1040 N. WESTWOOD AVE., TOLEDO, OH 43607",
+    "lat": 41.65041538574,
+    "lon": -83.606536907878,
+    "matched": "1040 N WESTWOOD AVE, TOLEDO, OH, 43607",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 183,
+    "address": "145 S. Main Street Downtown Bowling Green, OH",
+    "lat": 41.373623068255,
+    "lon": -83.65033910625,
+    "matched": "145 S MAIN ST, BOWLING GREEN, OH, 43402",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 195,
+    "address": "116 Webster Street Dayton, OH 45402",
+    "lat": 39.762815302028,
+    "lon": -84.181887266244,
+    "matched": "116 WEBSTER ST, DAYTON, OH, 45402",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 203,
+    "address": "7885 E KEMPER RD CINCINNATI, OH 45249",
+    "lat": 39.279519102962,
+    "lon": -84.348362719798,
+    "matched": "7885 E KEMPER RD, CINCINNATI, OH, 45249",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 209,
+    "address": "27 Broadway Street Toledo, OH 43604",
+    "lat": 41.643803510942,
+    "lon": -83.537858946361,
+    "matched": "27 BROADWAY ST, TOLEDO, OH, 43604",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 212,
+    "address": "1429 Race Street Cincinnati, OH 45202",
+    "lat": 39.110687789703,
+    "lon": -84.517126202167,
+    "matched": "1429 RACE ST, CINCINNATI, OH, 45202",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 269,
+    "address": "1910 Elm Street Cincinnati, OH 45202",
+    "lat": 39.1168053228,
+    "lon": -84.520206903077,
+    "matched": "1910 ELM ST, CINCINNATI, OH, 45202",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 293,
+    "address": "8584 Duke Boulevard in Mason, Ohio",
+    "lat": 39.312940093742,
+    "lon": -84.303490069031,
+    "matched": "8584 DUKE BLVD, MASON, OH, 45040",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 304,
+    "address": "4003 EASTERN AVE. CINCINNATI, OH 45226",
+    "lat": 39.109258468365,
+    "lon": -84.432982412919,
+    "matched": "4003 EASTERN AVE, CINCINNATI, OH, 45226",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 312,
+    "address": "11276 Chester Road Sharonville, OH 45246",
+    "lat": 39.278524804701,
+    "lon": -84.443601517913,
+    "matched": "11276 CHESTER RD, CINCINNATI, OH, 45246",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 317,
+    "address": "431 E 5th St, Dayton, OH 45402",
+    "lat": 39.757222600887,
+    "lon": -84.184355646604,
+    "matched": "431 E 5TH ST, DAYTON, OH, 45402",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 337,
+    "address": "26 WYANDOT STREET – DAYTON, OHIO 45402",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 340,
+    "address": "3044 Harrison Ave. Cincinnati, OH 45211",
+    "lat": 39.149477022723,
+    "lon": -84.598970504059,
+    "matched": "3044 HARRISON AVE, CINCINNATI, OH, 45211",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 369,
+    "address": "237 Jos Campau, Detroit, MI 48207",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 381,
+    "address": "1400 Porter St Detroit, MI 48216",
+    "lat": 42.328425586631,
+    "lon": -83.06317502908,
+    "matched": "1400 PORTER ST, DETROIT, MI, 48216",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 449,
+    "address": "2552 South I-75 Business Loop Grayling, Michigan 49738",
+    "lat": 44.64779398587,
+    "lon": -84.708824142449,
+    "matched": "2552 I- 75 BUS LP, GRAYLING, MI, 49738",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 451,
+    "address": "1529 Broadway Street Detroit, MI 48226",
+    "lat": 42.335969712408,
+    "lon": -83.048667835032,
+    "matched": "1529 BROADWAY ST, DETROIT, MI, 48226",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 453,
+    "address": "13121 Prospect, Dearborn, MI 48126",
+    "lat": 42.318391006419,
+    "lon": -83.169194499765,
+    "matched": "13121 PROSPECT ST, DEARBORN, MI, 48126",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 461,
+    "address": "2515 Riopelle St Detroit, MI 48207",
+    "lat": 42.346595503089,
+    "lon": -83.038702972184,
+    "matched": "2515 RIOPELLE ST, DETROIT, MI, 48207",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 474,
+    "address": "1370 N Long Lake Rd Fenton Twp, MI 48430",
+    "lat": 42.851409311646,
+    "lon": -83.704470171106,
+    "matched": "1370 N LONG LAKE RD, FENTON, MI, 48430",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 477,
+    "address": "7 North Saginaw Street Pontiac, Michigan 48342",
+    "lat": 42.636921425427,
+    "lon": -83.292098904713,
+    "matched": "7 N SAGINAW ST, PONTIAC, MI, 48342",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 488,
+    "address": "425 South Main St. Frankenmuth, MI",
+    "lat": 43.331150102889,
+    "lon": -83.738200355273,
+    "matched": "425 S MAIN ST, FRANKENMUTH, MI, 48734",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 500,
+    "address": "699 W. Big Beaver Road Troy, Michigan 48084",
+    "lat": 42.561853132718,
+    "lon": -83.161471563476,
+    "matched": "699 W BIG BEAVER RD, TROY, MI, 48084",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 509,
+    "address": "575 South Eton Street Birmingham, MI 48009",
+    "lat": 42.54310195265,
+    "lon": -83.195659389648,
+    "matched": "575 S ETON ST, BIRMINGHAM, MI, 48009",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 602,
+    "address": "122 N Michigan Old Town Saginaw, MI 48602",
+    "lat": 43.417715782395,
+    "lon": -83.964073370119,
+    "matched": "122 N MICHIGAN AVE, SAGINAW, MI, 48602",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 611,
+    "address": "6110 Dixie Hwy – Clarkston, MI",
+    "lat": 42.710297718215,
+    "lon": -83.407309522382,
+    "matched": "6110 DIXIE HWY, CLARKSTON, MI, 48346",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 628,
+    "address": "5304 Gateway Centre Drive Flint, MI 48507",
+    "lat": 42.946295558488,
+    "lon": -83.721026362729,
+    "matched": "5304 GATEWAY CENTRE BLVD, FLINT, MI, 48507",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 637,
+    "address": "509 Norway St, Grayling, MI 49738",
+    "lat": 44.662679407826,
+    "lon": -84.717956558712,
+    "matched": "509 NORWAY ST, GRAYLING, MI, 49738",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 640,
+    "address": "215 E 4th Street Royal Oak, MI 48067",
+    "lat": 42.487369242561,
+    "lon": -83.142774644161,
+    "matched": "215 E 4TH ST, ROYAL OAK, MI, 48067",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 643,
+    "address": "7200 Highland Road, Waterford, MI.",
+    "lat": 42.659734521627,
+    "lon": -83.427987668046,
+    "matched": "7200 HIGHLAND RD, WATERFORD, MI, 48327",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 674,
+    "address": "119 N Grand Traverse St Flint, Michigan",
+    "lat": 43.015442789759,
+    "lon": -83.696803156062,
+    "matched": "119 N GRAND TRAVERSE ST, FLINT, MI, 48503",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 681,
+    "address": "209 W. Houghton Avenue, West Branch, MI 48661",
+    "lat": 44.27632657183,
+    "lon": -84.237439377664,
+    "matched": "209 W HOUGHTON AVE, WEST BRANCH, MI, 48661",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 702,
+    "address": "4170 Shrestha Drive, Bay City, MI 48706",
+    "lat": 43.617475106268,
+    "lon": -83.911010397076,
+    "matched": "4170 SHRESTHA DR, BAY CITY, MI, 48706",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 900,
+    "address": "610 West 3rd Street, Lexington, KY 40508 USA",
+    "lat": 38.057077610807,
+    "lon": -84.501058209992,
+    "matched": "610 W 3RD ST, LEXINGTON, KY, 40508",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 902,
+    "address": "27 West 7th Street, Covington, KY 41011",
+    "lat": 39.083282130986,
+    "lon": -84.510556636712,
+    "matched": "27 W 7TH ST, COVINGTON, KY, 41011",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 906,
+    "address": "101 Innovation Way Georgetown, KY 40324",
+    "lat": 38.267005552845,
+    "lon": -84.512683687512,
+    "matched": "101 INNOVATION WAY, GEORGETOWN, KY, 40324",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 908,
+    "address": "224 Fairfield Ave Bellevue, KY 41073",
+    "lat": 39.10500216604,
+    "lon": -84.484733647291,
+    "matched": "224 FAIRFIELD AVE, BELLEVUE, KY, 41073",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 921,
+    "address": "200 E 3rd St. Newport",
+    "lat": 39.094921131176,
+    "lon": -84.49444871657,
+    "matched": "200 E 3RD ST, NEWPORT, KY, 41071",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 931,
+    "address": "725 National Ave Lexington, KY 40502",
+    "lat": 38.040818816532,
+    "lon": -84.479469948813,
+    "matched": "725 NATIONAL AVE, LEXINGTON, KY, 40502",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 943,
+    "address": "501 West 6th Street, Lexington, KY, 40508",
+    "lat": 38.059185893592,
+    "lon": -84.492000347197,
+    "matched": "501 W 6TH ST, LEXINGTON, KY, 40508",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 946,
+    "address": "629 York St. Newport, KY 41071",
+    "lat": 39.090157883677,
+    "lon": -84.494198019047,
+    "matched": "629 YORK ST, NEWPORT, KY, 41071",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2340,
+    "address": "41 Madison St. Dayton, OH, 45402",
+    "lat": 39.761780497946,
+    "lon": -84.185128565713,
+    "matched": "41 MADISON ST, DAYTON, OH, 45402",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2376,
+    "address": "1035 South Main Street Centerville, Ohio 45458",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2382,
+    "address": "3301 Madison Road Cincinnati, OH 45209",
+    "lat": 39.156004911232,
+    "lon": -84.425296288261,
+    "matched": "3301 MADISON RD, CINCINNATI, OH, 45209",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2390,
+    "address": "4362 Mt. Carmel-Tobasco Rd. Cincinnati, Ohio 45244",
+    "lat": 39.093610132076,
+    "lon": -84.30054007476,
+    "matched": "4362 MOUNT CARMEL TOBASCO RD, CINCINNATI, OH, 45244",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2395,
+    "address": "111 W McMicken Ave, Cincinnati, OH 45202",
+    "lat": 39.118573000277,
+    "lon": -84.519737781195,
+    "matched": "111 W MCMICKEN AVE, CINCINNATI, OH, 45202",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2404,
+    "address": "4730 W. Bancroft St. #8 Toledo, OH 43615",
+    "lat": 41.66247165204,
+    "lon": -83.650796858527,
+    "matched": "4730 W BANCROFT ST, TOLEDO, OH, 43615",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 2460,
+    "address": "4811 Vine Street, Cincinnati, OH 45217",
+    "lat": null,
+    "lon": null,
+    "matched": null,
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  }
+]
