@@ -1,310 +1,310 @@
 [
-    {
-        "id": 1261,
-        "name": "Troegs Brewing Co",
-        "status": "OPEN",
-        "official_url": "https://troegs.com/",
-        "address_as_printed": "200 East Hershey Park Drive, Hershey, PA 17033",
-        "address_source_url": "https://troegs.com/",
-        "quote": "We’re celebrating all things Mad Elf at the brewery on Saturday, November 21 and Sunday, November 22.",
-        "quote_source_url": "https://troegs.com/",
-        "notes": "Home page promotes a Nov 21-22 weekend (weekdays match 2026; year not printed). Hours line: 'Monday-Thursday: 11:30am – 9pm; Friday-Saturday: 11am – 10pm; Sunday: 11am – 9pm'. Phone (717) 534-1297. Site has a Snack Bar menu and Beer/Cocktails/Wine menus plus tours. Directory URL http://www.troegs.com redirects to https://troegs.com/. Single location.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Monday-Thursday: 11:30am – 9pm Friday-Saturday: 11am – 10pm Sunday: 11am – 9pm",
-            "url": "https://troegs.com/",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1153,
-        "name": "Mount Gretna Craft Brewery",
-        "status": "MOVED/RENAMED",
-        "official_url": "https://www.snitzcreekbrewery.com/",
-        "address_as_printed": "2701 Horseshoe Pike Palmyra, Pa 17078",
-        "address_source_url": "https://www.snitzcreekbrewery.com/",
-        "quote": "Palmyra Brewery (Campbelltown)",
-        "quote_source_url": "https://www.snitzcreekbrewery.com/",
-        "notes": "Directory URL gretnabrewery.com now redirects to an unrelated Indonesian gambling site (3dbet777.com): DO NOT USE. Mt. Gretna Craft Brewery closed: breweriesinpa.com says 'Mt. Gretna announced their plans to close in February of 2023' (https://breweriesinpa.com/snitz-creek-brewing-to-open-in-former-home-of-mt-gretna/); the same space is now Snitz Creek Brewery Palmyra. Snitz Creek's own site lists Palmyra hours 'Sunday - Thursday 11:30am - 9pm; Friday & Saturday 11:30am - 10pm' but the Visit Hershey Harrisburg beer-trail listing marks 'Snitz Creek - Palmyra - Temporarily Closed' (https://www.visithersheyharrisburg.org/trails/brew-barons-beer-trail/breweries/). CONFLICT: needs human decision / a phone call. Quote is the Palmyra label on Snitz Creek's own site; no 2026-dated item seen.",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 1197,
-        "name": "Rotunda Brewing",
-        "status": "OPEN",
-        "official_url": "https://www.rotundabrewing.com/",
-        "address_as_printed": "245 W. Main Street Annville, PA 17003",
-        "address_source_url": "https://www.rotundabrewing.com/contact-us/",
-        "quote": "Our brewery is located right next to our restaurant (formerly the Batdorf Restaurant) in the quaint downtown of Annville, Pennsylvania.",
-        "quote_source_url": "https://www.rotundabrewing.com/brewery/",
-        "notes": "Directory URL batdorfrestaurant.com/rbc redirects to an unrelated gambling site: DO NOT USE. Real site is rotundabrewing.com (page footer '© 2026'; menu PDFs uploaded 2026/07). Hours: 'Mon–Thur: 11:00 AM – 9:30 PM Friday: 11:00 AM – 10:00 PM Saturday: 8:00 AM – 10:00 PM Sunday: 8:00 AM – 9:30 PM'. Phone 717.867.0113. Full restaurant with breakfast Sat/Sun; can releases Saturdays; home of Annville IPA.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Mon–Thur: 11:00 AM – 9:30 PM Friday: 11:00 AM – 10:00 PM Saturday: 8:00 AM – 10:00 PM Sunday: 8:00 AM – 9:30 PM",
-            "url": "https://www.rotundabrewing.com/",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1218,
-        "name": "Snitz Creek Brewery",
-        "status": "OPEN",
-        "official_url": "https://www.snitzcreekbrewery.com/",
-        "address_as_printed": "7 North 9th Street Lebanon, Pa 17046",
-        "address_source_url": "https://www.snitzcreekbrewery.com/",
-        "quote": "OPEN FOR DINING!",
-        "quote_source_url": "https://www.snitzcreekbrewery.com/",
-        "notes": "Lebanon location. Hours line: 'Monday - Saturday 11:30am - 10pm / Sunday 11:30am - 9pm'; phone (717) 450-4467; food menu and online ordering. Multi-location brewer (Lebanon, Ft. Indiantown Gap Outpost, Palmyra); this row's location is listed as operating. Evidence is current hours only; no dated 2026 item seen. Directory URL redirects to https://www.snitzcreekbrewery.com/.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Lebanon Brewery Monday - Saturday 11:30 am - 10 pm Sunday 11:30 am - 9 pm",
-            "url": "https://www.snitzcreekbrewery.com/",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1010,
-        "name": "Chatty Monks Brewing Company",
-        "status": "UNCONFIRMED",
-        "official_url": "https://chattymonks.com/",
-        "address_as_printed": null,
-        "address_source_url": null,
-        "quote": "Chatty Monks is an employee-centric, brewery located in Reading, PA.",
-        "quote_source_url": "https://chattymonks.com/",
-        "notes": "Site is live but looks stale: footer '© Copyright 2021', pub page stamped 2023-06-20, Brewhouse page 2023-11-09, events page 2022-12-19; no 2026 item. The pub page prints hours and (484) 818-0176 but does NOT print the 610 Penn Ave address; the only street address printed on the site is the separate Brewhouse Taproom at '101 N. Carroll Street, Reading, PA 19611' (https://chattymonks.com/brewery/). Tried: home, /visit/, /locations/, /events/, /brewery/, /pub/. Untappd link exists but was not read. Needs a human check (phone or a dated social post).",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 998,
-        "name": "Broken Chair Brewery",
-        "status": "CLOSED",
-        "official_url": null,
-        "address_as_printed": null,
-        "address_source_url": null,
-        "quote": "Broken Chair Brewery will be closing at the end of August depending on how much beer we have.",
-        "quote_source_url": "https://thebeerthrillers.com/2024/06/18/broken-chair-brewery-has-announced-they-will-be-closing/",
-        "notes": "Quote is the owners' own announcement as reproduced by The Beer Thrillers (18 Jun 2024), which says 'closing (no later than the end of August 2024)'. This is an announcement of closure, not a post-closure confirmation; no later source read. Directory URL brokenchairbrewery.com now redirects to an unrelated gambling site (cikatoto4d.com): DO NOT USE. Last known address 424 East Penn Ave, West Reading (directory; not verified on an own site). Recommend treating as closed; human may want one more source.",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 1163,
-        "name": "Oakbrook Brewing Company",
-        "status": "OPEN",
-        "official_url": "https://oakbrookbrewing.com/",
-        "address_as_printed": null,
-        "address_source_url": null,
-        "quote": "Craft beer bliss with 12 brews at a time",
-        "quote_source_url": "https://oakbrookbrewing.com/",
-        "notes": "Directory URL oakbrookbrew.com redirects to https://oakbrookbrewing.com/. Street address is NOT printed in page text; it appears only inside the site's Apple Maps link ('daddr=628+park+ave+reading+pa') and phone tel:6107812021, so address_as_printed is null. Hours: 'Monday & Tuesday: Closed; Wednesday & Thursday: 4PM – 9PM; Friday: 4PM – 10PM; Saturday: 12PM – 8PM; Sunday: 12PM – 5PM'. Linked Untappd menu board; sister restaurant Comalli Taqueria (food). Current hours but no dated 2026 item.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Monday & Tuesday: Closed Wednesday & Thursday: 4PM – 9PM Friday: 4PM – 10PM Saturday: 12PM – 8PM Sunday: 12PM – 5PM",
-            "url": "https://oakbrookbrewing.com/",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1082,
-        "name": "Hidden River Brewing Co",
-        "status": "OPEN",
-        "official_url": "https://hiddenriverbrewing.com/",
-        "address_as_printed": "1808 W. SCHUYLKILL RD. DOUGLASSVILLE, PA 19518",
-        "address_source_url": "https://hiddenriverbrewing.com/",
-        "quote": "HRB Kitchen open with light menu till 7pm.",
-        "quote_source_url": "https://hiddenriverbrewing.com/",
-        "notes": "Site is JavaScript-rendered, so the text was read from the site's own published page-data files (storage.googleapis.com/gator-users/... linked from the home page), not from a rendered page. It shows regular hours (Wed/Thu 4-8, Fri/Sat 12-8, Sun 12-6), HOLIDAY HOURS 'Tue 11/24 ... Thu 11/26: Closed', Live Music 'Sat 11/21 ... Fri 11/27', Thursday trivia, food trucks, '© 2026'. Weekdays match 2026; year not printed beside the dates. Inside Brinton Lodge. Phone 484-798-8065 for large parties (from site).",
-        "checked": "2026-11-22",
-        "browser_checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "REGULAR HOURS Wednesdays: 4pm - 8pm",
-            "url": "https://hiddenriverbrewing.com/",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1217,
-        "name": "Sly Fox Brewing Co",
-        "status": "OPEN",
-        "official_url": "https://www.slyfoxbeer.com/pottstown",
-        "address_as_printed": "331 Circle of Progress Dr, Pottstown, PA 19464",
-        "address_source_url": "https://www.slyfoxbeer.com/pottstown",
-        "quote": "The Sly Fox Tastin' Room features a rotating menu of fresh beers and delicious fare in a casual, family-friendly atmosphere.",
-        "quote_source_url": "https://www.slyfoxbeer.com/pottstown",
-        "notes": "Pottstown Brewery & Tastin' Room (Sly Fox has pubs in Malvern, Phoenixville, Wyomissing, Pottstown). Hours: 'Sunday - Tuesday 11:30AM - 8:00PM; Wednesday & Thursday 11:30AM - 9:00PM; Fridays & Saturdays 11:30AM - 10:00PM'; closed Christmas, Easter, Thanksgiving. Phone (484) 300-4644. Full food menu, daily specials, takeout. No dated 2026 item on this page. Directory URL http://www.slyfoxbeer.com redirects to https://www.slyfoxbeer.com/.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Sunday - Tuesday 11:30AM - 8:00PM Wednesday & Thursday 11:30AM - 9:00PM Fridays & Saturdays 11:30AM - 10:00PM",
-            "url": "https://www.slyfoxbeer.com/pottstown",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1263,
-        "name": "Tuned Up Brewing Company",
-        "status": "UNCONFIRMED",
-        "official_url": null,
-        "address_as_printed": null,
-        "address_source_url": null,
-        "quote": null,
-        "quote_source_url": null,
-        "notes": "Directory has no website and I could not find an own site (guessed tunedupbrewing.com does not resolve). Only evidence: an Inquirer article of June 2026 about Punch Buggy Brewing opening in Spring City says the new spot joins 'a swath of new businesses ... including Tuned Up Brewing on the same block' (https://www.inquirer.com/news/pennsylvania/punch-buggy-brewing-spring-city-20260609.html). That is a news mention, not first-hand. A search result showed a MapQuest listing 'permanently closed' (not opened). Directory address 135 N Main St is not confirmed by an own source. Needs human check (call or own social post; Facebook not used).",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 1232,
-        "name": "Stickman Brews",
-        "status": "CLOSED",
-        "official_url": null,
-        "address_as_printed": null,
-        "address_source_url": null,
-        "quote": "Stickman Brews at 326 N. Lewis Road is closed permanently after being open for eight years.",
-        "quote_source_url": "https://patch.com/pennsylvania/limerick/stickman-brews-royersford-closes",
-        "notes": "Patch, posted 3 Oct 2023: Royersford location closed permanently. Directory URL stickmanbrews.com now redirects to an unrelated gambling site (infotogelonlineterpercaya.online): DO NOT USE. Patch also notes the closure followed a scale-back; other Stickman sites (Pottstown, Chester Springs) are outside this row.",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 1228,
-        "name": "Stable 12 Brewing Company",
-        "status": "OPEN",
-        "official_url": "https://www.stable12.com/",
-        "address_as_printed": "368 Bridge Street Phoenixville, PA 19460",
-        "address_source_url": "https://www.stable12.com/",
-        "quote": "Hero Mondays (10% with ID)",
-        "quote_source_url": "https://www.stable12.com/events/",
-        "notes": "Events page lists dated November 2026 events. Taproom hours: 'Monday - Tuesday 5pm-10pm; Wednesday - Thursday 5pm-10pm; Friday 12pm-10pm; Saturday 12pm-10pm; Sunday 12pm-8pm'. Phone (610) 715.2665. Beer garden, food menu, catering, to-go orders. Directory URL redirects to https://www.stable12.com/.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Monday – Tuesday: 5pm-10pm Wednesday- Thursday: 5pm-10pm Friday: 12pm-10pm Saturday: 12pm-10pm Sunday: 12pm-8pm",
-            "url": "https://www.stable12.com/",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1031,
-        "name": "Crowded Castle Brewing Co. Inc.",
-        "status": "MOVED/RENAMED",
-        "official_url": "https://www.rebelhillbrewing.com/",
-        "address_as_printed": "242 Bridge Street Phoenixville, PA 19460",
-        "address_source_url": "https://www.rebelhillbrewing.com/visit-rebelhill",
-        "quote": "Our 10 bbl brewhouse is located in the heart of downtown Phoenixville, PA.",
-        "quote_source_url": "https://www.rebelhillbrewing.com/visit-rebelhill",
-        "notes": "Directory URL crowdedcastle.com/www.crowdedcastle.com serves a parked-domain redirect (/lander): DO NOT USE. The same address, 242 Bridge Street, is now Rebel Hill Brewing Company ('Brewery on Bridge'). Whatnow article: 'The acquisition of the Crowded Castle space will offer Rebel Hill an impressive new upgrade.' (https://whatnow.com/?p=166252, undated; I did not find an own-source statement that Crowded Castle closed). Rebel Hill hours: 'Tue 5-10 PM (Food By Short Bus Hot Dogs) Wed–Thur 5–10 PM Fri–Sat 12–11 PM Sun 12–8 PM'; full kitchen. Rebel Hill is a multi-location brewer; this is its Phoenixville site. Human decision: list as Rebel Hill, not Crowded Castle. No dated 2026 item seen on Rebel Hill pages.",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 1196,
-        "name": "Root Down Brewing Company",
-        "status": "OPEN",
-        "official_url": "https://rootdownbrewing.com/",
-        "address_as_printed": "1 N Main St, Phoenixville, PA 19460",
-        "address_source_url": "https://rootdownbrewing.com/",
-        "quote": "Root Down is located in Phoenixville, PA inside the old Superior Beverage Co.",
-        "quote_source_url": "https://rootdownbrewing.com/",
-        "notes": "Brewery hours: 'MON-THURS: 4-10PM FRI-SAT: 12-11PM SUNDAY: 12-8PM'. Phone (484) 302-5407. Full kitchen, vegan options. Events page lists monthly recurring events (Punk Rock Flea Market, Science On Tap) but no dated 2026 item; evidence is current hours only. Directory URL redirects to https://rootdownbrewing.com/.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Brewery Hours MON-THURS: 4-10PM FRI-SAT: 1 2-11PM SUNDAY: 12-8PM",
-            "url": "https://rootdownbrewing.com/",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1216,
-        "name": "Sly Fox Brewhouse and Eatery",
-        "status": "OPEN",
-        "official_url": "https://www.slyfoxbeer.com/phoenixville",
-        "address_as_printed": "520 Kimberton Rd. Phoenixville, PA 19460",
-        "address_source_url": "https://www.slyfoxbeer.com/phoenixville",
-        "quote": "Enjoy local shopping, beer, holiday tunes, tasty bites, and more!",
-        "quote_source_url": "https://www.slyfoxbeer.com/phoenixville",
-        "notes": "Page lists 'HOLIDAY MARKET SUNDAY, NOVEMBER 29 | 1:00-5:00PM' (year not printed; Nov 29 2026 is a Sunday). Hours: 'Monday CLOSED; Tuesday- Saturday 11:30AM- 9:00PM; Sunday 11:30AM- 8:00PM'. Phone (610) 935-4540. Brewpub open since December 1995 with full food menu, banquet room. Address printed without 'Pikeland Village Square' (directory has it).",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Monday CLOSED Tuesday- Saturday 11:30AM- 9:00PM Sunday 11:30AM- 8:00PM",
-            "url": "https://www.slyfoxbeer.com/phoenixville",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1102,
-        "name": "Iron Hill Brewery & Restaurant - Phoenixville",
-        "status": "CLOSED",
-        "official_url": null,
-        "address_as_printed": "130 Bridge Street (directory; not printed on a current Iron Hill page)",
-        "address_source_url": null,
-        "quote": "Iron Hill Brewery's Phoenixville location has permanently shut its doors, yet the reasons for the closure are unsure.",
-        "quote_source_url": "https://montco.today/2024/11/iron-hill-brewery-phoenixville-closes",
-        "notes": "Montco Today (page dated Nov 2024, updated Jun 5 2025) reports closure 'according to employees'. Iron Hill's own site (https://www.ironhillbrewery.com/) lists 'Our five homes' as Center City, Wilmington, Hershey, Huntingdon Valley, Lancaster, with no Phoenixville. Iron Hill's Hershey location is listed as a lead. Chain-wide closures in 2025 are mentioned only in search-result summaries I did not read first-hand, so I do not rely on them.",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 958,
-        "name": "Appalachian Brewing Co - Collegeville",
-        "status": "MOVED/RENAMED",
-        "official_url": "https://www.troublesendbrewing.com/",
-        "address_as_printed": "50 West Third Avenue Ste 310 Collegeville, PA 19426",
-        "address_source_url": "https://www.troublesendbrewing.com/",
-        "quote": "We will be Closed on Thanksgiving Thursday November 26th",
-        "quote_source_url": "https://www.troublesendbrewing.com/",
-        "notes": "The 50 W Third Ave space is now Troubles End Brewing. Evidence for the switch: Patch (2018) 'Appalachian Brewing Company's Collegeville location is shut down through the end of the year for repairs' (https://patch.com/pennsylvania/lowerprovidence/collegevilles-appalachian-brewing-company-closes-repairs) and Philadelphia Magazine 'A new brewery with a Philly connection is coming to Collegeville.' (https://www.phillymag.com/restaurants/2019/09/18/troubles-end-brewing-collegeville/). ABC's own site (https://www.abcbrew.com/) lists brew pubs in Harrisburg, Mechanicsburg, Gettysburg, Lititz only, and says its Harrisburg brewpub 'closed permanently in July 2025'. Troubles End hours: 'Monday 11:30 AM - 9PM Tuesday - Thursday 11:30 AM - 10PM Friday 11:30 AM - MIDNIGHT Saturday 11:30AM - MIDNIGHT Sunday 10:30 AM - 9 PM'; phone (484) 902-8076; full food menu, brunch, live music. Thanksgiving Nov 26 matches 2026. Quote appears on its home page banner. Directory URL abcbrew.com is ABC's real site but no longer relevant to Collegeville.",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 1095,
-        "name": "Intercourse Brewing Co",
-        "status": "NOT A BREWERY TAPROOM",
-        "official_url": "https://intercoursebrewingcompany.com/",
-        "address_as_printed": null,
-        "address_source_url": null,
-        "quote": "Brewed in or around Intercourse, PA",
-        "quote_source_url": "https://intercoursebrewingcompany.com/",
-        "notes": "Site (footer '©2017') is a brand/merch page: nav is Home, About Us, Merch, Checkout; no visit page, hours or street address, and nothing about a taproom. The directory's Collegeville address (4166 Ironbridge Dr) is not printed on it. Status rests on absence of any taproom evidence, so FLAG for human decision. A search summary (not read first-hand) called it a contract brewer. Directory URL http://www.intercoursebrewingco.com redirects to intercoursebrewingcompany.com.",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 1115,
-        "name": "La Cabra Brewing",
-        "status": "OPEN",
-        "official_url": "https://www.lacabrabrewing.com/",
-        "address_as_printed": "642 Lancaster Avenue, Berwyn, PA, 19312",
-        "address_source_url": "https://www.lacabrabrewing.com/brewhouse",
-        "quote": "Employment - NOW HIRING!",
-        "quote_source_url": "https://www.lacabrabrewing.com/brewhouse",
-        "notes": "Berwyn Brewhouse page (also a Bryn Mawr Smokehouse location). Hours: 'Monday: CLOSED Tuesday - Thursday: 12 - 9 pm Friday - Saturday: 12 - 10 pm'; Sunday hours did not come through in the fetched text. Phone (610) 240-7908. Menu, beer list, takeout, delivery. Evidence is current hours and a hiring banner; no dated 2026 item, so treat as moderate confidence.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "Monday: CLOSED Tuesday - Thursday: 12 - 9 pm Friday - Saturday: 12 - 10 pm Sunday: 12 - 9 pm",
-            "url": "https://www.lacabrabrewing.com/brewhouse",
-            "checked": "2026-11-22"
-        }
-    },
-    {
-        "id": 1142,
-        "name": "McKenzie Brew House (#3)",
-        "status": "MOVED/RENAMED",
-        "official_url": "https://www.wills-bills.com/",
-        "address_as_printed": "324 Swedesford Road, Berwyn, PA 19312",
-        "address_source_url": "https://www.wills-bills.com/",
-        "quote": "Will’s & Bill’s is a family-owned brewery, oyster bar, and gastropub on Swedesford Road in Berwyn",
-        "quote_source_url": "https://www.wills-bills.com/",
-        "notes": "Inquirer (28 Jan 2022): 'McKenzie Brew House in Berwyn has been converted into a \"neighborhood hangout\" called Will's + Bill's.' and 'The McKenzie Brew Houses in Chadds Ford and Malvern remain.' (https://www.inquirer.com/food/wills-bills-mckenzie-brewpub-main-line-20220128.html). No website in directory. Will's & Bill's site shows '© 2026', happy hour 'Tuesday – Sunday 4–6 pm', bar hours 'Monday Closed; Tue – Thurs. 11:30 am – Midnight', phone 484-318-8538, brewery plus oyster bar and gastropub. Directory address says 324 W Swedesford Rd; site prints '324 Swedesford Road'.",
-        "checked": "2026-11-22"
-    },
-    {
-        "id": 1020,
-        "name": "Conshohocken Brewing - Bridgeport",
-        "status": "OPEN",
-        "official_url": "https://www.conshohockenbrewing.com/puddlerskitchen",
-        "address_as_printed": "3 DeKalb St Bridgeport, PA 19405",
-        "address_source_url": "https://www.conshohockenbrewing.com/puddlerskitchen",
-        "quote": "Go where the path takes you",
-        "quote_source_url": "https://www.conshohockenbrewing.com/puddlerskitchen",
-        "notes": "On the company's site this location is branded 'Puddlers Kitchen & Tap' (https://www.conshohockenbrewing.com/locations). Hours: 'MONDAY: 12:00 - 9:00PM ... FRIDAY: 12:00 - 11:00PM SATURDAY: 11:30 - 11:00PM SUNDAY: 11:30 - 9:00PM'; 'BEER GARDEN HOURS closed for the season'; phone 610-239-5999. Conshohocken Brewing has four sites (Conshohocken, Bridgeport, King of Prussia, Phoenixville); the Bridgeport row still operates but may be better named Puddlers Kitchen & Tap. Evidence is current hours; no dated 2026 item. Quote is the site tagline, not a description.",
-        "checked": "2026-11-22",
-        "operating_evidence": {
-            "excerpt": "MONDAY: 12:00 - 9:00PM TUESDAY: 12:00-9:00PM WEDNESDAY: 12:00 - 9:00PM THURSDAY: 12:00 - 10:00PM FRIDAY: 12:00 - 11:00PM SATURDAY: 11:30 - 11:00PM SUNDAY: 11:30 - 9:00PM",
-            "url": "https://www.conshohockenbrewing.com/puddlerskitchen",
-            "checked": "2026-11-22"
-        }
-    }
+ {
+  "id": 1261,
+  "name": "Troegs Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://troegs.com/",
+  "address_as_printed": "200 East Hershey Park Drive, Hershey, PA 17033",
+  "address_source_url": "https://troegs.com/",
+  "quote": "We’re celebrating all things Mad Elf at the brewery on Saturday, November 21 and Sunday, November 22.",
+  "quote_source_url": "https://troegs.com/",
+  "notes": "Home page promotes a Nov 21-22 weekend (weekdays match 2026; year not printed). Hours line: 'Monday-Thursday: 11:30am – 9pm; Friday-Saturday: 11am – 10pm; Sunday: 11am – 9pm'. Phone (717) 534-1297. Site has a Snack Bar menu and Beer/Cocktails/Wine menus plus tours. Directory URL http://www.troegs.com redirects to https://troegs.com/. Single location.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday-Thursday: 11:30am – 9pm Friday-Saturday: 11am – 10pm Sunday: 11am – 9pm",
+   "url": "https://troegs.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1153,
+  "name": "Mount Gretna Craft Brewery",
+  "status": "MOVED/RENAMED",
+  "official_url": "https://www.snitzcreekbrewery.com/",
+  "address_as_printed": "2701 Horseshoe Pike Palmyra, Pa 17078",
+  "address_source_url": "https://www.snitzcreekbrewery.com/",
+  "quote": "Palmyra Brewery (Campbelltown)",
+  "quote_source_url": "https://www.snitzcreekbrewery.com/",
+  "notes": "Directory URL gretnabrewery.com now redirects to an unrelated Indonesian gambling site (3dbet777.com): DO NOT USE. Mt. Gretna Craft Brewery closed: breweriesinpa.com says 'Mt. Gretna announced their plans to close in February of 2023' (https://breweriesinpa.com/snitz-creek-brewing-to-open-in-former-home-of-mt-gretna/); the same space is now Snitz Creek Brewery Palmyra. Snitz Creek's own site lists Palmyra hours 'Sunday - Thursday 11:30am - 9pm; Friday & Saturday 11:30am - 10pm' but the Visit Hershey Harrisburg beer-trail listing marks 'Snitz Creek - Palmyra - Temporarily Closed' (https://www.visithersheyharrisburg.org/trails/brew-barons-beer-trail/breweries/). CONFLICT: needs human decision / a phone call. Quote is the Palmyra label on Snitz Creek's own site; no 2026-dated item seen.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 1197,
+  "name": "Rotunda Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.rotundabrewing.com/",
+  "address_as_printed": "245 W. Main Street Annville, PA 17003",
+  "address_source_url": "https://www.rotundabrewing.com/contact-us/",
+  "quote": "Our brewery is located right next to our restaurant (formerly the Batdorf Restaurant) in the quaint downtown of Annville, Pennsylvania.",
+  "quote_source_url": "https://www.rotundabrewing.com/brewery/",
+  "notes": "Directory URL batdorfrestaurant.com/rbc redirects to an unrelated gambling site: DO NOT USE. Real site is rotundabrewing.com (page footer '© 2026'; menu PDFs uploaded 2026/07). Hours: 'Mon–Thur: 11:00 AM – 9:30 PM Friday: 11:00 AM – 10:00 PM Saturday: 8:00 AM – 10:00 PM Sunday: 8:00 AM – 9:30 PM'. Phone 717.867.0113. Full restaurant with breakfast Sat/Sun; can releases Saturdays; home of Annville IPA.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Mon–Thur: 11:00 AM – 9:30 PM Friday: 11:00 AM – 10:00 PM Saturday: 8:00 AM – 10:00 PM Sunday: 8:00 AM – 9:30 PM",
+   "url": "https://www.rotundabrewing.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1218,
+  "name": "Snitz Creek Brewery",
+  "status": "OPEN",
+  "official_url": "https://www.snitzcreekbrewery.com/",
+  "address_as_printed": "7 North 9th Street Lebanon, Pa 17046",
+  "address_source_url": "https://www.snitzcreekbrewery.com/",
+  "quote": "OPEN FOR DINING!",
+  "quote_source_url": "https://www.snitzcreekbrewery.com/",
+  "notes": "Lebanon location. Hours line: 'Monday - Saturday 11:30am - 10pm / Sunday 11:30am - 9pm'; phone (717) 450-4467; food menu and online ordering. Multi-location brewer (Lebanon, Ft. Indiantown Gap Outpost, Palmyra); this row's location is listed as operating. Evidence is current hours only; no dated 2026 item seen. Directory URL redirects to https://www.snitzcreekbrewery.com/.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Lebanon Brewery Monday - Saturday 11:30 am - 10 pm Sunday 11:30 am - 9 pm",
+   "url": "https://www.snitzcreekbrewery.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1010,
+  "name": "Chatty Monks Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": "https://chattymonks.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "quote": "Chatty Monks is an employee-centric, brewery located in Reading, PA.",
+  "quote_source_url": "https://chattymonks.com/",
+  "notes": "Site is live but looks stale: footer '© Copyright 2021', pub page stamped 2023-06-20, Brewhouse page 2023-11-09, events page 2022-12-19; no 2026 item. The pub page prints hours and (484) 818-0176 but does NOT print the 610 Penn Ave address; the only street address printed on the site is the separate Brewhouse Taproom at '101 N. Carroll Street, Reading, PA 19611' (https://chattymonks.com/brewery/). Tried: home, /visit/, /locations/, /events/, /brewery/, /pub/. Untappd link exists but was not read. Needs a human check (phone or a dated social post).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 998,
+  "name": "Broken Chair Brewery",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "quote": "Broken Chair Brewery will be closing at the end of August depending on how much beer we have.",
+  "quote_source_url": "https://thebeerthrillers.com/2024/06/18/broken-chair-brewery-has-announced-they-will-be-closing/",
+  "notes": "Quote is the owners' own announcement as reproduced by The Beer Thrillers (18 Jun 2024), which says 'closing (no later than the end of August 2024)'. This is an announcement of closure, not a post-closure confirmation; no later source read. Directory URL brokenchairbrewery.com now redirects to an unrelated gambling site (cikatoto4d.com): DO NOT USE. Last known address 424 East Penn Ave, West Reading (directory; not verified on an own site). Recommend treating as closed; human may want one more source.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 1163,
+  "name": "Oakbrook Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": "https://oakbrookbrewing.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "quote": "Craft beer bliss with 12 brews at a time",
+  "quote_source_url": "https://oakbrookbrewing.com/",
+  "notes": "Directory URL oakbrookbrew.com redirects to https://oakbrookbrewing.com/. Street address is NOT printed in page text; it appears only inside the site's Apple Maps link ('daddr=628+park+ave+reading+pa') and phone tel:6107812021, so address_as_printed is null. Hours: 'Monday & Tuesday: Closed; Wednesday & Thursday: 4PM – 9PM; Friday: 4PM – 10PM; Saturday: 12PM – 8PM; Sunday: 12PM – 5PM'. Linked Untappd menu board; sister restaurant Comalli Taqueria (food). Current hours but no dated 2026 item. 2026-11-22: taken off the road list. Its own site prints hours, but a second check the same day (Google Maps place status, internal) shows it as temporarily closed, so the two signals conflict. Re-list after a phone check or a dated notice on its own site.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday & Tuesday: Closed Wednesday & Thursday: 4PM – 9PM Friday: 4PM – 10PM Saturday: 12PM – 8PM Sunday: 12PM – 5PM",
+   "url": "https://oakbrookbrewing.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1082,
+  "name": "Hidden River Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://hiddenriverbrewing.com/",
+  "address_as_printed": "1808 W. SCHUYLKILL RD. DOUGLASSVILLE, PA 19518",
+  "address_source_url": "https://hiddenriverbrewing.com/",
+  "quote": "HRB Kitchen open with light menu till 7pm.",
+  "quote_source_url": "https://hiddenriverbrewing.com/",
+  "notes": "Site is JavaScript-rendered, so the text was read from the site's own published page-data files (storage.googleapis.com/gator-users/... linked from the home page), not from a rendered page. It shows regular hours (Wed/Thu 4-8, Fri/Sat 12-8, Sun 12-6), HOLIDAY HOURS 'Tue 11/24 ... Thu 11/26: Closed', Live Music 'Sat 11/21 ... Fri 11/27', Thursday trivia, food trucks, '© 2026'. Weekdays match 2026; year not printed beside the dates. Inside Brinton Lodge. Phone 484-798-8065 for large parties (from site).",
+  "checked": "2026-11-22",
+  "browser_checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "REGULAR HOURS Wednesdays: 4pm - 8pm",
+   "url": "https://hiddenriverbrewing.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1217,
+  "name": "Sly Fox Brewing Co",
+  "status": "OPEN",
+  "official_url": "https://www.slyfoxbeer.com/pottstown",
+  "address_as_printed": "331 Circle of Progress Dr, Pottstown, PA 19464",
+  "address_source_url": "https://www.slyfoxbeer.com/pottstown",
+  "quote": "The Sly Fox Tastin' Room features a rotating menu of fresh beers and delicious fare in a casual, family-friendly atmosphere.",
+  "quote_source_url": "https://www.slyfoxbeer.com/pottstown",
+  "notes": "Pottstown Brewery & Tastin' Room (Sly Fox has pubs in Malvern, Phoenixville, Wyomissing, Pottstown). Hours: 'Sunday - Tuesday 11:30AM - 8:00PM; Wednesday & Thursday 11:30AM - 9:00PM; Fridays & Saturdays 11:30AM - 10:00PM'; closed Christmas, Easter, Thanksgiving. Phone (484) 300-4644. Full food menu, daily specials, takeout. No dated 2026 item on this page. Directory URL http://www.slyfoxbeer.com redirects to https://www.slyfoxbeer.com/.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Sunday - Tuesday 11:30AM - 8:00PM Wednesday & Thursday 11:30AM - 9:00PM Fridays & Saturdays 11:30AM - 10:00PM",
+   "url": "https://www.slyfoxbeer.com/pottstown",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1263,
+  "name": "Tuned Up Brewing Company",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "quote": null,
+  "quote_source_url": null,
+  "notes": "Directory has no website and I could not find an own site (guessed tunedupbrewing.com does not resolve). Only evidence: an Inquirer article of June 2026 about Punch Buggy Brewing opening in Spring City says the new spot joins 'a swath of new businesses ... including Tuned Up Brewing on the same block' (https://www.inquirer.com/news/pennsylvania/punch-buggy-brewing-spring-city-20260609.html). That is a news mention, not first-hand. A search result showed a MapQuest listing 'permanently closed' (not opened). Directory address 135 N Main St is not confirmed by an own source. Needs human check (call or own social post; Facebook not used).",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 1232,
+  "name": "Stickman Brews",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": null,
+  "address_source_url": null,
+  "quote": "Stickman Brews at 326 N. Lewis Road is closed permanently after being open for eight years.",
+  "quote_source_url": "https://patch.com/pennsylvania/limerick/stickman-brews-royersford-closes",
+  "notes": "Patch, posted 3 Oct 2023: Royersford location closed permanently. Directory URL stickmanbrews.com now redirects to an unrelated gambling site (infotogelonlineterpercaya.online): DO NOT USE. Patch also notes the closure followed a scale-back; other Stickman sites (Pottstown, Chester Springs) are outside this row.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 1228,
+  "name": "Stable 12 Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://www.stable12.com/",
+  "address_as_printed": "368 Bridge Street Phoenixville, PA 19460",
+  "address_source_url": "https://www.stable12.com/",
+  "quote": "Hero Mondays (10% with ID)",
+  "quote_source_url": "https://www.stable12.com/events/",
+  "notes": "Events page lists dated November 2026 events. Taproom hours: 'Monday - Tuesday 5pm-10pm; Wednesday - Thursday 5pm-10pm; Friday 12pm-10pm; Saturday 12pm-10pm; Sunday 12pm-8pm'. Phone (610) 715.2665. Beer garden, food menu, catering, to-go orders. Directory URL redirects to https://www.stable12.com/.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday – Tuesday: 5pm-10pm Wednesday- Thursday: 5pm-10pm Friday: 12pm-10pm Saturday: 12pm-10pm Sunday: 12pm-8pm",
+   "url": "https://www.stable12.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1031,
+  "name": "Crowded Castle Brewing Co. Inc.",
+  "status": "MOVED/RENAMED",
+  "official_url": "https://www.rebelhillbrewing.com/",
+  "address_as_printed": "242 Bridge Street Phoenixville, PA 19460",
+  "address_source_url": "https://www.rebelhillbrewing.com/visit-rebelhill",
+  "quote": "Our 10 bbl brewhouse is located in the heart of downtown Phoenixville, PA.",
+  "quote_source_url": "https://www.rebelhillbrewing.com/visit-rebelhill",
+  "notes": "Directory URL crowdedcastle.com/www.crowdedcastle.com serves a parked-domain redirect (/lander): DO NOT USE. The same address, 242 Bridge Street, is now Rebel Hill Brewing Company ('Brewery on Bridge'). Whatnow article: 'The acquisition of the Crowded Castle space will offer Rebel Hill an impressive new upgrade.' (https://whatnow.com/?p=166252, undated; I did not find an own-source statement that Crowded Castle closed). Rebel Hill hours: 'Tue 5-10 PM (Food By Short Bus Hot Dogs) Wed–Thur 5–10 PM Fri–Sat 12–11 PM Sun 12–8 PM'; full kitchen. Rebel Hill is a multi-location brewer; this is its Phoenixville site. Human decision: list as Rebel Hill, not Crowded Castle. No dated 2026 item seen on Rebel Hill pages.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 1196,
+  "name": "Root Down Brewing Company",
+  "status": "OPEN",
+  "official_url": "https://rootdownbrewing.com/",
+  "address_as_printed": "1 N Main St, Phoenixville, PA 19460",
+  "address_source_url": "https://rootdownbrewing.com/",
+  "quote": "Root Down is located in Phoenixville, PA inside the old Superior Beverage Co.",
+  "quote_source_url": "https://rootdownbrewing.com/",
+  "notes": "Brewery hours: 'MON-THURS: 4-10PM FRI-SAT: 12-11PM SUNDAY: 12-8PM'. Phone (484) 302-5407. Full kitchen, vegan options. Events page lists monthly recurring events (Punk Rock Flea Market, Science On Tap) but no dated 2026 item; evidence is current hours only. Directory URL redirects to https://rootdownbrewing.com/.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Brewery Hours MON-THURS: 4-10PM FRI-SAT: 1 2-11PM SUNDAY: 12-8PM",
+   "url": "https://rootdownbrewing.com/",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1216,
+  "name": "Sly Fox Brewhouse and Eatery",
+  "status": "OPEN",
+  "official_url": "https://www.slyfoxbeer.com/phoenixville",
+  "address_as_printed": "520 Kimberton Rd. Phoenixville, PA 19460",
+  "address_source_url": "https://www.slyfoxbeer.com/phoenixville",
+  "quote": "Enjoy local shopping, beer, holiday tunes, tasty bites, and more!",
+  "quote_source_url": "https://www.slyfoxbeer.com/phoenixville",
+  "notes": "Page lists 'HOLIDAY MARKET SUNDAY, NOVEMBER 29 | 1:00-5:00PM' (year not printed; Nov 29 2026 is a Sunday). Hours: 'Monday CLOSED; Tuesday- Saturday 11:30AM- 9:00PM; Sunday 11:30AM- 8:00PM'. Phone (610) 935-4540. Brewpub open since December 1995 with full food menu, banquet room. Address printed without 'Pikeland Village Square' (directory has it).",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday CLOSED Tuesday- Saturday 11:30AM- 9:00PM Sunday 11:30AM- 8:00PM",
+   "url": "https://www.slyfoxbeer.com/phoenixville",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1102,
+  "name": "Iron Hill Brewery & Restaurant - Phoenixville",
+  "status": "CLOSED",
+  "official_url": null,
+  "address_as_printed": "130 Bridge Street (directory; not printed on a current Iron Hill page)",
+  "address_source_url": null,
+  "quote": "Iron Hill Brewery's Phoenixville location has permanently shut its doors, yet the reasons for the closure are unsure.",
+  "quote_source_url": "https://montco.today/2024/11/iron-hill-brewery-phoenixville-closes",
+  "notes": "Montco Today (page dated Nov 2024, updated Jun 5 2025) reports closure 'according to employees'. Iron Hill's own site (https://www.ironhillbrewery.com/) lists 'Our five homes' as Center City, Wilmington, Hershey, Huntingdon Valley, Lancaster, with no Phoenixville. Iron Hill's Hershey location is listed as a lead. Chain-wide closures in 2025 are mentioned only in search-result summaries I did not read first-hand, so I do not rely on them.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 958,
+  "name": "Appalachian Brewing Co - Collegeville",
+  "status": "MOVED/RENAMED",
+  "official_url": "https://www.troublesendbrewing.com/",
+  "address_as_printed": "50 West Third Avenue Ste 310 Collegeville, PA 19426",
+  "address_source_url": "https://www.troublesendbrewing.com/",
+  "quote": "We will be Closed on Thanksgiving Thursday November 26th",
+  "quote_source_url": "https://www.troublesendbrewing.com/",
+  "notes": "The 50 W Third Ave space is now Troubles End Brewing. Evidence for the switch: Patch (2018) 'Appalachian Brewing Company's Collegeville location is shut down through the end of the year for repairs' (https://patch.com/pennsylvania/lowerprovidence/collegevilles-appalachian-brewing-company-closes-repairs) and Philadelphia Magazine 'A new brewery with a Philly connection is coming to Collegeville.' (https://www.phillymag.com/restaurants/2019/09/18/troubles-end-brewing-collegeville/). ABC's own site (https://www.abcbrew.com/) lists brew pubs in Harrisburg, Mechanicsburg, Gettysburg, Lititz only, and says its Harrisburg brewpub 'closed permanently in July 2025'. Troubles End hours: 'Monday 11:30 AM - 9PM Tuesday - Thursday 11:30 AM - 10PM Friday 11:30 AM - MIDNIGHT Saturday 11:30AM - MIDNIGHT Sunday 10:30 AM - 9 PM'; phone (484) 902-8076; full food menu, brunch, live music. Thanksgiving Nov 26 matches 2026. Quote appears on its home page banner. Directory URL abcbrew.com is ABC's real site but no longer relevant to Collegeville.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 1095,
+  "name": "Intercourse Brewing Co",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://intercoursebrewingcompany.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "quote": "Brewed in or around Intercourse, PA",
+  "quote_source_url": "https://intercoursebrewingcompany.com/",
+  "notes": "Site (footer '©2017') is a brand/merch page: nav is Home, About Us, Merch, Checkout; no visit page, hours or street address, and nothing about a taproom. The directory's Collegeville address (4166 Ironbridge Dr) is not printed on it. Status rests on absence of any taproom evidence, so FLAG for human decision. A search summary (not read first-hand) called it a contract brewer. Directory URL http://www.intercoursebrewingco.com redirects to intercoursebrewingcompany.com.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 1115,
+  "name": "La Cabra Brewing",
+  "status": "OPEN",
+  "official_url": "https://www.lacabrabrewing.com/",
+  "address_as_printed": "642 Lancaster Avenue, Berwyn, PA, 19312",
+  "address_source_url": "https://www.lacabrabrewing.com/brewhouse",
+  "quote": "Employment - NOW HIRING!",
+  "quote_source_url": "https://www.lacabrabrewing.com/brewhouse",
+  "notes": "Berwyn Brewhouse page (also a Bryn Mawr Smokehouse location). Hours: 'Monday: CLOSED Tuesday - Thursday: 12 - 9 pm Friday - Saturday: 12 - 10 pm'; Sunday hours did not come through in the fetched text. Phone (610) 240-7908. Menu, beer list, takeout, delivery. Evidence is current hours and a hiring banner; no dated 2026 item, so treat as moderate confidence.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "Monday: CLOSED Tuesday - Thursday: 12 - 9 pm Friday - Saturday: 12 - 10 pm Sunday: 12 - 9 pm",
+   "url": "https://www.lacabrabrewing.com/brewhouse",
+   "checked": "2026-11-22"
+  }
+ },
+ {
+  "id": 1142,
+  "name": "McKenzie Brew House (#3)",
+  "status": "MOVED/RENAMED",
+  "official_url": "https://www.wills-bills.com/",
+  "address_as_printed": "324 Swedesford Road, Berwyn, PA 19312",
+  "address_source_url": "https://www.wills-bills.com/",
+  "quote": "Will’s & Bill’s is a family-owned brewery, oyster bar, and gastropub on Swedesford Road in Berwyn",
+  "quote_source_url": "https://www.wills-bills.com/",
+  "notes": "Inquirer (28 Jan 2022): 'McKenzie Brew House in Berwyn has been converted into a \"neighborhood hangout\" called Will's + Bill's.' and 'The McKenzie Brew Houses in Chadds Ford and Malvern remain.' (https://www.inquirer.com/food/wills-bills-mckenzie-brewpub-main-line-20220128.html). No website in directory. Will's & Bill's site shows '© 2026', happy hour 'Tuesday – Sunday 4–6 pm', bar hours 'Monday Closed; Tue – Thurs. 11:30 am – Midnight', phone 484-318-8538, brewery plus oyster bar and gastropub. Directory address says 324 W Swedesford Rd; site prints '324 Swedesford Road'.",
+  "checked": "2026-11-22"
+ },
+ {
+  "id": 1020,
+  "name": "Conshohocken Brewing - Bridgeport",
+  "status": "OPEN",
+  "official_url": "https://www.conshohockenbrewing.com/puddlerskitchen",
+  "address_as_printed": "3 DeKalb St Bridgeport, PA 19405",
+  "address_source_url": "https://www.conshohockenbrewing.com/puddlerskitchen",
+  "quote": "Go where the path takes you",
+  "quote_source_url": "https://www.conshohockenbrewing.com/puddlerskitchen",
+  "notes": "On the company's site this location is branded 'Puddlers Kitchen & Tap' (https://www.conshohockenbrewing.com/locations). Hours: 'MONDAY: 12:00 - 9:00PM ... FRIDAY: 12:00 - 11:00PM SATURDAY: 11:30 - 11:00PM SUNDAY: 11:30 - 9:00PM'; 'BEER GARDEN HOURS closed for the season'; phone 610-239-5999. Conshohocken Brewing has four sites (Conshohocken, Bridgeport, King of Prussia, Phoenixville); the Bridgeport row still operates but may be better named Puddlers Kitchen & Tap. Evidence is current hours; no dated 2026 item. Quote is the site tagline, not a description.",
+  "checked": "2026-11-22",
+  "operating_evidence": {
+   "excerpt": "MONDAY: 12:00 - 9:00PM TUESDAY: 12:00-9:00PM WEDNESDAY: 12:00 - 9:00PM THURSDAY: 12:00 - 10:00PM FRIDAY: 12:00 - 11:00PM SATURDAY: 11:30 - 11:00PM SUNDAY: 11:30 - 9:00PM",
+   "url": "https://www.conshohockenbrewing.com/puddlerskitchen",
+   "checked": "2026-11-22"
+  }
+ }
 ]
