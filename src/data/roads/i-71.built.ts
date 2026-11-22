@@ -2019,13 +2019,13 @@ export const I_71_BUILT: BuiltRoad = {
       "id": 12,
       "name": "Antiques on High",
       "why": "notPlaced",
-      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-22, and the directory holds no matching street address"
     },
     {
       "id": 2455,
       "name": "Valley Vineyards Winery & Cellar Dweller Brewing",
       "why": "notPlaced",
-      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-22, and the directory holds no matching street address"
     },
     {
       "id": 191,
@@ -2037,7 +2037,7 @@ export const I_71_BUILT: BuiltRoad = {
       "id": 115,
       "name": "Fifty West Deerfield",
       "why": "notPlaced",
-      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-22, and the directory holds no matching street address"
     },
     {
       "id": 312,
@@ -2049,7 +2049,7 @@ export const I_71_BUILT: BuiltRoad = {
       "id": 25,
       "name": "Big Ash Brewing Company",
       "why": "notPlaced",
-      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-22, and the directory holds no matching street address"
     },
     {
       "id": 2390,

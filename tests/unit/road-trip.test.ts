@@ -1164,7 +1164,7 @@ describe('location identity on a directory road', () => {
     expect([1, 2, 8].map((id) => stop(id)!.placedBy)).toEqual(['directory', 'census', 'census']);
   });
   it('a brewery that prints another address than the directory\'s, with no geocode for it, stays off', () => {
-    expect(stop(3)).toBeUndefined(); expect(why(3)).toMatch(/found no match for its printed address/);   // the geocode on file is for an old address
+    expect(stop(3)).toBeUndefined(); expect(why(3)).toMatch(/no exact Census match was returned for its printed address when checked/);   // the geocode on file is for an old address
     expect(stop(5)).toBeUndefined(); expect(why(5)).toMatch(/prints no street address/);
   });
   it('a wrong directory point does not survive a right address: the exact Census point decides', () => {

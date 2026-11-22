@@ -487,6 +487,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
   // coordinates tied to the address it prints (see the order below), or it is left off. Rows that will not be listed
   // keep the directory's point, so they still count in the coverage figures.
   const strict = config.addressMustMatch === true && config.ingest !== 'checker-files';
+  const geoAsked = new Map(geocodes.filter((g) => typeof (g as { checked?: unknown })?.checked === 'string').map((g) => [String(g.id), String((g as { checked?: unknown }).checked)]));   // when the geocoder was asked, including the times it returned no match
   const geo = new Map(geocodes.filter((g) => typeof g?.lat === 'number' && typeof g?.lon === 'number' && Number.isFinite(g.lat) && Number.isFinite(g.lon)).map((g) => [String(g.id), g]));
   const rowFor = new Map<Id, VerifiedRow>(); for (const r of verified) if (r && !rowFor.has(r.id)) rowFor.set(r.id, r);
   const towns = strict ? [...new Set(candidates.map((x) => String(x?.city ?? '').trim()).filter(Boolean))] : [];
@@ -534,7 +535,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
         : same ? 'its printed address is the directory\'s, but the directory\'s map point is a placeholder (shared with another listing, or shown to be wrong by an exact address match) and the geocoder did not match the address exactly'
           : mine && off <= 0.25 ? `the geocoder matched a slightly different address (${g!.matched}); flagged for review, and not used without a recorded decision`
             : mine ? `the geocoder matched a different address (${g!.matched}), ${off.toFixed(2)} miles from the directory's point`
-              : 'the geocoder found no match for its printed address, and the directory holds no matching street address');
+              : `no exact Census match was returned for its printed address when checked${geoAsked.get(String(cand.id)) ? ` on ${geoAsked.get(String(cand.id))}` : ''}, and the directory holds no matching street address`);
     }
     const near = legs.map((l) => ({ l, on: projectOntoLine(p, l.st.line, l.cum) })).sort((a, b) => a.on.detour - b.on.detour)[0];
     const seg = segmentAt(near.l.leg, near.on.along);

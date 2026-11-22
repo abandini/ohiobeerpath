@@ -844,7 +844,7 @@ export const US_422_BUILT: BuiltRoad = {
       "id": 26,
       "name": "Biker Brewhouse",
       "why": "notPlaced",
-      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-22, and the directory holds no matching street address"
     },
     {
       "id": 259,
