@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   buildRoad, cumulativeMiles, isShowableStop, unreadVerdict, verifierExit, BROWSER_CHECK_MAX_DAYS, milesBetween, projectOntoLine, simplifyLine, stitchLeg, townsName, viewRoad,
-  roadConfigProblems, safeSitePath, normaliseCheckerFiles, readCoordinates, stopKey, stateAbbr, distanceToWays, asPrinted, pageText, hoursOnly, sameStreet, townInAddress, stopProblems, excerptFound,
+  roadConfigProblems, safeSitePath, normaliseCheckerFiles, readCoordinates, stopKey, stateAbbr, distanceToWays, asPrinted, pageText, hoursOnly, sameStreet, sameLocation, townInAddress, stopProblems, excerptFound,
   type BuiltRoad, type CandidateRow, type LatLon, type RoadConfig, type RoadStop, type VerifiedRow,
 } from '../../src/lib/road-trip';
 import {
@@ -697,18 +697,39 @@ describe('reading the checkers\' files', () => {
   });
   it('a row with no coordinates cannot be placed, is reported, and never becomes a stop', () => {
     expect(got.unplaced.map((u) => u.key)).toEqual(['moved-nowhere-foxtrot', 'quietly-moved-alpha', 'no-coordinates-juliet']);
-    expect(got.unplaced[0].why).toMatch(/printed address is not the dataset's/); expect(got.unplaced[2].why).toBe('geocoder returned no match');
+    expect(got.unplaced[0].why).toMatch(/not a full match for the dataset's/); expect(got.unplaced[2].why).toBe('geocoder returned no match');
     for (const k of ['no-coordinates-juliet', 'moved-nowhere-foxtrot', 'quietly-moved-alpha']) expect(at(k), k).toBeUndefined();
     const b = buildRoad({ ...CONFIG, stopsHavePages: false }, WAYS, got.candidates, got.verified, TODAY, TODAY);
     expect(b.road.stops.some((s) => /no-coordinates|moved-nowhere|quietly-moved/.test(s.key))).toBe(false);
     expect(b.report.left.find((x) => x.id === 'no-coordinates-juliet')!.reason).toMatch(/no coordinates/);
   });
   it('dataset coordinates are used only when the printed address is the dataset\'s; the status word does not decide it', () => {
-    expect(sameStreet('10 Main Street, Alpha, IL 60000', '10 Main St')).toBe(true); expect(sameStreet('1927 W. North Ave. Chicago, IL 60622', '1927 W North Ave')).toBe(true);
-    expect(sameStreet('1717 East 7th Street, Tulsa, OK', '1717 E. 7th Steeet')).toBe(true); expect(sameStreet('16 East Route 66 Flagstaff, AZ 86001', '16 E Route 66')).toBe(true);
-    expect(sameStreet('3313 Girard NE, Albuquerque, NM 87107', '3313 Girard Blvd NE')).toBe(true);
-    expect(sameStreet('214 West Commercial Street, Lebanon, Missouri 65536', '110 Sherman Ave')).toBe(false); expect(sameStreet('12 Main St', '14 Main St')).toBe(false);
-    expect(sameStreet(null, '10 Main St')).toBe(false); expect(sameStreet('Main Street', 'Main St')).toBe(false);
+    // the street line must match in full: number, direction, every word of the name, suffix
+    expect(sameStreet('100 N Main St', '100 S Main Ave')).toBe(false);                       // direction and suffix differ
+    expect(sameStreet('100 Martin Luther King Blvd', '100 Martin Way')).toBe(false);          // a different street that starts alike
+    expect(sameStreet('100 N Main St', '100 N Main Ave')).toBe(false); expect(sameStreet('100 N Main St', '100 S Main St')).toBe(false);
+    expect(sameStreet('100 Main St', '100 Main')).toBe(false); expect(sameStreet('12 Main St', '14 Main St')).toBe(false); expect(sameStreet('Main Street', 'Main St')).toBe(false);
+    expect(sameStreet('100 North Main Street', '100 N. Main St')).toBe(true); expect(sameStreet('1927 W. North Ave.', '1927 W North Ave')).toBe(true);
+    expect(sameStreet('8920 Vernon Avenue Suite 122', '8920 Vernon Ave Ste 122')).toBe(true); expect(sameStreet('720 E Arrow Hwy Unit C', '720 E Arrow Hwy Ste C')).toBe(true);
+    expect(sameStreet('908 S.W. 4th Street', '908 SW 4th St')).toBe(true); expect(sameStreet('16 East Route 66', '16 E Route 66')).toBe(true);
+    expect(sameStreet('2896 Metropolitan Place', '2896 Metropolitan Pl')).toBe(true); expect(sameStreet('300 Sunset Boulevard', '300 Sunset Blvd')).toBe(true);
+    // and the town and state must be the dataset's
+    const il = (address_1: string, city = 'Alpha') => ({ address_1, city, state: 'Illinois' });
+    expect(sameLocation('10 Main Street, Alpha, IL 60000', il('10 Main St'))).toBe(true);
+    expect(sameLocation('235 N Ashland Ave - Chicago, IL 60607', il('235 N Ashland Ave', 'Chicago'))).toBe(true);
+    expect(sameLocation('Lemont 431 Talcott Avenue Lemont, IL 60439', il('431 Talcott Ave', 'Lemont'))).toBe(true);
+    expect(sameLocation('1912 2nd St. NW 87102 Albuquerque', { address_1: '1912 2nd Street NW', city: 'Albuquerque', state: 'New Mexico' })).toBe(true);
+    expect(sameLocation('908 S.W. 4th Street OKC, OK', { address_1: '908 SW 4th St', city: 'Oklahoma City', state: 'Oklahoma' })).toBe(true);
+    expect(sameLocation('10 Main Street, Bravo, IL 60000', il('10 Main St'))).toBe(false);          // same street line, another town
+    expect(sameLocation('10 Main Street, Alpha, MO 60000', il('10 Main St'))).toBe(false);          // another state
+    expect(sameLocation('10 Main Street', il('10 Main St'))).toBe(false);                           // names no town: cannot be told apart
+    expect(sameLocation('100 N Main St, Alpha, IL', il('100 S Main Ave'))).toBe(false);
+    expect(sameLocation('100 Martin Luther King Blvd, Alpha, IL', il('100 Martin Way'))).toBe(false);
+    expect(sameLocation('3313 Girard NE Albuquerque, NM 87107', { address_1: '3313 Girard Blvd NE', city: 'Albuquerque', state: 'New Mexico' })).toBe(false);   // suffix left off
+    expect(sameLocation('1717 East 7th Street, Tulsa, OK', { address_1: '1717 E. 7th Steeet', city: 'Tulsa', state: 'Oklahoma' })).toBe(false);            // dataset misspelt
+    expect(sameLocation('2840 w armitage ave. logan square chicago, il', il('2840 W Armitage Ave', 'Chicago'))).toBe(false);                               // extra words in the line
+    expect(sameLocation('214 West Commercial Street, Lebanon, Missouri 65536', { address_1: '110 Sherman Ave', city: 'Phillipsburg', state: 'Missouri' })).toBe(false);
+    expect(sameLocation(null, il('10 Main St'))).toBe(false); expect(sameLocation('10 Main St, Alpha, IL', null)).toBe(false);
     expect([at('old-name-ales-alpha')!.latitude, at('old-name-ales-alpha')!.longitude]).toEqual([40, -79.9]);      // same street: the dataset's point
     expect(at('quietly-moved-alpha')).toBeUndefined();                                                              // OPEN, but a different street and no Census point
     expect([at('closed-co-charlie')!.latitude]).toEqual([40]);                                                      // not listed anyway: kept for the coverage count
@@ -775,6 +796,14 @@ describe('reading the checkers\' files', () => {
     expect(townInAddress('1220 S. 8th Street St. Louis, MO', known, 'St. Louis')).toBe('St. Louis');
     expect(townInAddress('7 N Lee Avenue OKC, OK 73102', known, 'Oklahoma City')).toBe('Oklahoma City');
     expect(townInAddress('704 W Reno Ave', known, 'Oklahoma City')).toBeNull(); expect(townInAddress(null, known, 'X')).toBeNull();
+    // a town's name in the STREET is not the address's town: only the locality before the state counts
+    expect(townInAddress('100 Lebanon Road, Springfield, MO 65801', ['Lebanon', 'Springfield'], 'Lebanon')).toBe('Springfield');
+    expect(townInAddress('100 Lebanon Road, Springfield, MO 65801', ['Lebanon'], 'Lebanon')).toBe('Springfield');          // even when Springfield is not a town we know
+    expect(townInAddress('100 Lebanon Road Springfield MO 65801', ['Lebanon'], 'Lebanon')).toBe('Springfield');
+    expect(townInAddress('500 Upland Avenue, Rancho Cucamonga, CA 91730', known, 'Upland')).toBe('Rancho Cucamonga');
+    expect(townInAddress('12 Springfield Street, Lebanon, MO', ['Springfield'], 'Lebanon')).toBe('Lebanon');
+    expect(townInAddress('828 Traction Ave · Arts District, Downtown LA', known, 'Los Angeles', 'California')).toBe('Los Angeles');  // LA is the city here, not Louisiana
+    expect(townInAddress('1519 N. Main Street, Suite 102 Flagstaff, AZ 86004', [], 'Flagstaff')).toBe('Flagstaff');
     expect(got.candidates.find((c) => c.id === 'moved-brewing-bravo')!.city).toBe('Hotel');                    // its row said Bravo, its address says Hotel
     expect(got.retowned).toContainEqual({ key: 'moved-brewing-bravo', name: 'Moved Brewing', from: 'Bravo', to: 'Hotel' });
   });
@@ -976,7 +1005,7 @@ describe('Route 66 (src/data/roads/route-66)', () => {
     }
     const boat = road.stops.find((s) => s.name.startsWith('Boat Town'))!;
     expect([boat.town, boat.address]).toEqual(['Lebanon', '214 West Commercial Street, Lebanon, Missouri 65536']);
-    for (const gone of ['Marz', 'Ponderosa', 'Rickety Cricket', '3 Iron', 'Hop Secret']) expect(road.stops.some((s) => s.name.startsWith(gone)), gone).toBe(false);
+    for (const gone of ['Marz', 'Ponderosa', 'Rickety Cricket', '3 Iron', 'Hop Secret', 'Middle Brow', 'Welltown', 'Angry Scotsman', 'La Cumbre Brewing Co (Brewery', 'Arts District', 'Cabin Boys Brewery (Utica']) expect(road.stops.some((s) => s.name.startsWith(gone)), gone).toBe(false);
     expect(road.stops.some((s) => s.evidenceKind === 'notice')).toBe(false);   // the three notice-only stops now rest on hours read on their own sites
     for (const k of ['keg-grove', 'destihl-brewery', 'tractor-brewing-co-wells-park']) expect(road.stops.find((s) => s.key.startsWith(k))!.evidence, k).toMatch(/\d\s*(am|pm|:00)/i);
   });
@@ -1046,6 +1075,15 @@ describe('road-aware stop validation', () => {
   it('the builder fails, and does not quietly drop the id, when a directory road is given a non-numeric id', () => {
     expect(() => buildRoad(CONFIG, WAYS, [{ ...cand(1, -79.9), id: 'alpha-ales' } as CandidateRow], [{ ...ok(1), id: 'alpha-ales' } as VerifiedRow], TODAY, TODAY)).toThrow(/directory road needs a positive whole-number directory id/);
     expect(() => buildRoad(CONFIG, WAYS, CANDIDATES, [...VERIFIED, { ...ok(2), id: 2.5 } as VerifiedRow], TODAY, TODAY)).toThrow(/directory id/);
+    // a MISSING id is caught too, on its own and when a non-numeric id follows it, in candidates and in verified rows
+    const noId = (r: object) => { const { id: _id, ...rest } = r as { id?: unknown }; return rest; };
+    const good = VERIFIED.filter((r) => Number.isInteger(r.id));
+    expect(() => buildRoad(CONFIG, WAYS, CANDIDATES, [noId(ok(1)) as VerifiedRow, ...good], TODAY, TODAY)).toThrow(/verified row 1 has no id/);
+    expect(() => buildRoad(CONFIG, WAYS, CANDIDATES, [noId(ok(1)) as VerifiedRow, { ...ok(2), id: 'two' } as VerifiedRow], TODAY, TODAY)).toThrow(/2 do not: verified row 1 has no id, verified row 2 has "two"/);
+    expect(() => buildRoad(CONFIG, WAYS, [noId(cand(1, -79.9)) as CandidateRow, ...CANDIDATES], good, TODAY, TODAY)).toThrow(/candidate row 1 has no id/);
+    expect(() => buildRoad(CONFIG, WAYS, [noId(cand(1, -79.9)) as CandidateRow, { ...cand(2, -79.8), id: 'x' } as CandidateRow], [ok(3)], TODAY, TODAY)).toThrow(/2 do not: candidate row 1 has no id, candidate row 2 has "x"/);
+    expect(() => buildRoad(CONFIG, WAYS, [{ ...cand(1, -79.9), id: null } as unknown as CandidateRow], [], TODAY, TODAY)).toThrow(/directory id/);
+    expect(() => buildRoad(CONFIG, WAYS, [{ ...cand(1, -79.9), id: 0 }, { ...cand(2, -79.8), id: -3 }], [], TODAY, TODAY)).toThrow(/2 do not/);
     expect(() => buildRoad(CONFIG, WAYS, CANDIDATES, VERIFIED.filter((r) => Number.isInteger(r.id)), TODAY, TODAY)).not.toThrow();
   });
   it('a stand-alone road accepts a stop with no id, but only with a sourced address and its own site', () => {

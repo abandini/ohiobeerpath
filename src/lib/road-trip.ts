@@ -453,8 +453,11 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
   }
 
   if (config.stopsHavePages !== false) {
-    const bad = [...candidates.map((x) => x?.id), ...verified.map((x) => x?.id)].find((id) => !(Number.isInteger(id) && (id as number) > 0));
-    if (bad !== undefined) throw new Error(`${config.slug}: a directory road needs a positive whole-number directory id on every row; got ${JSON.stringify(bad)}`);
+    // Every invalid id is collected, a missing one included (a search that returns the bad value cannot tell
+    // "undefined is the bad value" from "nothing is bad").
+    const positive = (id: unknown) => Number.isInteger(id) && (id as number) > 0;
+    const bad = [...candidates.map((x, i) => ({ where: `candidate row ${i + 1}`, id: x?.id })), ...verified.map((x, i) => ({ where: `verified row ${i + 1}`, id: x?.id }))].filter((x) => !positive(x.id));
+    if (bad.length) throw new Error(`${config.slug}: a directory road needs a positive whole-number directory id on every row; ${bad.length} do not: ${bad.slice(0, 5).map((x) => `${x.where} has ${x.id === undefined ? 'no id' : JSON.stringify(x.id)}`).join(', ')}`);
   }
   const seen = new Set<Id>(), decided = new Set<Id>(), stops: RoadStop[] = [];
   for (const row of verified) {
@@ -624,62 +627,104 @@ export interface IngestResult {
   unmatchedDecisions: string[];
   retowned: { key: string; name: string; from: string; to: string }[]; // town taken from the printed address, not the row
 }
-const STREET_WORDS: Record<string, string> = { street: 'st', avenue: 'ave', av: 'ave', road: 'rd', boulevard: 'blvd', drive: 'dr', lane: 'ln', highway: 'hwy', parkway: 'pkwy', place: 'pl', court: 'ct', route: 'rte', rt: 'rte',
+const STREET_WORDS: Record<string, string> = { street: 'st', avenue: 'ave', av: 'ave', road: 'rd', boulevard: 'blvd', drive: 'dr', lane: 'ln', highway: 'hwy', parkway: 'pkwy', place: 'pl', court: 'ct', route: 'rte', rt: 'rte', terrace: 'ter', circle: 'cir', square: 'sq',
   north: 'n', south: 's', east: 'e', west: 'w', northeast: 'ne', northwest: 'nw', southeast: 'se', southwest: 'sw', first: '1st', second: '2nd', third: '3rd', fourth: '4th', fifth: '5th', sixth: '6th', seventh: '7th', eighth: '8th', ninth: '9th' };
 const STREET_SUFFIX = new Set(['st', 'ave', 'rd', 'blvd', 'dr', 'ln', 'hwy', 'pkwy', 'pl', 'ct', 'way', 'rte', 'ter', 'cir', 'sq']);
 const DIRECTIONS = new Set(['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw']);
-/**
- * "1800 4th Street NW, Albuquerque" -> { number: "1800", street: "4th" }: the street number and the first word of the
- * street's own name (a leading compass word is skipped unless it is the name, as in "North Ave"), or null.
- */
-export function streetOf(address: unknown): { number: string; street: string } | null {
-  const words = String(address ?? '').toLowerCase().replace(/[.,#]/g, ' ').split(/\s+/).filter(Boolean).map((w) => STREET_WORDS[w] ?? w);
-  const at = words.findIndex((w) => /^\d+[a-z]?$/.test(w));
-  if (at < 0) return null;
-  const rest = words.slice(at + 1);
-  while (rest.length > 1 && DIRECTIONS.has(rest[0]) && !STREET_SUFFIX.has(rest[1])) rest.shift();
-  return rest.length && !STREET_SUFFIX.has(rest[0]) ? { number: words[at], street: rest[0] } : null;
-}
-/**
- * The same-location check: do two addresses share a street number and the first word of the street name? False when
- * either cannot be read. (It cannot tell "100 Main St" from "100 Main Ave" in the same town; it is there to catch a
- * brewery that has moved, where the number or the street changes.)
- */
-export function sameStreet(a: unknown, b: unknown): boolean {
-  const x = streetOf(a), y = streetOf(b);
-  return !!x && !!y && x.number === y.number && x.street === y.street;
-}
-const plainTown = (t: string) => t.toLowerCase().replace(/\bsaint\b/g, 'st').replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
 const TOWN_ALIASES: Record<string, string> = { okc: 'oklahoma city', la: 'los angeles', abq: 'albuquerque', stl: 'st louis' };
 const STATE_NAMES = 'Illinois|Missouri|Kansas|Oklahoma|Texas|New Mexico|Arizona|California';
+const plainTown = (t: string) => t.toLowerCase().replace(/\bsaint\b/g, 'st').replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
+const US_STATES = new Set('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY DC'.split(' '));
+const UNIT = /#\s*[\w&-]+|\b(?:suite|ste|unit|apt|bldg|building)\b\.?\s*#?\s*[\w&-]+/gi;
+const UNIT_RUN_ON = /\bUnit[A-Z][\w&-]*/g;                              // "UnitH&I", written without a space
+const dropUnits = (t: string) => t.replace(UNIT, ' ').replace(UNIT_RUN_ON, ' ');
+
 /**
- * The town a printed address names, so the town shown with a stop agrees with its address. If the address names the
- * town the row already has (or a usual short form of it), that stands. Otherwise: a town we know that appears in the
- * address (the last one, since the town follows the street); failing that, the words between the street and the
- * state. Null when the address names no town at all.
+ * An address split at its state: `head` is everything before the state (street, then locality), `state` its two
+ * letters. Separators (bullets, dashes used as breaks), a trailing country and the ZIP code are not part of either: a
+ * ZIP is dropped wherever it stands after the street number. An address with no state is all head.
  */
-export function townInAddress(address: unknown, known: string[], listed = ''): string | null {
-  const raw = String(address ?? '').trim();
-  if (!raw) return null;
-  const text = ` ${plainTown(raw.replace(/[,·]/g, ' '))} `, mine = plainTown(listed);
-  const names = (t: string) => text.includes(` ${t} `) || Object.entries(TOWN_ALIASES).some(([short, full]) => full === t && text.includes(` ${short} `));
-  if (mine && names(mine)) return listed;
-  let best: { town: string; at: number; len: number } | null = null;
-  for (const town of known) {
-    const t = plainTown(town); if (!t) continue;
-    const at = text.lastIndexOf(` ${t} `);
-    if (at >= 0 && (!best || at + t.length > best.at + best.len || (at + t.length === best.at + best.len && t.length > best.len))) best = { town, at, len: t.length };
+function splitAtState(address: unknown, expectState = ''): { head: string; state: string } {
+  let raw = String(address ?? '').replace(/[•·|]|\s[-–—]\s/g, ', ').replace(/\s+/g, ' ').trim();
+  raw = raw.replace(/,?\s*\b(?:USA?|United States)\.?\s*$/i, '').trim();
+  // The ZIP (five digits, or five-plus-four; some pages print one short) wherever it follows the street number.
+  raw = raw.replace(/^(\S+\s.*?)[,\s]+\d{4,5}(?:-\d{4})?(?=[,\s]|$)/, '$1').replace(/\s+,/g, ',').replace(/,\s*,/g, ',').replace(/[,\s]+$/, '').trim();
+  const m = raw.match(new RegExp(`^(.*?)([,\\s]+)([A-Za-z]{2}|${STATE_NAMES}|Calif)\\.?\\s*$`, 'i'));
+  if (!m) return { head: raw, state: '' };
+  const st = /^calif$/i.test(m[3]) ? 'CA' : stateAbbr(m[3]);
+  // A two-letter state must be a real state, and must be written in capitals or set off by a comma ("chicago, il").
+  // "NE" is left out on purpose: at the end of a street line it is far more often a compass direction than Nebraska.
+  const written = m[3].length > 2 || m[3] === m[3].toUpperCase() || m[2].includes(',') || /\d{4,5}/.test(String(address));
+  // When the state is known from elsewhere, two letters that spell a different state are not the state ("Downtown LA"
+  // in California is Los Angeles, not Louisiana).
+  return US_STATES.has(st) && written && (!expectState || st === expectState) ? { head: m[1].trim().replace(/,$/, ''), state: st } : { head: raw, state: '' };
+}
+/** Does the head of an address END with this town (or a usual short form of it)? The town comes last, after the street. */
+function endsWithTown(head: string, town: string): boolean {
+  const h = ` ${plainTown(head.replace(/[,·]/g, ' '))}`, t = plainTown(town);
+  if (!t) return false;
+  return h.endsWith(` ${t}`) || Object.entries(TOWN_ALIASES).some(([short, full]) => full === t && h.endsWith(` ${short}`));
+}
+/**
+ * The street part of an address as comparable words: it starts at the street number (a label before it is dropped),
+ * units are dropped, the usual abbreviations are made one, and punctuation is gone ("S.W." is "sw").
+ */
+function streetWords(street: string): string[] {
+  const words = dropUnits(street).toLowerCase().replace(/\./g, '').replace(/[,;·]/g, ' ').split(/\s+/).filter(Boolean).map((w) => STREET_WORDS[w] ?? w);
+  const at = words.findIndex((w) => /^\d+[a-z]?$/.test(w));
+  return at < 0 ? [] : words.slice(at);
+}
+
+/**
+ * The town a printed address names, so the town shown with a stop agrees with its address. Only the LOCALITY part of
+ * the address counts: the words at the end of what comes before the state. A town's name appearing in the street
+ * ("100 Lebanon Road, Springfield, MO") is not the address's town. In order: the town the row already has, if the
+ * locality is that town (or a usual short form of it); a town we know that the locality ends with (the longest);
+ * failing that, what is written between the street and the state. Null when the address names no town.
+ */
+export function townInAddress(address: unknown, known: string[], listed = '', expectState = ''): string | null {
+  const { head, state } = splitAtState(address, expectState ? stateAbbr(expectState) : '');
+  if (!head) return null;
+  if (listed && endsWithTown(head, listed)) return listed;
+  const hit = known.filter((t) => endsWithTown(head, t)).sort((x, y) => plainTown(y).length - plainTown(x).length)[0];
+  if (hit) return hit;
+  if (!state) return null;                                             // no state, so nothing marks where a locality would be
+  let town = head.includes(',') ? dropUnits(head.slice(head.lastIndexOf(',') + 1)).trim() : '';
+  if (!town) {
+    const words = dropUnits(head).replace(/[.]/g, ' ').split(/\s+/).filter(Boolean); let cut = -1;
+    words.forEach((w, i) => { const k = STREET_WORDS[w.toLowerCase()] ?? w.toLowerCase(); if (STREET_SUFFIX.has(k) || /^\d/.test(w) || (DIRECTIONS.has(k) && i > 0)) cut = i; });
+    town = words.slice(cut + 1).join(' ').trim();
   }
-  if (best) return best.town;
-  // "..., Lebanon, Missouri 65536" or "... 1st Street Alhambra, CA 91801": what sits just before the state.
-  const m = raw.match(new RegExp(`^(.*?)[,\\s]+(?:[A-Z]{2}|${STATE_NAMES})\\.?,?\\s*(?:\\d{5}(?:-\\d{4})?)?\\s*$`));
-  if (!m) return null;
-  const before = m[1].trim(), afterComma = before.includes(',') ? before.slice(before.lastIndexOf(',') + 1).trim() : '';
-  let town = afterComma;
-  if (!town) { const words = before.replace(/[.#]/g, ' ').split(/\s+/); let cut = -1; words.forEach((w, i) => { if (STREET_SUFFIX.has(STREET_WORDS[w.toLowerCase()] ?? w.toLowerCase()) || /^\d/.test(w) || DIRECTIONS.has(w.toLowerCase())) cut = i; }); town = words.slice(cut + 1).join(' ').trim(); }
   if (!town || /\d/.test(town) || town.split(/\s+/).length > 4) return null;
-  if (TOWN_ALIASES[plainTown(town)] === mine && mine) return listed;
   return town === town.toUpperCase() ? town.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase()) : town;
+}
+
+/**
+ * Two street lines are the same street address: the same number, direction, every word of the street name, the same
+ * suffix and trailing direction, after the usual abbreviations are made one (N/North, St/Street, Ave/Avenue ...) and
+ * unit numbers are ignored. "100 N Main St" is not "100 S Main Ave"; "100 Martin Luther King Blvd" is not
+ * "100 Martin Way"; an address with its suffix left off does not match one that has it.
+ */
+export function sameStreet(a: unknown, b: unknown): boolean {
+  const x = streetWords(String(a ?? '')), y = streetWords(String(b ?? ''));
+  return x.length >= 2 && /^\d+[a-z]?$/.test(x[0]) && x.length === y.length && x.every((w, i) => w === y[i]);
+}
+/**
+ * The same-location check that must pass before a dataset row's coordinates may be used for a printed address: the
+ * printed address names the dataset's town as its locality, its state (when it prints one) is the dataset's, and its
+ * street line is the dataset's street line in full (sameStreet). Anything short of that is not a match: the row then
+ * needs Census coordinates for the printed address, or it stays off the list.
+ */
+export function sameLocation(printed: unknown, dataset: { address_1?: unknown; city?: unknown; state?: unknown } | null | undefined): boolean {
+  const city = String(dataset?.city ?? '').trim(), street = String(dataset?.address_1 ?? '').trim();
+  if (!printed || !city || !street) return false;
+  const { head, state } = splitAtState(printed, stateAbbr(dataset?.state));
+  if (!endsWithTown(head, city)) return false;                          // the locality must be the dataset's town
+  if (state && state !== stateAbbr(dataset?.state)) return false;
+  // Take the town off the end; what is left is the street line.
+  const words = head.replace(/[,·]/g, ' ').split(/\s+/).filter(Boolean), t = plainTown(city).split(' ').length;
+  const alias = Object.entries(TOWN_ALIASES).some(([short, full]) => full === plainTown(city) && plainTown(words[words.length - 1] ?? '') === short);
+  return sameStreet(words.slice(0, words.length - (alias ? 1 : t)).join(' '), street);
 }
 
 /**
@@ -689,7 +734,7 @@ export function townInAddress(address: unknown, known: string[], listed = ''): s
  * The coordinates a row is measured from must be those of the address it prints:
  * - Census coordinates the checker recorded for the printed address are used when the row has them;
  * - the dataset's coordinates are used ONLY when the final printed address (after corrections) has the same street
- *   number and street as the dataset's address (sameStreet), whatever the row's status word says;
+ *   line, town and state as the dataset's address in full (sameLocation), whatever the row's status word says;
  * - a row with neither cannot be placed: it is reported and stays off the list, never guessed.
  * The town shown is the one the printed address names, when it names a town we know and that differs from the row's.
  * MOVED and RENAMED rows that carry operating evidence are treated as open at the printed address. Decisions override
@@ -727,7 +772,7 @@ export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verifi
   };
   const place = (r: Record<string, unknown>, row: VerifiedRow, at: { lat: number; lon: number } | null, why: string) => {
     const listed = String(r.city ?? '').trim(), state = stateAbbr(r.state), key = String(row.id), name = String(row.name ?? '');
-    const printed = townInAddress(row.address_as_printed, towns, listed), city = printed ?? listed;
+    const printed = townInAddress(row.address_as_printed, towns, listed, state), city = printed ?? listed;
     if (printed && plainTown(printed) !== plainTown(listed)) out.retowned.push({ key, name, from: listed, to: printed });
     out.verified.push(row);
     if (at) out.candidates.push({ id: key, name, city, state, latitude: at.lat, longitude: at.lon });
@@ -739,11 +784,11 @@ export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verifi
     const status = (raw === 'MOVED' || raw === 'RENAMED') && evidenceOf(r) ? 'OPEN' : raw;
     const base = stopKey(r.name, r.city), row = make(r, unique(base), status, [id]);
     const here = rowCoordinates(r), dataAt = d ? readCoordinates({ lat: d.latitude, lon: d.longitude }) : null;
-    const same = !!d && sameStreet(row.address_as_printed, d.address_1 ?? d.street);
+    const same = !!d && sameLocation(row.address_as_printed, { address_1: d.address_1 ?? d.street, city: d.city, state: d.state });
     // A row that will not be listed keeps the dataset's point, so it still counts in the coverage figures.
     place(r, row, here ?? (same || row.status !== 'OPEN' ? dataAt : null), !row.address_as_printed
       ? 'no printed address to compare with the dataset\'s, and no Census coordinates for it'
-      : 'the printed address is not the dataset\'s (street number or street differ), and no Census coordinates were recorded for it');
+      : 'the printed address is not a full match for the dataset\'s (street line, town or state differ or cannot be compared), and no Census coordinates were recorded for it');
     if (row.status === 'OPEN') openByName.set(base, row);
   }
   // A lead that is the same place as a dataset row already listed as open (same name and town) is not listed twice:
