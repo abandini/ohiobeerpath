@@ -94,6 +94,41 @@ export function detourLabel(miles: number): string {
   return `${kind}: ${miles < 0.1 ? 'under 0.1' : mi(miles)} mi off, straight-line`;
 }
 
+// Google Maps links are plain Maps URLs: no API key, no script, no embed.
+// https://developers.google.com/maps/documentation/urls/get-started (page "Last updated 2026-11-09 UTC", read 2026-11-22):
+//   "The number of waypoints allowed varies by the platform where the link opens, with up to three waypoints supported
+//    on mobile browsers, and a maximum of nine waypoints supported otherwise."
+//   "Ensure proper URL encoding and be mindful of the 2,048 character limit when constructing these URLs."
+// This page is read on a phone in a car, so a stretch link carries at most three waypoints: five stops per link
+// (origin, three waypoints, destination). A longer stretch becomes consecutive links; no stop is dropped.
+export const MAPS_MAX_WAYPOINTS = 3;
+const MAPS_DIR = 'https://www.google.com/maps/dir/?api=1';
+type Placed = Pick<StopView, 'name' | 'address' | 'addressSourceUrl' | 'town' | 'state'>;
+/**
+ * What we hand Google for a stop: its name and its address as printed, or name, town and state when no printed address
+ * was found (never a directory street). Town and state are added after a printed address only when that address does
+ * not already carry the state or a ZIP code, so a directory town cannot contradict the brewery's own address.
+ */
+export function mapsPlace(s: Placed): string {
+  const printed = s.address && safeHttpUrl(s.addressSourceUrl) ? s.address.trim() : '';
+  const complete = printed && (/\b\d{5}(-\d{4})?\b/.test(printed) || (!!s.state && new RegExp(`\\b${s.state.replace(/[^A-Za-z]/g, '')}\\b`, 'i').test(printed)));
+  return [s.name, printed, ...(complete ? [] : [s.town, s.state])].map((x) => (x || '').trim()).filter(Boolean).join(', ');
+}
+export const directionsUrl = (s: Placed) => `${MAPS_DIR}&destination=${encodeURIComponent(mapsPlace(s))}`;
+/** Driving-order links for a stretch: groups of at most five stops, none of fewer than two. Empty for under two stops. */
+export function stretchLinks<T extends Placed>(stops: T[]): { from: number; to: number; href: string }[] {
+  if (stops.length < 2) return [];
+  const per = MAPS_MAX_WAYPOINTS + 2, sizes: number[] = [];
+  for (let left = stops.length; left > 0; left -= per) sizes.push(Math.min(per, left));
+  if (sizes.length > 1 && sizes[sizes.length - 1] === 1) { sizes[sizes.length - 2]--; sizes[sizes.length - 1]++; } // a route needs two ends
+  let at = 0;
+  return sizes.map((n) => {
+    const g = stops.slice(at, at + n), mid = g.slice(1, -1), from = at + 1; at += n;
+    return { from, to: at, href: `${MAPS_DIR}&travelmode=driving&origin=${encodeURIComponent(mapsPlace(g[0]))}&destination=${encodeURIComponent(mapsPlace(g[g.length - 1]))}${mid.length ? `&waypoints=${mid.map((m) => encodeURIComponent(mapsPlace(m))).join('%7C')}` : ''}` };
+  });
+}
+const gmaps = (url: string, text: string) => `<a href="${a(url)}" rel="noopener nofollow" target="_blank">${h(text)}</a>`;
+
 // A drawing of the leg from the same line the miles were measured on. No tiles, no script, nothing fetched.
 function legMap(leg: LegView, id: string): string {
   if (leg.line.length < 2) return '';
@@ -160,7 +195,6 @@ function marks(s: StopView, o: RoadPageOptions): string {
 function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
   const site = safeHttpUrl(s.website), quoteUrl = safeHttpUrl(s.quoteSourceUrl), addressUrl = safeHttpUrl(s.addressSourceUrl);
   const where = [s.town, s.state].filter(Boolean).join(', ');
-  const mapQuery = [s.name, s.address || where].filter(Boolean).join(', ');
   const nearEnd = s.pastEnd ? ` Its nearest point on the road is the ${h(place(s.pastEnd === 'start' ? leg.from : leg.to))} end.` : '';
   return `
           <li class="rt-stop" id="stop-${s.breweryId}">
@@ -175,13 +209,23 @@ function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
               ${marks(s, o)}
               <blockquote>“${h(s.quote)}”</blockquote>
               <p class="rt-src">Read on ${ext(quoteUrl, hostOf(quoteUrl))}, checked ${h(s.checked)}</p>
-              <p class="rt-links"><a href="/brewery/${s.breweryId}">Brewery Trip page</a>${site ? ext(site, 'Its own site') : ''}${ext(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`, 'Open in Maps')}</p>
+              <p class="rt-links"><a href="/brewery/${s.breweryId}">Brewery Trip page</a>${site ? ext(site, 'Its own site') : ''}${gmaps(directionsUrl(s), 'Directions (opens Google Maps)')}</p>
             </div>
           </li>${s.gapAfterMiles !== null ? `
           <li class="rt-gapitem"><p class="rt-gap">${gapText(s.gapAfterMiles, s.mile, s.mile + s.gapAfterMiles >= leg.lengthMiles - 0.05 ? `the end of the road at ${place(leg.to)}` : 'the next stop on this list')}</p></li>` : ''}`;
 }
 const gapText = (miles: number, fromMile: number, until: string) =>
   `<strong>${mi(miles)} miles</strong> from here (mile ${mi(fromMile)}) to ${h(until)}, with nothing on this list in between.`;
+
+function stretchNav(stops: StopView[], roadName: string): string {
+  const links = stretchLinks(stops);
+  if (!links.length) return '';
+  const items = links.length === 1
+    ? gmaps(links[0].href, 'Open this stretch in Google Maps')
+    : links.map((l) => gmaps(l.href, `Open stops ${l.from}–${l.to} of this stretch in Google Maps`)).join('');
+  return `<p class="rt-links rt-stretch">${items}</p>
+          <p class="rt-src">The route Google draws is Google's and may not follow ${h(roadName)}. Our miles are measured on our own line.</p>`;
+}
 
 function legSection(road: RoadView, leg: LegView, n: number, o: RoadPageOptions): string {
   const id = `leg-${leg.id}`;
@@ -202,6 +246,7 @@ function legSection(road: RoadView, leg: LegView, n: number, o: RoadPageOptions)
         <section aria-labelledby="seg-${a(leg.id)}-${a(g.id)}">
           <h3 id="seg-${a(leg.id)}-${a(g.id)}">${h(g.name)}</h3>
           <p class="rt-sub">Mile ${mi(g.fromMile)} to ${mi(g.toMile)} · ${g.stops.length ? plural(g.stops.length, 'stop') : 'nothing on this list'}${g.link && g.stops.length ? ` · <a href="${a(g.link.href)}">${h(g.link.text)}</a>` : ''}</p>
+          ${stretchNav(g.stops, road.config.shortName)}
           ${g.stops.length ? `<ol class="rt-stops">${g.stops.map((s) => stopItem(s, leg, o)).join('')}
           </ol>` : ''}
         </section>`).join('')}`;
@@ -269,6 +314,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
           <li><strong>Who is listed.</strong> A brewery is here when it is in our directory, sits within ${c.maxDetourMiles} miles of the road in a straight line, and we could confirm it is open from its own website or, failing that, another source named under the stop. Ones we found closed, moved or could not confirm are left out.</li>
           <li><strong>The quotes.</strong> Each quote is copied from the page linked under it, on the date shown. Addresses are copied from the page named beside them.</li>
           <li><strong>Towns.</strong> Town names are the ones in our directory. A brewery's printed address sometimes names a different post-office town.</li>
+          <li><strong>Google Maps links.</strong> They hand Google the brewery's name and printed address and nothing else. The route Google draws is Google's and may not follow the road; our miles are measured on our own line.</li>
           <li><strong>Hours.</strong> We do not list them because they change. Check the brewery's own site before you leave the road.</li>
         </ul>
         <details>

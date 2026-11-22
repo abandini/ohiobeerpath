@@ -182,6 +182,7 @@ export interface VerifiedRow {
   id: number; name?: string | null; status?: string | null; official_url?: string | null;
   address_as_printed?: string | null; address_source_url?: string | null;
   quote?: string | null; quote_source_url?: string | null; notes?: string | null; checked?: string | null;
+  browser_checked?: string | null; // the day a person read the quote (and address) on the rendered page, for sites a script cannot read
 }
 
 export interface RoadStop {
@@ -195,6 +196,7 @@ export interface RoadStop {
   mile: number;                // along the leg from its start
   detourMiles: number;         // straight-line distance to the nearest part of the road
   pastEnd: '' | 'start' | 'end'; // the brewery sits beyond the end of the road, so its nearest point is the end itself
+  browserChecked?: string;     // set only when the checker's row records a browser check on a real date
 }
 export interface BuiltLeg { id: string; lengthMiles: number; line: LatLon[]; rowsChecked: number }
 /** What the build step writes: stops with their place on the road, and a thinned line for drawing. */
@@ -232,6 +234,22 @@ export function isShowableStop(s: Partial<RoadStop> | null | undefined): s is Ro
     && Number.isFinite(s.mile) && Number.isFinite(s.detourMiles) && (s.detourMiles as number) >= 0
     && typeof s.legId === 'string';
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Re-checking sources (scripts/verify-road-sources.mjs)
+
+export const BROWSER_CHECK_MAX_DAYS = 45;
+/**
+ * What to call a source the script could not read. A person may have read it in a browser: that is recorded with its
+ * date and counted on its own, never as script-verified, and it stops counting once it is older than 45 days.
+ */
+export function unreadVerdict(browserChecked: string | null | undefined, today: string): 'browser-checked' | 'browser-check-stale' | 'unread' {
+  if (!calendarDate(browserChecked) || !calendarDate(today)) return 'unread';
+  const days = (Date.parse(today + 'T00:00:00Z') - Date.parse(browserChecked + 'T00:00:00Z')) / 86_400_000;
+  return days < 0 ? 'unread' : days <= BROWSER_CHECK_MAX_DAYS ? 'browser-checked' : 'browser-check-stale';
+}
+/** Exit 0 only when nothing is missing and every source the script could not read has a current browser check. */
+export const verifierExit = (c: { total: number; missing: number; unread: number; stale: number }): 0 | 2 => (c.total > 0 && !c.missing && !c.unread && !c.stale ? 0 : 2);
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Build: checked rows + directory coordinates + the road's ways -> stops in driving order
@@ -285,6 +303,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
       quote: String(row.quote || '').trim(), quoteSourceUrl: citable(row.quote_source_url), checked: String(row.checked || '').trim(),
       legId: near.l.leg.id, mile, detourMiles,
       pastEnd: on.detour > PAST_END_MILES && (atStart || atEnd) ? (atStart ? 'start' : 'end') : '',
+      ...(calendarDate(row.browser_checked) ? { browserChecked: row.browser_checked as string } : {}),
     };
     if (!isShowableStop(stop)) { leave('OPEN, but the quote, its source URL or the check date is missing or not citable'); continue; }
     stops.push(stop);

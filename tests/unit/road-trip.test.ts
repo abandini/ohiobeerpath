@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  buildRoad, cumulativeMiles, isShowableStop, milesBetween, projectOntoLine, simplifyLine, stitchLeg, townsName, viewRoad,
+  buildRoad, cumulativeMiles, isShowableStop, unreadVerdict, verifierExit, BROWSER_CHECK_MAX_DAYS, milesBetween, projectOntoLine, simplifyLine, stitchLeg, townsName, viewRoad,
   type BuiltRoad, type CandidateRow, type LatLon, type RoadConfig, type RoadStop, type VerifiedRow,
 } from '../../src/lib/road-trip';
-import { roadTripPage, roadsIndexPage, roadSummary, detourLabel, OSM_ATTRIBUTION } from '../../src/templates/road-trip';
+import { roadTripPage, roadsIndexPage, roadSummary, detourLabel, directionsUrl, mapsPlace, stretchLinks, MAPS_MAX_WAYPOINTS, OSM_ATTRIBUTION } from '../../src/templates/road-trip';
 import { ALL_ROADS, availableRoads, roadBySlug, roadStopFor } from '../../src/data/roads';
 import { US_422 } from '../../src/data/roads/us-422';
 import { US_422_BUILT } from '../../src/data/roads/us-422.built';
@@ -285,6 +285,113 @@ describe('road trip page', () => {
     expect(html).toMatch(/\.rt-map svg\{display:block;width:100%;height:auto/);
     expect(html).toMatch(/\.rt\{[^}]*overflow-wrap:anywhere/);
     expect(html).toMatch(/<svg viewBox="0 0 360 \d+"/);
+  });
+});
+
+describe('browser checks for sources a script cannot read', () => {
+  it('carries a real browser-check date from the row into the built stop, and nothing otherwise', () => {
+    const r = buildRoad(CONFIG, WAYS, CANDIDATES, [ok(1, { browser_checked: '2026-11-22' }), ok(2), ok(3, { browser_checked: 'by eye' })], '2026-11-22').road.stops;
+    expect(r.map((s) => s.browserChecked)).toEqual(['2026-11-22', undefined, undefined]);
+  });
+  it('fresh, stale and absent browser checks', () => {
+    expect(BROWSER_CHECK_MAX_DAYS).toBe(45);
+    expect(unreadVerdict('2026-11-22', '2026-11-22')).toBe('browser-checked');
+    expect(unreadVerdict('2026-11-22', '2027-01-06')).toBe('browser-checked');       // day 45
+    expect(unreadVerdict('2026-11-22', '2027-01-07')).toBe('browser-check-stale');   // day 46
+    expect(unreadVerdict(undefined, '2026-11-22')).toBe('unread'); expect(unreadVerdict('', '2026-11-22')).toBe('unread');
+    expect(unreadVerdict('2026-02-30', '2026-11-22')).toBe('unread'); expect(unreadVerdict('2026-12-01', '2026-11-22')).toBe('unread'); // not a date; in the future
+  });
+  it('exit 0 only when nothing is missing and every unread source has a current browser check', () => {
+    expect(verifierExit({ total: 78, missing: 0, unread: 0, stale: 0 })).toBe(0);   // browser-checked ones are in neither count
+    expect(verifierExit({ total: 78, missing: 1, unread: 0, stale: 0 })).toBe(2);
+    expect(verifierExit({ total: 78, missing: 0, unread: 1, stale: 0 })).toBe(2);
+    expect(verifierExit({ total: 78, missing: 0, unread: 0, stale: 1 })).toBe(2);
+    expect(verifierExit({ total: 0, missing: 0, unread: 0, stale: 0 })).toBe(2);
+  });
+  it('the three script-rendered US 422 sites carry the browser check, and no other stop does', () => {
+    expect(US_422_BUILT.stops.filter((s) => s.browserChecked).map((s) => s.breweryId).sort((a, b) => a - b)).toEqual([82, 261, 1082]);
+    expect(US_422_BUILT.stops.find((s) => s.breweryId === 82)!.address).toBe('8284 Washington St Chagrin Falls, Ohio 44023-4508');
+  });
+});
+
+describe('Google Maps links', () => {
+  const st = (name: string, address = '', more: Record<string, string> = {}) => ({ name, address, addressSourceUrl: address ? 'https://example.com/visit' : '', town: 'Alpha', state: 'PA', ...more });
+  const params = (href: string) => new URL(href).searchParams;
+  it('names a place by its printed address, adding town and state only when the address lacks them', () => {
+    expect(mapsPlace(st('Troegs', '200 East Hershey Park Drive, Hershey, PA 17033', { town: 'Hershey' }))).toBe('Troegs, 200 East Hershey Park Drive, Hershey, PA 17033');
+    expect(mapsPlace(st('CR Brewing', '3009 Wilmington Rd #B', { town: 'New Castle' }))).toBe('CR Brewing, 3009 Wilmington Rd #B, New Castle, PA');
+    expect(mapsPlace(st('Crooked Pecker', '8284 East Washington St CHAGRIN FALLS, Ohio 44023', { town: 'Newbury', state: 'OH' }))).not.toContain('Newbury');
+    expect(mapsPlace(st('Noble Beast', '1470 Lakeside Ave E Cleveland, OH', { town: 'Cleveland', state: 'OH' }))).toBe('Noble Beast, 1470 Lakeside Ave E Cleveland, OH');
+  });
+  it('a stop with no printed address goes by name, town and state, never a directory street', () => {
+    expect(mapsPlace(st('Pompatus'))).toBe('Pompatus, Alpha, PA');
+    expect(mapsPlace({ ...st('Unsourced', '12 Directory St'), addressSourceUrl: '' })).toBe('Unsourced, Alpha, PA');
+    const v = viewRoad(CONFIG, buildRoad(CONFIG, WAYS, [{ ...cand(1, -79.9, 0, 'Alpha'), street: '99 Directory Street' } as CandidateRow], [ok(1, { address_as_printed: null, address_source_url: null })], '2026-11-22').road);
+    const html = roadTripPage(v);
+    expect(html).not.toContain('Directory Street');
+    expect(html).toContain('destination=Fixture%20Brewing%201%2C%20Alpha%2C%20PA"');
+  });
+  it('encodes apostrophes, ampersands, # and commas so the place survives the trip', () => {
+    const s = st("Bummin' Beaver & Sons #2", '11610 Washington St, Unit #B, Chagrin Falls, OH 44023');
+    const href = directionsUrl(s);
+    expect(href.startsWith('https://www.google.com/maps/dir/?api=1&destination=')).toBe(true);
+    expect(href).not.toMatch(/#| /);
+    expect(href.split('&')).toHaveLength(2);                          // only api=1 and destination: the "&" in the name is encoded
+    expect(params(href).get('destination')).toBe("Bummin' Beaver & Sons #2, 11610 Washington St, Unit #B, Chagrin Falls, OH 44023");
+    expect(params(href).get('api')).toBe('1');
+  });
+  it('a stretch link runs origin, waypoints, destination in driving order', () => {
+    const stops = ['A & A', 'B #2', "C's", 'D|D'].map((n) => st(n));
+    const [l] = stretchLinks(stops);
+    expect(stretchLinks(stops)).toHaveLength(1); expect([l.from, l.to]).toEqual([1, 4]);
+    expect(params(l.href).get('origin')).toBe('A & A, Alpha, PA'); expect(params(l.href).get('destination')).toBe('D|D, Alpha, PA');
+    expect(l.href).toContain('&waypoints=B%20%232%2C%20Alpha%2C%20PA%7CC\'s%2C%20Alpha%2C%20PA');
+    expect(l.href.match(/%7C/g)).toHaveLength(2);                     // one separator, plus the encoded pipe inside "D|D"
+    expect(params(l.href).get('travelmode')).toBe('driving');
+    expect(params(stretchLinks(stops.slice(0, 2))[0].href).has('waypoints')).toBe(false);
+  });
+  it('splits a long stretch into consecutive links of at most three waypoints, dropping no stop', () => {
+    expect(MAPS_MAX_WAYPOINTS).toBe(3);
+    expect(stretchLinks([])).toEqual([]); expect(stretchLinks([st('only')])).toEqual([]);
+    for (const n of [2, 5, 6, 7, 10, 11, 16, 23]) {
+      const stops = Array.from({ length: n }, (_, i) => st(`S${i + 1}`)), links = stretchLinks(stops);
+      const seen: string[] = [];
+      links.forEach((l, i) => {
+        expect(l.from).toBe(i ? links[i - 1].to + 1 : 1);
+        const q = params(l.href), way = (q.get('waypoints') || '').split('|').filter(Boolean);
+        expect(way.length).toBeLessThanOrEqual(3); expect(l.to - l.from).toBeGreaterThanOrEqual(1);
+        seen.push(q.get('origin')!, ...way, q.get('destination')!);
+      });
+      expect(links.at(-1)!.to).toBe(n);
+      expect(seen).toEqual(stops.map((s) => `${s.name}, Alpha, PA`));
+    }
+    expect(stretchLinks(Array.from({ length: 16 }, (_, i) => st(`S${i}`))).map((l) => [l.from, l.to])).toEqual([[1, 5], [6, 10], [11, 14], [15, 16]]);
+  });
+  it('the page carries one Directions link per stop and stretch links only where a stretch has two or more stops', () => {
+    const view = viewRoad(CONFIG, built().road), html = roadTripPage(view);
+    const links = [...html.matchAll(/<a href="(https:\/\/www\.google\.com\/maps\/dir\/[^"]+)" rel="noopener nofollow" target="_blank">([^<]+)<\/a>/g)];
+    expect(links.filter((m) => m[2] === 'Directions (opens Google Maps)')).toHaveLength(view.stops.length);
+    expect(links.filter((m) => m[2] === 'Open this stretch in Google Maps')).toHaveLength(2);
+    expect((html.match(/google\.com\/maps/g) || []).length).toBe(links.length);  // every Google link has the rel, target and text
+    expect(html).toContain("The route Google draws is Google's and may not follow FR 1. Our miles are measured on our own line.");
+    expect(html).not.toMatch(/maps\.googleapis|maps\/embed|<iframe/);
+    const one = roadTripPage(viewRoad(CONFIG, buildRoad(CONFIG, WAYS, CANDIDATES, [ok(1)], '2026-11-22').road));
+    expect(one).not.toContain('Open this stretch'); expect(one).toContain('Directions (opens Google Maps)');
+  });
+  it('escapes the link inside the attribute', () => {
+    const v = viewRoad(CONFIG, buildRoad(CONFIG, WAYS, CANDIDATES, [ok(1, { name: 'A "quoted" <b> & Co' }), ok(2, { name: "O'Brien & Sons" })], '2026-11-22').road);
+    const html = roadTripPage(v);
+    const hrefs = [...html.matchAll(/href="(https:\/\/www\.google\.com\/maps\/dir\/[^"]*)"/g)].map((m) => m[1]);
+    expect(hrefs).toHaveLength(2);                                   // two stops, in different stretches: no stretch link
+    expect(hrefs[0]).toContain('&amp;destination=A%20%22quoted%22%20%3Cb%3E%20%26%20Co%2C');
+    for (const x of hrefs) { expect(x).not.toMatch(/[<> ]/); expect(x.replace(/&amp;/g, '')).not.toContain('&'); }
+    expect(new URL(hrefs[1].replace(/&amp;/g, '&')).searchParams.get('destination')).toBe("O'Brien & Sons, 2 Fixture St, Bravo, PA");
+  });
+  it('every real link stays under Google\'s 2,048-character limit', () => {
+    for (const road of ALL_ROADS) for (const leg of road.legs) for (const g of leg.segments) {
+      for (const l of stretchLinks(g.stops)) expect(l.href.length).toBeLessThan(2048);
+      for (const s of g.stops) expect(directionsUrl(s).length).toBeLessThan(2048);
+    }
   });
 });
 

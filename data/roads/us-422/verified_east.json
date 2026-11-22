@@ -93,7 +93,8 @@
     "quote": "HRB Kitchen open with light menu till 7pm.",
     "quote_source_url": "https://hiddenriverbrewing.com/",
     "notes": "Site is JavaScript-rendered, so the text was read from the site's own published page-data files (storage.googleapis.com/gator-users/... linked from the home page), not from a rendered page. It shows regular hours (Wed/Thu 4-8, Fri/Sat 12-8, Sun 12-6), HOLIDAY HOURS 'Tue 11/24 ... Thu 11/26: Closed', Live Music 'Sat 11/21 ... Fri 11/27', Thursday trivia, food trucks, '© 2026'. Weekdays match 2026; year not printed beside the dates. Inside Brinton Lodge. Phone 484-798-8065 for large parties (from site).",
-    "checked": "2026-11-22"
+    "checked": "2026-11-22",
+    "browser_checked": "2026-11-22"
   },
   {
     "id": 1217,

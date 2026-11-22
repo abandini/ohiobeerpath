@@ -424,12 +424,13 @@
     "name": "Crooked Pecker Brewing Company",
     "status": "OPEN",
     "official_url": "https://www.crookedpeckerbrewing.com/",
-    "address_as_printed": "8284 East Washington St CHAGRIN FALLS, Ohio 44023",
+    "address_as_printed": "8284 Washington St Chagrin Falls, Ohio 44023-4508",
     "address_source_url": "https://www.crookedpeckerbrewing.com/",
     "quote": "We package fresh cans every week for your take out enjoyment!",
     "quote_source_url": "https://www.crookedpeckerbrewing.com/",
     "notes": "Site is a Square Online page rendered by script; I read its text from the page's embedded data in the HTML (a rendered view was not used). Directory city says Newbury; the site prints Chagrin Falls (also shows '8284 Washington St, Chagrin Falls, Ohio'). Current signs: cans list 'Updated 11.11..26', winter stout release, holiday Hef Me! cans. A 'Location & Hours' block prints 9:00 am-5:00 pm Mon-Sat which looks like template text, so I am NOT giving a taproom hours line; get hours from the page by eye. Phone (440) 384-3452; food trucks listed.",
-    "checked": "2026-11-22"
+    "checked": "2026-11-22",
+    "browser_checked": "2026-11-22"
   },
   {
     "id": 261,
@@ -441,7 +442,8 @@
     "quote": "We brew in small batches to ensure every pint is fresh, balanced, and full of character.",
     "quote_source_url": "https://pompatusbrewing.com/",
     "notes": "Wix-style page rendered by script; read from embedded page data. NO street address is printed on the page (only 'Chagrin Falls, Ohio' and phone 440-384-3134), so address must come from elsewhere. Current signs: Happy Hour, mug club, seasonal beer ('Pumpkin Roll'), taproom hours block; footer copyright 2025, no 2026 date. Hours as printed (listed in separate elements): Monday-Tuesday 5:30 pm-10:00 pm; Wednesday Private Events; Thursday 5:00 pm-10:00 pm; Friday 4:00 pm-10:00 pm; Saturday 12:00 pm-10:00 pm; Sunday 1:00 pm-6:00 pm. Pretzels and beer cheese; hard seltzer.",
-    "checked": "2026-11-22"
+    "checked": "2026-11-22",
+    "browser_checked": "2026-11-22"
   },
   {
     "id": 60,

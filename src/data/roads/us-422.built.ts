@@ -334,7 +334,7 @@ export const US_422_BUILT: BuiltRoad = {
       "lon": -81.3462514,
       "status": "OPEN",
       "website": "https://www.crookedpeckerbrewing.com/",
-      "address": "8284 East Washington St CHAGRIN FALLS, Ohio 44023",
+      "address": "8284 Washington St Chagrin Falls, Ohio 44023-4508",
       "addressSourceUrl": "https://www.crookedpeckerbrewing.com/",
       "quote": "We package fresh cans every week for your take out enjoyment!",
       "quoteSourceUrl": "https://www.crookedpeckerbrewing.com/",
@@ -342,7 +342,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 22.4,
       "detourMiles": 1.86,
-      "pastEnd": ""
+      "pastEnd": "",
+      "browserChecked": "2026-11-22"
     },
     {
       "breweryId": 261,
@@ -361,7 +362,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 25.6,
       "detourMiles": 0.71,
-      "pastEnd": ""
+      "pastEnd": "",
+      "browserChecked": "2026-11-22"
     },
     {
       "breweryId": 60,
@@ -646,7 +648,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 57.3,
       "detourMiles": 0.01,
-      "pastEnd": ""
+      "pastEnd": "",
+      "browserChecked": "2026-11-22"
     },
     {
       "breweryId": 1217,
