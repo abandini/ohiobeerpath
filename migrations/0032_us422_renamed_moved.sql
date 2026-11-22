@@ -2,7 +2,11 @@
 -- "BreweryTripBot/1.0 (+https://brewerytrip.com/about)"). Rule applied: a different owner or brand is a different listing,
 -- never a rename; the old listing is retired only with a quoted source that it closed or was replaced.
 -- closed_at is the review date (2026-11-22), as in 0021 and 0029. Previous value for every retired row: closed_at NULL.
--- "Read" means the page was fetched on 2026-11-22 and the quoted words were found on it.
+-- "Read" means a checker agent fetched the page on 2026-11-22 and found the quoted words on it. The coordinator re-fetched these
+-- himself the same day and found the quoted words: the LebTown, Patch, Inquirer, Breweries in PA (Crowded Castle), WhatNow and
+-- Coal Country pages. Not re-fetched by the coordinator: Breweries in PA (Snitz Creek), Montco Today (Troubles End).
+-- For Crowded Castle the 2021 page is an announcement; the 2022 WhatNow page is the report that it had closed.
+-- A retired page says "This brewery has closed"; where a different brand now brews at the address, it is a lead to add.
 --
 -- RETIRED (successor is a different business; successors are LEADS to add separately, not done here)
 --
@@ -32,15 +36,18 @@ UPDATE breweries SET closed_at = '2026-11-22' WHERE id = 1031 AND name = 'Crowde
 UPDATE breweries SET closed_at = '2026-11-22' WHERE id = 958 AND name = 'Appalachian Brewing Co - Collegeville' AND closed_at IS NULL;
 UPDATE breweries SET closed_at = '2026-11-22' WHERE id = 1142 AND name = 'McKenzie Brew House (#3)' AND closed_at IS NULL;
 --
--- UPDATED IN PLACE (same business, new address)
+-- MOVED (same business, new address): evidence recorded, change DEFERRED, see below
 --
 -- 1014 Coal Country Brewing. Previous street: '625 W High St' (postal_code 15931 unchanged, website_url unchanged).
 --   Own site https://www.coalcountrybrewing.net/ , read: "Now Located At: 2343 Ben Franklin Hwy Ebensburg, PA 15931" and
 --   "WE'RE BACK! Now open at our new location right off of 422 located in the back of the building, Coal Country Brewing is back
---   in a bigger facility". Brews on site (16 beers listed on tap). Site is marked "Updated: October 11, 2025".
+--   in a bigger facility". Site is marked "Updated: October 11, 2025".
 --   NOT changed here, for a human: latitude/longitude still point at the old address; phone and hours were not found on the site
 --   (it sends visitors to Facebook for daily changes), so they are left as they are.
-UPDATE breweries SET street = '2343 Ben Franklin Hwy' WHERE id = 1014 AND name = 'Coal Country Brewing' AND street = '625 W High St';
+-- DEFERRED after review (not applied here): the street change for 1014. The listing's map coordinates still point at the old
+-- address and no verified coordinates for 2343 Ben Franklin Hwy were found (OpenStreetMap returns only the road), so changing
+-- the street alone would leave the address and the pin contradicting each other. Prepared statement, for when the pin is known:
+--   UPDATE /* with latitude, longitude */ breweries SET street = '2343 Ben Franklin Hwy' WHERE id = 1014 AND name = 'Coal Country Brewing' AND street = '625 W High St';
 --
 -- LEADS for the retired listings (to be added separately after review; nothing is inserted here). Each own site was read on 2026-11-22.
 --   Snitz Creek Brewery - Palmyra, 2701 Horseshoe Pike, Palmyra PA 17078; https://www.snitzcreekbrewery.com/ ; own site prints

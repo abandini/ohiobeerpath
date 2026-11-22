@@ -4,6 +4,10 @@
 -- page text AND the directory row's city or street appears on the site; the evidence line below gives the page and a short excerpt.
 -- The current website_url of every row was re-read from the database on 2026-11-22 (SELECT) and is pinned in each WHERE clause.
 -- Rollback: each comment line gives the previous value; set website_url back to it (the WHERE of the reverse is id AND the new value).
+-- Review notes: 896 is listed as "Alltech's Lexington Brewing"; its own site brands itself Lexington Brewing & Distilling Co.
+-- (the same Alltech brewery in Lexington, not a successor). 612 Paw Paw and 896 print a street that differs from the directory:
+-- only the link changes here; the addresses are separate review tasks. 1163 Oakbrook's location evidence is the page's map data,
+-- not printed text. The coordinator re-fetched all 35 new addresses on 2026-11-22: the brewery name was on 34 pages (896 as noted).
 
 -- 103 Endeavor Brewing Company (Columbus, OH). Previous: 'http://www.endeavorbrewingco.com'
 --   Evidence (title: Endeavor Brewing and Spirits): https://www.endeavorbrewing.com/ :: "Endeavor is proud to be Columbus, Ohio’s first brewstillery."
