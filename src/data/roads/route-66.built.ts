@@ -13,6 +13,15 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "line": [[41.87878,-87.62424],[41.87756,-87.67069],[41.86471,-87.68616],[41.82372,-87.80268],[41.78914,-87.84469],[41.69877,-88.04065],[41.65426,-88.08039],[41.5964,-88.07482],[41.55878,-88.08854],[41.42853,-88.07865],[41.37148,-88.13202],[41.31238,-88.13261],[41.30439,-88.16068],[41.19347,-88.30071],[41.18285,-88.30101],[41.18246,-88.31856],[41.09661,-88.42319],[41.09542,-88.43941],[41.08317,-88.44006],[41.05021,-88.48141],[40.90206,-88.61967],[40.88742,-88.64136],[40.86692,-88.64533],[40.65067,-88.77997],[40.51823,-88.96948],[40.51384,-88.99504],[40.45978,-88.99301],[40.44956,-89.02423],[40.42627,-89.03906],[40.15152,-89.35704],[40.14689,-89.38659],[40.13154,-89.38831],[40.0334,-89.47263],[39.95421,-89.54983],[39.95606,-89.5568],[39.94339,-89.55923],[39.88353,-89.61244],[39.85875,-89.6145],[39.84546,-89.63291],[39.82305,-89.64318],[39.78397,-89.64406],[39.78394,-89.64979],[39.69382,-89.64227],[39.59078,-89.65217],[39.41464,-89.64391],[39.32149,-89.64831],[39.23383,-89.63932],[39.18658,-89.6659],[39.13988,-89.67111],[39.07836,-89.71892],[39.0763,-89.735],[39.03359,-89.75041],[39.0031,-89.78221],[38.98392,-89.78322],[38.97874,-89.80095],[38.92971,-89.80399],[38.8405,-89.90139],[38.82695,-89.94127],[38.81273,-89.94744],[38.8014,-89.97538],[38.77972,-89.98034],[38.76,-90.01226],[38.76358,-90.17032]],
       "candidates": 52,
       "decided": 34,
+      "cohort": {
+        "total": 56,
+        "withHours": 23,
+        "listed": 23,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 18,
+        "settled": 15
+      },
       "joins": 3,
       "joinedMiles": 0.03,
       "widestJoinMiles": 0.02
@@ -23,6 +32,15 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "line": [[38.76358,-90.17032],[38.77753,-90.35682],[38.75775,-90.37684],[38.75939,-90.39305],[38.7102,-90.40857],[38.55583,-90.40756],[38.54295,-90.43571],[38.53574,-90.51544],[38.52653,-90.54227],[38.50717,-90.55977],[38.50416,-90.6822],[38.48052,-90.71009],[38.48726,-90.78538],[38.48118,-90.84985],[38.46702,-90.85989],[38.44987,-90.90542],[38.39981,-90.92917],[38.38033,-90.96675],[38.36039,-90.97128],[38.34206,-90.99091],[38.33889,-91.01449],[38.32086,-91.03241],[38.29709,-91.10056],[38.26796,-91.10809],[38.2507,-91.13355],[38.21829,-91.15415],[38.16553,-91.21974],[38.15732,-91.24583],[38.13542,-91.26405],[38.12976,-91.30266],[38.11856,-91.31181],[38.09532,-91.36341],[38.06659,-91.38723],[38.05751,-91.42092],[38.03783,-91.4453],[38.04291,-91.49511],[38.02249,-91.56627],[37.9994,-91.61592],[38.00578,-91.61986],[37.9939,-91.63705],[37.97742,-91.75118],[37.95654,-91.77676],[37.94662,-91.77863],[37.93231,-91.83705],[37.94445,-91.85607],[37.94139,-91.94836],[37.91109,-91.97592],[37.89923,-92.00976],[37.86759,-92.01866],[37.85973,-92.03228],[37.85614,-92.06108],[37.85296,-92.06786],[37.84481,-92.06269],[37.84001,-92.09206],[37.82404,-92.11361],[37.82084,-92.15657],[37.82837,-92.17726],[37.82717,-92.20813],[37.8117,-92.23527],[37.78864,-92.24862],[37.78602,-92.26851],[37.75134,-92.30033],[37.74272,-92.34994],[37.76549,-92.38332],[37.76832,-92.43284],[37.75239,-92.49059],[37.75863,-92.52016],[37.75044,-92.57051],[37.74007,-92.58734],[37.74498,-92.5885],[37.69225,-92.63174],[37.6688,-92.6671],[37.64576,-92.67056],[37.60372,-92.70892],[37.56316,-92.78722],[37.55551,-92.78784],[37.53225,-92.82358],[37.46344,-92.83416],[37.44992,-92.84554],[37.39388,-92.84514],[37.38013,-92.85452],[37.3477,-92.91196],[37.33724,-92.91873],[37.306,-92.97622],[37.29917,-93.01285],[37.27444,-93.04743],[37.2667,-93.13052],[37.23822,-93.2032],[37.24158,-93.34764],[37.21234,-93.34918],[37.21399,-93.47715],[37.19274,-93.54262],[37.1943,-93.68483],[37.18711,-93.70134],[37.19833,-94.26817],[37.17639,-94.31401],[37.16878,-94.39083],[37.17318,-94.40911],[37.16645,-94.4368],[37.14906,-94.43785],[37.14635,-94.47456],[37.11292,-94.47602],[37.10214,-94.49474],[37.09175,-94.49476],[37.09173,-94.5082],[37.08405,-94.51351],[37.08594,-94.6179]],
       "candidates": 41,
       "decided": 32,
+      "cohort": {
+        "total": 38,
+        "withHours": 23,
+        "listed": 23,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 9,
+        "settled": 6
+      },
       "joins": 10,
       "joinedMiles": 0.89,
       "widestJoinMiles": 0.32
@@ -32,7 +50,16 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "lengthMiles": 11.9,
       "line": [[37.08594,-94.6179],[37.08059,-94.63917],[37.07493,-94.6392],[37.07528,-94.71655],[37.05534,-94.73515],[36.99867,-94.74069]],
       "candidates": 0,
-      "decided": 0
+      "decided": 0,
+      "cohort": {
+        "total": 0,
+        "withHours": 0,
+        "listed": 0,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 0,
+        "settled": 0
+      }
     },
     {
       "id": "oklahoma",
@@ -40,6 +67,15 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "line": [[36.99867,-94.74069],[36.97274,-94.75715],[36.95947,-94.78703],[36.94414,-94.79247],[36.94193,-94.86694],[36.91914,-94.87743],[36.87089,-94.87862],[36.86387,-94.90217],[36.82011,-94.92679],[36.70715,-94.92971],[36.68508,-94.98093],[36.62777,-94.98255],[36.62693,-95.13128],[36.6388,-95.15449],[36.6269,-95.1645],[36.6266,-95.25303],[36.61358,-95.28028],[36.57751,-95.31265],[36.55122,-95.35795],[36.53842,-95.42581],[36.48493,-95.46841],[36.42338,-95.53212],[36.37132,-95.56417],[36.33475,-95.60341],[36.27173,-95.64497],[36.21395,-95.72219],[36.19391,-95.73195],[36.16688,-95.76145],[36.148,-95.7617],[36.14514,-96.00236],[36.11196,-96.01056],[36.07991,-96.05301],[36.0719,-96.08697],[36.03669,-96.10118],[35.99904,-96.09882],[35.9886,-96.18734],[35.9656,-96.19666],[35.92491,-96.24171],[35.92458,-96.26935],[35.90155,-96.32837],[35.89975,-96.36819],[35.87696,-96.38952],[35.83083,-96.39103],[35.82064,-96.40718],[35.80439,-96.53009],[35.79285,-96.55854],[35.77022,-96.58256],[35.76893,-96.61881],[35.74914,-96.64295],[35.7505,-96.68193],[35.73709,-96.71838],[35.72439,-96.73171],[35.72352,-96.75575],[35.70985,-96.76712],[35.70982,-96.87565],[35.69538,-96.88075],[35.69543,-96.95472],[35.68989,-96.99563],[35.68105,-97.00533],[35.68057,-97.08708],[35.66654,-97.13563],[35.66701,-97.24463],[35.65977,-97.28686],[35.66699,-97.31096],[35.65273,-97.35306],[35.65319,-97.48151],[35.60922,-97.49602],[35.53586,-97.49422],[35.52937,-97.50426],[35.49324,-97.50691],[35.49326,-97.53154],[35.51139,-97.53443],[35.51508,-97.70234],[35.50763,-97.72674],[35.50803,-97.94044],[35.5314,-97.95267],[35.53692,-97.98093],[35.53649,-98.2387],[35.55168,-98.27454],[35.55181,-98.30661],[35.53591,-98.33091],[35.5381,-98.65893],[35.52239,-98.71668],[35.51541,-98.97205],[35.4801,-98.98352],[35.47972,-99.11735],[35.42135,-99.22187],[35.42197,-99.29375],[35.42643,-99.294],[35.42196,-99.39734],[35.41171,-99.40139],[35.41114,-99.46559],[35.33947,-99.59448],[35.31502,-99.61555],[35.30757,-99.6398],[35.27213,-99.64022],[35.26261,-99.64787],[35.25736,-99.74426],[35.21496,-99.82401],[35.22102,-99.99767]],
       "candidates": 26,
       "decided": 19,
+      "cohort": {
+        "total": 26,
+        "withHours": 14,
+        "listed": 14,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 7,
+        "settled": 5
+      },
       "joins": 2,
       "joinedMiles": 0.42,
       "widestJoinMiles": 0.35
@@ -50,6 +86,15 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "line": [[35.22102,-99.99767],[35.22641,-100.01057],[35.22671,-100.57735],[35.23456,-100.61488],[35.21477,-100.68844],[35.21413,-100.77216],[35.17972,-100.82894],[35.18361,-100.86505],[35.17886,-100.89247],[35.18332,-101.01248],[35.20733,-101.14439],[35.20803,-101.47097],[35.22105,-101.50134],[35.21985,-101.5794],[35.25458,-101.64387],[35.22073,-101.75648],[35.22196,-101.83165],[35.20734,-101.83453],[35.21122,-101.88115],[35.20608,-101.90306],[35.19216,-101.92046],[35.18764,-101.97196],[35.19225,-102.09903],[35.20878,-102.1681],[35.21079,-102.24878],[35.27366,-102.58759],[35.26914,-102.72854],[35.21605,-102.90778],[35.18596,-102.9838],[35.18241,-103.04249]],
       "candidates": 4,
       "decided": 4,
+      "cohort": {
+        "total": 4,
+        "withHours": 2,
+        "listed": 2,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 0,
+        "settled": 2
+      },
       "joins": 1,
       "joinedMiles": 0.02,
       "widestJoinMiles": 0.02
@@ -60,6 +105,15 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "line": [[35.18241,-103.04249],[35.1815,-103.07442],[35.1222,-103.24925],[35.11297,-103.28339],[35.1114,-103.33113],[35.10617,-103.33109],[35.10746,-103.34781],[35.15416,-103.46213],[35.17246,-103.49136],[35.16748,-103.67387],[35.17176,-103.74396],[35.15041,-103.77862],[35.14051,-103.82478],[35.11639,-103.87007],[35.12514,-103.95264],[35.06582,-104.17651],[35.07246,-104.24451],[35.0478,-104.37687],[35.01541,-104.44707],[35.00657,-104.51706],[34.94908,-104.63782],[34.93833,-104.69374],[34.96267,-104.73863],[34.96867,-104.78702],[35.00596,-105.52425],[35.00181,-105.55418],[35.01058,-105.70579],[35.00409,-105.72341],[35.00483,-106.05005],[35.11504,-106.32579],[35.07958,-106.3879],[35.0799,-106.40675],[35.06597,-106.4226],[35.06226,-106.47069],[35.08514,-106.65611],[35.09532,-106.67567],[35.08544,-106.68561],[35.02023,-106.99748],[34.97784,-107.13532],[34.99253,-107.23223],[34.99426,-107.29752],[35.03467,-107.34229],[35.03844,-107.38264],[35.04773,-107.39913],[35.05183,-107.51455],[35.0774,-107.53013],[35.08597,-107.54659],[35.08202,-107.63006],[35.05901,-107.7065],[35.07351,-107.75539],[35.11482,-107.78549],[35.16421,-107.88718],[35.21991,-107.91523],[35.26968,-107.97786],[35.31012,-107.98925],[35.35346,-108.01743],[35.38402,-108.12924],[35.40721,-108.27343],[35.4781,-108.42679],[35.52964,-108.59974],[35.53079,-108.73363],[35.51232,-108.79318],[35.49513,-108.8869],[35.42379,-108.99456],[35.36135,-109.04827]],
       "candidates": 17,
       "decided": 13,
+      "cohort": {
+        "total": 17,
+        "withHours": 9,
+        "listed": 9,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 4,
+        "settled": 4
+      },
       "joins": 1,
       "joinedMiles": 0.01,
       "widestJoinMiles": 0.01
@@ -70,6 +124,15 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "line": [[34.95129,-104.71776],[34.96359,-104.74106],[34.96892,-104.78745],[34.9771,-104.99106],[35.12614,-105.02672],[35.21128,-105.07388],[35.25443,-105.11651],[35.28619,-105.12368],[35.31442,-105.14552],[35.3413,-105.15159],[35.37548,-105.19759],[35.45527,-105.21094],[35.51983,-105.24849],[35.48783,-105.27222],[35.44766,-105.28134],[35.39788,-105.32123],[35.39252,-105.34661],[35.39812,-105.4288],[35.41524,-105.53996],[35.43031,-105.59926],[35.48383,-105.67243],[35.54307,-105.68488],[35.57473,-105.67552],[35.56547,-105.74004],[35.59143,-105.78025],[35.56361,-105.80425],[35.53898,-105.85604],[35.5853,-105.89939],[35.65459,-105.93862],[35.68569,-105.94149],[35.63979,-106.01678],[35.60264,-106.04006],[35.52262,-106.16536],[35.51832,-106.22109],[35.48639,-106.26585],[35.44658,-106.36208],[35.38122,-106.46625],[35.37389,-106.49385],[35.32094,-106.54407],[35.21288,-106.59645],[35.20656,-106.61283],[35.18852,-106.61748],[35.17236,-106.63476],[35.08455,-106.65162]],
       "candidates": 28,
       "decided": 17,
+      "cohort": {
+        "total": 28,
+        "withHours": 13,
+        "listed": 13,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 11,
+        "settled": 4
+      },
       "joins": 3,
       "joinedMiles": 0.12,
       "widestJoinMiles": 0.11
@@ -80,6 +143,15 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "line": [[35.36135,-109.04827],[35.31402,-109.09966],[35.28054,-109.17766],[35.28299,-109.23518],[35.27558,-109.26156],[35.21472,-109.33562],[35.18551,-109.45157],[35.12457,-109.5526],[35.06605,-109.76946],[35.00408,-109.8852],[34.97361,-110.08673],[34.93886,-110.13132],[34.91317,-110.15645],[34.90162,-110.15858],[34.91202,-110.24152],[34.95549,-110.31102],[34.97391,-110.51668],[35.006,-110.61645],[35.00754,-110.65925],[35.0373,-110.7242],[35.0913,-110.91472],[35.12263,-111.16444],[35.16165,-111.27231],[35.15854,-111.29806],[35.25198,-111.51839],[35.24521,-111.56486],[35.19669,-111.62298],[35.19862,-111.65321],[35.18783,-111.67834],[35.20253,-111.76427],[35.24739,-111.85187],[35.26746,-112.07375],[35.25311,-112.13453],[35.25667,-112.17396],[35.24626,-112.20956],[35.22449,-112.24095],[35.21952,-112.28185],[35.22326,-112.32494],[35.21503,-112.35651],[35.21345,-112.41084],[35.22893,-112.58194],[35.29402,-112.7372],[35.33973,-112.95096],[35.38187,-112.98662],[35.52456,-113.21307],[35.55322,-113.31717],[35.5538,-113.37841],[35.5396,-113.41675],[35.52967,-113.42265],[35.52193,-113.48655],[35.45148,-113.63175],[35.43423,-113.64825],[35.41225,-113.64719],[35.38672,-113.65921],[35.36823,-113.67237],[35.36221,-113.68756],[35.36698,-113.71144],[35.41032,-113.77725],[35.41834,-113.7997],[35.4165,-113.81697],[35.18982,-114.03594],[35.1889,-114.06203],[35.1665,-114.06154],[35.15478,-114.08695],[35.13544,-114.10099],[35.13772,-114.10999],[35.02713,-114.27976],[35.0255,-114.30444],[35.03735,-114.3535],[35.04722,-114.36295],[35.04063,-114.37305],[35.04393,-114.39184],[35.02216,-114.3827],[34.98512,-114.42514],[34.95412,-114.40998],[34.93105,-114.42343],[34.87563,-114.43688],[34.82947,-114.46663],[34.79867,-114.47109],[34.79426,-114.48067],[34.74244,-114.48469],[34.73058,-114.47716],[34.71726,-114.48566]],
       "candidates": 14,
       "decided": 9,
+      "cohort": {
+        "total": 14,
+        "withHours": 9,
+        "listed": 9,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 5,
+        "settled": 0
+      },
       "joins": 5,
       "joinedMiles": 0.1,
       "widestJoinMiles": 0.04
@@ -90,6 +162,15 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "line": [[34.71726,-114.48566],[34.71886,-114.53138],[34.76053,-114.57298],[34.75963,-114.58419],[34.76967,-114.5955],[34.79365,-114.60897],[34.83237,-114.59494],[34.85212,-114.62597],[34.86363,-114.63098],[34.89166,-114.6974],[34.87902,-114.75416],[34.92115,-114.77638],[34.94053,-114.81408],[34.93531,-114.87298],[34.91901,-114.92457],[34.91524,-114.96618],[34.9199,-115.06367],[34.89897,-115.09202],[34.85208,-115.13088],[34.81379,-115.18381],[34.75556,-115.22012],[34.57287,-115.47778],[34.56268,-115.50082],[34.55495,-115.75409],[34.60371,-115.95875],[34.63704,-116.00715],[34.68226,-116.02797],[34.72475,-116.12389],[34.72677,-116.23975],[34.73512,-116.30459],[34.77396,-116.37812],[34.78229,-116.4121],[34.82712,-116.68953],[34.83476,-116.70514],[34.8649,-116.93708],[34.88553,-116.99379],[34.89813,-117.01048],[34.89872,-117.0294],[34.87686,-117.1103],[34.82789,-117.1838],[34.80262,-117.20919],[34.78316,-117.25479],[34.74985,-117.29561],[34.74724,-117.32092],[34.69641,-117.33914],[34.60768,-117.34218],[34.58001,-117.33088],[34.53633,-117.29285],[34.5082,-117.32133],[34.34774,-117.44152],[34.33452,-117.48173],[34.31672,-117.47941],[34.29118,-117.45306],[34.2719,-117.45122],[34.25814,-117.46631],[34.19193,-117.36851],[34.13588,-117.3139],[34.10834,-117.31384],[34.10722,-117.74604],[34.129,-117.83212],[34.12874,-117.89012],[34.13971,-117.95021],[34.13995,-118.03685],[34.14836,-118.04552],[34.14581,-118.14754],[34.12007,-118.14702],[34.11113,-118.18403],[34.06268,-118.2463],[34.0743,-118.25207],[34.07979,-118.26954],[34.09245,-118.28039],[34.09055,-118.37391],[34.05059,-118.43437],[34.03862,-118.46773],[34.01646,-118.48784]],
       "candidates": 62,
       "decided": 42,
+      "cohort": {
+        "total": 62,
+        "withHours": 29,
+        "listed": 29,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 20,
+        "settled": 13
+      },
       "joins": 2,
       "joinedMiles": 0.02,
       "widestJoinMiles": 0.01
@@ -116,7 +197,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 1.2,
       "detourMiles": 0.34,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "off-color-brewing-mousetrap-taproom-chicago",
@@ -139,7 +221,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 1.4,
       "detourMiles": 2.02,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "greenstar-brewing-at-uncommon-ground-chicago",
@@ -162,7 +245,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 1.8,
       "detourMiles": 4.98,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "all-rise-brewing-co-chicago",
@@ -184,7 +268,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 2.2,
       "detourMiles": 0.52,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "goose-island-beer-co-fulton-street-brewery-and-taproom-chicago",
@@ -206,7 +291,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 2.4,
       "detourMiles": 0.58,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "piece-brewery-chicago",
@@ -229,7 +315,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 2.4,
       "detourMiles": 2.2,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "dataset"
     },
     {
       "key": "maplewood-brewery-and-distillery-the-lounge-chicago-chicago",
@@ -252,7 +339,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 2.4,
       "detourMiles": 3.76,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "dataset"
     },
     {
       "key": "revolution-brewing-taproom-production-brewery-kedzie-chicago",
@@ -275,7 +363,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 2.4,
       "detourMiles": 3.98,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "dataset"
     },
     {
       "key": "kinslahger-brewing-company-oak-park",
@@ -297,7 +386,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 8.7,
       "detourMiles": 2.4,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "flapjack-brewery-berwyn",
@@ -319,7 +409,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 9.6,
       "detourMiles": 0.43,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "buckledown-brewing-lyons",
@@ -341,7 +432,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 11.1,
       "detourMiles": 0.52,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "imperial-oak-brewing-willow-springs-willow-springs",
@@ -363,7 +455,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 17.8,
       "detourMiles": 2.43,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "black-horizon-brewing-company-willowbrook",
@@ -385,7 +478,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 19.4,
       "detourMiles": 0.45,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "skeleton-key-brewery-woodridge",
@@ -407,7 +501,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 22.9,
       "detourMiles": 1.61,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "pollyanna-brewing-company-lemont",
@@ -429,7 +524,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 24.9,
       "detourMiles": 2.58,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "destihl-brewery-beer-hall-and-barrel-room-normal-normal",
@@ -451,7 +547,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 125.7,
       "detourMiles": 0.23,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "white-oak-brewing-normal",
@@ -473,7 +570,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 130,
       "detourMiles": 1.44,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "keg-grove-brewing-company-bloomington-bloomington",
@@ -495,7 +593,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 130.8,
       "detourMiles": 0.58,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "lil-beaver-brewery-bloomington",
@@ -517,7 +616,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 132.7,
       "detourMiles": 0.83,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "engrained-brewing-co-springfield",
@@ -539,7 +639,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 196.2,
       "detourMiles": 0.26,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "schlafly-tap-room-st-louis",
@@ -562,6 +663,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 9.22,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -585,6 +687,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 10.27,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -608,6 +711,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 10.34,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -631,6 +735,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 1.9,
       "detourMiles": 9.18,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -653,7 +758,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 16.3,
       "detourMiles": 1.27,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "urban-chestnut-brewing-company-grove-bierhall-st-louis",
@@ -676,6 +782,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 22.4,
       "detourMiles": 7.82,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -699,6 +806,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 22.4,
       "detourMiles": 8.33,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -722,6 +830,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 22.6,
       "detourMiles": 6.76,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -744,7 +853,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 23.3,
       "detourMiles": 4.52,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "schlafly-bottleworks-maplewood",
@@ -766,7 +876,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 23.3,
       "detourMiles": 4.92,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "alpha-brewing-company-st-louis",
@@ -789,6 +900,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 24.2,
       "detourMiles": 7.77,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -812,6 +924,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 24.9,
       "detourMiles": 8,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -835,6 +948,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 24.9,
       "detourMiles": 10.18,
       "pastEnd": "",
+      "placedBy": "census",
       "unmeasured": "st-louis"
     },
     {
@@ -857,7 +971,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 25.5,
       "detourMiles": 0.05,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "beer-outside-brewery-valley-park-2",
@@ -879,7 +994,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 32.5,
       "detourMiles": 0.15,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "pacific-brew-haus-pacific",
@@ -901,7 +1017,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 47.5,
       "detourMiles": 1.12,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "point-labaddie-brewery-labadie",
@@ -923,7 +1040,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 50.9,
       "detourMiles": 1,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "muddy-banks-brewing-company-sullivan",
@@ -945,7 +1063,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 81,
       "detourMiles": 0.26,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "public-house-brewing-company-st-james-taproom-saint-james",
@@ -967,7 +1086,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 113.7,
       "detourMiles": 0.86,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "public-house-brewing-company-rolla-r-and-d-brewpub-rolla",
@@ -989,7 +1109,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 123.8,
       "detourMiles": 0.26,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "boat-town-brewing-phillipsburg",
@@ -1011,7 +1132,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 186.7,
       "detourMiles": 0.41,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "before-and-after-brewing-springfield",
@@ -1033,7 +1155,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 236.8,
       "detourMiles": 4.05,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "tie-and-timber-beer-company-springfield",
@@ -1055,7 +1178,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 238.7,
       "detourMiles": 2.52,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "hold-fast-brewing-springfield",
@@ -1077,7 +1201,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 239.7,
       "detourMiles": 1.62,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "springfield-brewing-company-brewco-taproom-springfield",
@@ -1099,7 +1224,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 240.2,
       "detourMiles": 2.28,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "mothers-brewing-co-springfield",
@@ -1121,7 +1247,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "missouri",
       "mile": 240.4,
       "detourMiles": 2.27,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "heirloom-rustic-ales-tulsa",
@@ -1143,7 +1270,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 106.7,
       "detourMiles": 0.16,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "marshall-brewing-co-llc-tulsa",
@@ -1165,7 +1293,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 106.9,
       "detourMiles": 0.26,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "dead-armadillo-brewery-tulsa",
@@ -1187,7 +1316,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 107.7,
       "detourMiles": 0.15,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "new-era-fine-fermentations-neff-brewing-tulsa",
@@ -1209,7 +1339,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 107.9,
       "detourMiles": 0.12,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "cabin-boys-brewpub-tulsa",
@@ -1231,7 +1362,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 108.5,
       "detourMiles": 0.38,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "nothings-left-brewing-co-tulsa",
@@ -1253,7 +1385,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 108.6,
       "detourMiles": 0.35,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "frenzy-brewing-company-edmond",
@@ -1275,7 +1408,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 212.1,
       "detourMiles": 0.11,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "roughtail-brewing-oklahoma-city",
@@ -1297,7 +1431,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 215.5,
       "detourMiles": 1.3,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "prairie-artisan-ales-okc-taproom-oklahoma-city",
@@ -1319,7 +1454,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 224.2,
       "detourMiles": 1.16,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "skydance-brewing-company-oklahoma-city",
@@ -1341,7 +1477,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 224.2,
       "detourMiles": 1.25,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "core4-brewing-company-oklahoma-city",
@@ -1363,7 +1500,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 224.8,
       "detourMiles": 1.84,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "stonecloud-brewing-co-okc-taproom-oklahoma-city",
@@ -1385,7 +1523,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 225.1,
       "detourMiles": 1.7,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "anthem-brewing-co-oklahoma-city",
@@ -1407,7 +1546,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 225.1,
       "detourMiles": 2.23,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "okie-beer-co-oklahoma-city",
@@ -1429,7 +1569,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "oklahoma",
       "mile": 229.8,
       "detourMiles": 0.15,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "old-tascosa-brewing-company-amarillo",
@@ -1451,7 +1592,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "texas",
       "mile": 110.4,
       "detourMiles": 0.01,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "pondaseta-brewing-co-amarillo-taproom-amarillo",
@@ -1473,7 +1615,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "texas",
       "mile": 114,
       "detourMiles": 2.05,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "canteen-taproom-albuquerque",
@@ -1495,7 +1638,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 207.1,
       "detourMiles": 0.24,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "boxing-bear-brewing-bridges-on-tramway-taproom-albuquerque",
@@ -1517,7 +1661,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 207.8,
       "detourMiles": 3.25,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "bombs-away-beer-company-albuquerque",
@@ -1539,7 +1684,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 209.5,
       "detourMiles": 0.12,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "high-and-dry-brewing-albuquerque",
@@ -1561,7 +1707,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 212.8,
       "detourMiles": 0.51,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "tractor-brewing-nob-hill-albuquerque",
@@ -1583,7 +1730,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 213.4,
       "detourMiles": 0.02,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "santa-fe-brewing-abq-at-green-jeans-albuquerque",
@@ -1605,7 +1753,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 213.5,
       "detourMiles": 1.81,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "flock-of-moons-brewing-albuquerque",
@@ -1627,7 +1776,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 214.2,
       "detourMiles": 0.01,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "sidetrack-brewing-company-albuquerque",
@@ -1649,7 +1799,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 215.9,
       "detourMiles": 0.13,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "ex-novo-brewing-albuquerque-taproom-and-restaurant-albuquerque",
@@ -1671,7 +1822,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "new-mexico",
       "mile": 216.2,
       "detourMiles": 0,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "santa-fe-brewing-the-brakeroom-santa-fe",
@@ -1693,7 +1845,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 120.2,
       "detourMiles": 0.1,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "rowley-farmhouse-ales-santa-fe",
@@ -1715,7 +1868,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 123,
       "detourMiles": 0.08,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "second-street-brewery-rufina-taproom-santa-fe",
@@ -1737,7 +1891,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 123.4,
       "detourMiles": 0.17,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "santa-fe-brewing-co-the-beer-hall-at-hq-santa-fe",
@@ -1759,7 +1914,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 129,
       "detourMiles": 0.04,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "ex-novo-brewing-corrales-brewery-taproom-and-corral-corrales",
@@ -1781,7 +1937,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 171.3,
       "detourMiles": 1.35,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "boxing-bear-brewing-firestone-taproom-and-brewery-albuquerque",
@@ -1803,7 +1960,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 174.4,
       "detourMiles": 1.62,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "steel-bender-brewyard-los-ranchos-de-albuquerque",
@@ -1825,7 +1983,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 175.4,
       "detourMiles": 0.32,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "tractor-brewing-westside-albuquerque",
@@ -1847,7 +2006,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 175.8,
       "detourMiles": 4.4,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "la-cumbre-brewing-west-side-taproom-albuquerque",
@@ -1869,7 +2029,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 178.1,
       "detourMiles": 2.76,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "bow-and-arrow-brewing-co-albuquerque",
@@ -1891,7 +2052,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 180.6,
       "detourMiles": 0.18,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "rio-bravo-brewing-company-albuquerque",
@@ -1913,7 +2075,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 180.7,
       "detourMiles": 0.14,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "tractor-brewing-co-wells-park-albuquerque",
@@ -1935,7 +2098,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 180.8,
       "detourMiles": 0.02,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "marble-brewery-downtown-111-marble-ave-nw-albuquerque",
@@ -1957,7 +2121,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 181.4,
       "detourMiles": 0.19,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "flagstaff-brewing-company-flagstaff",
@@ -1979,7 +2144,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 157.2,
       "detourMiles": 2.55,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "historic-brewing-company-eastside-taproom-flagstaff-flagstaff",
@@ -2001,7 +2167,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 161.1,
       "detourMiles": 0.18,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "wanderlust-brewing-company-flagstaff",
@@ -2023,7 +2190,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 163.2,
       "detourMiles": 0.02,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "lumberyard-brewing-co-taproom-and-grille-flagstaff",
@@ -2045,7 +2213,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 165.2,
       "detourMiles": 0.06,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "historic-brewing-company-barrel-house-flagstaff-flagstaff",
@@ -2067,7 +2236,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 165.2,
       "detourMiles": 0.14,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "beaver-street-brewery-flagstaff",
@@ -2089,7 +2259,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 165.3,
       "detourMiles": 0.09,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "grand-canyon-brewing-and-distillery-flagstaff-brewpub-flagstaff",
@@ -2111,7 +2282,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 166.6,
       "detourMiles": 0.49,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "historic-brewing-company-barrel-house-williams-williams",
@@ -2133,7 +2305,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 197.9,
       "detourMiles": 0,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "grand-canyon-brewing-and-distillery-williams-williams",
@@ -2155,7 +2328,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "arizona",
       "mile": 198.2,
       "detourMiles": 0.17,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "rowdys-brewing-company-rancho-cucamonga",
@@ -2177,7 +2351,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 265.2,
       "detourMiles": 1.48,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "hamilton-family-brewery-rancho-cucamonga",
@@ -2199,7 +2374,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 265.5,
       "detourMiles": 0.96,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "kings-brewing-company-rancho-cucamonga",
@@ -2221,7 +2397,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 268.7,
       "detourMiles": 0.67,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "rescue-brewing-co-upland",
@@ -2243,7 +2420,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 268.7,
       "detourMiles": 0.77,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "dragons-tale-brewery-montclair",
@@ -2265,7 +2443,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 270.9,
       "detourMiles": 1.03,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "mt-baldy-brewery-formerly-last-name-brewing-upland",
@@ -2287,7 +2466,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 271.2,
       "detourMiles": 0.1,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "claremont-craft-ales-claremont",
@@ -2309,7 +2489,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 271.8,
       "detourMiles": 0.17,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "homage-brewing-pomona",
@@ -2331,7 +2512,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 274.3,
       "detourMiles": 3.46,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "old-stump-brewery-pomona",
@@ -2353,7 +2535,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 274.5,
       "detourMiles": 0.77,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "smog-city-brewing-co-glendora-public-market-taproom-glendora",
@@ -2375,7 +2558,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 280.3,
       "detourMiles": 1.53,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "arrow-lodge-brewing-covina",
@@ -2397,7 +2581,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 282.1,
       "detourMiles": 1.62,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "alosta-brewing-co-covina",
@@ -2419,7 +2604,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 282.1,
       "detourMiles": 1.73,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "campsite-brewing-company-covina",
@@ -2441,7 +2627,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 282.5,
       "detourMiles": 2.54,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "nova-brewing-co-covina",
@@ -2463,7 +2650,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 285,
       "detourMiles": 3.11,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "mt-lowe-brewing-company-arcadia",
@@ -2485,7 +2673,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 290.9,
       "detourMiles": 0.22,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "wild-parrot-brewing-company-pasadena",
@@ -2507,7 +2696,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 295.6,
       "detourMiles": 0,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "stone-brewing-tap-room-pasadena-pasadena",
@@ -2529,7 +2719,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 298.4,
       "detourMiles": 0.07,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "cerveceria-del-pueblo-pasadena",
@@ -2551,7 +2742,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 298.6,
       "detourMiles": 0.33,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "ohana-brewing-company-los-angeles",
@@ -2574,7 +2766,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 300,
       "detourMiles": 2.08,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "benny-boy-brewing-los-angeles",
@@ -2596,7 +2789,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 306.6,
       "detourMiles": 1.18,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "highland-park-brewery-chinatown-taproom-los-angeles",
@@ -2618,7 +2812,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 306.7,
       "detourMiles": 0.26,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "homage-brewing-los-angeles",
@@ -2640,7 +2835,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 306.7,
       "detourMiles": 0.37,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "boomtown-brewery-los-angeles",
@@ -2662,7 +2858,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 307.4,
       "detourMiles": 1.11,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "karl-strauss-brewing-co-downtown-los-angeles-los-angeles",
@@ -2684,7 +2881,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 307.4,
       "detourMiles": 1.16,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "frogtown-brewery-los-angeles",
@@ -2706,7 +2904,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 310.3,
       "detourMiles": 1.86,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "golden-road-brewing-atwater-village-brewpub-los-angeles",
@@ -2729,7 +2928,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 310.6,
       "detourMiles": 3.98,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "brewyard-beer-company-llc-glendale",
@@ -2752,7 +2952,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 311.8,
       "detourMiles": 4.75,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "dataset"
     },
     {
       "key": "santa-monica-brew-works-santa-monica",
@@ -2774,7 +2975,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "california",
       "mile": 323.5,
       "detourMiles": 0.29,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "dataset"
     },
     {
       "key": "firestone-walker-brewing-co-propagator-venice-taproom-marina-del-rey",
@@ -2797,8 +2999,19 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "mile": 324.7,
       "detourMiles": 2.78,
       "pastEnd": "end",
-      "outer": true
+      "outer": true,
+      "placedBy": "dataset"
     }
   ],
+  "cohort": {
+    "total": 245,
+    "withHours": 122,
+    "listed": 122,
+    "notPlaced": 0,
+    "outside": 0,
+    "unresolved": 74,
+    "settled": 49
+  },
+  "notListed": [],
   "unplaced": 17
 };

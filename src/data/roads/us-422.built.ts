@@ -12,7 +12,16 @@ export const US_422_BUILT: BuiltRoad = {
       "lengthMiles": 187.4,
       "line": [[41.49903,-81.69312],[41.49302,-81.68191],[41.48797,-81.65161],[41.47285,-81.6247],[41.46436,-81.58465],[41.46415,-81.4922],[41.46247,-81.48851],[41.44939,-81.49126],[41.4312,-81.49988],[41.42267,-81.4808],[41.40526,-81.46558],[41.39489,-81.44572],[41.39502,-81.4298],[41.39012,-81.41822],[41.38803,-81.38493],[41.38958,-81.3542],[41.38085,-81.28094],[41.3868,-81.14028],[41.37111,-81.08651],[41.37003,-81.05258],[41.35268,-81.03759],[41.29247,-80.94877],[41.28148,-80.91515],[41.25885,-80.86705],[41.24004,-80.83519],[41.23407,-80.83265],[41.23394,-80.80686],[41.21368,-80.76715],[41.2071,-80.7429],[41.19728,-80.7289],[41.17392,-80.70911],[41.14449,-80.69786],[41.13831,-80.6887],[41.11218,-80.6664],[41.11143,-80.65078],[41.09074,-80.61076],[41.08961,-80.50715],[41.03079,-80.39493],[41.02188,-80.38976],[40.99636,-80.39239],[40.96788,-80.36296],[40.96978,-80.34234],[40.96778,-80.32763],[40.97207,-80.31904],[40.97248,-80.30557],[40.97771,-80.29931],[40.968,-80.20123],[40.96986,-80.17641],[40.9647,-80.14322],[40.95793,-80.121],[40.94844,-80.11127],[40.93965,-80.10957],[40.93121,-80.09706],[40.92859,-80.08632],[40.91855,-80.07831],[40.91514,-80.05372],[40.90716,-80.02653],[40.88947,-79.98836],[40.88256,-79.95855],[40.87979,-79.8922],[40.86343,-79.85073],[40.86662,-79.83252],[40.86243,-79.81714],[40.86474,-79.80406],[40.85857,-79.78994],[40.84608,-79.73578],[40.8494,-79.66759],[40.83842,-79.64214],[40.82637,-79.59102],[40.7927,-79.50663],[40.79395,-79.49676],[40.80311,-79.48889],[40.78996,-79.45587],[40.76969,-79.43327],[40.75876,-79.40544],[40.72561,-79.38683],[40.7203,-79.37057],[40.70864,-79.36535],[40.70275,-79.34941],[40.69016,-79.34139],[40.68392,-79.33092],[40.66149,-79.31331],[40.65468,-79.29226],[40.65242,-79.27207],[40.62165,-79.23368],[40.61275,-79.21342],[40.60115,-79.20595],[40.58993,-79.18526],[40.58324,-79.13735],[40.58912,-79.10432],[40.60524,-79.07404],[40.60398,-79.05502],[40.60847,-79.04058],[40.6074,-79.02186],[40.60251,-79.01424],[40.58348,-79.00336],[40.57581,-78.99299],[40.57158,-78.95861],[40.56242,-78.94737],[40.55467,-78.9245],[40.52194,-78.88033],[40.50235,-78.78692],[40.4894,-78.74768]],
       "candidates": 55,
-      "decided": 36
+      "decided": 35,
+      "cohort": {
+        "total": 55,
+        "withHours": 24,
+        "listed": 20,
+        "notPlaced": 4,
+        "outside": 0,
+        "unresolved": 16,
+        "settled": 15
+      }
     },
     {
       "id": "east",
@@ -20,6 +29,15 @@ export const US_422_BUILT: BuiltRoad = {
       "line": [[40.26376,-76.69019],[40.28135,-76.66131],[40.317,-76.57583],[40.33955,-76.46161],[40.33826,-76.43762],[40.34178,-76.40074],[40.37215,-76.32724],[40.38413,-76.28215],[40.38417,-76.24948],[40.37733,-76.21015],[40.36816,-76.18367],[40.36047,-76.17275],[40.34843,-76.12482],[40.33576,-76.1023],[40.32643,-76.06179],[40.32504,-76.02372],[40.32859,-75.98003],[40.33342,-75.96839],[40.34325,-75.96763],[40.3504,-75.95863],[40.34161,-75.95037],[40.33681,-75.9406],[40.32828,-75.93831],[40.32159,-75.92445],[40.31283,-75.92101],[40.30517,-75.89204],[40.30778,-75.8638],[40.29977,-75.84966],[40.2735,-75.77948],[40.26489,-75.75157],[40.26257,-75.73294],[40.2496,-75.71579],[40.23971,-75.69147],[40.24322,-75.67615],[40.23129,-75.62801],[40.23345,-75.61754],[40.24083,-75.60665],[40.2432,-75.58812],[40.2404,-75.57246],[40.22828,-75.55129],[40.2006,-75.53304],[40.19255,-75.52156],[40.17741,-75.51269],[40.15426,-75.46541],[40.14543,-75.45456],[40.13447,-75.44688],[40.11679,-75.45418],[40.11326,-75.45268],[40.11658,-75.42691],[40.11461,-75.42147],[40.09456,-75.41773],[40.08194,-75.40853]],
       "candidates": 21,
       "decided": 18,
+      "cohort": {
+        "total": 21,
+        "withHours": 10,
+        "listed": 10,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 3,
+        "settled": 8
+      },
       "joins": 1,
       "joinedMiles": 0,
       "widestJoinMiles": 0
@@ -47,7 +65,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0,
       "detourMiles": 0.32,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "directory"
     },
     {
       "key": "72",
@@ -70,7 +89,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0,
       "detourMiles": 0.56,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "280",
@@ -93,7 +113,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0,
       "detourMiles": 1.11,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "directory"
     },
     {
       "key": "308",
@@ -116,7 +137,9 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0,
       "detourMiles": 2.4,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "reviewed",
+      "placedNote": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the page leaves off the suffix \"Dr\"."
     },
     {
       "key": "51",
@@ -139,7 +162,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0.2,
       "detourMiles": 0.68,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "120",
@@ -162,7 +186,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0.2,
       "detourMiles": 1.06,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "207",
@@ -185,7 +210,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0.2,
       "detourMiles": 1.06,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "136",
@@ -208,7 +234,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0.2,
       "detourMiles": 1.08,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2356",
@@ -231,7 +258,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0.2,
       "detourMiles": 1.17,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "296",
@@ -254,7 +282,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0.3,
       "detourMiles": 0.22,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "154",
@@ -277,7 +306,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 0.4,
       "detourMiles": 0.62,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "130",
@@ -300,7 +330,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 1.6,
       "detourMiles": 2.35,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "182",
@@ -323,7 +354,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 3.5,
       "detourMiles": 2.42,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "82",
@@ -347,30 +379,8 @@ export const US_422_BUILT: BuiltRoad = {
       "mile": 22.4,
       "detourMiles": 1.81,
       "pastEnd": "",
+      "placedBy": "census",
       "browserChecked": "2026-11-22"
-    },
-    {
-      "key": "60",
-      "breweryId": 60,
-      "name": "Bummin' Beaver Brewery",
-      "town": "Chagrin Falls",
-      "state": "OH",
-      "lat": 41.387341406055,
-      "lon": -81.22325135962,
-      "status": "OPEN",
-      "website": "https://www.bumminbeaver.com/",
-      "address": "11610 Washington Street, Chagrin Falls, OH 44023",
-      "addressSourceUrl": "https://www.bumminbeaver.com/",
-      "evidence": "Hours: Monday - Closed Tuesday - Closed Wednesday - 3:00 PM to 10:00 PM Thursday - 3:00 PM to 10:00 PM Friday - 3:00 PM to 10:00 PM Saturday - 12:00 PM to 10:00 PM Sunday - 12:00 PM - 6:00 PM",
-      "evidenceUrl": "https://www.bumminbeaver.com/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "We only sell snacks at Bummin' Beaver, but we do schedule food trucks and pop-ups.",
-      "quoteSourceUrl": "https://www.bumminbeaver.com/",
-      "checked": "2026-11-22",
-      "legId": "west",
-      "mile": 29.1,
-      "detourMiles": 0.22,
-      "pastEnd": ""
     },
     {
       "key": "218",
@@ -378,8 +388,8 @@ export const US_422_BUILT: BuiltRoad = {
       "name": "Modern Methods Brewing Company",
       "town": "Warren",
       "state": "OH",
-      "lat": 41.2356119,
-      "lon": -80.8186058,
+      "lat": 41.235616998476,
+      "lon": -80.819450667721,
       "status": "OPEN",
       "website": "https://modernmethodsbrew.com/",
       "address": "125 David Grohl Alley Warren, OH 44481",
@@ -391,9 +401,10 @@ export const US_422_BUILT: BuiltRoad = {
       "quoteSourceUrl": "https://modernmethodsbrew.com/welcome",
       "checked": "2026-11-22",
       "legId": "west",
-      "mile": 54.1,
+      "mile": 54,
       "detourMiles": 0.11,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2394",
@@ -416,7 +427,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 67.8,
       "detourMiles": 0.41,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "992",
@@ -439,7 +451,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 77.1,
       "detourMiles": 2.69,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1030",
@@ -462,7 +475,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 80.6,
       "detourMiles": 0,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1184",
@@ -485,7 +499,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 115.1,
       "detourMiles": 1.31,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "directory"
     },
     {
       "key": "1122",
@@ -508,7 +523,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "west",
       "mile": 161.9,
       "detourMiles": 1.03,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1261",
@@ -531,7 +547,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 2.5,
       "detourMiles": 0.04,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "directory"
     },
     {
       "key": "1197",
@@ -554,7 +571,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 10.2,
       "detourMiles": 0,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1218",
@@ -577,7 +595,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 15.2,
       "detourMiles": 0.01,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1082",
@@ -601,6 +620,7 @@ export const US_422_BUILT: BuiltRoad = {
       "mile": 57.3,
       "detourMiles": 0.01,
       "pastEnd": "",
+      "placedBy": "directory",
       "browserChecked": "2026-11-22"
     },
     {
@@ -624,7 +644,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 60.8,
       "detourMiles": 1.46,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1216",
@@ -647,7 +668,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 72.2,
       "detourMiles": 3.73,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1196",
@@ -670,7 +692,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 73.4,
       "detourMiles": 2.35,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1228",
@@ -693,7 +716,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 73.4,
       "detourMiles": 2.81,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "1115",
@@ -716,7 +740,8 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 82.4,
       "detourMiles": 2.94,
-      "pastEnd": "end"
+      "pastEnd": "end",
+      "placedBy": "census"
     },
     {
       "key": "1020",
@@ -739,7 +764,91 @@ export const US_422_BUILT: BuiltRoad = {
       "legId": "east",
       "mile": 82.4,
       "detourMiles": 3.81,
-      "pastEnd": "end"
+      "pastEnd": "end",
+      "placedBy": "census"
     }
+  ],
+  "cohort": {
+    "total": 76,
+    "withHours": 34,
+    "listed": 30,
+    "notPlaced": 4,
+    "outside": 0,
+    "unresolved": 19,
+    "settled": 23
+  },
+  "notListed": [
+    {
+      "id": 261,
+      "name": "Pompatus Brewing Co",
+      "why": "notPlaced",
+      "reason": "it prints no street address, so no location can be tied to one"
+    },
+    {
+      "id": 60,
+      "name": "Bummin' Beaver Brewery",
+      "why": "notPlaced",
+      "reason": "the geocoder matched a slightly different address (11610 E WASHINGTON ST, CHAGRIN FALLS, OH, 44023); flagged for review, and not used without a recorded decision"
+    },
+    {
+      "id": 26,
+      "name": "Biker Brewhouse",
+      "why": "notPlaced",
+      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+    },
+    {
+      "id": 259,
+      "name": "Penguin City Brewing Company",
+      "why": "notPlaced",
+      "reason": "the geocoder matched a different address (460 FEDERAL PLZ E, YOUNGSTOWN, OH, 44503), 0.94 miles from the directory's point"
+    }
+  ],
+  "checkedNotListed": [
+    7,
+    26,
+    36,
+    44,
+    60,
+    62,
+    214,
+    229,
+    235,
+    236,
+    259,
+    261,
+    276,
+    958,
+    998,
+    1006,
+    1010,
+    1014,
+    1027,
+    1031,
+    1095,
+    1102,
+    1142,
+    1153,
+    1160,
+    1163,
+    1183,
+    1232,
+    1263,
+    2318,
+    2320,
+    2322,
+    2325,
+    2333,
+    2336,
+    2337,
+    2343,
+    2353,
+    2355,
+    2360,
+    2379,
+    2407,
+    2408,
+    2442,
+    2458,
+    2464
   ]
 };

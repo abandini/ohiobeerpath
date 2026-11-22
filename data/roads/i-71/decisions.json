@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "match": 2463,
+    "reason": "editor: reviewed placement exception",
+    "acceptPlacement": {
+      "evidence": "Printed \"7020-A Huntley Rd. Worthington, OH 43229\"; the geocoder matched \"7020 HUNTLEY RD, COLUMBUS, OH, 43229\". Same street number, street and ZIP code. \"-A\" is a unit letter, and Worthington and Columbus are both used as the post-office town for ZIP 43229."
+    }
+  },
+  {
+    "match": 169,
+    "reason": "editor: reviewed placement exception",
+    "acceptPlacement": {
+      "evidence": "Printed \"1255 N CARPENTER RD SUITE 100 BRUNSWICK, OH 44212\"; the geocoder matched \"1255 CARPENTER RD N, BRUNSWICK, OH, 44212\". Same number, street, town, state and ZIP code; the direction is written before the street name on the page and after it by the geocoder."
+    }
+  },
+  {
+    "match": 293,
+    "reason": "editor: reviewed placement exception",
+    "acceptPlacement": {
+      "evidence": "Printed \"8584 Duke Boulevard in Mason, Ohio\"; the geocoder matched \"8584 DUKE BLVD, MASON, OH, 45040\". Same number, street, town and state; the page puts the word \"in\" before the town."
+    }
+  },
+  {
+    "match": 312,
+    "reason": "editor: reviewed placement exception",
+    "acceptPlacement": {
+      "evidence": "Printed \"11276 Chester Road Sharonville, OH 45246\"; the geocoder matched \"11276 CHESTER RD, CINCINNATI, OH, 45246\". Same number, street, state and ZIP code; Sharonville and Cincinnati are both used as the post-office town for ZIP 45246."
+    }
+  },
+  {
+    "match": 229,
+    "status": "UNCONFIRMED",
+    "reason": "editor: two checks on 2026-11-22 disagree about what this venue is. One read it as a brewery taproom with printed bar hours; the other read the same site as a seasonal pop-up bar that does not say it brews. Left off until someone decides."
+  }
+]

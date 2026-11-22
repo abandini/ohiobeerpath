@@ -1,0 +1,9 @@
+[
+  {
+    "match": 308,
+    "reason": "editor: reviewed placement exception",
+    "acceptPlacement": {
+      "evidence": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the page leaves off the suffix \"Dr\"."
+    }
+  }
+]

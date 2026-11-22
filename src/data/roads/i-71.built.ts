@@ -12,7 +12,16 @@ export const I_71_BUILT: BuiltRoad = {
       "lengthMiles": 140.8,
       "line": [[41.47939,-81.69324],[41.4667,-81.69308],[41.45757,-81.69848],[41.45173,-81.73161],[41.44712,-81.74023],[41.44905,-81.75178],[41.44589,-81.76107],[41.44527,-81.78024],[41.43887,-81.792],[41.43865,-81.80672],[41.42483,-81.82075],[41.3944,-81.8157],[41.36477,-81.82159],[41.32742,-81.81618],[41.305,-81.80891],[41.25567,-81.80396],[41.22519,-81.79424],[41.15854,-81.786],[41.12811,-81.79945],[41.06817,-81.84777],[41.03842,-81.87806],[41.0309,-81.89001],[41.00057,-81.96859],[40.9969,-82.01146],[40.99305,-82.02567],[40.95282,-82.07179],[40.9323,-82.11596],[40.9118,-82.141],[40.90084,-82.17144],[40.87797,-82.20532],[40.86527,-82.24595],[40.84487,-82.27508],[40.80756,-82.37485],[40.79479,-82.40041],[40.76067,-82.43054],[40.72973,-82.47289],[40.70601,-82.49427],[40.68631,-82.52331],[40.63532,-82.55364],[40.61556,-82.57479],[40.57849,-82.60453],[40.55774,-82.64488],[40.50511,-82.70318],[40.43222,-82.81434],[40.41971,-82.82082],[40.37612,-82.82757],[40.31486,-82.91274],[40.30077,-82.92337],[40.20501,-82.93172],[40.15982,-82.96822],[40.11833,-82.97375],[40.09694,-82.98582],[40.07242,-82.98898],[40.06081,-82.99827],[40.01677,-82.99493],[40.00618,-82.9848],[39.9609,-82.9827],[39.95527,-82.98506],[39.9529,-83.00061]],
       "candidates": 81,
-      "decided": 58,
+      "decided": 57,
+      "cohort": {
+        "total": 81,
+        "withHours": 46,
+        "listed": 44,
+        "notPlaced": 2,
+        "outside": 0,
+        "unresolved": 22,
+        "settled": 13
+      },
       "joins": 1,
       "joinedMiles": 0.01,
       "widestJoinMiles": 0.01
@@ -22,7 +31,16 @@ export const I_71_BUILT: BuiltRoad = {
       "lengthMiles": 107,
       "line": [[39.9529,-83.00061],[39.95289,-83.00946],[39.94992,-83.01517],[39.9377,-83.00927],[39.91556,-83.0155],[39.88867,-83.04218],[39.86984,-83.05617],[39.83478,-83.09744],[39.82506,-83.12787],[39.82491,-83.15303],[39.82144,-83.16852],[39.74049,-83.34081],[39.72462,-83.39123],[39.69017,-83.47019],[39.65013,-83.53815],[39.62909,-83.59032],[39.55423,-83.72609],[39.52356,-83.83301],[39.48403,-83.94678],[39.45841,-83.99345],[39.43629,-84.06642],[39.41728,-84.10987],[39.41128,-84.16579],[39.38713,-84.2081],[39.37711,-84.24128],[39.34166,-84.2788],[39.3203,-84.28875],[39.30425,-84.30179],[39.26543,-84.35717],[39.25159,-84.36501],[39.22545,-84.36667],[39.20468,-84.37228],[39.1963,-84.37681],[39.19228,-84.3869],[39.18373,-84.39531],[39.173,-84.39945],[39.17017,-84.41816],[39.16337,-84.43404],[39.15044,-84.44491],[39.14362,-84.45909],[39.14297,-84.48151],[39.13333,-84.49389],[39.09964,-84.50413],[39.097,-84.52054],[39.09221,-84.52249]],
       "candidates": 57,
-      "decided": 41
+      "decided": 40,
+      "cohort": {
+        "total": 58,
+        "withHours": 33,
+        "listed": 28,
+        "notPlaced": 4,
+        "outside": 1,
+        "unresolved": 13,
+        "settled": 12
+      }
     },
     {
       "id": "cincinnati-louisville",
@@ -30,6 +48,15 @@ export const I_71_BUILT: BuiltRoad = {
       "line": [[39.09221,-84.52249],[39.07363,-84.51895],[39.06356,-84.52302],[39.05856,-84.53995],[39.05133,-84.5503],[39.04993,-84.57039],[39.03133,-84.6072],[39.0206,-84.61857],[39.00279,-84.6468],[38.97105,-84.63681],[38.8771,-84.62598],[38.85941,-84.657],[38.81635,-84.70503],[38.80662,-84.72466],[38.78561,-84.7477],[38.77969,-84.76467],[38.76301,-84.78968],[38.75649,-84.80589],[38.75001,-84.81205],[38.74395,-84.83001],[38.734,-84.84126],[38.72809,-84.85769],[38.71464,-84.87554],[38.71031,-84.89517],[38.68503,-84.95482],[38.67797,-84.98119],[38.67521,-85.00763],[38.66543,-85.02632],[38.65615,-85.05519],[38.65617,-85.07308],[38.65222,-85.08891],[38.65282,-85.11454],[38.63583,-85.13025],[38.62519,-85.15322],[38.61013,-85.1678],[38.57675,-85.18146],[38.52459,-85.23164],[38.50149,-85.24833],[38.47339,-85.27599],[38.45241,-85.30206],[38.43401,-85.31541],[38.41303,-85.34633],[38.39337,-85.38639],[38.38807,-85.40716],[38.34255,-85.50185],[38.33778,-85.52443],[38.32175,-85.55806],[38.31661,-85.57828],[38.30187,-85.60807],[38.29064,-85.64275],[38.29388,-85.65852],[38.29263,-85.66818],[38.26523,-85.71248],[38.26135,-85.73386]],
       "candidates": 18,
       "decided": 13,
+      "cohort": {
+        "total": 18,
+        "withHours": 8,
+        "listed": 8,
+        "notPlaced": 0,
+        "outside": 0,
+        "unresolved": 5,
+        "settled": 5
+      },
       "joins": 1,
       "joinedMiles": 0,
       "widestJoinMiles": 0
@@ -57,7 +84,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 0.45,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "136",
@@ -80,7 +108,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 0.66,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "2356",
@@ -103,7 +132,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 0.66,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "207",
@@ -126,30 +156,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 0.66,
-      "pastEnd": "start"
-    },
-    {
-      "key": "229",
-      "breweryId": 229,
-      "name": "Nano Brew Cleveland",
-      "town": "Cleveland",
-      "state": "OH",
-      "lat": 41.485790665717,
-      "lon": -81.704569162867,
-      "status": "OPEN",
-      "website": "https://www.nanobrewcleveland.com/",
-      "address": "1859 West 25th Street, Cleveland",
-      "addressSourceUrl": "https://www.nanobrewcleveland.com/our-story",
-      "evidence": "BAR: Wed 4–10 pm Thu 4 pm–12 am Fri 12 pm–2 am Sat 11 am–2 am Sun 11 am–10 pm",
-      "evidenceUrl": "https://www.nanobrewcleveland.com/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "Beside the bar sits a one-barrel brewhouse, about 20 gallons a batch.",
-      "quoteSourceUrl": "https://www.nanobrewcleveland.com/our-story",
-      "checked": "2026-11-22",
-      "legId": "cleveland-columbus",
-      "mile": 0,
-      "detourMiles": 0.73,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "51",
@@ -172,7 +180,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 0.83,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "280",
@@ -195,7 +204,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 1.14,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "directory"
     },
     {
       "key": "62",
@@ -218,7 +228,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 1.37,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "296",
@@ -241,7 +252,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 1.38,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "72",
@@ -264,7 +276,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 1.46,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "208",
@@ -287,7 +300,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 1.6,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "directory"
     },
     {
       "key": "154",
@@ -310,7 +324,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 0,
       "detourMiles": 1.75,
-      "pastEnd": "start"
+      "pastEnd": "start",
+      "placedBy": "census"
     },
     {
       "key": "308",
@@ -334,7 +349,9 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 2.31,
       "pastEnd": "start",
-      "outer": true
+      "outer": true,
+      "placedBy": "reviewed",
+      "placedNote": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the page leaves off the suffix \"Dr\"."
     },
     {
       "key": "130",
@@ -358,7 +375,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 3.71,
       "pastEnd": "start",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "182",
@@ -382,7 +400,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 4.79,
       "pastEnd": "start",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "284",
@@ -406,7 +425,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 4,
       "detourMiles": 2.81,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "2322",
@@ -430,7 +450,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 6,
       "detourMiles": 2.2,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "173",
@@ -454,7 +475,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 7.6,
       "detourMiles": 3.4,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "272",
@@ -478,7 +500,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 7.9,
       "detourMiles": 2.87,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "110",
@@ -502,7 +525,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 8.9,
       "detourMiles": 3.86,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "108",
@@ -525,7 +549,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 12.2,
       "detourMiles": 0.13,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2444",
@@ -548,7 +573,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 14.2,
       "detourMiles": 0.23,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "169",
@@ -571,7 +597,9 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 21.6,
       "detourMiles": 0.42,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "reviewed",
+      "placedNote": "Printed \"1255 N CARPENTER RD SUITE 100 BRUNSWICK, OH 44212\"; the geocoder matched \"1255 CARPENTER RD N, BRUNSWICK, OH, 44212\". Same number, street, town, state and ZIP code; the direction is written before the street name on the page and after it by the geocoder."
     },
     {
       "key": "31",
@@ -594,7 +622,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 30.9,
       "detourMiles": 0.4,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "200",
@@ -617,7 +646,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 30.9,
       "detourMiles": 3.76,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2371",
@@ -640,7 +670,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 31.1,
       "detourMiles": 3.36,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "325",
@@ -663,7 +694,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 63.8,
       "detourMiles": 2.41,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "160",
@@ -686,7 +718,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 107.8,
       "detourMiles": 0.95,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "148",
@@ -709,7 +742,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 114,
       "detourMiles": 2.64,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "300",
@@ -733,7 +767,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 124,
       "detourMiles": 3,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "138",
@@ -757,7 +792,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 124.1,
       "detourMiles": 2.21,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "249",
@@ -781,7 +817,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 125.8,
       "detourMiles": 2.25,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "297",
@@ -804,7 +841,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 126.5,
       "detourMiles": 1.01,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2441",
@@ -828,7 +866,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 127.4,
       "detourMiles": 2.12,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "2463",
@@ -851,7 +890,9 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 129.4,
       "detourMiles": 0.83,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "reviewed",
+      "placedNote": "Printed \"7020-A Huntley Rd. Worthington, OH 43229\"; the geocoder matched \"7020 HUNTLEY RD, COLUMBUS, OH, 43229\". Same street number, street and ZIP code. \"-A\" is a unit letter, and Worthington and Columbus are both used as the post-office town for ZIP 43229."
     },
     {
       "key": "119",
@@ -875,7 +916,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 131.4,
       "detourMiles": 4.21,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "349",
@@ -898,7 +940,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 135.1,
       "detourMiles": 0.35,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "89",
@@ -921,7 +964,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 135.2,
       "detourMiles": 0.92,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "161",
@@ -944,7 +988,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 137.6,
       "detourMiles": 1,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2430",
@@ -967,7 +1012,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 137.7,
       "detourMiles": 0.74,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "282",
@@ -990,7 +1036,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 137.7,
       "detourMiles": 1.68,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "244",
@@ -1013,7 +1060,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 138,
       "detourMiles": 0.47,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "178",
@@ -1036,7 +1084,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 139,
       "detourMiles": 0.7,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "343",
@@ -1059,7 +1108,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 139,
       "detourMiles": 0.7,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "126",
@@ -1082,7 +1132,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cleveland-columbus",
       "mile": 139.4,
       "detourMiles": 0.13,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2344",
@@ -1105,7 +1156,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 0.2,
       "detourMiles": 0.87,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "188",
@@ -1128,7 +1180,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 0.5,
       "detourMiles": 0.34,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2361",
@@ -1151,7 +1204,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 0.6,
       "detourMiles": 1.67,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "316",
@@ -1175,31 +1229,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0.8,
       "detourMiles": 2.96,
       "pastEnd": "",
-      "outer": true
-    },
-    {
-      "key": "2338",
-      "breweryId": 2338,
-      "name": "Columbus Brewing Co",
-      "town": "Columbus",
-      "state": "OH",
-      "lat": 39.968185221797,
-      "lon": -83.070167736462,
-      "status": "OPEN",
-      "website": "https://columbusbrewing.com/",
-      "address": "2555 Harrison Dr. Columbus, OH 43204",
-      "addressSourceUrl": "https://columbusbrewing.com/location/taproom/",
-      "evidence": "Stop by 2555 Harrison Dr. Columbus, OH 43204 614-224-3626 Directions Taproom hours Monday - Wednesday: Closed Thursday - Friday: 2pm - 9pm Saturday: 12pm - 9pm Sunday: 12pm - 8pm",
-      "evidenceUrl": "https://columbusbrewing.com/location/taproom/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "",
-      "quoteSourceUrl": "",
-      "checked": "2026-11-22",
-      "legId": "columbus-cincinnati",
-      "mile": 0.8,
-      "detourMiles": 3.17,
-      "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "139",
@@ -1223,7 +1254,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 7.9,
       "detourMiles": 2.03,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "88",
@@ -1246,7 +1278,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 73.7,
       "detourMiles": 4.1,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "22",
@@ -1269,7 +1302,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 81.1,
       "detourMiles": 1.51,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "76",
@@ -1292,7 +1326,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 82.9,
       "detourMiles": 2.02,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "132",
@@ -1315,7 +1350,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 83.4,
       "detourMiles": 4.77,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "293",
@@ -1338,7 +1374,9 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 85.5,
       "detourMiles": 0.41,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "reviewed",
+      "placedNote": "Printed \"8584 Duke Boulevard in Mason, Ohio\"; the geocoder matched \"8584 DUKE BLVD, MASON, OH, 45040\". Same number, street, town and state; the page puts the word \"in\" before the town."
     },
     {
       "key": "230",
@@ -1361,7 +1399,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 86.1,
       "detourMiles": 3.36,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "95",
@@ -1384,7 +1423,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 87.6,
       "detourMiles": 3.17,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "directory"
     },
     {
       "key": "203",
@@ -1407,7 +1447,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 89,
       "detourMiles": 0.35,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "123",
@@ -1430,7 +1471,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 90.5,
       "detourMiles": 0.33,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "312",
@@ -1453,7 +1495,9 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 90.8,
       "detourMiles": 4.58,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "reviewed",
+      "placedNote": "Printed \"11276 Chester Road Sharonville, OH 45246\"; the geocoder matched \"11276 CHESTER RD, CINCINNATI, OH, 45246\". Same number, street, state and ZIP code; Sharonville and Cincinnati are both used as the post-office town for ZIP 45246."
     },
     {
       "key": "196",
@@ -1477,7 +1521,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 94.8,
       "detourMiles": 4.59,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "150",
@@ -1500,7 +1545,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 96.1,
       "detourMiles": 0.63,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "113",
@@ -1524,7 +1570,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 97.1,
       "detourMiles": 3.31,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "2382",
@@ -1547,7 +1594,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 98.8,
       "detourMiles": 0.64,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "2460",
@@ -1571,7 +1619,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 99.1,
       "detourMiles": 3.73,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "directory"
     },
     {
       "key": "121",
@@ -1594,7 +1643,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 99.7,
       "detourMiles": 0.28,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "304",
@@ -1618,7 +1668,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 101.1,
       "detourMiles": 2.76,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "2395",
@@ -1641,7 +1692,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 104.5,
       "detourMiles": 1.08,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "269",
@@ -1664,7 +1716,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 104.7,
       "detourMiles": 1.08,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "908",
@@ -1687,7 +1740,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 104.9,
       "detourMiles": 0.96,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "212",
@@ -1710,7 +1764,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 105.2,
       "detourMiles": 0.77,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "921",
@@ -1733,7 +1788,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 105.7,
       "detourMiles": 0.61,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "946",
@@ -1756,7 +1812,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "columbus-cincinnati",
       "mile": 105.7,
       "detourMiles": 0.84,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "902",
@@ -1779,7 +1836,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cincinnati-louisville",
       "mile": 0.7,
       "detourMiles": 0.65,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "922",
@@ -1803,7 +1861,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 89.5,
       "detourMiles": 2.78,
       "pastEnd": "",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "897",
@@ -1826,7 +1885,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cincinnati-louisville",
       "mile": 95.4,
       "detourMiles": 0.41,
-      "pastEnd": ""
+      "pastEnd": "",
+      "placedBy": "census"
     },
     {
       "key": "894",
@@ -1849,7 +1909,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cincinnati-louisville",
       "mile": 96,
       "detourMiles": 0.59,
-      "pastEnd": "end"
+      "pastEnd": "end",
+      "placedBy": "census"
     },
     {
       "key": "913",
@@ -1872,7 +1933,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cincinnati-louisville",
       "mile": 96,
       "detourMiles": 0.78,
-      "pastEnd": "end"
+      "pastEnd": "end",
+      "placedBy": "census"
     },
     {
       "key": "930",
@@ -1895,7 +1957,8 @@ export const I_71_BUILT: BuiltRoad = {
       "legId": "cincinnati-louisville",
       "mile": 96,
       "detourMiles": 1.08,
-      "pastEnd": "end"
+      "pastEnd": "end",
+      "placedBy": "census"
     },
     {
       "key": "932",
@@ -1919,7 +1982,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 96,
       "detourMiles": 2.65,
       "pastEnd": "end",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     },
     {
       "key": "933",
@@ -1943,7 +2007,140 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 96,
       "detourMiles": 2.8,
       "pastEnd": "end",
-      "outer": true
+      "outer": true,
+      "placedBy": "census"
     }
+  ],
+  "cohort": {
+    "total": 157,
+    "withHours": 87,
+    "listed": 80,
+    "notPlaced": 6,
+    "outside": 1,
+    "unresolved": 40,
+    "settled": 30
+  },
+  "notListed": [
+    {
+      "id": 2338,
+      "name": "Columbus Brewing Co",
+      "why": "notPlaced",
+      "reason": "the geocoder matched a slightly different address (2555 HARRISON RD, COLUMBUS, OH, 43204); flagged for review, and not used without a recorded decision"
+    },
+    {
+      "id": 12,
+      "name": "Antiques on High",
+      "why": "notPlaced",
+      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+    },
+    {
+      "id": 2455,
+      "name": "Valley Vineyards Winery & Cellar Dweller Brewing",
+      "why": "notPlaced",
+      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+    },
+    {
+      "id": 191,
+      "name": "Lebanon Brewing Co",
+      "why": "notPlaced",
+      "reason": "it prints no street address, so no location can be tied to one"
+    },
+    {
+      "id": 115,
+      "name": "Fifty West Deerfield",
+      "why": "notPlaced",
+      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+    },
+    {
+      "id": 25,
+      "name": "Big Ash Brewing Company",
+      "why": "notPlaced",
+      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
+    },
+    {
+      "id": 2390,
+      "name": "Mt. Carmel Brewing Co",
+      "why": "outside",
+      "reason": "once located by its printed address it is 7.6 miles from the mapped line, beyond this page's limit"
+    }
+  ],
+  "checkedNotListed": [
+    9,
+    12,
+    19,
+    25,
+    32,
+    33,
+    38,
+    39,
+    44,
+    66,
+    68,
+    75,
+    77,
+    83,
+    103,
+    115,
+    155,
+    184,
+    191,
+    201,
+    211,
+    221,
+    224,
+    229,
+    234,
+    235,
+    238,
+    241,
+    258,
+    260,
+    278,
+    287,
+    292,
+    324,
+    327,
+    338,
+    341,
+    342,
+    350,
+    864,
+    892,
+    893,
+    899,
+    917,
+    918,
+    919,
+    923,
+    929,
+    939,
+    2313,
+    2317,
+    2321,
+    2326,
+    2331,
+    2334,
+    2336,
+    2338,
+    2339,
+    2343,
+    2345,
+    2355,
+    2360,
+    2369,
+    2370,
+    2372,
+    2373,
+    2383,
+    2390,
+    2421,
+    2422,
+    2443,
+    2449,
+    2451,
+    2455,
+    2456,
+    2458,
+    2464
   ]
 };

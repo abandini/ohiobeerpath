@@ -232,6 +232,21 @@ export interface RoadConfig {
    * one the printed address names. Roads built from checker files always place stops by the printed address.
    */
   addressMustMatch?: boolean;
+  /** An interstate: the page warns that a nearest road point is not an exit or an access point. */
+  interstate?: boolean;
+  /** For a directory road whose legs are editorial cuts of one road: the sentence that says where the cuts are. */
+  legsNote?: string;
+  /**
+   * A dated correction to a page that was already public. `previous` is the list as it stood before (id, name, town,
+   * mile, distance); the notice and its detailed entry are worked out by comparing it with the list as it is now, so
+   * they cannot drift from the page.
+   */
+  update?: { date: string; what: string; previous: { breweryId: number; name: string; town: string; mile: number; detourMiles: number }[] };
+  /**
+   * Directory roads that share breweries: for any directory id that this road and the named road both check, the
+   * named road's row, edits and geocode are used here too, so the two pages cannot tell different stories.
+   */
+  sharedRowsFrom?: string;
   /** Show each leg as a closed <details> with a summary line, for a road too long to scroll (default false). */
   collapseLegs?: boolean;
   methodNotes?: string[];      // extra plain-text points for "How this list was made"
@@ -245,7 +260,7 @@ export interface RoadConfig {
 }
 
 /** A row from the brewery directory that lies near the road. Not shown anywhere until a checked row qualifies it. */
-export interface CandidateRow { id: number | string; name: string; city: string; state: string; latitude: number; longitude: number; street?: string | null }
+export interface CandidateRow { id: number | string; name: string; city: string; state: string; latitude: number; longitude: number; street?: string | null; placedBy?: 'census' | 'dataset' }
 /** Coordinates for a printed address from the US Census geocoder, keyed by row id (written by scripts/geocode-road-addresses.mjs). */
 export interface AddressGeocode { id: number | string; address: string; lat: number | null; lon: number | null; matched?: string | null; source?: string; checked?: string }
 /** Proof the place was operating: a verbatim excerpt (printed visiting hours, a dated notice), its page, the day read. */
@@ -259,6 +274,7 @@ export interface VerifiedRow {
   browser_checked?: string | null; // the day a person read the row's sources on the rendered page, for sites a script cannot read
   evidence_kind?: string | null;   // 'notice' when the evidence is a dated notice or event, not visiting hours
   notice_context?: string | null;  // for a notice: what on the page establishes its year and the venue
+  placement_accepted?: string | null; // a reviewed exception: the evidence that resolves the address difference (from decisions.json)
 }
 
 export interface RoadStop {
@@ -278,14 +294,25 @@ export interface RoadStop {
   pastEnd: '' | 'start' | 'end'; // the nearest point on the line is the end of the line itself
   browserChecked?: string;     // set only when the checker's row records a browser check on a real date
   noticeContext?: string;      // for a notice: what on the page establishes its year and the venue
+  placedBy?: 'census' | 'directory' | 'reviewed' | 'dataset'; // where its coordinates come from (see addressMustMatch)
+  placedNote?: string;         // for a reviewed exception: the recorded evidence that the two addresses are one
   outer?: boolean;             // beyond the stretch's tighter limit but within its further-off distance
   unmeasured?: string;         // id of the leg's unmeasured group: the mapped line is missing here, so mile and distance are not shown
   evidenceKind?: 'notice';     // the evidence is a dated notice or event, not visiting hours
 }
 /** `candidates`: directory breweries within the limit of this leg. `decided`: how many of those have a completed decision. */
-export interface BuiltLeg { id: string; lengthMiles: number; line: LatLon[]; candidates: number; decided: number; joins?: number; joinedMiles?: number; widestJoinMiles?: number }
+/**
+ * What became of a set of candidates, each counted once: `listed`; `notPlaced` (published hours found, but no location
+ * could be tied to the printed address); `outside` (hours found and placed, but beyond the limit once located by the
+ * printed address); `unresolved` (operating status not confirmed); `settled` (closed, moved, a duplicate or not a
+ * taproom). withHours = listed + notPlaced + outside. total is the sum of the five.
+ */
+export interface Cohort { total: number; withHours: number; listed: number; notPlaced: number; outside: number; unresolved: number; settled: number }
+/** A candidate with published hours that is not on the list, and why, in words fit to print. */
+export interface NotListed { id: number | string; name: string; why: 'notPlaced' | 'outside'; reason: string }
+export interface BuiltLeg { id: string; lengthMiles: number; line: LatLon[]; candidates: number; decided: number; cohort?: Cohort; joins?: number; joinedMiles?: number; widestJoinMiles?: number }
 /** What the build step writes: stops with their place on the road, and a thinned line for drawing. */
-export interface BuiltRoad { slug: string; built: string; legs: BuiltLeg[]; stops: RoadStop[]; unplaced?: number }
+export interface BuiltRoad { slug: string; built: string; legs: BuiltLeg[]; stops: RoadStop[]; unplaced?: number; cohort?: Cohort; notListed?: NotListed[]; /** Directory ids this road checked and does not list (for the cross-road gate). */ checkedNotListed?: number[] }
 export interface BuildReport {
   geocoded: (number | string)[]; // stops placed by Census coordinates for the printed address, not the directory's point
   left: { id: number | string; name: string; reason: string }[];
@@ -455,27 +482,51 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
   const geo = new Map(geocodes.filter((g) => typeof g?.lat === 'number' && typeof g?.lon === 'number' && Number.isFinite(g.lat) && Number.isFinite(g.lon)).map((g) => [String(g.id), g]));
   const rowFor = new Map<Id, VerifiedRow>(); for (const r of verified) if (r && !rowFor.has(r.id)) rowFor.set(r.id, r);
   const towns = strict ? [...new Set(candidates.map((x) => String(x?.city ?? '').trim()).filter(Boolean))] : [];
-  const noPlace = new Map<Id, string>(), byGeocode = new Set<Id>();
+  const noPlace = new Map<Id, string>(), method = new Map<Id, 'census' | 'directory' | 'reviewed'>();
+  // Known placeholder points in the directory. Two ways to know one: (a) the same coordinate is held by two or more
+  // listings (a default dropped on several rows); (b) an exact Census match for a listing's printed address lies more
+  // than a mile from the directory's point for it (how a city-centre default shows up). A directory point at or beside
+  // one of these is not used, whatever its address says.
+  const placeholders: { id: Id; at: LatLon; shared: boolean }[] = [];
+  if (strict) {
+    const count = new Map<string, number>(); const k = (c: CandidateRow) => `${c.latitude.toFixed(6)},${c.longitude.toFixed(6)}`;
+    for (const c of candidates) if (Number.isFinite(c?.latitude) && Number.isFinite(c?.longitude)) count.set(k(c), (count.get(k(c)) ?? 0) + 1);
+    for (const c of candidates) {
+      if (!Number.isFinite(c?.latitude) || !Number.isFinite(c?.longitude)) continue;
+      if ((count.get(k(c)) ?? 0) > 1) { placeholders.push({ id: c.id, at: [c.latitude, c.longitude], shared: true }); continue; }
+      const r = rowFor.get(c.id), g = geo.get(String(c.id)), parts = String(g?.matched ?? '').split(',').map((x) => x.trim());
+      if (r && g && String(g.address ?? '').trim() === String(r.address_as_printed ?? '').trim() && parts.length >= 3 && sameLocation(r.address_as_printed, { address_1: parts[0], city: parts[1], state: parts[2] })
+        && milesBetween([g.lat as number, g.lon as number], [c.latitude, c.longitude]) > 1) placeholders.push({ id: c.id, at: [c.latitude, c.longitude], shared: false });
+    }
+  }
   const placed = new Map<Id, { cand: CandidateRow; l: (typeof legs)[number]; along: number; detour: number; lineDetour: number; within: boolean; outer: boolean; unmeasured: string }>();
   for (const cand of candidates) {
     if (!validId(cand?.id) || placed.has(cand.id) || !Number.isFinite(cand.latitude) || !Number.isFinite(cand.longitude)) continue;
     let p: LatLon = [cand.latitude, cand.longitude];
     const row = rowFor.get(cand.id);
     if (strict && row?.status === 'OPEN') {
-      // In order: (1) Census coordinates, when the address the geocoder matched is the printed address in full;
-      // (2) the directory's point, when the printed address is the directory's address in full; (3) Census coordinates
-      // from a looser match, but only within a quarter of a mile of the directory's point, where two independent
-      // sources agree; (4) otherwise the row cannot be placed. A geocode counts only for the address printed today.
+      // In order. (1) Census coordinates, when the address the geocoder matched is the printed address in full: an
+      // address-geocoded estimate of where that address is. (2) The directory's point, when the printed address is the
+      // directory's address in full AND that point is not a known placeholder. (3) A reviewed exception: a recorded
+      // decision (decisions.json, acceptPlacement, with the evidence that resolves the address difference) accepting
+      // the Census coordinates for a row whose address the geocoder matched only loosely. Otherwise the row cannot be
+      // placed. Nearness alone accepts nothing: a loose match close to the directory's point is flagged, not used.
       const printed = String(row.address_as_printed ?? '').trim();
       const g = geo.get(String(cand.id)), mine = !!g && String(g.address ?? '').trim() === printed;
       const parts = String(g?.matched ?? '').split(',').map((x) => x.trim());
       const exact = mine && parts.length >= 3 && sameLocation(printed, { address_1: parts[0], city: parts[1], state: parts[2] });
       const same = sameLocation(printed, { address_1: cand.street, city: cand.city, state: cand.state });
-      const close = mine && milesBetween([g!.lat as number, g!.lon as number], p) <= 0.25;
-      if (exact || (!same && close)) { p = [g!.lat as number, g!.lon as number]; byGeocode.add(cand.id); }
-      else if (!same) noPlace.set(cand.id, !printed ? 'no printed address to check against the directory, and no geocoded coordinates'
-        : mine ? `the printed address is not the directory's in full, and the Census geocoder matched a different address (${g!.matched}) ${milesBetween([g!.lat as number, g!.lon as number], p).toFixed(2)} miles from the directory's point`
-          : 'the printed address is not a full match for the directory\'s (street line, town or state differ or cannot be compared), and there are no Census coordinates for it');
+      const dummy = placeholders.some((q) => milesBetween(q.at, p) <= 0.05 && q.id !== cand.id) || placeholders.some((q) => q.id === cand.id && q.shared);
+      const accepted = mine && String(row.placement_accepted ?? '').trim() !== '';
+      const off = mine ? milesBetween([g!.lat as number, g!.lon as number], p) : NaN;
+      if (exact) { p = [g!.lat as number, g!.lon as number]; method.set(cand.id, 'census'); }
+      else if (same && !dummy) method.set(cand.id, 'directory');
+      else if (accepted) { p = [g!.lat as number, g!.lon as number]; method.set(cand.id, 'reviewed'); }
+      else noPlace.set(cand.id, !printed ? 'it prints no street address, so no location can be tied to one'
+        : same ? 'its printed address is the directory\'s, but the directory\'s map point is a placeholder (shared with another listing, or shown to be wrong by an exact address match) and the geocoder did not match the address exactly'
+          : mine && off <= 0.25 ? `the geocoder matched a slightly different address (${g!.matched}); flagged for review, and not used without a recorded decision`
+            : mine ? `the geocoder matched a different address (${g!.matched}), ${off.toFixed(2)} miles from the directory's point`
+              : 'the geocoder found no match for its printed address, and the directory holds no matching street address');
     }
     const near = legs.map((l) => ({ l, on: projectOntoLine(p, l.st.line, l.cum) })).sort((a, b) => a.on.detour - b.on.detour)[0];
     const seg = segmentAt(near.l.leg, near.on.along);
@@ -495,7 +546,9 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     const bad = [...candidates.map((x, i) => ({ where: `candidate row ${i + 1}`, id: x?.id })), ...verified.map((x, i) => ({ where: `verified row ${i + 1}`, id: x?.id }))].filter((x) => !positive(x.id));
     if (bad.length) throw new Error(`${config.slug}: a directory road needs a positive whole-number directory id on every row; ${bad.length} do not: ${bad.slice(0, 5).map((x) => `${x.where} has ${x.id === undefined ? 'no id' : JSON.stringify(x.id)}`).join(', ')}`);
   }
+  const usesGeocode = (id: Id) => method.get(id) === 'census' || method.get(id) === 'reviewed';
   const seen = new Set<Id>(), decided = new Set<Id>(), stops: RoadStop[] = [];
+  const fate = new Map<Id, 'listed' | 'notPlaced' | 'outside'>(), notListed: NotListed[] = [];
   for (const row of verified) {
     const label = String(row?.name || `id ${row?.id}`);
     const leave = (reason: string) => report.left.push({ id: row?.id, name: label, reason });
@@ -509,15 +562,17 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     }
     const { cand, l, along, detour } = at;
     const mile = round(along, 1), detourMiles = round(detour, 2);
-    if (noPlace.has(row.id)) { leave(`marked OPEN, but ${noPlace.get(row.id)}`); continue; }
-    if (!at.within) { decided.add(row.id); leave(`${detourMiles} mi from the mapped line, over the limit`); continue; }
+    // Has usable operating evidence? (Asked before placement, so "hours found but not placed" is counted as that.)
+    const hasHours = String(row.operating_evidence?.excerpt ?? '').trim() !== '' && citable(row.operating_evidence?.url) !== '' && calendarDate(row.operating_evidence?.checked) && (row.operating_evidence!.checked as string) <= today;
+    if (noPlace.has(row.id)) { if (hasHours) { fate.set(row.id, 'notPlaced'); notListed.push({ id: row.id, name: label, why: 'notPlaced', reason: noPlace.get(row.id)! }); } leave(`marked OPEN, but ${noPlace.get(row.id)}`); continue; }
+    if (!at.within) { decided.add(row.id); if (hasHours) { fate.set(row.id, 'outside'); notListed.push({ id: row.id, name: label, why: 'outside', reason: `once located by its printed address it is ${detourMiles.toFixed(1)} miles from the mapped line, beyond this page's limit` }); } leave(`${detourMiles} mi from the mapped line, over the limit`); continue; }
     const atStart = along < 0.02 && !at.unmeasured, atEnd = along > l.st.lengthMiles - 0.02 && !at.unmeasured;
     const ev = row.operating_evidence || {};
     const quoteUrl = citable(row.quote_source_url), quote = quoteUrl ? String(row.quote || '').trim() : '';
     const stop: RoadStop = {
       key: String(row.id), ...(config.stopsHavePages !== false && typeof row.id === 'number' ? { breweryId: row.id } : {}),
       name: String(row.name || cand.name || '').trim(), town: (strict ? townInAddress(row.address_as_printed, towns, String(cand.city || '').trim(), String(cand.state || '')) : null) ?? String(cand.city || '').trim(), state: String(cand.state || '').trim(),
-      lat: byGeocode.has(row.id) ? (geo.get(String(row.id))!.lat as number) : cand.latitude, lon: byGeocode.has(row.id) ? (geo.get(String(row.id))!.lon as number) : cand.longitude, status: 'OPEN',
+      lat: usesGeocode(row.id) ? (geo.get(String(row.id))!.lat as number) : cand.latitude, lon: usesGeocode(row.id) ? (geo.get(String(row.id))!.lon as number) : cand.longitude, status: 'OPEN',
       website: citable(row.official_url),
       address: citable(row.address_source_url) ? String(row.address_as_printed || '').trim() : '',
       addressSourceUrl: String(row.address_as_printed || '').trim() ? citable(row.address_source_url) : '',
@@ -525,14 +580,14 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
       quote, quoteSourceUrl: quote ? quoteUrl : '', checked: String(row.checked || '').trim(),
       legId: l.leg.id, mile, detourMiles,
       pastEnd: at.lineDetour > PAST_END_MILES && (atStart || atEnd) ? (atStart ? 'start' : 'end') : '',
-      ...(at.outer ? { outer: true } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const, noticeContext: String(row.notice_context ?? '').trim() } : {}),
+      ...(at.outer ? { outer: true } : {}), ...(method.has(row.id) ? { placedBy: method.get(row.id) } : cand.placedBy ? { placedBy: cand.placedBy } : {}), ...(method.get(row.id) === 'reviewed' ? { placedNote: String(row.placement_accepted).trim() } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const, noticeContext: String(row.notice_context ?? '').trim() } : {}),
       ...(calendarDate(row.browser_checked) ? { browserChecked: row.browser_checked as string } : {}),
     };
     if (!isShowableStop(stop, today)) { leave('marked OPEN, but there is no usable operating evidence (excerpt, citable URL and a check date that is not in the future)'); continue; }
     const wrong = stopProblems(stop, config, today);
     if (wrong.length) { leave(`marked OPEN with evidence, but ${wrong.join('; ')}`); continue; }
-    decided.add(row.id);
-    if (byGeocode.has(row.id)) report.geocoded.push(row.id);
+    decided.add(row.id); fate.set(row.id, 'listed');
+    if (usesGeocode(row.id)) report.geocoded.push(row.id);
     stops.push(stop);
   }
   // Coverage: of the directory candidates within the limit, how many have a completed decision (listed, or settled as
@@ -544,14 +599,31 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     if (decided.has(id)) at.l.decided++;
     else report.undecided.push({ id, name: at.cand.name, why: seen.has(id) ? 'checked without a completed decision' : 'no checked row' });
   }
+  // The cohort: every candidate handed in, counted once, by what became of it. Kept apart from the placement above:
+  // a candidate belongs to the leg nearest its DIRECTORY coordinates (how the candidates were chosen), wherever its
+  // printed address later put it. The six counts add up to the total.
+  const tally = (ids: CandidateRow[]): Cohort => {
+    const c: Cohort = { total: 0, withHours: 0, listed: 0, notPlaced: 0, outside: 0, unresolved: 0, settled: 0 };
+    for (const cand of ids) {
+      c.total++;
+      const row = rowFor.get(cand.id), f = fate.get(cand.id);
+      if (f === 'listed') { c.listed++; c.withHours++; } else if (f === 'notPlaced') { c.notPlaced++; c.withHours++; } else if (f === 'outside') { c.outside++; c.withHours++; }
+      else if (row && DECIDED_NOT_LISTED.includes(String(row.status))) c.settled++; else c.unresolved++;
+    }
+    return c;
+  };
+  const cohortRows = candidates.filter((c, i) => validId(c?.id) && candidates.findIndex((x) => x?.id === c.id) === i);
+  const homeLeg = (c: CandidateRow) => (Number.isFinite(c.latitude) && Number.isFinite(c.longitude) ? legs.map((l) => ({ id: l.leg.id, d: projectOntoLine([c.latitude, c.longitude], l.st.line, l.cum).detour })).sort((a, b) => a.d - b.d)[0].id : legs[0].leg.id);
+  const home = new Map(cohortRows.map((c) => [c.id, homeLeg(c)]));
   const order = new Map(config.legs.map((l, i) => [l.id, i]));
   stops.sort((a, b) => order.get(a.legId)! - order.get(b.legId)! || a.mile - b.mile || a.detourMiles - b.detourMiles || a.name.localeCompare(b.name));
   return {
     road: {
       slug: config.slug, built,
-      legs: legs.map((l) => ({ id: l.leg.id, lengthMiles: round(l.st.lengthMiles, 1), line: simplifyLine(l.st.line, config.drawToleranceMiles ?? 0.12).map((q) => [round(q[0], 5), round(q[1], 5)] as LatLon), candidates: l.candidates, decided: l.decided,
+      legs: legs.map((l) => ({ id: l.leg.id, lengthMiles: round(l.st.lengthMiles, 1), line: simplifyLine(l.st.line, config.drawToleranceMiles ?? 0.12).map((q) => [round(q[0], 5), round(q[1], 5)] as LatLon), candidates: l.candidates, decided: l.decided, cohort: tally(cohortRows.filter((c) => home.get(c.id) === l.leg.id)),
         ...(l.st.bridges ? { joins: l.st.bridges, joinedMiles: round(l.st.bridgedMiles, 2), widestJoinMiles: round(Math.max(...l.st.joins.map((j) => j.miles)), 2) } : {}) })),
-      stops,
+      stops, cohort: tally(cohortRows), notListed,
+      ...(config.stopsHavePages !== false ? { checkedNotListed: cohortRows.filter((c) => rowFor.has(c.id) && fate.get(c.id) !== 'listed' && typeof c.id === 'number').map((c) => c.id as number).sort((a, b) => a - b) } : {}),
     },
     report,
   };
@@ -651,6 +723,8 @@ export interface RowDecision {
   evidenceKind?: 'notice'; noticeContext?: string;
   /** Operating evidence an editor re-read on the brewery's own site, replacing the checker's (a notice replaced by hours, say). */
   evidence?: { excerpt: string; url: string; checked: string };
+  /** A reviewed exception to placement: accept the Census coordinates for this row, for the reason given. */
+  acceptPlacement?: { evidence: string };
 }
 /**
  * A correction to one field of one row, made by re-reading the cited page: the text exactly as the page prints it, or
@@ -668,7 +742,7 @@ export function applyRowEdits(rows: VerifiedRow[], decisions: RowDecision[] = []
   const out = rows.map((r) => {
     let row = r;
     const d = decisions.find((x) => String(x.match) === String(r.id));
-    if (d) { hit.add(`d:${d.match}`); row = { ...row, status: d.status ?? row.status, notes: `${d.reason} | ${row.notes ?? ''}`, ...(d.evidence ? { operating_evidence: { ...d.evidence } } : {}) }; applied.push({ id: r.id, name: String(r.name ?? ''), status: String(row.status ?? ''), reason: d.reason }); }
+    if (d) { hit.add(`d:${d.match}`); row = { ...row, status: d.status ?? row.status, notes: `${d.reason} | ${row.notes ?? ''}`, ...(d.evidence ? { operating_evidence: { ...d.evidence } } : {}), ...(d.acceptPlacement?.evidence ? { placement_accepted: d.acceptPlacement.evidence } : {}) }; applied.push({ id: r.id, name: String(r.name ?? ''), status: String(row.status ?? ''), reason: d.reason }); }
     for (const c of corrections.filter((x) => x.key === String(r.id))) {
       hit.add(`c:${c.key}:${c.field}`);
       if (c.field === 'evidence') row = { ...row, operating_evidence: c.value && row.operating_evidence ? { ...row.operating_evidence, excerpt: c.value, ...(c.url ? { url: c.url } : {}) } : null };
@@ -687,7 +761,7 @@ export interface IngestResult {
   unmatchedDecisions: string[];
   retowned: { key: string; name: string; from: string; to: string }[]; // town taken from the printed address, not the row
 }
-const STREET_WORDS: Record<string, string> = { street: 'st', avenue: 'ave', av: 'ave', road: 'rd', boulevard: 'blvd', drive: 'dr', lane: 'ln', highway: 'hwy', parkway: 'pkwy', place: 'pl', court: 'ct', route: 'rte', rt: 'rte', terrace: 'ter', circle: 'cir', square: 'sq', mt: 'mount', ft: 'fort', saint: 'st',
+const STREET_WORDS: Record<string, string> = { street: 'st', avenue: 'ave', av: 'ave', road: 'rd', boulevard: 'blvd', drive: 'dr', lane: 'ln', highway: 'hwy', parkway: 'pkwy', place: 'pl', court: 'ct', route: 'rte', rt: 'rte', terrace: 'ter', circle: 'cir', square: 'sq', mt: 'mount', ft: 'fort', saint: 'st', trace: 'trce', alley: 'aly', county: 'co', extension: 'ext',
   north: 'n', south: 's', east: 'e', west: 'w', northeast: 'ne', northwest: 'nw', southeast: 'se', southwest: 'sw', first: '1st', second: '2nd', third: '3rd', fourth: '4th', fifth: '5th', sixth: '6th', seventh: '7th', eighth: '8th', ninth: '9th' };
 const STREET_SUFFIX = new Set(['st', 'ave', 'rd', 'blvd', 'dr', 'ln', 'hwy', 'pkwy', 'pl', 'ct', 'way', 'rte', 'ter', 'cir', 'sq']);
 const DIRECTIONS = new Set(['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw']);
@@ -730,7 +804,8 @@ function endsWithTown(head: string, town: string): boolean {
  * units are dropped, the usual abbreviations are made one, and punctuation is gone ("S.W." is "sw").
  */
 function streetWords(street: string): string[] {
-  const words = dropUnits(street).toLowerCase().replace(/\./g, '').replace(/[,;·]/g, ' ').replace(/([a-z])-(?=[a-z])/g, '$1 ').split(/\s+/).filter(Boolean).map((w) => STREET_WORDS[w] ?? w);
+  // "US-42", "US Hwy 42", "US Highway 42" and "US Route 42" are one road.
+  const words = dropUnits(street).toLowerCase().replace(/\./g, '').replace(/\bus[-\s]*(?:hwy|highway|route|rte)?[-\s]*(\d+)\b/g, 'us $1').replace(/[,;·]/g, ' ').replace(/([a-z])-(?=[a-z])/g, '$1 ').split(/\s+/).filter(Boolean).map((w) => STREET_WORDS[w] ?? w);
   const at = words.findIndex((w) => /^\d+[a-z]?$/.test(w));
   return at < 0 ? [] : words.slice(at);
 }
@@ -830,12 +905,12 @@ export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verifi
     }
     return row;
   };
-  const place = (r: Record<string, unknown>, row: VerifiedRow, at: { lat: number; lon: number } | null, why: string) => {
+  const place = (r: Record<string, unknown>, row: VerifiedRow, at: { lat: number; lon: number } | null, why: string, byCensus = true) => {
     const listed = String(r.city ?? '').trim(), state = stateAbbr(r.state), key = String(row.id), name = String(row.name ?? '');
     const printed = townInAddress(row.address_as_printed, towns, listed, state), city = printed ?? listed;
     if (printed && plainTown(printed) !== plainTown(listed)) out.retowned.push({ key, name, from: listed, to: printed });
     out.verified.push(row);
-    if (at) out.candidates.push({ id: key, name, city, state, latitude: at.lat, longitude: at.lon });
+    if (at) out.candidates.push({ id: key, name, city, state, latitude: at.lat, longitude: at.lon, placedBy: byCensus ? 'census' : 'dataset' });
     else out.unplaced.push({ key, name, city, state, why });
   };
   const openByName = new Map<string, VerifiedRow>();
@@ -848,7 +923,7 @@ export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verifi
     // A row that will not be listed keeps the dataset's point, so it still counts in the coverage figures.
     place(r, row, here ?? (same || row.status !== 'OPEN' ? dataAt : null), !row.address_as_printed
       ? 'no printed address to compare with the dataset\'s, and no Census coordinates for it'
-      : 'the printed address is not a full match for the dataset\'s (street line, town or state differ or cannot be compared), and no Census coordinates were recorded for it');
+      : 'the printed address is not a full match for the dataset\'s (street line, town or state differ or cannot be compared), and no Census coordinates were recorded for it', !!here);
     if (row.status === 'OPEN') openByName.set(base, row);
   }
   // A lead that is the same place as a dataset row already listed as open (same name and town) is not listed twice:
@@ -866,6 +941,53 @@ export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verifi
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
+// Cross-road consistency
+
+/** The facts about a brewery that must be the same on every road that lists it. Miles and distances differ by road and are not here. */
+export const SHARED_STOP_FIELDS = ['name', 'town', 'state', 'address', 'addressSourceUrl', 'website', 'evidence', 'evidenceUrl', 'evidenceChecked', 'evidenceKind', 'lat', 'lon', 'placedBy', 'placedNote', 'browserChecked'] as const;
+/**
+ * Every difference between roads in what they say about the same directory listing: its identity, printed address,
+ * town and state, operating evidence with its source and date, and the coordinates it is measured from with their
+ * provenance; and a listing on one road that another road checked and left off. `allowed` names differences recorded
+ * as intentional ("<id>:<field>", or "<id>:listed"). An empty result means the roads agree.
+ */
+export function crossRoadDifferences(roads: { slug: string; stops: RoadStop[]; checkedNotListed?: number[] }[], allowed: string[] = []): string[] {
+  const seen = new Map<number, { slug: string; stop: RoadStop }>(), out: string[] = [], ok = new Set(allowed);
+  for (const road of roads) for (const stop of road.stops) {
+    if (stop.breweryId === undefined) continue;
+    const first = seen.get(stop.breweryId);
+    if (!first) { seen.set(stop.breweryId, { slug: road.slug, stop }); continue; }
+    for (const f of SHARED_STOP_FIELDS) {
+      const a = first.stop[f] ?? '', b = stop[f] ?? '';
+      if (a !== b && !ok.has(`${stop.breweryId}:${f}`)) out.push(`${stop.breweryId} ${stop.name}: ${f} is ${JSON.stringify(a)} on ${first.slug} but ${JSON.stringify(b)} on ${road.slug}`);
+    }
+  }
+  // Listed on one road, checked and left off on another: the roads disagree about whether it belongs on a list at all.
+  for (const road of roads) for (const id of road.checkedNotListed ?? []) {
+    const on = seen.get(id);
+    if (on && on.slug !== road.slug && !ok.has(`${id}:listed`)) out.push(`${id} ${on.stop.name}: listed on ${on.slug}, but checked and not listed on ${road.slug}`);
+  }
+  return out;
+}
+/**
+ * One record of a shared brewery. Where this road and another both check a directory id, and the other road's row can
+ * be listed (OPEN, with operating evidence), that row and its geocode are used here in place of ours: its address,
+ * evidence, edits and coordinates. Where the other road's check came up empty and ours did not, ours stands, and the
+ * gate reports the disagreement. `theirs` must already have that road's decisions and corrections applied.
+ */
+export function shareRows(rows: VerifiedRow[], geocodes: AddressGeocode[], theirs: VerifiedRow[], theirGeocodes: AddressGeocode[]): { rows: VerifiedRow[]; geocodes: AddressGeocode[]; taken: (number | string)[] } {
+  const byId = new Map(theirs.filter((r) => r?.status === 'OPEN' && String(r.operating_evidence?.excerpt ?? '').trim() !== '').map((r) => [r.id, r]));
+  const taken = rows.filter((r) => byId.has(r.id)).map((r) => r.id), ids = new Set(taken);
+  return { rows: rows.map((r) => byId.get(r.id) ?? r), geocodes: [...geocodes.filter((g) => !ids.has(g.id)), ...theirGeocodes.filter((g) => ids.has(g.id))], taken };
+}
+/** Directory ids listed on more than one of the roads. */
+export const sharedStopIds = (roads: { stops: RoadStop[] }[]): number[] => {
+  const n = new Map<number, number>();
+  for (const r of roads) for (const id of new Set(r.stops.map((s) => s.breweryId).filter((x): x is number => x !== undefined))) n.set(id, (n.get(id) ?? 0) + 1);
+  return [...n].filter(([, k]) => k > 1).map(([id]) => id).sort((a, b) => a - b);
+};
+
+// ---------------------------------------------------------------------------------------------------------------------
 // View: what the page shows, worked out from the config and the built data
 
 export interface StopView extends RoadStop { n: number; milesFromEnd: number; gapAfterMiles: number | null }
@@ -877,6 +999,7 @@ export interface LegView {
   unmeasured: { id: string; name: string; note: string; stops: StopView[] }[]; // groups where the line is missing: no mile, no distance
   joins: number; joinedMiles: number; widestJoinMiles: number;
   listed: number;              // measured and unmeasured together
+  cohort: Cohort | null;       // the candidates nearest this leg by directory coordinates, and what became of them
   gaps: { fromMile: number; toMile: number; miles: number }[]; // every stretch long enough to note, ends of the line included
   leadGapMiles: number | null; // start of the leg to the first listed stop, when long enough to note
   longestGap: { fromMile: number; toMile: number; miles: number } | null; // between consecutive listed stops; null with fewer than two
@@ -884,6 +1007,7 @@ export interface LegView {
 export interface RoadView {
   config: RoadConfig; legs: LegView[]; stops: StopView[]; // stops: every listed stop, measured and unmeasured
   unplaced: number;            // evidenced breweries left off because no coordinates could be had for them
+  cohort: Cohort | null; notListed: NotListed[];
   candidates: number; decided: number;
   problems: string[];          // what is wrong with the config, if anything
   /** Published: the config says publish: true, the config is sound, and at least one stop passes the gate. One decision, used by every route, link and listing. */
@@ -933,6 +1057,7 @@ export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = c
       leadGapMiles: stops.length ? note(stops[0].mile) : null, longestGap,
       unmeasured: groups.map((u) => ({ id: u.id, name: u.name, note: u.note, stops: mine.filter((x) => x.unmeasured === u.id).sort((a, c) => a.name.localeCompare(c.name)).map((x) => ({ ...x, n: ++n, milesFromEnd: 0, gapAfterMiles: null })) })).filter((u) => u.stops.length),
       joins: b?.joins ?? 0, joinedMiles: b?.joinedMiles ?? 0, widestJoinMiles: b?.widestJoinMiles ?? 0,
+      cohort: b?.cohort ?? null,
       listed: stops.length + mine.filter((x) => x.unmeasured && groups.some((u) => u.id === x.unmeasured)).length,
       gaps: [
         ...(stops.length && note(stops[0].mile) !== null ? [{ fromMile: 0, toMile: stops[0].mile, miles: round(stops[0].mile, 1) }] : []),
@@ -942,7 +1067,7 @@ export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = c
   });
   const stops = legs.flatMap((l) => [...l.stops, ...l.unmeasured.flatMap((u) => u.stops)]), dates = stops.flatMap((s) => [s.evidenceChecked]).sort();
   return {
-    config, legs, stops, problems, unplaced: Math.max(0, built.unplaced ?? 0),
+    config, legs, stops, problems, unplaced: Math.max(0, built.unplaced ?? 0), cohort: built.cohort ?? null, notListed: built.notListed ?? [],
     candidates: legs.reduce((a, l) => a + l.candidates, 0), decided: legs.reduce((a, l) => a + l.decided, 0),
     available: config.publish === true && problems.length === 0 && stops.length > 0,
     checkedFrom: dates[0] || '', checkedTo: dates[dates.length - 1] || '',
