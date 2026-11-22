@@ -137,7 +137,7 @@ export function openApiDocument(origin: string) {
     info: {
       title: 'Brewery Trip directory',
       version: '1.0.0',
-      description: 'Read-only access to the Brewery Trip directory of craft breweries and to the tap lists breweries have published. Free, no sign-in and no key. Nothing here changes anything. A tap list is read from a photo of the brewery\'s own board, texted by the brewery; most breweries have not published one.',
+      description: 'Read-only access to the Brewery Trip directory of craft breweries and to the tap lists breweries have published. Free, no sign-in and no key. Nothing here changes anything. A tap list is read from a photo of the brewery\'s own board, texted by the brewery or taken on a Brewery Trip visit (each list\'s source field says which); most breweries have no list.',
     },
     servers: [{ url: origin }],
     paths: {

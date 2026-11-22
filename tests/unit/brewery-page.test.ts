@@ -1,8 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { breweryPage, buildPageTitle, buildSeoDescription, breweryTypeLabel, hostOf } from '../../src/templates/brewery';
+import { medalsSection, breweryPage, buildPageTitle, buildSeoDescription, breweryTypeLabel, hostOf } from '../../src/templates/brewery';
 import { sourcedQuote, safeHttpUrl, isCalendarDate, safeImagePath } from '../../src/templates/utils';
 import { breweryCard } from '../../src/templates/breweries';
 import { parsePhotos } from '../../src/db/breweries';
+import { BREWERY_MEDALS, medalsFor } from '../../src/data/medals';
+// @ts-expect-error plain .mjs helper shared with scripts/verify-medals.mjs
+import { parseCupResults, hasMedal } from '../../scripts/lib/cup-results.mjs';
 import type { Brewery } from '../../src/types';
 
 const GENERATED = 'Nestled in the charming town of Columbiana, Ohio, Birdfish Brewing Co. is a warm and welcoming haven with a signature Appalachian Pale Ale.';
@@ -329,5 +332,79 @@ describe('brewery page: first-hand visit notes', () => {
     expect(breweryPage(base)).not.toContain('From our visit');
     expect(breweryPage({ ...base, visit_notes: 'oops' as never })).not.toContain('From our visit');
     expect(breweryPage({ ...base, visit_notes: [null, { date: '2026-10-29', text: 'ok' }] as never })).toContain('From our visit');
+  });
+});
+
+describe('competition medals', () => {
+  it('every medal cites an https winners list on the competition\'s own site, with a real date and no duplicates', () => {
+    for (const [id, sets] of Object.entries(BREWERY_MEDALS)) {
+      expect(Number.isInteger(Number(id))).toBe(true);
+      for (const set of sets) {
+        const host = new URL(set.site).hostname;
+        const seen = new Set<string>();
+        for (const m of set.medals) {
+          expect(new URL(m.url).protocol).toBe('https:');
+          expect(new URL(m.url).hostname).toBe(host);
+          expect(m.url).toContain(String(m.year));
+          expect(m.year).toBeGreaterThanOrEqual(2000); expect(m.year).toBeLessThanOrEqual(2026);
+          expect(isCalendarDate(m.checked)).toBe(true);
+          expect(m.printed.toUpperCase()).toBe(m.printed); // as the list prints it
+          expect(m.beer.trim()).not.toBe(''); expect(m.category.trim()).not.toBe('');
+          const key = `${m.year}|${m.medal}|${m.category}`;
+          expect(seen.has(key)).toBe(false); seen.add(key);
+        }
+      }
+    }
+    expect(medalsFor(218)[0].medals).toHaveLength(7);
+    expect(medalsFor(999999)).toEqual([]);
+  });
+  it('a brewery with medals shows one card: icons gold first with a spoken summary, each medal linked to its list, and JSON-LD awards', () => {
+    const html = breweryPage({ ...base, id: 218, name: 'Modern Methods Brewing Company' });
+    expect(html.split('class="content-card brewery-medals"')).toHaveLength(2);
+    expect(html).toContain('Ohio Craft Brewers Cup medals <span class="medal-badges" role="img" aria-label="7 Ohio Craft Brewers Cup medals: 3 gold, 2 silver, 2 bronze"');
+    expect(html).toContain('>🥇🥇🥇🥈🥈🥉🥉</span>');
+    expect(html).toContain('7 medals in the competition’s published winners lists for 2018, 2019 and 2021, checked November 22, 2026.');
+    expect(html).toContain('2021 Gold: <strong>Percolator</strong>, Coffee Beer · <a href="https://www.ohiocraftbrewerscup.com/winners/2021" rel="noopener nofollow" target="_blank">official 2021 list</a>');
+    expect(html).toContain('2019 Gold: <strong>Roast Beast</strong>, Stout');
+    expect(html.indexOf('2021 Gold')).toBeLessThan(html.indexOf('2021 Silver'));
+    expect(html.indexOf('2021 Silver')).toBeLessThan(html.indexOf('2019 Gold'));
+    expect(html.indexOf('2019 Bronze')).toBeLessThan(html.indexOf('2018 Gold'));
+    expect(html).toContain('"award":["2021 Ohio Craft Brewers Cup Gold: Percolator (Coffee Beer)"');
+  });
+  it('shows the list\'s own spelling when it differs from the name shown', () => {
+    const html = breweryPage({ ...base, id: 218, name: 'Modern Methods Brewing Company' });
+    expect(html).toContain('2019 Bronze: <strong>Farmhouse 908</strong>, Belgian/French Saison · <a href="https://www.ohiocraftbrewerscup.com/winners-2019" rel="noopener nofollow" target="_blank">official 2019 list</a> <span class="text-muted">(The 2019 list prints it as “FARMHOUS 908”; the 2018 list prints “FARMHOUSE 908”.)</span>');
+  });
+  it('gives one check date only when every medal shares it; mixed dates go on each row', () => {
+    const m = medalsFor(218)[0];
+    const mixed = medalsSection([{ ...m, medals: [{ ...m.medals[0], checked: '2026-11-22' }, { ...m.medals[1], checked: '2027-01-05' }] }]);
+    expect(mixed).toContain('2 medals in the competition’s published winners lists for 2021.');
+    expect(mixed).not.toContain('2021, checked');
+    expect(mixed).toContain('official 2021 list</a>, checked November 22, 2026');
+    expect(mixed).toContain('official 2021 list</a>, checked January 5, 2027');
+    expect(medalsSection([])).toBe('');
+  });
+  it('the results-page checker matches whole categories and whole entries only', () => {
+    const cell = (h: string, p: string) => `<h3>${h}</h3><p>${p}</p>`;
+    const block = (cat: string, g: string, s: string, b: string) => `<div><h2>${cat}</h2></div><div>${cell('Gold', g)}${cell('Silver', s)}${cell('Bronze', b)}</div>`;
+    const page = `<nav><a>Winners</a></nav>${block('SPECIALTY/<br>ADJUNCT STOUT', 'Y BRIDGE BLACK HAND', 'COMBUSTION BREAKFAST STOUT', 'MODERN METHODS ROAST BEAST IMPERIAL')}${block('STOUT', 'HEAVIER THAN AIR MCCOOK', 'BRINK BREWING MOOZIE', 'OTHER BREWERY PORTER')}<script>var Gold = "x";</script>`;
+    const recs = parseCupResults(page);
+    expect(recs).toEqual([
+      { category: 'SPECIALTY/ADJUNCT STOUT', Gold: 'Y BRIDGE BLACK HAND', Silver: 'COMBUSTION BREAKFAST STOUT', Bronze: 'MODERN METHODS ROAST BEAST IMPERIAL' },
+      { category: 'STOUT', Gold: 'HEAVIER THAN AIR MCCOOK', Silver: 'BRINK BREWING MOOZIE', Bronze: 'OTHER BREWERY PORTER' },
+    ]);
+    // A different category that ends in "Stout" does not count as Stout, and a longer bronze entry does not count as the shorter one.
+    expect(hasMedal(recs, { category: 'Stout', medal: 'Bronze', printed: 'MODERN METHODS ROAST BEAST' })).toBe(false);
+    expect(hasMedal(recs, { category: 'Specialty/Adjunct Stout', medal: 'Bronze', printed: 'MODERN METHODS ROAST BEAST' })).toBe(false);
+    expect(hasMedal(recs, { category: 'Specialty/Adjunct Stout', medal: 'Bronze', printed: 'Modern Methods  Roast Beast Imperial' })).toBe(true);
+    expect(hasMedal(recs, { category: 'Stout', medal: 'Gold', printed: 'HEAVIER THAN AIR MCCOOK' })).toBe(true);
+    expect(hasMedal(recs, { category: 'Stout', medal: 'Silver', printed: 'HEAVIER THAN AIR MCCOOK' })).toBe(false);
+    expect(hasMedal([], { category: 'Stout', medal: 'Gold', printed: 'X' })).toBe(false);
+  });
+  it('a brewery without medals, and a closed brewery, show no card and no awards', () => {
+    const none = breweryPage(base);
+    expect(none).not.toContain('brewery-medals'); expect(none).not.toContain('"award"');
+    const closed = breweryPage({ ...base, id: 218, closed_at: '2026-01-01' });
+    expect(closed).not.toContain('brewery-medals'); expect(closed).not.toContain('"award"');
   });
 });

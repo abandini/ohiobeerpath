@@ -33,7 +33,7 @@ export function tapListSection(tapList?: TapList | null): string {
   const source = tapList.source.replace(/[.\s]+$/, '');
 
   return `
-          <!-- On tap: the brewery's own board, read from a photo the brewery texted. Shown only when an approved list exists. -->
+          <!-- On tap: the brewery's own board, read from a photo. The source line below says where the photo came from. Shown only when an approved list exists. -->
           <section class="content-card brewery-taplist" aria-labelledby="on-tap-heading">
             <style>
               .taplist{list-style:none;margin:0;padding:0;columns:2 17rem;column-gap:2.5rem}

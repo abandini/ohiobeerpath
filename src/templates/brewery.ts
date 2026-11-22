@@ -4,6 +4,7 @@ import { medalBadges, medalList } from './downtown-tour';
 import type { Brewery } from '../types';
 import type { TapList } from '../services/taplist';
 import { tapListSection } from './taplist';
+import { medalsFor, type MedalSet, type MedalRank } from '../data/medals';
 import { hashCode, jsonLd, escapeHtml, escapeAttr, safeHttpUrl, hostOf, sourcedQuote, excerpt, isCalendarDate, safeImagePath, labelColors } from './utils';
 
 interface Review {
@@ -70,6 +71,35 @@ function getOpenStatus(hours?: Record<string, string>): { isOpen: boolean; label
   };
 }
 
+// Competition medals from the competition's own published winners lists (src/data/medals.ts). One card per
+// competition: an icon per medal (gold first) with a spoken summary, then each medal with a link to the list it is on.
+const MEDAL_ICON: Record<MedalRank, string> = { Gold: '🥇', Silver: '🥈', Bronze: '🥉' };
+const MEDAL_ORDER: MedalRank[] = ['Gold', 'Silver', 'Bronze'];
+export function medalsSection(sets: MedalSet[]): string {
+  return sets.map((set) => {
+    const count = (r: MedalRank) => set.medals.filter((m) => m.medal === r).length;
+    const total = set.medals.length;
+    const icons = MEDAL_ORDER.flatMap((r) => Array(count(r)).fill(MEDAL_ICON[r])).join('');
+    const label = `${total} ${set.competition} medal${total > 1 ? 's' : ''}: ${MEDAL_ORDER.filter((r) => count(r)).map((r) => `${count(r)} ${r.toLowerCase()}`).join(', ')}`;
+    const years = [...new Set(set.medals.map((m) => m.year))].sort((a, b) => a - b);
+    const yearText = years.length > 2 ? `${years.slice(0, -1).join(', ')} and ${years[years.length - 1]}` : years.join(' and ');
+    // One date in the summary only when every medal was checked that day; otherwise each row carries its own.
+    const dates = [...new Set(set.medals.map((m) => m.checked))];
+    const shared = dates.length === 1 && isCalendarDate(dates[0]) ? dates[0] : '';
+    const rows = [...set.medals].sort((a, b) => b.year - a.year || MEDAL_ORDER.indexOf(a.medal) - MEDAL_ORDER.indexOf(b.medal)).map((m) =>
+      `<li><span aria-hidden="true">${MEDAL_ICON[m.medal]}</span> ${m.year} ${escapeHtml(m.medal)}: <strong>${escapeHtml(m.beer)}</strong>, ${escapeHtml(m.category)} · <a href="${escapeAttr(m.url)}" rel="noopener nofollow" target="_blank">official ${m.year} list</a>${!shared && isCalendarDate(m.checked) ? `, checked ${formatCheckedDate(m.checked)}` : ''}${m.note ? ` <span class="text-muted">(${escapeHtml(m.note)})</span>` : ''}</li>`).join('\n              ');
+    return `
+          <!-- Competition medals: each one is a line on the competition's own winners list -->
+          <div class="content-card brewery-medals">
+            <h2>🏅 ${escapeHtml(set.competition)} medals <span class="medal-badges" role="img" aria-label="${escapeAttr(label)}" title="${escapeAttr(label)}">${icons}</span></h2>
+            <p class="small text-muted">${total} medal${total > 1 ? 's' : ''} in the competition’s published winners lists for ${yearText}${shared ? `, checked ${formatCheckedDate(shared)}` : ''}.</p>
+            <ul class="list-unstyled mb-0">
+              ${rows}
+            </ul>
+          </div>`;
+  }).join('');
+}
+
 // Breweries on the sourced Downtown Cleveland Brewery Walk link to it (internal linking from pages that get traffic).
 function tourCallout(id: number): string {
   const i = DOWNTOWN_TOUR.stops.findIndex((s) => s.breweryId === id);
@@ -117,6 +147,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
   const heroBackground = heroImage
     ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${escapeAttr(heroImage)}'); background-size: cover; background-position: center;`
     : `background: linear-gradient(135deg, ${gradientColors});`;
+  const medals = medalsFor(brewery.id);
+  const awards = brewery.closed_at ? [] : medals.flatMap((set) => set.medals.map((m) => `${m.year} ${set.competition} ${m.medal}: ${m.beer} (${m.category})`));
   const photoCredit = (brewery.photo_credit || '').trim();
   const gallerySection = photos.length > 0 ? `
           <!-- Photos: owner-supplied, factual alt text, one credit line -->
@@ -282,6 +314,8 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
           </div>
           ${tourCallout(brewery.id)}
           ${brewery.closed_at ? '' : tapListSection(tapList)}
+
+          ${brewery.closed_at ? '' : medalsSection(medals)}
 
           ${gallerySection}
           ${visitSection}
@@ -840,6 +874,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
     ...(brewery.brewery_type && { additionalType: brewery.brewery_type }),
     ...(hoursSpecs.length > 0 && { openingHoursSpecification: hoursSpecs }),
     ...(schemaAmenities.length > 0 && { amenityFeature: schemaAmenities }),
+    ...(awards.length > 0 && { award: awards }),
     ...(aggregateRating && { aggregateRating }),
     ...(reviewSchemas.length > 0 && { review: reviewSchemas })
   });
