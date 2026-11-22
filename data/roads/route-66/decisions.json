@@ -1,0 +1,77 @@
+[
+  {
+    "match": "8fa5ceba-e668-479e-9eb6-792be566eff2",
+    "status": "UNCONFIRMED",
+    "reason": "second same-day check conflicted"
+  },
+  {
+    "match": "lead:Legends Craft Microbrew (Quapaw Casino)",
+    "status": "UNCONFIRMED",
+    "reason": "second same-day check conflicted"
+  },
+  {
+    "match": "bd119567-1524-49cd-a608-4b15f885a7f7",
+    "status": "UNCONFIRMED",
+    "reason": "second same-day check conflicted"
+  },
+  {
+    "match": "e75b5599-7133-4cb8-ab49-0048d0f4443a",
+    "status": "UNCONFIRMED",
+    "reason": "second same-day check conflicted"
+  },
+  {
+    "match": "9e73dde9-85f0-4bef-bcd9-9ddbd2eee3bf",
+    "status": "UNCONFIRMED",
+    "reason": "second same-day check conflicted"
+  },
+  {
+    "match": "45a4d916-2bc4-4e46-8d7a-d7e994f0d3fb",
+    "status": "UNCONFIRMED",
+    "reason": "editor: its closing by the end of December 2026 has been announced (KOB, 2026-10-21), so it is left off"
+  },
+  {
+    "match": "088897ee-bbe3-4ba5-9aaf-5ff9618cf260",
+    "status": "NOT A BREWERY TAPROOM",
+    "reason": "editor: a restaurant serving the brewery's beer; its evidence does not say beer is brewed on site"
+  },
+  {
+    "match": "1d7e7d19-91e3-4752-9fb0-9454fad1aff8",
+    "status": "NOT A BREWERY TAPROOM",
+    "reason": "editor: restaurant chain location; its evidence does not say beer is brewed on site"
+  },
+  {
+    "match": "4468dae2-ef14-4570-af79-812226eaabd1",
+    "status": "NOT A BREWERY TAPROOM",
+    "reason": "editor: restaurant chain location; its evidence does not say beer is brewed on site"
+  },
+  {
+    "match": "lead:Six Car Pub & Brewery",
+    "status": "NOT A BREWERY TAPROOM",
+    "reason": "editor: the text read does not say beer is brewed on site"
+  },
+  {
+    "match": "2c7c2d1e-c48c-4842-9753-a0bb88a605c7",
+    "status": "UNCONFIRMED",
+    "reason": "editor: doubt not resolved; the Waynesville page is undated and is not linked from the brewery's home page or menu (re-read 2026-11-22)"
+  },
+  {
+    "match": "lead:Perennial Artisan Ales, Brewpub on Lockwood",
+    "status": "UNCONFIRMED",
+    "reason": "editor: the excerpt is an address and contact line, not visiting hours or a dated notice"
+  },
+  {
+    "match": "373559ad-c964-477c-a443-f0531e3f78b0",
+    "evidenceKind": "notice",
+    "reason": "editor: the evidence is a dated event on the brewery's own page, not visiting hours"
+  },
+  {
+    "match": "74311046-203d-4c6e-b156-1100b4b7a2eb",
+    "evidenceKind": "notice",
+    "reason": "editor: the evidence is a dated event on the brewery's own page, not visiting hours"
+  },
+  {
+    "match": "lead:Keg Grove Brewing Company (Bloomington)",
+    "evidenceKind": "notice",
+    "reason": "editor: the evidence is a dated notice on the brewery's own page, not visiting hours"
+  }
+]

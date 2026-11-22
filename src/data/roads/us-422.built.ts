@@ -19,11 +19,15 @@ export const US_422_BUILT: BuiltRoad = {
       "lengthMiles": 82.4,
       "line": [[40.26376,-76.69019],[40.28135,-76.66131],[40.317,-76.57583],[40.33955,-76.46161],[40.33826,-76.43762],[40.34178,-76.40074],[40.37215,-76.32724],[40.38413,-76.28215],[40.38417,-76.24948],[40.37733,-76.21015],[40.36816,-76.18367],[40.36047,-76.17275],[40.34843,-76.12482],[40.33576,-76.1023],[40.32643,-76.06179],[40.32504,-76.02372],[40.32859,-75.98003],[40.33342,-75.96839],[40.34325,-75.96763],[40.3504,-75.95863],[40.34161,-75.95037],[40.33681,-75.9406],[40.32828,-75.93831],[40.32159,-75.92445],[40.31283,-75.92101],[40.30517,-75.89204],[40.30778,-75.8638],[40.29977,-75.84966],[40.2735,-75.77948],[40.26489,-75.75157],[40.26257,-75.73294],[40.2496,-75.71579],[40.23971,-75.69147],[40.24322,-75.67615],[40.23129,-75.62801],[40.23345,-75.61754],[40.24083,-75.60665],[40.2432,-75.58812],[40.2404,-75.57246],[40.22828,-75.55129],[40.2006,-75.53304],[40.19255,-75.52156],[40.17741,-75.51269],[40.15426,-75.46541],[40.14543,-75.45456],[40.13447,-75.44688],[40.11679,-75.45418],[40.11326,-75.45268],[40.11658,-75.42691],[40.11461,-75.42147],[40.09456,-75.41773],[40.08194,-75.40853]],
       "candidates": 21,
-      "decided": 18
+      "decided": 18,
+      "joins": 1,
+      "joinedMiles": 0,
+      "widestJoinMiles": 0
     }
   ],
   "stops": [
     {
+      "key": "208",
       "breweryId": 208,
       "name": "Masthead Brewing Company",
       "town": "Cleveland",
@@ -46,6 +50,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": "start"
     },
     {
+      "key": "72",
       "breweryId": 72,
       "name": "Collision Bend Brewing Company",
       "town": "Cleveland",
@@ -68,6 +73,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": "start"
     },
     {
+      "key": "280",
       "breweryId": 280,
       "name": "Saucy Brew Works",
       "town": "Cleveland",
@@ -90,6 +96,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "308",
       "breweryId": 308,
       "name": "Terrestrial Brewing Company",
       "town": "Cleveland",
@@ -112,6 +119,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": "start"
     },
     {
+      "key": "51",
       "breweryId": 51,
       "name": "Brick and Barrel",
       "town": "Cleveland",
@@ -134,6 +142,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "207",
       "breweryId": 207,
       "name": "Market Garden Brewpub",
       "town": "Cleveland",
@@ -156,6 +165,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "120",
       "breweryId": 120,
       "name": "Forest City Brewery",
       "town": "Cleveland",
@@ -178,6 +188,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "136",
       "breweryId": 136,
       "name": "Great Lakes Brewing Company",
       "town": "Cleveland",
@@ -200,6 +211,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "2356",
       "breweryId": 2356,
       "name": "Hansa Brewery",
       "town": "Cleveland",
@@ -222,6 +234,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "296",
       "breweryId": 296,
       "name": "Southern Tier Brewing Co. Cleveland",
       "town": "Cleveland",
@@ -244,6 +257,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "154",
       "breweryId": 154,
       "name": "Hofbräuhaus Cleveland",
       "town": "Cleveland",
@@ -266,6 +280,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "130",
       "breweryId": 130,
       "name": "Goldhorn Brewery",
       "town": "Cleveland",
@@ -288,6 +303,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "182",
       "breweryId": 182,
       "name": "The Jolly Scholar",
       "town": "Cleveland",
@@ -310,6 +326,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "82",
       "breweryId": 82,
       "name": "Crooked Pecker Brewing Company",
       "town": "Newbury",
@@ -333,6 +350,7 @@ export const US_422_BUILT: BuiltRoad = {
       "browserChecked": "2026-11-22"
     },
     {
+      "key": "261",
       "breweryId": 261,
       "name": "Pompatus Brewing Co",
       "town": "Chagrin Falls",
@@ -356,6 +374,7 @@ export const US_422_BUILT: BuiltRoad = {
       "browserChecked": "2026-11-22"
     },
     {
+      "key": "60",
       "breweryId": 60,
       "name": "Bummin' Beaver Brewery",
       "town": "Auburn Twp.",
@@ -378,6 +397,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "218",
       "breweryId": 218,
       "name": "Modern Methods Brewing Company",
       "town": "Warren",
@@ -400,6 +420,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "26",
       "breweryId": 26,
       "name": "Biker Brewhouse",
       "town": "Austintown",
@@ -422,6 +443,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "259",
       "breweryId": 259,
       "name": "Penguin City Brewing Company",
       "town": "Youngstown",
@@ -444,6 +466,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "2394",
       "breweryId": 2394,
       "name": "Noble Creature Cask House",
       "town": "Youngstown",
@@ -466,6 +489,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "992",
       "breweryId": 992,
       "name": "Brew 32",
       "town": "Pulaski",
@@ -488,6 +512,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1030",
       "breweryId": 1030,
       "name": "Crooked Tongue Brewing",
       "town": "Edinburg",
@@ -510,6 +535,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1184",
       "breweryId": 1184,
       "name": "Recon Brewing",
       "town": "Butler",
@@ -532,6 +558,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1122",
       "breweryId": 1122,
       "name": "Levity Brewing Co",
       "town": "Indiana",
@@ -554,6 +581,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1261",
       "breweryId": 1261,
       "name": "Troegs Brewing Co",
       "town": "Hershey",
@@ -576,6 +604,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1197",
       "breweryId": 1197,
       "name": "Rotunda Brewing",
       "town": "Annville",
@@ -598,6 +627,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1218",
       "breweryId": 1218,
       "name": "Snitz Creek Brewery",
       "town": "Lebanon",
@@ -620,6 +650,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1082",
       "breweryId": 1082,
       "name": "Hidden River Brewing Co",
       "town": "Douglassville",
@@ -643,6 +674,7 @@ export const US_422_BUILT: BuiltRoad = {
       "browserChecked": "2026-11-22"
     },
     {
+      "key": "1217",
       "breweryId": 1217,
       "name": "Sly Fox Brewing Co",
       "town": "Pottstown",
@@ -665,6 +697,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1196",
       "breweryId": 1196,
       "name": "Root Down Brewing Company",
       "town": "Phoenixville",
@@ -687,6 +720,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1228",
       "breweryId": 1228,
       "name": "Stable 12 Brewing Company",
       "town": "Phoenixville",
@@ -709,6 +743,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1216",
       "breweryId": 1216,
       "name": "Sly Fox Brewhouse and Eatery",
       "town": "Phoenixville",
@@ -731,6 +766,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
+      "key": "1115",
       "breweryId": 1115,
       "name": "La Cabra Brewing",
       "town": "Berwyn",
@@ -753,6 +789,7 @@ export const US_422_BUILT: BuiltRoad = {
       "pastEnd": "end"
     },
     {
+      "key": "1020",
       "breweryId": 1020,
       "name": "Conshohocken Brewing - Bridgeport",
       "town": "Bridgeport",

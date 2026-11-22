@@ -1,0 +1,549 @@
+[
+ {
+  "name": "4 Hands Brewery & Tasting Room",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://www.4handsbrewery.com/",
+  "address_as_printed": "1220 S. 8th Street St. Louis, MO",
+  "address_source_url": "https://www.4handsbrewery.com/contact",
+  "operating_evidence": {
+   "excerpt": "4 Hands Brewery & Tasting Room Monday - Thursday: 11am to 10pm Friday - Saturday: 11am to 11pm Sunday: 11am to 8pm 4 Hands at The District Monday: 11am to",
+   "url": "https://www.4handsbrewery.com/contact",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Downtown/Soulard brewery with tasting room. Hours listed for the tasting room only.",
+  "coordinates": [
+   38.61531087079,
+   -90.197636394599
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "1220 S 8TH ST, SAINT LOUIS, MO, 63104",
+  "miles_from_66_estimate": 0.87,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "4 Hands Kirkwood",
+  "city": "Kirkwood",
+  "state": "MO",
+  "official_url": "https://www.4handsbrewery.com/",
+  "address_as_printed": "150 W. Argonne Drive Kirkwood, MO",
+  "address_source_url": "https://www.4handsbrewery.com/contact",
+  "operating_evidence": {
+   "excerpt": "4 Hands Kirkwood Monday - Thursday: 11am to 10pm Friday - Saturday: 11am to 12am Sunday: 11am to 9pm Subscribe for news and updates! Name: Email: All Rights Reserved |",
+   "url": "https://www.4handsbrewery.com/contact",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Kirkwood location of 4 Hands; whether beer is brewed here is not stated on the page.",
+  "coordinates": [
+   38.581172353956,
+   -90.407393078797
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "150 W ARGONNE DR, KIRKWOOD, MO, 63122",
+  "miles_from_66_estimate": 0.05,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Schlafly Tap Room",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://www.schlafly.com/",
+  "address_as_printed": "2100 Locust Street, St. Louis, MO 63103",
+  "address_source_url": "https://www.schlafly.com/tap-room",
+  "operating_evidence": {
+   "excerpt": "Hours Mon: 11 am\u201310pm Tue: 11 am\u201310pm Wed: 11 am\u201310pm Thu: 11 am\u201310pm Fri: 11 am\u201310pm Sat: 11 am\u201310pm Sun: 12pm\u201310pm Kitchen closes at 9pm Sun-Thu, 10pm Fri-Sat Trivia Night Tuesdays at 7pm Gift",
+   "url": "https://www.schlafly.com/tap-room",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Brewpub downtown, original Schlafly location with kitchen.",
+  "coordinates": [
+   38.633183381306,
+   -90.209519793674
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "2100 LOCUST ST, SAINT LOUIS, MO, 63103",
+  "miles_from_66_estimate": 0.36,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Blue Jay Brewing Company",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://bluejaybrewing.com/",
+  "address_as_printed": "2710 Locust Street Saint Louis, MO 63103",
+  "address_source_url": "https://bluejaybrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Hours of operation SUNDAY 12-7 (kitchen 12-5) MONDAY 3-9 (kitchen closed) TUESDAY CLOSED WEDNESDAY 3-9 (kitchen 3-8) THURSDAY 3-9 (kitchen 3-8) FRIDAY 3-10 (kitchen 3-9) SATURDAY 12-10 (kitchen 12-9) CITY MATCH SATURDAYS 12-11pm (kitchen",
+   "url": "https://bluejaybrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom with kitchen; free parking lot; family friendly.",
+  "coordinates": [
+   38.634610932699,
+   -90.216401047467
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "2710 LOCUST ST, SAINT LOUIS, MO, 63103",
+  "miles_from_66_estimate": 0.72,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Urban Chestnut Brewing Company, Grove Bierhall",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://www.urbanchestnut.com/",
+  "address_as_printed": "4465 Manchester Avenue St. Louis, MO 63110",
+  "address_source_url": "https://www.urbanchestnut.com/visit",
+  "operating_evidence": {
+   "excerpt": "Bierhall Hours: Mon-Wed: 3pm-10pm \u200d Thurs: 11am - 10pm Fri-Sat: 11am \u2013 12am Sun: 11am \u2013 9pm (kitchen closes one hour before the Bierhall) \u200d The",
+   "url": "https://www.urbanchestnut.com/visit",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Brewery bierhall on Manchester Ave (a 66 alignment). The other location, Midtown (3229 Washington Ave), was not given hours on the pages read. The O'Fallon beer brand is now made here (see verified file).",
+  "coordinates": [
+   38.626470095846,
+   -90.260902357351
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "4465 MANCHESTER AVE, SAINT LOUIS, MO, 63110",
+  "miles_from_66_estimate": 0.09,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Square One Brewery & Distillery",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://squareonebrewery.com/",
+  "address_as_printed": "1727 Park Avenue Saint Louis, MO 63104",
+  "address_source_url": "https://squareonebrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Kitchen Hours Monday-Thursday 11am to 9pm Friday 11am to 10pm Saturday 11 am to 10pm Sunday 10am to 2pm and 2:30pm to 8pm The bar stays open one hour",
+   "url": "https://squareonebrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Brewpub and distillery in Lafayette Square; the hours printed are kitchen hours and the page says the bar stays open one hour later.",
+  "coordinates": [
+   38.616637766786,
+   -90.210362414629
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "1727 PARK AVE, SAINT LOUIS, MO, 63104",
+  "miles_from_66_estimate": 0.31,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Bluewood Brewing",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://www.bluewoodbrewing.com/",
+  "address_as_printed": "1821 Cherokee St. St. Louis, MO 63118",
+  "address_source_url": "https://www.bluewoodbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday 3 pm 9 pm Tuesday Closed Closed Wednesday 3 pm 9 pm Thursday 3 pm 9 pm Friday 11:30 am 10 pm Saturday 11:30",
+   "url": "https://www.bluewoodbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom on Cherokee Street.",
+  "coordinates": [
+   38.592364565863,
+   -90.217729486426
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "1821 CHEROKEE ST, SAINT LOUIS, MO, 63118",
+  "miles_from_66_estimate": 0.97,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Rockwell Beer Company, The Grove Taproom & Brewery",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://www.rockwellbeer.com/",
+  "address_as_printed": "1320 S. Vandeventer Ave. St. Louis, MO 63110",
+  "address_source_url": "https://www.rockwellbeer.com/the-grove-taproom",
+  "operating_evidence": {
+   "excerpt": "Hours 11 am \u2013 10 pm DAILY Weekly Tappenings New Food by Brasas Come",
+   "url": "https://www.rockwellbeer.com/the-grove-taproom",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Flagship taproom with a 15-barrel brewhouse (own page). Rockwell also runs a Francis Park beer garden (not checked).",
+  "coordinates": [
+   38.625733741127,
+   -90.251394618857
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "1320 S VANDEVENTER AVE, SAINT LOUIS, MO, 63110",
+  "miles_from_66_estimate": 0.07,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "2nd Shift Brewing",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://www.2ndshiftbrewing.com/",
+  "address_as_printed": "1601 Sublette Ave. St. Louis, MO 63110",
+  "address_source_url": "https://www.2ndshiftbrewing.com/contact-us",
+  "operating_evidence": {
+   "excerpt": "Hours Mon Closed Tue Closed Wed 2:00pm - 8:00pm Thu 2:00pm - 8:00pm Fri 12:00pm - 9:00pm Sat 12:00pm - 9:00pm Sun 12:00pm - 6:00pm Our",
+   "url": "https://www.2ndshiftbrewing.com/contact-us",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Brewery taproom on Sublette Ave in The Hill area, near Manchester/Chippewa.",
+  "coordinates": [
+   38.621705910289,
+   -90.280538472321
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "1601 SUBLETTE AVE, SAINT LOUIS, MO, 63110",
+  "miles_from_66_estimate": 0.12,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Civil Life Brewing Co.",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://thecivillife.com/",
+  "address_as_printed": "3714 Holt Ave, St. Louis, MO 63116",
+  "address_source_url": "https://thecivillife.com/contact/",
+  "operating_evidence": {
+   "excerpt": "Brewpub Hours Monday: Closed Tuesday: 3 to 10 pm Wednesday: 3 to 10 pm Thursday: 3 to 10 pm Friday: 11:30 am to 11 pm Saturday:",
+   "url": "https://thecivillife.com/contact/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Brewpub with kitchen; page says hours may vary on holidays.",
+  "coordinates": [
+   38.590947532009,
+   -90.258094613055
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "3714 HOLT AVE, SAINT LOUIS, MO, 63116",
+  "miles_from_66_estimate": 0.09,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Alpha Brewing Company",
+  "city": "St. Louis",
+  "state": "MO",
+  "official_url": "https://alphabrewingcompany.com/",
+  "address_as_printed": "4310 Fyler Avenue, St. Louis, Missouri 63116",
+  "address_source_url": "https://alphabrewingcompany.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Open today 12:00 pm \u2013 09:00 pm",
+   "url": "https://alphabrewingcompany.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom/brewery in Dutchtown. The site shows a live \"Open today\" hours widget plus a \"New Fall Hours\" line, not a weekly table.",
+  "coordinates": [
+   38.598635817105,
+   -90.262297065273
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "4310 FYLER AVE, SAINT LOUIS, MO, 63116",
+  "miles_from_66_estimate": 0.58,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Perennial Artisan Ales, Brewpub on Lockwood",
+  "city": "Webster Groves",
+  "state": "MO",
+  "official_url": "https://www.perennialbeer.com/",
+  "address_as_printed": "216 W Lockwood Ave Unit B Webster Groves, MO 63119",
+  "address_source_url": "https://www.perennialbeer.com/",
+  "operating_evidence": {
+   "excerpt": "Brewpub 216 W Lockwood Ave Unit B Webster Groves, MO 63119 lockwood@perennialbeer.com perennial.oohosp.com beer list food menu At Perennial Artisan Ales Our South City",
+   "url": "https://www.perennialbeer.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Brewpub; the site also lists a tasting room at 8125 Michigan Ave, St. Louis (about 2.2 mi from the approximate alignment, not recorded).",
+  "coordinates": [
+   38.59317793567,
+   -90.361344179111
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "216 W LOCKWOOD AVE, WEBSTER GROVES, MO, 63119",
+  "miles_from_66_estimate": 1.1,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json plus approximate St. Louis city alignments (Chouteau/Manchester, Gravois, Chippewa/Watson) built from Census-geocoded street addresses, because the OSM file lacks them"
+ },
+ {
+  "name": "Beer Outside Brewery",
+  "city": "Valley Park",
+  "state": "MO",
+  "official_url": "https://www.beeroutside.com/",
+  "address_as_printed": "932 Meramec Station Road, Suite E Valley Park, MO 63088",
+  "address_source_url": "https://www.beeroutside.com/",
+  "operating_evidence": {
+   "excerpt": "932 Meramec Station Road, Suite E Valley Park, MO 63088 Wednesday - Saturday 12PM - 10PM Closed Sunday - Tuesday Crowler Stop 13014 Manchester",
+   "url": "https://www.beeroutside.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Successor to the Mackenzie Brewing space (see verified file). Site footer says (c) 2035, so the page is undated; hours printed only.",
+  "coordinates": [
+   38.536461780656,
+   -90.497601504246
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "932 MERAMEC STATION RD, VALLEY PARK, MO, 63088",
+  "miles_from_66_estimate": 0.15,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Muddy Banks Brewing Company",
+  "city": "Sullivan",
+  "state": "MO",
+  "official_url": "https://muddybanksbrewery.com/",
+  "address_as_printed": "725 Acid Mine rd Sullivan, Mo, 63080",
+  "address_source_url": "https://muddybanksbrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Monday - Closed Tuesday - Closed Wed - 11am-8pm Thursday - 11am-8pm Friday - 11am-9pm Sat- 11am-9pm Sun - 11am-7pm Get directions Stay up",
+   "url": "https://muddybanksbrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom; footer dated 2026; distributes through Missouri. Dataset had no entry for Sullivan.",
+  "coordinates": [
+   38.227519687903,
+   -91.15505450894
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "725 ACID MINE RD, SULLIVAN, MO, 63080",
+  "miles_from_66_estimate": 0.26,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Before and After Brewing",
+  "city": "Springfield",
+  "state": "MO",
+  "official_url": "https://www.beforeandafterbrewhouse.com/",
+  "address_as_printed": "2940 E Sunshine St Springfield, MO 65804",
+  "address_source_url": "https://www.beforeandafterbrewhouse.com/",
+  "operating_evidence": {
+   "excerpt": "BEFORE AND AFTER BREWING CLOSED THANKSGIVING DAY TUESDAY-SATURDAY 10am-9pm 2940 E Sunshine St Springfield, MO 65804 BEER. COFFEE. FOOD. COCKTAILS.",
+   "url": "https://www.beforeandafterbrewhouse.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Coffee, bar food and beer; site says \"we happen to brew our own beer\". About 4 mi from 66, the edge of range.",
+  "coordinates": [
+   37.180583926886,
+   -93.236599909407
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "2940 E SUNSHINE ST, SPRINGFIELD, MO, 65804",
+  "miles_from_66_estimate": 4.05,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Cabin Boys Brewpub",
+  "city": "Tulsa",
+  "state": "OK",
+  "official_url": "https://www.cabinboysbrewery.com/brewpub",
+  "address_as_printed": "223 N Main St, Tulsa, OK",
+  "address_source_url": "https://www.cabinboysbrewery.com/brewpub",
+  "operating_evidence": {
+   "excerpt": "Hours Monday-Thursday 3:00pm-10:00pm Friday-Saturday 11am-1:00am Sunday 11:00am-4:00pm Check out our new menu! Events Join us every Thursday for Trivia, Karaoke Nights, First",
+   "url": "https://www.cabinboysbrewery.com/brewpub",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Second Tulsa location of Cabin Boys, in the Brady District.",
+  "coordinates": [
+   36.158570379777,
+   -95.993729819035
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "223 N MAIN ST, TULSA, OK, 74103",
+  "miles_from_66_estimate": 0.38,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Core4 Brewing Company",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "official_url": "https://core4brewing.com/",
+  "address_as_printed": "7 N Lee Avenue OKC, OK 73102",
+  "address_source_url": "https://core4brewing.com/",
+  "operating_evidence": {
+   "excerpt": "7 N Lee Avenue OKC, OK 73102 (405) 215-9671 Monday\u2013Thursday: 4:00PM\u20139:00PM Friday: 12:00PM\u201311:00PM Saturday: 12:00PM\u201311:00PM Sunday: 2:00PM\u20138:00PM Follow Follow Follow Untappd Quick Links About Us Beers Taproom Contact",
+   "url": "https://core4brewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom; footer dated 2026. Distance is near the 2-mile mark.",
+  "coordinates": [
+   35.466638259981,
+   -97.524313843617
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "7 N LEE AVE, OKLAHOMA CITY, OK, 73102",
+  "miles_from_66_estimate": 1.84,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Okie Beer Co.",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "official_url": "https://okiebeerco.com/",
+  "address_as_printed": "3810 N Tulsa Ave, Oklahoma City, OK",
+  "address_source_url": "https://okiebeerco.com/",
+  "operating_evidence": {
+   "excerpt": "TAPROOM HOURS SUNDAY CLOSED MONDAY CLOSED TUESDAY 3PM- 10PM WEDNESDAY 3PM - 10PM THURSDAY 3PM - 10PM FRIDAY 1PM - 11PM SATURDAY 12PM -",
+   "url": "https://okiebeerco.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom; footer dated 2026.",
+  "coordinates": [
+   35.509077226997,
+   -97.592197445247
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "3810 N TULSA AVE, OKLAHOMA CITY, OK, 73112",
+  "miles_from_66_estimate": 0.15,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Skydance Brewing Company",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "official_url": "https://www.skydancebrewing.com/",
+  "address_as_printed": "1 NE 7th St Oklahoma City, OK 73104",
+  "address_source_url": "https://www.skydancebrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Location 1 NE 7th St Oklahoma City, OK 73104 Hours Operating Hours: Sunday \u2013 Thursday 11AM \u2013 10PM Friday -Saturday 11AM \u2013 12AM Kitchen Hours: Sunday \u2013 Saturday",
+   "url": "https://www.skydancebrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Brewpub with kitchen, near Bricktown/Automobile Alley.",
+  "coordinates": [
+   35.475032240551,
+   -97.512111087538
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "1 NE 7TH ST, OKLAHOMA CITY, OK, 73104",
+  "miles_from_66_estimate": 1.25,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Legends Craft Microbrew (Quapaw Casino)",
+  "city": "Miami",
+  "state": "OK",
+  "official_url": "https://quapawcasino.com/craft-microbrew/",
+  "address_as_printed": "Quapaw Casino 6530 S 580 Rd",
+  "address_source_url": "https://quapawcasino.com/craft-microbrew/",
+  "operating_evidence": {
+   "excerpt": "Hours of Operation Sunday through Thursday: 8:00 am - 10:00 pm Friday and Saturday: 8:00 am - 12:00 am Contact Us Open",
+   "url": "https://quapawcasino.com/craft-microbrew/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "ALCOHOL/TRIBAL NOTE: this is inside Quapaw Casino on Quapaw Nation land; the casino page says \"Brewed on-site by Quapaw Nation's brewmasters\" and prints \"Must Be 18\" for gaming. Page uses future-tense wording (\"will bring\") so confirm the taproom is serving before listing. Address printed without city or ZIP; Census matched 6530 S 580 Rd, Miami OK 74354.",
+  "coordinates": [
+   36.919915355203,
+   -94.841817781264
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "6530 S 580 RD, MIAMI, OK, 74354",
+  "miles_from_66_estimate": 1.54,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Old Tascosa Brewing Company",
+  "city": "Amarillo",
+  "state": "TX",
+  "official_url": "https://otbrewco.com/",
+  "address_as_printed": "3100 SW 6th Ave Amarillo, TX 79106",
+  "address_source_url": "https://otbrewco.com/contact-us/",
+  "operating_evidence": {
+   "excerpt": "HOURS Monday: CLOSED Tuesday: 4pm to 9pm Wednesday: 4pm to 9pm Thursday: 4pm to 10pm Friday: 11:30am to 11pm Saturday: 11:30am to 11pm Sunday: 11:30am to",
+   "url": "https://otbrewco.com/contact-us/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom on SW 6th Ave (Historic Route 66 district), the site says \"happenings on Route 66\"; footer dated 2026.",
+  "coordinates": [
+   35.211330763412,
+   -101.871133759823
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "3100 6TH AVE, AMARILLO, TX, 79106",
+  "miles_from_66_estimate": 0.01,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Pondaseta Brewing Co. (Amarillo Taproom)",
+  "city": "Amarillo",
+  "state": "TX",
+  "official_url": "https://pondaseta.com/",
+  "address_as_printed": "7500 SW 45th Ave Amarillo, TX 79119",
+  "address_source_url": "https://pondaseta.com/",
+  "operating_evidence": {
+   "excerpt": "Amarillo Taproom Hours Monday 12pm \u2013 10pm Tuesday 12pm \u2013 10pm Wednesday 12pm \u2013 10pm Thursday 12pm \u2013 10pm Friday 12pm \u2013 11pm Saturday 12pm \u2013 11pm Sunday",
+   "url": "https://pondaseta.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Also a Canyon taproom (outside corridor). Distance is straight line to the 66 ways, about 2 mi.",
+  "coordinates": [
+   35.161771822688,
+   -101.922858474589
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "7500 SW 45TH AVE, AMARILLO, TX, 79119",
+  "miles_from_66_estimate": 2.05,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Six Car Pub & Brewery",
+  "city": "Amarillo",
+  "state": "TX",
+  "official_url": "https://www.sixcarpub.com/",
+  "address_as_printed": "625 S. Polk Amarillo, Texas, 79101",
+  "address_source_url": "https://www.sixcarpub.com/",
+  "operating_evidence": {
+   "excerpt": "HOURS MON-FRI 11 AM - 10 PM SAT 10:30 AM- 10 PM SUN 10:30 AM - 2 PM rooftop Bar Tues-thurs 5 pm - 10 pm",
+   "url": "https://www.sixcarpub.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Downtown pub with rooftop bar on Polk St (Route 66 alignment). Site name says Pub & Brewery but the text read does not say beer is brewed on site; check before listing.",
+  "coordinates": [
+   35.207316685353,
+   -101.836929871414
+  ],
+  "coordinates_source": "US Census geocoder",
+  "census_matched_address": "625 S POLK ST, AMARILLO, TX, 79101",
+  "miles_from_66_estimate": 0.02,
+  "distance_method": "straight-line miles to the nearest point of the OSM Historic 66 ways in historic66_osm_ways.json"
+ },
+ {
+  "name": "Elgin Park Brewery",
+  "city": "Tulsa",
+  "state": "OK",
+  "official_url": "https://www.elginparkbrewery.com/",
+  "address_as_printed": "325 East Reconciliation Way Tulsa, OK 74120",
+  "address_source_url": "https://www.elginparkbrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Monday 11AM - 10PM Tuesday 11AM - 10PM Wednesday 11AM - 10PM Thursday 11AM - 10PM Friday 11AM - 11PM Saturday 11AM - 11PM Sunday",
+   "url": "https://www.elginparkbrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Brewpub (page advertises house-brewed beer and New Haven pizza) in the Greenwood district near downtown Tulsa; very likely within 1 mile of 66 but distance not computed because the Census geocoder had no match.",
+  "coordinates": null,
+  "coordinates_source": null,
+  "coordinates_note": "US Census geocoder returned no match for this address; coordinates not recorded"
+ }
+]

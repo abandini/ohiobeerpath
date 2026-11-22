@@ -1,0 +1,137 @@
+[
+ {
+  "name": "Kinslahger Brewing Company",
+  "city": "Oak Park",
+  "state": "Illinois",
+  "official_url": "https://www.kinslahger.com/",
+  "address_as_printed": "6806 Roosevelt Road Oak Park, IL 60304",
+  "address_source_url": "https://www.kinslahger.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Monday – Wednesday: Closed Thursday – Friday: 5pm – 10pm Saturday: 4pm – 10pm Sunday: 2pm – 6pm ©2026 - Kinslahger LLC",
+   "url": "https://www.kinslahger.com/",
+   "checked": "2026-11-22"
+  },
+  "coordinates": {
+   "lat": 41.86521088313,
+   "lon": -87.79389721293
+  },
+  "coordinates_source": "US Census geocoder",
+  "miles_from_66_osm": 2.4,
+  "notes": "German-style lager brewery. Found via web search; verified on own site. Hours undated apart from 2026 copyright footer."
+ },
+ {
+  "name": "Black Horizon Brewing Company",
+  "city": "Willowbrook",
+  "state": "Illinois",
+  "official_url": "https://www.blackhorizonbrewing.com/",
+  "address_as_printed": "7560 South Quincy Street Willowbrook, IL 60527",
+  "address_source_url": "https://www.blackhorizonbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours: Monday Tuesday Wednesday Thursday Friday Saturday Sunday 3-9pm 3-9pm 3-9pm 3-9pm 3-11pm 12pm-11pm 12pm-7pm",
+   "url": "https://www.blackhorizonbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "coordinates": {
+   "lat": 41.751623,
+   "lon": -87.942039
+  },
+  "coordinates_source": "US Census geocoder (matched as 7560 QUINCY ST)",
+  "miles_from_66_osm": 0.45,
+  "notes": "Hours undated; no 2026 post seen. Phone check recommended."
+ },
+ {
+  "name": "Skeleton Key Brewery",
+  "city": "Woodridge",
+  "state": "Illinois",
+  "official_url": "https://www.skeletonkeybrewery.com/",
+  "address_as_printed": "8102 LEMONT RD. #300 WOODRIDGE, IL 60517",
+  "address_source_url": "https://www.skeletonkeybrewery.com/",
+  "operating_evidence": {
+   "excerpt": "TAPROOM Open: MON/WEDS/THURS 4-10PM FRI 4-11PM SAT 12-11PM SUN 12-6PM Kids are welcome to hang with their folks in the Family Room",
+   "url": "https://www.skeletonkeybrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "coordinates": {
+   "lat": 41.742367,
+   "lon": -88.012506
+  },
+  "coordinates_source": "US Census geocoder",
+  "miles_from_66_osm": 1.61,
+  "notes": "Closed Tuesday. Site mentions private events and an incubator program. Hours undated."
+ },
+ {
+  "name": "RT66 Old School Brewing",
+  "city": "Wilmington",
+  "state": "Illinois",
+  "official_url": "https://oldschoolbrewerytogo.com/",
+  "address_as_printed": "110 Bridge St, Wilmington, IL 60481",
+  "address_source_url": "https://oldschoolbrewerytogo.com/",
+  "operating_evidence": {
+   "excerpt": "Location 110 Bridge St, Wilmington, IL 60481 Hours Monday - Thursday : 10:30 am - 9:00 pm Friday : 10:30 am - 11:00 pm Saturday - Sunday : 10:30 am - 10:00 pm",
+   "url": "https://oldschoolbrewerytogo.com/",
+   "checked": "2026-11-22"
+  },
+  "coordinates": null,
+  "coordinates_source": null,
+  "coordinates_note": "US Census geocoder returned no match for '110 Bridge St, Wilmington, IL 60481'; town centre is on Route 66 (about 0.03 mi by OSM geometry, approximate).",
+  "miles_from_66_osm": null,
+  "notes": "The dataset-style domain rt66oldschoolbrewing.com redirects to oldschoolbrewerytogo.com. Shares the building with Nelly's restaurant ('a couple doors down' wording on site; hours shown may be the restaurant's). Phone (815) 476-2220. Confirm brewery taproom hours by phone."
+ },
+ {
+  "name": "Anvil & Forge Brewing and Distilling",
+  "city": "Springfield",
+  "state": "Illinois",
+  "official_url": "https://anvilandforge.com/",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": {
+   "excerpt": "Tap Room Mon: Closed Tues-Thurs: 11a-9p Fri-Sat: 11a-10p Sun: 11a-4p The Foundry Kitchen Mon: Closed Tues-Thurs: 11a-8p",
+   "url": "https://anvilandforge.com/",
+   "checked": "2026-11-22"
+  },
+  "coordinates": null,
+  "coordinates_source": null,
+  "coordinates_note": "The fetched home page (behind an age gate) prints no street address, so none was geocoded. Directories give 619 E Washington St, Springfield (Census geocoder matches that address at 39.801748, -89.647558, about 0.2 mi from the route), but that address is not from the brewery's own page.",
+  "notes": "Tap room plus The Foundry Kitchen. Address needs confirming on the brewery's own contact page."
+ },
+ {
+  "name": "Lil Beaver Brewery",
+  "city": "Bloomington",
+  "state": "Illinois",
+  "official_url": "https://lilbeaverbrewery.com/",
+  "address_as_printed": "5 Finance Dr Bloomington, IL 61704",
+  "address_source_url": "https://lilbeaverbrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Mon 11:00am-9:00pm Tue 11:00am-9:00pm Wed 11:00am-9:00pm Thur 11:00am-9:00pm Fri 11:00am-9:00pm Sat 11:00am-9:00pm Sun 11:00am-4:00pm Copyright © 2026 Lil Beaver Brewery",
+   "url": "https://lilbeaverbrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "coordinates": {
+   "lat": 40.458481979107,
+   "lon": -88.977085254116
+  },
+  "coordinates_source": "US Census geocoder",
+  "miles_from_66_osm": 0.83,
+  "notes": "Owned by Adam and Justin Bellas. Moved from 16 Currency Dr (2018 coverage) to 5 Finance Dr."
+ },
+ {
+  "name": "Keg Grove Brewing Company (Bloomington)",
+  "city": "Bloomington",
+  "state": "Illinois",
+  "official_url": "https://keggrovebrewing.com/",
+  "address_as_printed": "712 E Empire St, Bloomington, Illinois 61701, United States",
+  "address_source_url": "https://keggrovebrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Please note our regular Wednesday night trivia is cancelled this week, but we will see you again on Wednesday, December 2nd.",
+   "url": "https://keggrovebrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "coordinates": {
+   "lat": 40.488353,
+   "lon": -88.982896
+  },
+  "coordinates_source": "US Census geocoder",
+  "miles_from_66_osm": 0.59,
+  "notes": "Printed hours: MON-TUE 3:00-8:00, WED-THURS 3:00-9:00, FRIDAY 12:00-10:00, SATURDAY 12:00-10:00, SUNDAY 12:00-8:00. The trivia post is an undated social-feed embed; Wednesday Dec 2 is in 2026, which supports currency. Also has a Morris, IL location."
+ }
+]

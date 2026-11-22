@@ -1,0 +1,45 @@
+[
+ {
+  "name": "Stone Brewing Tap Room - Pasadena",
+  "city": "Pasadena",
+  "state": "California",
+  "official_url": "https://www.stonebrewing.com/visit/outposts/pasadena",
+  "address_as_printed": "220 S. Raymond Ave, Suite 103 Pasadena, CA 91105",
+  "address_source_url": "https://www.stonebrewing.com/visit/outposts/pasadena",
+  "operating_evidence": {
+   "excerpt": "Stone Brewing Tap Room - Pasadena 626.440.7243 Monday: 12:00 pm-10:00 pm Tuesday: 12:00 pm-10:00 pm Wednesday: 12:00 pm-10:00 pm Thursday: 12:00 pm-10:00 pm Friday: 11:00 am-10:00 pm",
+   "url": "https://www.stonebrewing.com/visit/outposts/pasadena",
+   "checked": "2026-11-22"
+  },
+  "coordinates": {
+   "lat": 34.142138449756,
+   "lon": -118.1487845525,
+   "coordinates_source": "US Census geocoder"
+  },
+  "miles_from_66": 0.07,
+  "found_via": "Perplexity (finder only) and Visit Pasadena beer guide; verified on Stone's own page",
+  "notes": "Stone's own page calls it 'a tasting room and retail store with patio space'; not clear that beer is brewed on site (Stone brews in Escondido/Oceanside). Multi-location brand. Not in candidates.json."
+ },
+ {
+  "name": "Smog City Brewing Co. - Glendora Public Market taproom",
+  "city": "Glendora",
+  "state": "California",
+  "official_url": "https://www.smogcitybrewing.com/glendora",
+  "address_as_printed": "905 E Arrow Hwy Glendora, California 91740-6109",
+  "address_source_url": "https://www.smogcitybrewing.com/glendora",
+  "operating_evidence": {
+   "excerpt": "Smog City Brewing Co. at the Glendora Public Market ADDRESS & HOURS 905 E Arrow Hwy Glendora, California 91740-6109 (626) 257-3076",
+   "url": "https://www.smogcitybrewing.com/glendora",
+   "checked": "2026-11-22"
+  },
+  "hours_printed": "Mon-Thu 12:00 pm - 9:00 pm, Fri 12:00 pm - 10:00 pm, Sat 11:00 am - 10:00 pm, Sun 11:00 am - 9:00 pm (undated)",
+  "coordinates": {
+   "lat": 34.106662704322,
+   "lon": -117.846280772651,
+   "coordinates_source": "US Census geocoder"
+  },
+  "miles_from_66": 1.52,
+  "found_via": "Perplexity (finder only); verified on the brewery's own page",
+  "notes": "Taproom inside Glendora Public Market, 26 taps of Smog City beer (brewed at its Torrance brewery, per its other taprooms). Multi-location. Not in candidates.json. Hours undated."
+ }
+]

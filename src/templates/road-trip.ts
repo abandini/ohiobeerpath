@@ -13,7 +13,7 @@ import { medalsFor } from '../data/medals';
 import { DOWNTOWN_TOUR, GABF_WINDOW } from '../data/tours/downtown-cleveland';
 import { DEFAULT_STALE_AFTER_DAYS } from '../services/taplist';
 import type { SubdomainContext } from '../types';
-import { safeSitePath, type LatLon, type LegView, type RoadView, type StopView } from '../lib/road-trip';
+import { safeSitePath, type LatLon, type LegView, type RoadNote, type RoadView, type SegmentView, type StopView } from '../lib/road-trip';
 
 // A road crosses state lines, so its one canonical home is the national site, whichever host served the page.
 const SITE = 'https://brewerytrip.com';
@@ -63,6 +63,12 @@ const STYLE = `<style>
   .rt-mile span{font-size:.72rem;letter-spacing:.04em;text-transform:uppercase}
   .rt-stop p{margin:0 0 .35rem}
   .rt-stop p.rt-why{margin:.5rem 0 0}
+  .rt-mile.rt-nomile{background:transparent;color:var(--rt-muted);border:1px dashed var(--rt-muted)}
+  .rt-mile.rt-nomile span{letter-spacing:0;overflow-wrap:normal}
+  .rt-note{border-left:4px solid var(--rt-dot);background:var(--rt-card);padding:.7rem .9rem;margin:.6rem 0 1rem}
+  .rt-note p{margin:0 0 .3rem}
+  .rt-note blockquote{margin:.4rem 0 .2rem;padding-left:.75rem;border-left:3px solid var(--rt-line)}
+  .rt h4.rt-outer{margin:1.5rem 0 .25rem;font-size:1.05rem}
   .rt-where{color:var(--rt-muted)}
   .rt-dist{display:inline-block;font-size:.85rem;font-weight:600;border:1px solid var(--rt-line);border-radius:4px;padding:.05rem .4rem;background:var(--rt-card);color:var(--rt-ink)}
   .rt-marks{display:flex;flex-wrap:wrap;gap:0 1rem;font-size:.92rem}
@@ -177,8 +183,10 @@ function legMap(leg: LegView, id: string): string {
     labels.push(`<text x="${f(x)}" y="${f(y)}" text-anchor="${anchor}"${cls ? ` class="${cls}"` : ''}>${h(text)}</text>`);
     return true;
   };
-  put(place(leg.from), Math.max(sx - 4, 3), sy + 15, 'start', '');
-  put(place(leg.to), Math.min(ex + 4, W - 3), ey + 15, 'end', '');
+  // Each end is labelled from its own side of the drawing, whichever way the leg runs.
+  const endLabel = (text: string, x: number, y: number, other: number) => (x <= other ? put(text, Math.max(x - 4, 3), y + 15, 'start', '') : put(text, Math.min(x + 4, W - 3), y + 15, 'end', '')) || put(text, Math.min(Math.max(x, 40), W - 40), y - 9, 'middle', '');
+  endLabel(place(leg.from), sx, sy, ex);
+  endLabel(place(leg.to), ex, ey, sx);
   const seen = new Set<string>([place(leg.from), place(leg.to)]);
   for (const s of leg.stops) {
     if (seen.has(s.town)) continue;
@@ -202,6 +210,7 @@ function legMap(leg: LegView, id: string): string {
 
 function marks(s: StopView, o: RoadPageOptions): string {
   const out: string[] = [];
+  if (s.breweryId === undefined) return '';                           // medals and tap lists belong to directory pages
   const cup = medalsFor(s.breweryId);
   for (const set of cup) out.push(`<a href="/brewery/${s.breweryId}"><span aria-hidden="true">🏅</span> ${h(plural(set.medals.length, `${set.competition} medal`))}</a>`);
   const i = DOWNTOWN_TOUR.stops.findIndex((t) => t.breweryId === s.breweryId), gabf = i < 0 ? [] : DOWNTOWN_TOUR.stops[i].gabf || [];
@@ -218,32 +227,46 @@ function marks(s: StopView, o: RoadPageOptions): string {
 /** The descriptive quote is shown only when it adds something: a real sentence, with its own source, that is not the evidence again. */
 export const quoteAdds = (s: StopView): boolean => s.quote.trim().length >= 45 && !!safeHttpUrl(s.quoteSourceUrl) && !s.evidence.includes(s.quote.trim()) && !s.quote.includes(s.evidence.trim());
 
+/** "hours" unless the checker's row says the evidence is a dated notice or event. */
+const evidenceHeading = (s: StopView) => `Operating evidence: ${s.evidenceKind === 'notice' ? 'dated notice' : 'hours'} read on ${s.evidenceChecked}`;
+
 function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
   const site = safeHttpUrl(s.website), evidenceUrl = safeHttpUrl(s.evidenceUrl), quoteUrl = safeHttpUrl(s.quoteSourceUrl), addressUrl = safeHttpUrl(s.addressSourceUrl);
   const where = [s.town, s.state].filter(Boolean).join(', ');
   const nearEnd = s.pastEnd ? ` Its nearest point on our mapped line is the ${h(place(s.pastEnd === 'start' ? leg.from : leg.to))} end.` : '';
   const directions = directionsUrl(s);
+  const page = s.breweryId !== undefined ? `/brewery/${s.breweryId}` : '';   // only stops in this site's directory have one
+  // Where the mapped line is missing (an unmeasured group) the stop carries no mile and no distance.
+  const placed = !s.unmeasured;
   return `
-          <li class="rt-stop" id="stop-${s.breweryId}">
-            <div class="rt-mile"><b>${mi(s.mile)}</b><span>mile</span></div>
+          <li class="rt-stop" id="stop-${a(s.key)}">
+            ${placed ? `<div class="rt-mile"><b>${mi(s.mile)}</b><span>mile</span></div>` : `<div class="rt-mile rt-nomile"><span>no mile</span></div>`}
             <div>
-              <h4><a href="/brewery/${s.breweryId}">${h(s.name)}</a></h4>
-              <p class="rt-where">${h(where)} · nearest point on our mapped line: mile ${mi(s.mile)} from ${h(place(leg.from))}, ${mi(s.milesFromEnd)} from ${h(place(leg.to))}</p>
-              <p><span class="rt-dist">${h(distanceLabel(s.detourMiles))}</span>${nearEnd}</p>
+              <h4>${page ? `<a href="${page}">${h(s.name)}</a>` : h(s.name)}</h4>
+              ${placed ? `<p class="rt-where">${h(where)} · nearest point on our mapped line: mile ${mi(s.mile)} from ${h(place(leg.from))}, ${mi(s.milesFromEnd)} from ${h(place(leg.to))}</p>
+              <p><span class="rt-dist">${h(distanceLabel(s.detourMiles))}</span>${nearEnd}</p>` : `<p class="rt-where">${h(where)}</p>`}
               ${s.address && addressUrl
                 ? `<p>${h(s.address)} <span class="rt-src">(as printed on ${ext(addressUrl, hostOf(addressUrl))})</span></p>`
                 : `<p class="rt-src">We do not have a sourced street address for this listing.</p>`}
               ${marks(s, o)}
-              <p class="rt-why"><strong>Operating evidence: hours read on ${h(s.evidenceChecked)}</strong></p>
+              <p class="rt-why"><strong>${h(evidenceHeading(s))}</strong></p>
               <blockquote>“${h(s.evidence)}”</blockquote>
               <p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))}. Check current opening information with the brewery before you travel.</p>
               ${quoteAdds(s) ? `<blockquote>“${h(s.quote)}”</blockquote>
               <p class="rt-src">Also read on ${ext(quoteUrl, hostOf(quoteUrl))}, ${h(s.checked)}</p>` : ''}
-              <p class="rt-links"><a href="/brewery/${s.breweryId}">Brewery Trip page</a>${site ? ext(site, 'Its own site') : ''}${directions ? gmaps(directions, 'Directions (opens Google Maps)') : ''}</p>
+              <p class="rt-links">${page ? `<a href="${page}">Brewery Trip page</a>` : ''}${site ? ext(site, 'Its own site') : ''}${directions ? gmaps(directions, 'Directions (opens Google Maps)') : ''}</p>
             </div>
-          </li>${s.gapAfterMiles !== null ? `
+          </li>${placed && s.gapAfterMiles !== null ? `
           <li class="rt-gapitem"><p class="rt-gap"><strong>${mi(s.gapAfterMiles)} miles</strong> along our mapped line from here (mile ${mi(s.mile)}) to ${h(s.mile + s.gapAfterMiles >= leg.lengthMiles - 0.05 ? `the end of the line at ${place(leg.to)}` : 'the next listed stop')}, with nothing on this list in between.</p></li>` : ''}`;
 }
+
+/** A note for travellers on a leg or stretch, with the words it rests on quoted beneath it. */
+const noteBlock = (n: RoadNote) => `
+          <div class="rt-note" role="note">
+            <p>${h(n.text)}</p>${(n.sources ?? []).filter((q) => safeHttpUrl(q.url)).map((q) => `
+            <blockquote>“${h(q.quote)}”</blockquote>
+            <p class="rt-src">${ext(safeHttpUrl(q.url), hostOf(q.url))}, read ${h(q.checked)}</p>`).join('')}
+          </div>`;
 
 function stretchNav(stops: StopView[], roadName: string): string {
   const links = stretchLinks(stops);
@@ -255,39 +278,79 @@ function stretchNav(stops: StopView[], roadName: string): string {
           <p class="rt-src">${h(DRIVING_SHORT)} Google chooses the route: it may not follow ${h(roadName)}, and our miles are measured on our own mapped line.</p>`;
 }
 
-/** How much of the directory near a leg (or road) we reached a decision on. Never implies a full review unless the counts say so. */
-export function coverageText(decided: number, candidates: number, limit: number, of: string): string {
-  if (!candidates) return `Our directory has no brewery within ${limit} straight-line miles of ${of}.`;
-  const base = `Our directory has ${plural(candidates, 'brewery', 'breweries')} within ${limit} straight-line miles of ${of}.`;
+/**
+ * How much of the starting list near a leg (or road) we reached a decision on. Never implies a full review unless the
+ * counts say so. `source` names where the candidates came from when that is not this site's directory.
+ */
+export function coverageText(decided: number, candidates: number, limit: number, of: string, source?: string): string {
+  const many = plural(candidates, 'brewery', 'breweries');
+  if (!candidates) return source ? `We started with no brewery within ${limit} straight-line miles of ${of}.` : `Our directory has no brewery within ${limit} straight-line miles of ${of}.`;
+  const base = source ? `We started from ${many} within ${limit} straight-line miles of ${of}, or in a place where that line is missing, drawn from ${source}.` : `Our directory has ${many} within ${limit} straight-line miles of ${of}.`;
   if (decided >= candidates) return `${base} We reached a decision on ${candidates === 1 ? 'it' : `all ${candidates}`}: listed here, or found closed, moved, a duplicate or not a taproom.`;
   if (!decided) return `${base} We have not reached a decision on any of them yet.`;
   return `${base} We reached a decision on ${decided} of them. The other ${candidates - decided} could not be confirmed either way and ${candidates - decided === 1 ? 'is' : 'are'} not listed.`;
 }
 
+/** The short form for a leg of a road whose starting list is described once, at the top of the page. */
+function legCoverage(leg: LegView, limit: number): string {
+  const n = leg.candidates, d = leg.decided, rest = n - d;
+  if (!n) return `We started with no brewery within ${limit} straight-line miles of this leg.`;
+  const base = `We started from ${plural(n, 'brewery', 'breweries')} near this leg (within ${limit} straight-line miles of it, or where the line is missing)`;
+  if (d >= n) return `${base} and reached a decision on ${n === 1 ? 'it' : `all ${n}`}.`;
+  if (!d) return `${base} and have not reached a decision on any of them yet.`;
+  return `${base} and reached a decision on ${d}. The other ${rest} could not be confirmed either way and ${rest === 1 ? 'is' : 'are'} not listed.`;
+}
+
+const legHead = (leg: LegView, n: number) => {
+  const ends = `${place(leg.from)} to ${place(leg.to)}`;
+  return leg.name ? `${leg.name}: ${ends}` : `Leg ${n}: ${ends}`;
+};
+
+function segmentSection(road: RoadView, leg: LegView, g: SegmentView, o: RoadPageOptions): string {
+  const count = g.stops.length + g.outer.length;
+  const all = [...g.stops, ...g.outer].sort((x, y) => x.mile - y.mile);
+  return `
+        <section aria-labelledby="seg-${a(leg.id)}-${a(g.id)}">
+          <h3 id="seg-${a(leg.id)}-${a(g.id)}">${h(g.name)}</h3>
+          <p class="rt-sub">Mile ${mi(g.fromMile)} to ${mi(g.toMile)} · ${count ? plural(count, 'listed stop') : 'nothing on this list'}${g.link && safeSitePath(g.link.href) && count ? ` · <a href="${a(safeSitePath(g.link.href))}">${h(g.link.text)}</a>` : ''}</p>
+          ${g.notes.map(noteBlock).join('')}
+          ${stretchNav(all, road.config.shortName)}
+          ${g.furtherOffMiles !== null && count ? `<p class="rt-sub">This stretch is dense, so the main list here is within ${g.limitMiles} straight-line miles of the mapped road. Those between ${g.limitMiles} and ${g.furtherOffMiles} miles follow as “a little further off”.</p>` : ''}
+          ${g.stops.length ? `<ol class="rt-stops">${g.stops.map((s) => stopItem(s, leg, o)).join('')}
+          </ol>` : ''}
+          ${g.outer.length ? `<h4 class="rt-outer">A little further off (${g.limitMiles} to ${g.furtherOffMiles ?? road.config.maxDetourMiles} straight-line miles from the mapped road)</h4>
+          <ol class="rt-stops">${g.outer.map((s) => stopItem(s, leg, o)).join('')}
+          </ol>` : ''}
+        </section>`;
+}
+
 function legSection(road: RoadView, leg: LegView, n: number, o: RoadPageOptions): string {
   const id = `leg-${leg.id}`;
-  const head = `${place(leg.from)} to ${place(leg.to)}`;
+  const listed = leg.stops.length + leg.unmeasured.reduce((k, u) => k + u.stops.length, 0);
   const facts = [`${mi(leg.lengthMiles)} miles on our mapped line`];
   if (leg.stops.length) {
     facts.push(`${plural(leg.stops.length, 'listed stop')} in ${plural(leg.towns, 'town')}`);
     if (leg.longestGap) facts.push(`longest gap between listed stops along our mapped line: ${mi(leg.longestGap.miles)} miles (mile ${mi(leg.longestGap.fromMile)} to ${mi(leg.longestGap.toMile)})`);
   }
   const body = !leg.stops.length ? '' : `${leg.leadGapMiles !== null ? `<p class="rt-gap"><strong>${mi(leg.leadGapMiles)} miles</strong> along our mapped line from its start at ${h(place(leg.from))} to the first listed stop.</p>` : ''}
-        ${leg.segments.map((g) => `
-        <section aria-labelledby="seg-${a(leg.id)}-${a(g.id)}">
-          <h3 id="seg-${a(leg.id)}-${a(g.id)}">${h(g.name)}</h3>
-          <p class="rt-sub">Mile ${mi(g.fromMile)} to ${mi(g.toMile)} · ${g.stops.length ? plural(g.stops.length, 'listed stop') : 'nothing on this list'}${g.link && safeSitePath(g.link.href) && g.stops.length ? ` · <a href="${a(safeSitePath(g.link.href))}">${h(g.link.text)}</a>` : ''}</p>
-          ${stretchNav(g.stops, road.config.shortName)}
-          ${g.stops.length ? `<ol class="rt-stops">${g.stops.map((s) => stopItem(s, leg, o)).join('')}
-          </ol>` : ''}
-        </section>`).join('')}`;
+        ${leg.segments.map((g) => segmentSection(road, leg, g, o)).join('')}`;
+  // Places where the mapped line is missing: listed, but with no mile and no distance.
+  const holes = leg.unmeasured.map((u) => `
+        <section aria-labelledby="hole-${a(leg.id)}-${a(u.id)}">
+          <h3 id="hole-${a(leg.id)}-${a(u.id)}">${h(u.name)}</h3>
+          <p class="rt-sub">${plural(u.stops.length, 'listed stop')}, in alphabetical order · not measured</p>
+          <div class="rt-note" role="note"><p>${h(u.note)}</p></div>
+          <ol class="rt-stops">${u.stops.map((s) => stopItem(s, leg, o)).join('')}
+          </ol>
+        </section>`).join('');
   return `
       <section aria-labelledby="${a(id)}">
-        <h2 id="${a(id)}">Leg ${n}: ${h(head)}</h2>
-        <p class="rt-sub">${h(leg.from)} to ${h(leg.to)} · ${h(facts.join(' · '))}</p>
-        <p class="rt-sub">${h(coverageText(leg.decided, leg.candidates, road.config.maxDetourMiles, 'this leg of our mapped line'))}${leg.stops.length ? '' : ' Nothing is listed on this leg.'}</p>
+        <h2 id="${a(id)}">${h(legHead(leg, n))}</h2>
+        <p class="rt-sub">${leg.side ? 'Side leg · ' : ''}${leg.name && !leg.side ? '' : `${h(leg.from)} to ${h(leg.to)} · `}${h(facts.join(' · '))}</p>
+        <p class="rt-sub">${h(road.config.startingList ? legCoverage(leg, road.config.maxDetourMiles) : coverageText(leg.decided, leg.candidates, road.config.maxDetourMiles, 'this leg of our mapped line'))}${listed ? '' : ' Nothing is listed on this leg.'}</p>
+        ${leg.notes.map(noteBlock).join('')}
         ${legMap(leg, `map-${leg.id}`)}
-        ${body}
+        ${body}${holes}
       </section>`;
 }
 
@@ -304,24 +367,32 @@ export const thirdPartyHosts = (road: RoadView) => [...new Set(road.stops.filter
  * driving; provenance stated when it is mixed.
  */
 export const roadSummary = (road: RoadView) => {
-  const n = road.stops.length, other = road.stops.filter((s) => !fromOwnSite(s)).length;
-  return `${plural(n, 'brewery', 'breweries')} from our directory within ${road.config.maxDetourMiles} straight-line miles of our mapped line of ${road.config.shortName}, ordered by their nearest point along it; these are not driving distances. `
-    + `Each listing is supported by published visiting hours read on the date shown.${other ? ` For ${other}, the source is not the brewery's own site.` : ''}`;
+  const loose = road.legs.flatMap((l) => l.unmeasured), unmeasured = loose.reduce((k, u) => k + u.stops.length, 0);
+  const n = road.stops.length - unmeasured, other = road.stops.filter((s) => !fromOwnSite(s)).length, notices = road.stops.some((s) => s.evidenceKind === 'notice');
+  return `${plural(n, 'brewery', 'breweries')}${road.config.startingList ? '' : ' from our directory'} within ${road.config.maxDetourMiles} straight-line miles of our mapped line of ${road.config.shortName}, ordered by their nearest point along it; these are not driving distances. `
+    + (unmeasured ? `${unmeasured} more ${unmeasured === 1 ? 'is' : 'are'} listed without a distance where that line is missing (${loose.map((u) => u.name.replace(/^In /, '')).join(', ')}). ` : '')
+    + `Each listing is supported by published visiting hours${notices ? ', or a dated notice,' : ''} read on the date shown.${other ? ` For ${other}, the source is not the brewery's own site.` : ''}`;
 };
 /**
  * The section in one or two sentences, for places that link to it (/trails, llms.txt). Says the same thing as the pages
  * do: ordered by nearest point, dated source checks, and third-party sources only when there are some.
  */
 export const roadsBlurb = (roads: RoadView[]) =>
-  `Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listing is supported by published visiting hours read on the date shown${roads.some((r) => thirdPartyHosts(r).length) ? '; some sources are third-party' : ''}.`;
+  `Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listing is supported by published visiting hours${roads.some((r) => r.stops.some((x) => x.evidenceKind === 'notice')) ? ', or a dated notice,' : ''} read on the date shown${roads.some((r) => thirdPartyHosts(r).length) ? '; some sources are third-party' : ''}.`;
 
 export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
   const c = road.config, url = `${SITE}/roads/${c.slug}`, title = roadTitle(road);
-  const totalMiles = road.legs.reduce((n, l) => n + l.lengthMiles, 0);
+  const through = road.legs.filter((l) => !l.side), sides = road.legs.filter((l) => l.side);
+  const totalMiles = through.reduce((n, l) => n + l.lengthMiles, 0);
+  const joined = road.legs.filter((l) => l.joins > 0);
   const others = thirdPartyHosts(road), byEye = road.stops.filter((s) => s.browserChecked).length;
-  const jump = road.legs.flatMap((l) => l.stops.length
-    ? l.segments.filter((g) => g.stops.length).map((g) => `<li><a href="#seg-${a(l.id)}-${a(g.id)}">${h(g.name)} (${g.stops.length})</a></li>`)
-    : [`<li><a href="#leg-${a(l.id)}">${h(place(l.from))} to ${h(place(l.to))}</a></li>`]);
+  const listedOn = (l: LegView) => l.stops.length + l.unmeasured.reduce((k, u) => k + u.stops.length, 0);
+  // Named legs (states) get one jump link each; otherwise one per stretch that has stops.
+  const jump = road.legs.flatMap((l) => l.name
+    ? [`<li><a href="#leg-${a(l.id)}">${h(l.name)} (${listedOn(l)})</a></li>`]
+    : l.stops.length
+      ? l.segments.filter((g) => g.stops.length + g.outer.length).map((g) => `<li><a href="#seg-${a(l.id)}-${a(g.id)}">${h(g.name)} (${g.stops.length + g.outer.length})</a></li>`)
+      : [`<li><a href="#leg-${a(l.id)}">${h(place(l.from))} to ${h(place(l.to))}</a></li>`]);
 
   const content = `${STYLE}
   <div class="trail-hero">
@@ -330,7 +401,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
       <p style="opacity: 0.92; max-width: 40rem;">${h(roadSummary(road))} It is not every brewery near the road. Check current opening information with each brewery before you travel.</p>
       <ul class="rt-hero-facts">
         <li><b>${road.stops.length}</b>listed stops</li>
-        <li><b>${mi(totalMiles)}</b>miles of mapped line in ${plural(road.legs.length, 'leg')}</li>
+        <li><b>${h(totalMiles.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }))}</b>miles of mapped line in ${plural(through.length, 'leg')}${sides.length ? `, plus ${plural(sides.length, 'side leg')}` : ''}</li>
         <li>Source-check dates <b style="margin-left:.3rem">${h(road.checkedFrom === road.checkedTo ? road.checkedTo : `${road.checkedFrom} to ${road.checkedTo}`)}</b></li>
       </ul>
     </div>
@@ -339,7 +410,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
   <div class="container my-4 rt">
     <div class="rt-wrap">${drivingNote()}
       <p>${h(c.about)}</p>
-      <p>${h(coverageText(road.decided, road.candidates, c.maxDetourMiles, `our mapped line of ${c.shortName}`))}</p>
+      <p>${h(coverageText(road.decided, road.candidates, c.maxDetourMiles, `our mapped line of ${c.shortName}`, c.startingList))}</p>
       <nav aria-label="Stretches of the road">
         <ul class="rt-jump">${jump.join('')}</ul>
       </nav>
@@ -348,14 +419,15 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
       <section aria-labelledby="how" class="rt-how">
         <h2 id="how">How this list was made</h2>
         <ul>
-          <li><strong>The road.</strong> ${h(c.geometry.source)} on ${h(c.geometry.downloaded)}. ${OSM_LINK}; the data is available under the Open Database License. Where the road has two carriageways we measure along one. This is our mapped line.</li>
+          <li><strong>The road.</strong> ${h(c.geometry.source)} on ${h(c.geometry.downloaded)}. ${OSM_LINK}; the data is available under the Open Database License. Where the road has two carriageways we measure along one. This is our mapped line.${joined.length ? ` Where two mapped ways do not quite meet we join them with a straight line: ${h(joined.map((l) => `${l.name || `${place(l.from)} to ${place(l.to)}`} ${plural(l.joins, 'join')} totalling ${l.joinedMiles.toFixed(2)} miles (widest ${l.widestJoinMiles.toFixed(2)})`).join('; '))}.` : ''}</li>${(c.methodNotes ?? []).map((t) => { const i = t.indexOf('. '); return `
+          <li><strong>${h(i > 0 ? t.slice(0, i + 1) : '')}</strong>${h(i > 0 ? t.slice(i + 1) : t)}</li>`; }).join('')}
           <li><strong>Order and miles.</strong> Stops are ordered by their nearest point along our mapped line. The mile beside each stop is the distance along that line from the start of the leg to that nearest point. It is our calculation, not a milepost, and it is not the order or the distance you would drive.</li>
           <li><strong>Distance from the road.</strong> A straight line from the brewery to the nearest point on our mapped line. Driving distance and access may differ substantially.</li>
-          <li><strong>Who is listed.</strong> A brewery is here when it is in our directory, sits within ${c.maxDetourMiles} straight-line miles of our mapped line, and its listing is supported by published visiting hours that we read on the date shown. Ones we found closed or moved, and ones we could not confirm, are left out.</li>
+          <li><strong>Who is listed.</strong> A brewery is here when it is ${c.startingList ? `on the list we started from (${h(c.startingList)})` : 'in our directory'}, sits within ${c.maxDetourMiles} straight-line miles of our mapped line, and its listing is supported by published visiting hours${road.stops.some((x) => x.evidenceKind === 'notice') ? ', or a dated notice,' : ''} that we read on the date shown. Ones we found closed or moved, and ones we could not confirm, are left out.${road.unplaced ? ` ${plural(road.unplaced, 'more brewery', 'more breweries')} with that evidence ${road.unplaced === 1 ? 'is' : 'are'} left out because we could not get coordinates for the printed address, so we could not place ${road.unplaced === 1 ? 'it' : 'them'} against the line.` : ''}</li>
           <li><strong>Sources.</strong> Each excerpt is copied from the page linked under it, on the date shown. Addresses are copied from the page named beside them.${others.length ? ` For ${plural(road.stops.filter((s) => !fromOwnSite(s)).length, 'stop')} the source is not the brewery's own site: ${h(others.map((x) => (x === 'untappd.com' ? 'Untappd (untappd.com)' : x)).join(', '))}.` : ''}${byEye ? ` ${plural(byEye, 'page')} could only be read in a browser; a person read ${byEye === 1 ? 'it' : 'those'}, not our checking script.` : ''}</li>
-          <li><strong>Towns.</strong> Town names are the ones in our directory. A brewery's printed address sometimes names a different post-office town.</li>
-          <li><strong>Google Maps links.</strong> We send Google the brewery name and sourced address where available. Otherwise we use its name and directory town and state; town and state may also supplement an incomplete address. Check the destination before travelling. Google chooses the route, which may not follow the road.</li>
-          <li><strong>Opening hours.</strong> The hours under each stop are quoted as the source printed them on the date we read them. They support listing the brewery as operating. They do not mean it was open on that date, and they are not a current timetable. Check current opening information with the brewery before you travel.</li>
+          <li><strong>Towns.</strong> Town names are the ones in ${c.startingList ? 'the list we started from' : 'our directory'}. A brewery's printed address sometimes names a different post-office town.</li>
+          <li><strong>Google Maps links.</strong> We send Google the brewery name and sourced address where available. Otherwise we use its name and ${c.startingList ? 'listed' : 'directory'} town and state; town and state may also supplement an incomplete address. Check the destination before travelling. Google chooses the route, which may not follow the road.</li>
+          <li><strong>Opening hours.</strong> The hours under a stop are quoted as the source printed them on the date we read them. They support listing the brewery as operating. They do not mean it was open on that date, and they are not a current timetable. Check current opening information with the brewery before you travel.</li>
         </ul>
         <details>
           <summary>Sources for what we say about the road</summary>
@@ -371,7 +443,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
     itinerary: {
       '@type': 'ItemList', numberOfItems: road.stops.length,
       itemListElement: road.stops.map((s, i) => ({ '@type': 'ListItem', position: i + 1, item: {
-        '@type': 'Brewery', name: s.name, url: `${SITE}/brewery/${s.breweryId}`, sameAs: safeHttpUrl(s.website) || undefined,
+        '@type': 'Brewery', name: s.name, url: s.breweryId !== undefined ? `${SITE}/brewery/${s.breweryId}` : safeHttpUrl(s.website) || undefined, sameAs: s.breweryId !== undefined ? safeHttpUrl(s.website) || undefined : undefined,
         address: { '@type': 'PostalAddress', streetAddress: s.address && safeHttpUrl(s.addressSourceUrl) ? s.address : undefined, addressLocality: s.town || undefined, addressRegion: s.state || undefined, addressCountry: 'US' },
       } })),
     },
@@ -388,14 +460,14 @@ export function roadsIndexPage(roads: RoadView[], subdomain?: SubdomainContext):
         <li class="rt-card${r.config.headline ? ' rt-headline' : ''}">
           <h2><a href="/roads/${a(r.config.slug)}">${h(roadTitle(r))}</a></h2>
           <p>${h(roadSummary(r))}</p>
-          <ul>${r.legs.map((l) => `<li>${h(place(l.from))} to ${h(place(l.to))}: ${mi(l.lengthMiles)} miles of mapped line, ${l.stops.length ? plural(l.stops.length, 'listed stop') : 'nothing listed'}; a decision reached on ${l.decided} of ${l.candidates} nearby directory breweries</li>`).join('')}</ul>
+          <ul>${r.legs.map((l) => { const k = l.stops.length + l.unmeasured.reduce((q, u) => q + u.stops.length, 0); return `<li>${l.name ? `${h(l.name)}${l.side ? '' : `: ${h(place(l.from))} to ${h(place(l.to))}`}` : `${h(place(l.from))} to ${h(place(l.to))}`}: ${mi(l.lengthMiles)} miles of mapped line, ${k ? plural(k, 'listed stop') : 'nothing listed'}; ${l.candidates ? `a decision reached on ${l.decided} of ${l.candidates} nearby ${r.config.startingList ? 'breweries we started from' : 'directory breweries'}` : 'no nearby brewery on the list we started from'}</li>`; }).join('')}</ul>
           <p><a href="/roads/${a(r.config.slug)}">See the list for ${h(r.config.shortName)}</a></p>
         </li>`;
   const content = `${STYLE}
   <div class="trail-hero">
     <div class="container">${breadcrumb([{ name: 'Home', href: '/' }, { name: 'Road trips' }])}
       <h1 style="color: #fff;">Brewery road trips, one road at a time</h1>
-      <p style="opacity: 0.92; max-width: 40rem;">Each page lists breweries from our directory near one road, ordered by their nearest point along our mapped line of that road, with the straight-line distance from the line and the published visiting hours that support each listing, with the date we read them. These are not driving distances.</p>
+      <p style="opacity: 0.92; max-width: 40rem;">Each page lists breweries near one road, ordered by their nearest point along our mapped line of that road, with the straight-line distance from the line and the published visiting hours that support each listing, with the date we read them. These are not driving distances.</p>
     </div>
   </div>
   <div class="container my-4 rt">
@@ -405,7 +477,7 @@ export function roadsIndexPage(roads: RoadView[], subdomain?: SubdomainContext):
       <section aria-labelledby="roads-how" class="rt-how">
         <h2 id="roads-how">What makes a road page</h2>
         <ul>
-          <li>A road page is published only after an editor has reviewed it. Each page says how many of our directory's nearby breweries we reached a decision on. It is not a claim that every brewery near the road was reviewed.</li>
+          <li>A road page is published only after an editor has reviewed it. Each page says where its starting list came from and how many of those nearby breweries we reached a decision on. It is not a claim that every brewery near the road was reviewed.</li>
           <li>Stops are ordered by their nearest point along our mapped line of the road, with the straight-line distance from that line. These are not driving distances. Long gaps between listed stops are marked.</li>
           <li>Each stop carries the published visiting hours that support its listing, the date we read them, and a link to that page. Check current opening information with the brewery before you travel.</li>
           <li>Road lines come from OpenStreetMap, ${OSM_LINK}.</li>

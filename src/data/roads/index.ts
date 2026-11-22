@@ -7,10 +7,12 @@
 import { currentDate, viewRoad, type RoadView } from '../../lib/road-trip';
 import { US_422 } from './us-422';
 import { US_422_BUILT } from './us-422.built';
+import { ROUTE_66 } from './route-66';
+import { ROUTE_66_BUILT } from './route-66.built';
 
 let memo: { day: string; roads: RoadView[] } | null = null;
 export function allRoads(today: string = currentDate()): RoadView[] {
-  if (!memo || memo.day !== today) memo = { day: today, roads: [viewRoad(US_422, US_422_BUILT, today)] };
+  if (!memo || memo.day !== today) memo = { day: today, roads: [viewRoad(ROUTE_66, ROUTE_66_BUILT, today), viewRoad(US_422, US_422_BUILT, today)] };
   return memo.roads;
 }
 
@@ -20,6 +22,6 @@ export const availableRoads = (roads: RoadView[] = allRoads()): RoadView[] =>
 export const roadBySlug = (slug: string, roads: RoadView[] = allRoads()): RoadView | undefined => availableRoads(roads).find((r) => r.config.slug === slug);
 /** The road trip a brewery is a listed stop on, if any (for the link from its own page). */
 export const roadStopFor = (breweryId: number, roads: RoadView[] = allRoads()) => {
-  for (const road of availableRoads(roads)) { const stop = road.stops.find((s) => s.breweryId === breweryId); if (stop) return { road, stop }; }
+  for (const road of availableRoads(roads)) { const stop = road.stops.find((s) => s.breweryId !== undefined && s.breweryId === breweryId); if (stop) return { road, stop }; }
   return null;
 };

@@ -1,0 +1,794 @@
+[
+ {
+  "obdb_id": "c69231e2-6ff1-4d14-a940-02a8b551d03b",
+  "name": "Schlafly Bottleworks",
+  "city": "Maplewood",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://www.schlafly.com/",
+  "address_as_printed": "7260 Southwest Avenue, Maplewood, MO 63143",
+  "address_source_url": "https://www.schlafly.com/bottleworks",
+  "operating_evidence": {
+   "excerpt": "Hours Mon: 11am\u201310pm Tue: 11am\u201310pm Wed: 11am\u201310pm Thu: 11am\u201310pm Fri: 11am\u201310pm Sat: 11am\u201310pm Sun: 11am\u20139pm Kitchen closes hour early Trivia Nights Tuesdays at 7pm Wednesdays at 7pm Gift Cards Purchase New Gift Card Check Gift Card",
+   "url": "https://www.schlafly.com/bottleworks",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Brewpub and bottle shop with kitchen; Schlafly has several locations (Tap Room downtown, Bottleworks, airport). Hours are for Bottleworks only. The page does not say whether beer is brewed at this site."
+ },
+ {
+  "obdb_id": "c3b74785-b1d3-4e76-9037-7512e99970eb",
+  "name": "Side Project Brewing",
+  "city": "Maplewood",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://www.sideprojectbrewing.com/",
+  "address_as_printed": "7458 Manchester Rd, Maplewood, MO 63143",
+  "address_source_url": "https://www.sideprojectbrewing.com/pages/the-brewery",
+  "operating_evidence": {
+   "excerpt": "Hours: Mon: 4-8pm Tues: CLOSED Wed-Thurs: 4-8pm Friday-Sunday: 1-8pm Happy Hour every Monday 4-7:30pm Complimentary draft pour with a purchase",
+   "url": "https://www.sideprojectbrewing.com/pages/the-brewery",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Brewery taproom with sandwiches. Same company runs The Cellar (7373 Marietta Ave) and Pizza (2657 Lyle Ave) as separate locations; hours here are The Brewery only."
+ },
+ {
+  "obdb_id": "937b7b68-c9da-4466-851f-14a583a95844",
+  "name": "Six Mile Bridge Brewery",
+  "city": "Maryland Heights",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://sixmilebridgebeer.com/",
+  "address_as_printed": "11841 Dorsett Road Maryland Heights, MO 63043",
+  "address_source_url": "https://sixmilebridgebeer.com/",
+  "operating_evidence": {
+   "excerpt": "Tap Room Hours Monday: 11am \u2013 10pm Tuesday: 11am \u2013 10pm Wednesday: 11am \u2013 10pm Thursday: 11am \u2013 10pm Friday: 11am \u2013 10pm Saturday: 11am \u2013 10pm Sunday: noon \u2013",
+   "url": "https://sixmilebridgebeer.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom with kitchen. Homepage still carries placeholder filler text; hours and address are real. Site does not state whether beer is brewed on site in the text read. About 1.3 miles from the 66 alignment in the dataset."
+ },
+ {
+  "obdb_id": "8f3206c8-8c13-4357-875b-25fcbbc9d63f",
+  "name": "Pacific Brew Haus",
+  "city": "Pacific",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://www.pacificbrewhaus.com",
+  "address_as_printed": "220 South First Street Pacific MO 63069",
+  "address_source_url": "https://www.pacificbrewhaus.com",
+  "operating_evidence": {
+   "excerpt": "Hours Kitchen: Monday-Sunday 11am -9pm Bar: Sunday-Thursday 11am-9pm Friday & Saturday 11am-10pm Established 2013 Apply Now Currently hiring kitchen staff and servers.",
+   "url": "https://www.pacificbrewhaus.com",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Restaurant and bar with brewery (\"Established 2013\"); page does not say what is brewed on site. Page still shows a redirect line to www.brewhauspacificmo.com, which does not resolve; do not link that domain."
+ },
+ {
+  "obdb_id": "d454edbb-ddb4-4aaa-a922-e6c7ad84c73b",
+  "name": "Point Labaddie Brewery",
+  "city": "Labadie",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://pointlabaddiebrewery.com/",
+  "address_as_printed": "1029 Thiebes Road, Labadie, Missouri 63055",
+  "address_source_url": "https://pointlabaddiebrewery.com/",
+  "operating_evidence": {
+   "excerpt": "Tap Room Hours Open today 11:00 am \u2013 05:00",
+   "url": "https://pointlabaddiebrewery.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Rural brewery taproom with live events (Wednesday trivia, Friday jams); the site shows a live \"Open today\" hours widget rather than a weekly table, and event dates were not 2026-dated in the text read. No outside alcohol permitted on property."
+ },
+ {
+  "obdb_id": "fa88cd5f-0c7d-495a-a4db-1ef89e1c1b7a",
+  "name": "Public House Brewing Company (St. James Taproom)",
+  "city": "Saint James",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://www.publichousebrewery.com/",
+  "address_as_printed": "551 State Route B, St James, MO",
+  "address_source_url": "https://www.publichousebrewery.com/visit/st-james-taproom/",
+  "operating_evidence": {
+   "excerpt": "Open Hours Our Location MONDAY \u2013 TUESDAY CLOSED Wednesday \u2013 Thursday 12 PM \u2013 8 PM Friday 12 PM \u2013 8 PM Bar is open until 10 PM Saturday \u2013",
+   "url": "https://www.publichousebrewery.com/visit/st-james-taproom/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Taproom beside the St. James Winery on I-44; sells wine too. The Rolla location is a separate row."
+ },
+ {
+  "obdb_id": "7c04768b-0adb-46eb-844b-c7f150a45831",
+  "name": "Public House Brewing Company (Rolla R&D Brewpub)",
+  "city": "Rolla",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://www.publichousebrewery.com/",
+  "address_as_printed": "600 North Rolla Street Rolla, MO",
+  "address_source_url": "https://www.publichousebrewery.com/visit/rolla-rd-brewpub/",
+  "operating_evidence": {
+   "excerpt": "Open Hours Our Location Monday \u2013 Thursday Kitchen & Bar: 3 PM \u2013 9 PM Friday Kitchen: 3 PM \u2013 10 PM Bar: 3 PM \u2013 11 PM Saturday Kitchen: 11 AM- 10 PM",
+   "url": "https://www.publichousebrewery.com/visit/rolla-rd-brewpub/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Brewpub with kitchen, downtown Rolla (\"Block 600\"). The St. James location is a separate row."
+ },
+ {
+  "obdb_id": "2c7c2d1e-c48c-4842-9753-a0bb88a605c7",
+  "name": "Piney River Taproom",
+  "city": "Waynesville",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://pineyriverbrewing.com/",
+  "address_as_printed": "326 Historic Route 66 E Waynesville, MO",
+  "address_source_url": "https://pineyriverbrewing.com/route-66/",
+  "operating_evidence": {
+   "excerpt": "HOURS: Monday \u2013 Wednesday: 11:00 a.m. \u2013 9:00 p.m. Thursday \u2013 Saturday: 11:00 a.m. \u2013 10:00 p.m. Sunday: 12:00 p.m. \u2013 9:00 p.m. The Piney River Taproom on historic Route",
+   "url": "https://pineyriverbrewing.com/route-66/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Downtown Waynesville taproom of Piney River Brewing (brewery and BARn taproom are at Bucyrus, about 40 miles away, and are NOT on Route 66). The Waynesville page is not in the site main menu and has no date; hours are printed only. Census geocoder found no match for this address, so distance uses the dataset coordinates (3.29 mi)."
+ },
+ {
+  "obdb_id": "1e876ec1-817a-4153-a143-459dc0627309",
+  "name": "Boat Town Brewing",
+  "city": "Phillipsburg",
+  "state": "MO",
+  "status": "MOVED",
+  "official_url": "https://boattownbrewing.com/",
+  "address_as_printed": "214 West Commercial Street, Lebanon, Missouri 65536",
+  "address_source_url": "https://boattownbrewing.com/contact",
+  "operating_evidence": {
+   "excerpt": "Hours Today Closed Wednesday: 3pm - 9pm Thursday: 3pm - 9pm Friday:11am-11pm Saturday: 11am-11pm Sunday, Monday, Tuesday: CLOSED Plan Your Event or",
+   "url": "https://boattownbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Dataset address (18146 Campground Rd, Phillipsburg) is not what the site prints; site contact page prints 214 West Commercial Street, Lebanon. Footer says Copyright 2018, so the site is not recently maintained. Hours printed on homepage. Census coordinates for new address in coords field.",
+  "coordinates": [
+   37.679543749317,
+   -92.664894481119
+  ],
+  "coordinates_source": "US Census geocoder",
+  "miles_from_66_estimate": 0.41
+ },
+ {
+  "obdb_id": "5aafd9ac-cb3b-4a21-9952-9baff7a7d3e4",
+  "name": "Tie and Timber Beer Company",
+  "city": "Springfield",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://tieandtimberbeerco.com/",
+  "address_as_printed": "1451 E Cherry St., Springfield, MO",
+  "address_source_url": "https://tieandtimberbeerco.com/contact/",
+  "operating_evidence": {
+   "excerpt": "TAPROOM & BREWERY Monday \u2013 Thursday | 2 \u2013 10 Friday \u2013 Saturday | 12 \u2013 11 Sunday | 12 \u2013 9 PIZZA KITCHEN",
+   "url": "https://tieandtimberbeerco.com/contact/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom and brewery with pizza kitchen. Site prints 1451 E Cherry St (dataset had 1459); Census coordinates agree with the dataset block.",
+  "coordinates": [
+   37.203766654452,
+   -93.269177268706
+  ],
+  "coordinates_source": "US Census geocoder"
+ },
+ {
+  "obdb_id": "4e9edeef-4d5b-4c71-8461-ab35c25094c6",
+  "name": "Hold Fast Brewing",
+  "city": "Springfield",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://hfbrewing.com/",
+  "address_as_printed": "235 N. Kimbrough Ave. Springfield, MO 65806",
+  "address_source_url": "https://hfbrewing.com/contact/",
+  "operating_evidence": {
+   "excerpt": "Hold Fast Brewing Hours: Monday - Thursday: 3 pm - 9 pm Friday - Saturday: Noon - 11 pm Sunday: Noon - 6 pm Please enable",
+   "url": "https://hfbrewing.com/contact/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom; footer is dated 2026."
+ },
+ {
+  "obdb_id": "fdab4b0b-4e70-4033-a944-69a49285e5f4",
+  "name": "Springfield Brewing Company (BrewCo Taproom)",
+  "city": "Springfield",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://springfieldbrewingco.com/",
+  "address_as_printed": "305 South Market Ave Springfield, MO 65806",
+  "address_source_url": "https://springfieldbrewingco.com/contact-us/",
+  "operating_evidence": {
+   "excerpt": "BrewCo Monday 11-8pm Tuesday closed Wednesday 11-8pm Thursday 11-8pm Friday 11-9pm Saturday 9-9pm Sunday 9-8pm Check each location for their specific hours during the",
+   "url": "https://springfieldbrewingco.com/contact-us/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Downtown taproom on Springfield Brewing Co.s own site (which also runs One2Five in Rogersville and Mile6 in Willard, outside the corridor). Hours differ by season; the page says to check each location."
+ },
+ {
+  "obdb_id": "69912ded-9a07-4f49-870a-85a78260bf4d",
+  "name": "Mother's Brewing Co",
+  "city": "Springfield",
+  "state": "MO",
+  "status": "OPEN",
+  "official_url": "https://www.mothersbrewing.com/",
+  "address_as_printed": "215 S Grant Ave, Springfield, MO 65806",
+  "address_source_url": "https://www.mothersbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "215 S Grant Ave, Springfield, MO 65806 Mon. 2pm-9pm Tue. 2-9pm Wed. 2-9pm Thu. 2-9pm Fri. 2pm-10pm Sat. 2pm-10pm Sun. 2-9pm Take",
+   "url": "https://www.mothersbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom; current seasonal beer names on the page."
+ },
+ {
+  "obdb_id": "24a4e05d-e5f7-4864-a030-a251d1803d82",
+  "name": "Heirloom Rustic Ales",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.heirloomrusticales.com/",
+  "address_as_printed": "2113 E. Admiral Blvd Tulsa, OK",
+  "address_source_url": "https://www.heirloomrusticales.com/contact",
+  "operating_evidence": {
+   "excerpt": "hours of operation Monday: 3-9 PM Tuesday: 3-9 PM Wednesday: 3-9 PM Thursday: 3-9 PM Friday: 3-10 PM Saturday: 12-10 PM Sunday: 12-5 PM questions If you have",
+   "url": "https://www.heirloomrusticales.com/contact",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom."
+ },
+ {
+  "obdb_id": "3abc62ca-39c8-4fb3-a9bd-9bc343bf5ea2",
+  "name": "Marshall Brewing Co, LLC",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.marshallbrewing.com/",
+  "address_as_printed": "1742 E. 6th St. Tulsa, OK",
+  "address_source_url": "https://www.marshallbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "VISIT OUR TAP ROOM Mon & Tues: 3pm-8pm Wed & Thur: 11am-9pm Fri: 11am-10pm Sat: Noon-10pm Sun: 1-7pm 1742 E. 6th St.",
+   "url": "https://www.marshallbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Brewery and taproom. Site says to check Facebook for holiday closings."
+ },
+ {
+  "obdb_id": "06b8b131-a227-414a-ac7f-fd63c63828b9",
+  "name": "Cabin Boys Brewery (Utica Square / 7th St)",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.cabinboysbrewery.com/",
+  "address_as_printed": "1717 East 7th Street, Tulsa, OK",
+  "address_source_url": "https://www.cabinboysbrewery.com/contact",
+  "operating_evidence": {
+   "excerpt": "Hours Mon 4pm to 9pm Tue 4pm to 9pm Wed 4pm to 9pm Thu 4pm to 11pm Fri 11am to 12am Sat 11am to 12am Sun 11am to 9pm",
+   "url": "https://www.cabinboysbrewery.com/contact",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Cabin Boys also runs a Brewpub at 223 N Main St Tulsa (see leads file) and a Claremore location."
+ },
+ {
+  "obdb_id": "620a0c65-51c4-4be2-be16-025a3f102fbc",
+  "name": "Dead Armadillo Brewery",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.dabrewery.com",
+  "address_as_printed": "1004 East 4th Street, Tulsa, OK",
+  "address_source_url": "https://www.dabrewery.com",
+  "operating_evidence": {
+   "excerpt": "hours Monday - Thursday | 2 - 9 PM Friday | 2 - 11 PM Saturday | 12 - 11",
+   "url": "https://www.dabrewery.com/taproom",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Brewery taproom. Dataset has the address 1004 E 4th St."
+ },
+ {
+  "obdb_id": "55a4aaa7-503f-45e4-bd82-522e5ad20d42",
+  "name": "New Era Fine Fermentations (Neff Brewing)",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.neffbrewing.com/",
+  "address_as_printed": "321 S Frankfort Ave Tulsa, OK 74120",
+  "address_source_url": "https://www.neffbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Pub Hours Monday: Closed Tuesday - Thursday: 3 pm - 10 pm Friday & Saturday: 11 am - 11 pm Sunday: 11 am - 7 pm",
+   "url": "https://www.neffbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Brewpub with food and brunch."
+ },
+ {
+  "obdb_id": "d32244a7-1996-4dd3-b2b4-490dde9a5c39",
+  "name": "Nothing's Left Brewing Co.",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.nothingsleftbrewingco.com/",
+  "address_as_printed": "1502 E 6th St Tulsa, OK 74120",
+  "address_source_url": "https://www.nothingsleftbrewingco.com/",
+  "operating_evidence": {
+   "excerpt": "Hours Tue, Wed, Thurs 3:00 PM - 9:00 PM Fri 1:00PM-11:00PM Sat 12:00 PM - 11:00 PM Sun 1:00 PM - 7:00 PM Find us on...",
+   "url": "https://www.nothingsleftbrewingco.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Dataset URL nothingsleftbrew.co does not resolve; the working domain is nothingsleftbrewingco.com. Taproom in a remodeled Texaco station. Do not link nothingsleftbrew.co."
+ },
+ {
+  "obdb_id": "4f92a80e-b6ec-43a8-bdfe-0156c015c343",
+  "name": "Welltown Brewing",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.welltownbrewing.com/",
+  "address_as_printed": "114 W Archer St Tulsa, OK 74103",
+  "address_source_url": "https://www.welltownbrewing.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom Hours Mon: Closed Tue-Thu: 4pm \u2013 10pm Fri: 12pm \u2013 12am Sat: 12pm \u2013 12am Sun: 12pm \u2013 8pm Nuggies Hours",
+   "url": "https://www.welltownbrewing.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom plus Nuggies food counter; hours given for both."
+ },
+ {
+  "obdb_id": "1d7e7d19-91e3-4752-9fb0-9454fad1aff8",
+  "name": "Bricktown Brewery (Remington Park)",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://bricktownbrewery.com/",
+  "address_as_printed": "1 Remington Pl, Oklahoma City, OK 73111",
+  "address_source_url": "https://bricktownbrewery.com/location/remington-park/",
+  "operating_evidence": {
+   "excerpt": "VISIT US Sunday \u2013 Thursday / 11AM \u2013 9PM Friday \u2013 Saturday / 11AM \u2013 10PM FOLLOW US Facebook Twitter",
+   "url": "https://bricktownbrewery.com/location/remington-park/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Restaurant-brewery chain with 23 locations; this location is inside the Remington Park racetrack. The page does not say beer is brewed at this site. Dataset coordinates for this and the other OKC Bricktown row look swapped between the two addresses.",
+  "coordinates": [
+   35.525242930847,
+   -97.473560333634
+  ],
+  "coordinates_source": "US Census geocoder",
+  "miles_from_66_estimate": 1.33
+ },
+ {
+  "obdb_id": "4468dae2-ef14-4570-af79-812226eaabd1",
+  "name": "Bricktown Brewery (Downtown OKC)",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://bricktownbrewery.com/",
+  "address_as_printed": "1 N Oklahoma Ave, Oklahoma City, OK 73104",
+  "address_source_url": "https://bricktownbrewery.com/location/downtown-okc/",
+  "operating_evidence": {
+   "excerpt": "VISIT US Monday\u2013 Thursday / 11AM \u2013 10PM Friday & Saturday / 11AM \u2013 11PM Sunday / 11AM \u2013 9PM FOLLOW US Facebook Twitter",
+   "url": "https://bricktownbrewery.com/location/downtown-okc/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Restaurant-brewery chain; downtown location in the Bricktown district. The page does not say beer is brewed at this site. Dataset coordinates (35.5677,-97.5102) do not match this address; see coordinates field from the Census geocoder.",
+  "coordinates": [
+   35.466528529839,
+   -97.51072279657
+  ],
+  "coordinates_source": "US Census geocoder",
+  "miles_from_66_estimate": 1.84
+ },
+ {
+  "obdb_id": "6dfefac9-78b1-4064-bbc8-7576201d9dbb",
+  "name": "Frenzy Brewing Company",
+  "city": "Edmond",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.frenzybrewing.com",
+  "address_as_printed": "15 S Broadway, Edmond, OK 73034",
+  "address_source_url": "https://www.frenzybrewing.com",
+  "operating_evidence": {
+   "excerpt": "Hours Sunday 1:00 pm - 8:00 pm Mon - Thu 3:00 pm - 9:00 pm Fri - Sat 12:00 pm - 11:00",
+   "url": "https://www.frenzybrewing.com",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom with \"Mug Club 2026\" on the page."
+ },
+ {
+  "obdb_id": "8fa5ceba-e668-479e-9eb6-792be566eff2",
+  "name": "Battered Boar Brewing Co",
+  "city": "Edmond",
+  "state": "OK",
+  "status": "MOVED",
+  "official_url": "http://batteredboar.com/",
+  "address_as_printed": "217 S. Santa Fe Ave, Edmond, OK, 73003",
+  "address_source_url": "http://batteredboar.com/",
+  "operating_evidence": {
+   "excerpt": "HOURS Monday Closed Tuesday Closed Wednesday 12pm \u2013 9pm Thursday 12pm \u2013 9pm Friday 12pm \u2013 10pm Saturday 11am \u2013 10pm Sunday 12pm \u2013",
+   "url": "http://batteredboar.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Dataset address (14700 Metro Plaza Blvd) is not what the site prints: it prints 217 S. Santa Fe Ave, Edmond. Site serves only over http (https certificate does not verify), so link http://batteredboar.com. Hours printed; page is undated. Also advertises a Globo Axe axe-throwing house. Coordinates from Census geocoder.",
+  "coordinates": [
+   35.651836007893,
+   -97.514002557518
+  ],
+  "coordinates_source": "US Census geocoder",
+  "miles_from_66_estimate": 1.8
+ },
+ {
+  "obdb_id": "13c71c4c-2ff7-4833-abaf-745311b9cd51",
+  "name": "Prairie Artisan Ales (OKC taproom)",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://prairieales.com/",
+  "address_as_printed": "3 NE 8th St. Oklahoma City, OK 73104",
+  "address_source_url": "https://prairieales.com/",
+  "operating_evidence": {
+   "excerpt": "3 NE 8th St. Oklahoma City, OK 73104 Open today 11am - 10pm On Tap More Prairie Beers Check out our expansive library of libations. Maybe",
+   "url": "https://prairieales.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Hours page lists 11am to 10pm every day. Dataset URL prairieales.com is correct."
+ },
+ {
+  "obdb_id": "c2c034ea-4967-4b4c-bf1c-e3bd75cd16f0",
+  "name": "Roughtail Brewing",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://roughtailbeer.com/",
+  "address_as_printed": "320 W. Memorial Rd., Oklahoma City, OK 73114",
+  "address_source_url": "https://roughtailbeer.com/taproom/",
+  "operating_evidence": {
+   "excerpt": "TAPROOM OPEN HOURS MON \u2013 WED 3 PM TO 9 PM THURS 11 AM TO 9 PM FRIDAY & SATURDAY 11 AM TO 10 PM SUNDAY",
+   "url": "https://roughtailbeer.com/taproom/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom with kitchen; 2026-dated events listed on the site (board game nights, Singo Sundays)."
+ },
+ {
+  "obdb_id": "f95b4c37-7d9c-4bcb-8958-31c352cd1cab",
+  "name": "Anthem Brewing Co",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://www.anthembrewing.com",
+  "address_as_printed": "908 S.W. 4th Street OKC, OK",
+  "address_source_url": "https://www.anthembrewing.com",
+  "operating_evidence": {
+   "excerpt": "taproom HOURS Monday: Closed Tue-Thu 2PM-9PM Friday: 2PM - 10PM Saturday: 12PM-10PM Sunday: 12PM - 6PM 908 S.W. 4th Street OKC, OK",
+   "url": "https://www.anthembrewing.com",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom; the page header still says Spring Seasonal, so the page may not be recently edited."
+ },
+ {
+  "obdb_id": "84278f35-1caf-4c58-8446-4f6af8a17661",
+  "name": "Stonecloud Brewing Co. (OKC taproom)",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://stonecloudbrewing.com",
+  "address_as_printed": "1012 NW 1st Street, Suite 101 Oklahoma City",
+  "address_source_url": "https://stonecloudbrewing.com",
+  "operating_evidence": {
+   "excerpt": "Monday 3pm \u2013 10pm Tuesday 3pm \u2013 10pm Wednesday 3pm \u2013 10pm Thursday 3pm \u2013 10pm Friday 12pm \u2013 11pm Saturday 12pm \u2013 11pm Sunday 1pm",
+   "url": "https://stonecloudbrewing.com",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "Also runs a Stillwater taproom (not on 66)."
+ },
+ {
+  "obdb_id": "3929eda4-926c-46cd-ab20-cb5c9e6f7caf",
+  "name": "Angry Scotsman Brewing",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "OPEN",
+  "official_url": "https://angryscotbrew.com/",
+  "address_as_printed": "704 W Reno Ave",
+  "address_source_url": "https://angryscotbrew.com/",
+  "operating_evidence": {
+   "excerpt": "Mon \u2014 Closed Tue \u2014 3-10pm Wed \u2014 3-10pm Thu \u2014 3-10pm Fri \u2014 12-11pm Sat \u2014 12-11pm Sun \u2014 12-9pm *** Weekly Events *** Trivia \u2013 Every Wednesday @",
+   "url": "https://angryscotbrew.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": false,
+  "notes": "Taproom with weekly events; in a remodeled 19xx building."
+ },
+ {
+  "obdb_id": "49f6d4fd-9671-4465-8d83-be8b2255d33e",
+  "name": "Griesedieck Brothers Brewery",
+  "city": "Saint Louis",
+  "state": "MO",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "http://www.gb-beer.com",
+  "address_as_printed": null,
+  "address_source_url": null,
+  "operating_evidence": null,
+  "quote": "Our Baden facility is strictly a manufacturing brewery and is closed to the public. Due to the strict liquor codes put forth",
+  "quote_source_url": "http://mobile.gb-beer.com/faq",
+  "multi_location": false,
+  "notes": "Production brewery, closed to the public. Site https://www.gb-beer.com fails TLS verification (certificate error); the FAQ page is readable over plain http only. No taproom."
+ },
+ {
+  "obdb_id": "7cb31a73-07b5-42ea-949e-18d43b99c153",
+  "name": "Ferguson Brewing Co",
+  "city": "Saint Louis",
+  "state": "MO",
+  "status": "CLOSED",
+  "official_url": null,
+  "quote": "Ferguson Brewing Company ( 418 S. Florissant, Ferguson ) will serve its last pint on December 20, closing out a 15-year run",
+  "quote_source_url": "https://www.stlmag.com/dining/ferguson-brewing-company-to-close-december-20/",
+  "multi_location": false,
+  "operating_evidence": null,
+  "notes": "St. Louis Magazine, Oct 10, 2025 (updated May 2026). Dataset domain fergusonbrewing.com serves a hosting \"suspended page\"; do not link. Press reports (not fetched first-hand) say the space reopens as Good News Brewing Ferguson; check that separately. It is 2.3 mi from the dataset 66 line, so may be out of range anyway."
+ },
+ {
+  "obdb_id": "02e33b6d-ac7d-44ad-8b38-cb1c8ebea1e7",
+  "name": "Narrow Gauge Brewing Company",
+  "city": "Florissant",
+  "state": "MO",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.narrowgaugestl.shop",
+  "notes": "script-rendered. narrowgaugestl.com fails TLS handshake and redirects to narrowgaugestl.shop (Weebly store) which returns only the title \"Florissant, MO | Narrow Gauge Brewing Company\" to a plain fetch; no hours or address readable. A 2026 directory (not first-hand) lists it as operating.",
+  "operating_evidence": null,
+  "multi_location": false
+ },
+ {
+  "obdb_id": "b985d531-a4ad-426c-94da-206264dd5eb0",
+  "name": "Granite City Food & Brewery (#29)",
+  "city": "Creve Coeur",
+  "state": "MO",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.gcfb.com/",
+  "notes": "script-rendered. gcfb.com locations list loads by script and no Creve Coeur (#29) page was found in the plain HTML; no hours or address for this location readable. Chain has closed many locations; needs human check.",
+  "operating_evidence": null,
+  "multi_location": true
+ },
+ {
+  "obdb_id": "79ed4f4a-a470-42c2-af50-955633f757b7",
+  "name": "O'Fallon Brewery",
+  "city": "Maryland Heights",
+  "state": "MO",
+  "status": "NOT A BREWERY TAPROOM",
+  "official_url": "https://www.ofallonbrewery.com",
+  "quote": "Proudly Brewed and Fostered by Urban Chestnut Brewing Company \u2022 St. Louis,",
+  "quote_source_url": "https://www.ofallonbrewery.com/",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "The O'Fallon site now lists only a St. Louis address (4465 Manchester Avenue = Urban Chestnut Grove Bierhall) and no taproom or hours at 45 Progress Pkwy, Maryland Heights. The brand is now made by Urban Chestnut (see leads)."
+ },
+ {
+  "obdb_id": "e6bfe52d-1f1e-4c1e-a57e-8f12f481a52c",
+  "name": "Beer Outside Brewery",
+  "city": "Valley Park",
+  "state": "MO",
+  "status": "RENAMED",
+  "official_url": "https://www.beeroutside.com/",
+  "address_as_printed": "932 Meramec Station Road, Suite E Valley Park, MO 63088",
+  "address_source_url": "https://www.beeroutside.com/",
+  "operating_evidence": {
+   "excerpt": "932 Meramec Station Road, Suite E Valley Park, MO 63088 Wednesday - Saturday 12PM - 10PM Closed Sunday - Tuesday Crowler Stop",
+   "url": "https://www.beeroutside.com/",
+   "checked": "2026-11-22"
+  },
+  "multi_location": true,
+  "notes": "mknzbrewing.com returns 404. The same address and suite is now Beer Outside Brewery (own site prints hours Wednesday-Saturday 12PM-10PM at Meramec Station Rd and a separate Crowler Stop at 13014 Manchester Rd, Des Peres). Site footer says (c) 2035, so the page is undated; hours printed only. Also listed in leads_midroute.json."
+ },
+ {
+  "obdb_id": "66e4ffa1-88da-4a41-8bf3-fea86dbcaada",
+  "name": "Bastard Brothers Brewing Company",
+  "city": "High Ridge",
+  "state": "MO",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "Dataset domain bastardbrothersbrewery.com now redirects to a gambling site (downtownkalamazoocookoff.com): never link it. No working brewery site found."
+ },
+ {
+  "obdb_id": "6fdaf0f7-d914-4314-b744-eae724453c6e",
+  "name": "Melvin Brewing",
+  "city": "Eureka",
+  "state": "MO",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.melvinbrewing.com",
+  "operating_evidence": null,
+  "multi_location": true,
+  "notes": "Melvin Brewing own site (Wyoming/Idaho/Colorado/Montana distribution) lists no Eureka, MO taproom on any page read; could not confirm this location exists. Needs human check."
+ },
+ {
+  "obdb_id": "ab1a267c-6a92-4f19-b127-66065ad1b993",
+  "name": "Prehistoric Brewing Company",
+  "city": "Springfield",
+  "state": "MO",
+  "status": "CLOSED",
+  "official_url": null,
+  "quote": "Prehistoric Brewing Co. shuttered in February after 18 months in business, according to past",
+  "quote_source_url": "https://sbj.net/stories/lost-signal-brewing-co-to-close,79352",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "Springfield Business Journal, May 18, 2022. Domain prehistoricbrewing.com does not resolve."
+ },
+ {
+  "obdb_id": "7ebf9a9b-da69-4a31-af9f-ec7320d82f66",
+  "name": "White River Brewing Co",
+  "city": "Springfield",
+  "state": "MO",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "operating_evidence": null,
+  "multi_location": false,
+  "quote": "A sign on the door of White River Brewing Company states it has closed for summer vacation and that it will reopen soon. The closure of the tap",
+  "quote_source_url": "https://sgfcitizen.org/economy-growth/business/whats-going-on-with-white-river-brewery-owner-says-its-coming-back/",
+  "notes": "Springfield Citizen (2024): closed pending a liquor license, owner said it would reopen. No source found that confirms reopening or permanent closure. Dataset domain whiteriverbrewingco.com now serves crypto-casino spam: never link it."
+ },
+ {
+  "obdb_id": "692a06a1-3923-4b48-9bd8-cdb9c87ef848",
+  "name": "Lost Signal Brewing Company",
+  "city": "Springfield",
+  "state": "MO",
+  "status": "CLOSED",
+  "official_url": null,
+  "quote": "Lost Signal Brewing Co. is closing up shop after five years in business. The company announced on Facebook this morning that the 610 W.",
+  "quote_source_url": "https://sbj.net/stories/lost-signal-brewing-co-to-close,79352",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "Springfield Business Journal, May 18, 2022: brewpub scheduled to close June 4, 2022. Dataset domain lostsignalbrewing.com now redirects to an unrelated gambling site: never link it."
+ },
+ {
+  "obdb_id": "0a17cef1-8631-4534-8b87-03bdbb33d479",
+  "name": "Flag City Brewing",
+  "city": "Webb City",
+  "state": "MO",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "Dataset has no website. flagcitybrewing.com returned an empty page to a plain fetch (script-rendered or blank). Only Facebook and tourism listings were found; not used."
+ },
+ {
+  "obdb_id": "82055805-2151-4d92-aa60-9f30c6c0457c",
+  "name": "Chaos Brewing",
+  "city": "Joplin",
+  "state": "MO",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.chaosbrewing.beer",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "Own site returns HTTP 503 (Cloudflare) on every fetch (not a bot challenge page; server error, last-modified 2019). Visit Joplin tourism page (third party) describes it as an operating 7-barrel taproom at 112 S Main St, \"Closed on Monday and Tuesday\". Needs a first-hand check. Census coordinates 37.0905,-94.5133 differ slightly from dataset."
+ },
+ {
+  "obdb_id": "20e23a04-49d8-4e74-afd6-f6f03e10489a",
+  "name": "Renaissance Brewing Co",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "renaissancebeer.com does not resolve. A beer-community site (not used) says it is being sold and closing Dec 31, 2026; not verified. Needs a human check."
+ },
+ {
+  "obdb_id": "d8549701-4cf1-4aff-9af1-b0ef1e2dc072",
+  "name": "Hanson Brothers Beer Company",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "hansonbrothersbeer.com returns 404 at the root. Local news (not fetched) describes it as a beer brand without its own public brewhouse; likely a contract brand, not a taproom. Needs a human check."
+ },
+ {
+  "obdb_id": "6a13311e-fdd4-4385-a049-2de6a5d6ed11",
+  "name": "Prairie Artisan Ales",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "UNCONFIRMED",
+  "official_url": null,
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "prairiepub.com is a stale WordPress page (no hours) with injected gambling-spam text; do not link it. No evidence the Tulsa brewpub operates under this name; Cabin Boys Brewpub now lists 223 N Main St (see leads)."
+ },
+ {
+  "obdb_id": "42536ff0-a7a8-4e41-8706-3411f1590482",
+  "name": "Elk Valley Brewing",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "CLOSED",
+  "official_url": null,
+  "quote": "Over the past two years, the area has lost Elk Valley, Twisted Spike and most recently, Vanessa House. Good things come to",
+  "quote_source_url": "https://www.kgou.org/business-and-economy/2024-12-02/what-is-the-state-of-oklahomas-craft-beer-scene",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "KGOU, Dec 2, 2024. Dataset domain elkvalleybrew.com now redirects to a no-deposit-bonus gambling site: never link it."
+ },
+ {
+  "obdb_id": "d9579c97-3ecd-4133-922a-d1bc5dc58b31",
+  "name": "Vanessa House Beer Company",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "CLOSED",
+  "official_url": null,
+  "quote": "Elk Valley, Twisted Spike and most recently, Vanessa House. Good things come to an",
+  "quote_source_url": "https://www.kgou.org/business-and-economy/2024-12-02/what-is-the-state-of-oklahomas-craft-beer-scene",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "KGOU, Dec 2, 2024. Dataset site vanessahousebeerco.com returns 403 to the bot; not needed."
+ },
+ {
+  "obdb_id": "f4954559-b115-469a-824e-afa6e37cd9a3",
+  "name": "Twisted Spike Brewing Company",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "CLOSED",
+  "official_url": null,
+  "quote": "Elk Valley, Twisted Spike and most recently, Vanessa House. Good things come to an",
+  "quote_source_url": "https://www.kgou.org/business-and-economy/2024-12-02/what-is-the-state-of-oklahomas-craft-beer-scene",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "KGOU, Dec 2, 2024. Site twistedspike.com returns 403 to the bot."
+ },
+ {
+  "obdb_id": "5ce26e95-3deb-4b79-be7d-3d7962abc3f3",
+  "name": "Belle Isle Restaurant and Brewing Co",
+  "city": "Oklahoma City",
+  "state": "OK",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.belleislerestaurant.com",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "Own site prints restaurant hours only (Monday to Friday 11am - 9pm, Saturday 4pm - 9pm) and has a 2023 copyright; it does not state that beer is brewed there or that a taproom operates now. Needs a human check."
+ },
+ {
+  "obdb_id": "f6350f89-c5df-4969-81b2-358b6e8e6ed0",
+  "name": "American Solera",
+  "city": "Tulsa",
+  "state": "OK",
+  "status": "UNCONFIRMED",
+  "official_url": "https://www.americansolera.com",
+  "operating_evidence": null,
+  "multi_location": true,
+  "notes": "script-rendered. Homepage returns only the title \"Brewery | American Solera\"; sub-pages 404 to a plain fetch."
+ },
+ {
+  "obdb_id": "fea6b287-57d9-4f14-8eb7-0b7b0813b2b2",
+  "name": "Long Wooden Spoon Brewing",
+  "city": "Amarillo",
+  "state": "TX",
+  "status": "CLOSED",
+  "official_url": null,
+  "quote": "Long Wooden Spoon has been \"stirring the pot since 2009\" and as of yesterday, they have made the difficult decision to close their doors for good this Saturday (6/19/21). Get",
+  "quote_source_url": "https://mix941kmxj.com/an-amarillo-brewery-is-closing-its-doors-for-good-this-saturday/",
+  "operating_evidence": null,
+  "multi_location": false,
+  "notes": "Mix 94.1 KMXJ Amarillo, June 2021: closing 6/19/21. lwsbrewing.com now returns 404."
+ }
+]

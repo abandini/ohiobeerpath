@@ -15,7 +15,7 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
 if (!slug || !/^[a-z0-9-]+$/.test(slug)) { console.error('usage: node scripts/verify-road-sources.mjs <slug>'); process.exit(2); }
-const { isShowableStop, unreadVerdict, verifierExit, BROWSER_CHECK_MAX_DAYS } = await import(join(root, 'src/lib/road-trip.ts'));
+const { isShowableStop, unreadVerdict, verifierExit, pageText, BROWSER_CHECK_MAX_DAYS } = await import(join(root, 'src/lib/road-trip.ts'));
 const pick = (mod, test) => Object.values(mod).find((v) => v && typeof v === 'object' && v.slug === slug && test(v));
 const config = pick(await import(join(root, `src/data/roads/${slug}.ts`)), (v) => Array.isArray(v.roadSources));
 const built = pick(await import(join(root, `src/data/roads/${slug}.built.ts`)), (v) => Array.isArray(v.stops));
@@ -23,26 +23,27 @@ if (!config || !built) { console.error(`road ${slug}: config or built data not f
 
 const stops = built.stops.filter((s) => isShowableStop(s));
 if (stops.length !== built.stops.length) { console.error(`${built.stops.length - stops.length} stop(s) in the built file do not pass the gate: rebuild before verifying`); process.exit(2); }
+// Notes on legs and stretches (alcohol law on tribal land, for example) rest on quoted sources too; the same source
+// used in two notes is checked once.
+const noteSources = [...new Map(config.legs.flatMap((l) => [...(l.notes ?? []), ...(l.segments ?? []).flatMap((g) => g.notes ?? [])]).flatMap((n) => n.sources ?? []).map((q) => [`${q.url}\n${q.quote}`, q])).values()];
 const pairs = [
   ...config.roadSources.map((s) => ({ what: 'road', quote: s.quote, url: s.url })),
+  ...noteSources.map((s) => ({ what: 'note', quote: s.quote, url: s.url })),
   ...stops.flatMap((s) => [
-    { what: `stop ${s.breweryId} operating evidence`, quote: s.evidence, url: s.evidenceUrl, browser: s.browserChecked },
-    ...(s.quote ? [{ what: `stop ${s.breweryId} quote`, quote: s.quote, url: s.quoteSourceUrl, browser: s.browserChecked }] : []),
-    ...(s.address ? [{ what: `stop ${s.breweryId} address`, quote: s.address, url: s.addressSourceUrl, browser: s.browserChecked }] : []),
+    { what: `stop ${s.key} operating evidence`, quote: s.evidence, url: s.evidenceUrl, browser: s.browserChecked },
+    ...(s.quote ? [{ what: `stop ${s.key} quote`, quote: s.quote, url: s.quoteSourceUrl, browser: s.browserChecked }] : []),
+    ...(s.address ? [{ what: `stop ${s.key} address`, quote: s.address, url: s.addressSourceUrl, browser: s.browserChecked }] : []),
   ]),
 ];
-const expected = config.roadSources.length + stops.length + stops.filter((s) => s.quote).length + stops.filter((s) => s.address).length;
+const expected = config.roadSources.length + noteSources.length + stops.length + stops.filter((s) => s.quote).length + stops.filter((s) => s.address).length;
 if (!pairs.length || pairs.length !== expected || pairs.some((p) => !p.quote || !/^https?:\/\//.test(p.url || ''))) { console.error(`expected ${expected} sources with a quote and a URL, got ${pairs.length}`); process.exit(2); }
 
-const ENT = { amp: '&', nbsp: ' ', quot: '"', apos: "'", lt: '<', gt: '>', rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“', ndash: '–', mdash: '—', hellip: '…', eacute: 'é', copy: '©', reg: '®', trade: '™', deg: '°', middot: '·', bull: '•' };
-// Page text as a reader sees it: tags dropped, entities decoded, runs of whitespace as one space, and no space before
-// punctuation (a link ending just before a comma otherwise leaves "Cleveland , Ohio").
-export const norm = (s) => s
-  .replace(/<(script|style|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ').replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/g, ' ')
-  .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16))).replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
-  .replace(/&([a-z]+);/gi, (m, n) => ENT[n] ?? m)
-  .replace(/[ ​ ]/g, ' ').replace(/\s+/g, ' ').replace(/ ([,.;:!?])/g, '$1').trim();
+// Page text as a reader sees it (tags dropped, entities decoded, whitespace collapsed): the same function the
+// reconcile step uses, so both read a page the same way.
+const norm = pageText;
 
+// An excerpt may leave words out, marked " ... " or "…": then every part must be on the page, in that order.
+const found = (text, quote) => { let at = 0; for (const part of norm(quote).split(/\s*(?:\.\.\.|…)\s*/).filter(Boolean)) { const i = text.indexOf(part, at); if (i < 0) return false; at = i + part.length; } return true; };
 const pages = new Map(); let ok = 0, missing = 0, unread = 0, browser = 0, stale = 0;
 const today = new Date().toISOString().slice(0, 10);
 // A source the script cannot read may carry the date a person read it in a browser (browser_checked in the checker's
@@ -71,8 +72,8 @@ for (const p of pairs) {
   }
   const page = pages.get(p.url), show = `${p.what}: ${p.quote.slice(0, 70)} | ${p.url}`;
   if (page.error) notRead(p, show, page.error);
-  else if (page.text.includes(norm(p.quote))) { ok++; console.log(`ok      ${show}`); }
-  else if (page.meta.includes(norm(p.quote))) { ok++; console.log(`ok-meta ${show}`); }
+  else if (found(page.text, p.quote)) { ok++; console.log(`ok      ${show}`); }
+  else if (found(page.meta, p.quote)) { ok++; console.log(`ok-meta ${show}`); }
   else if (page.thin) notRead(p, show, 'almost no text (needs a browser?)');
   else { missing++; console.log(`MISSING ${show}`); }
 }
