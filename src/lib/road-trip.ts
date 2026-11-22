@@ -247,6 +247,8 @@ export interface RoadConfig {
    * named road's row, edits and geocode are used here too, so the two pages cannot tell different stories.
    */
   sharedRowsFrom?: string;
+  /** The other way round: where this road's own check could not list a brewery and the named road's check can, that road's row is used. */
+  fillRowsFrom?: string;
   /** Show each leg as a closed <details> with a summary line, for a road too long to scroll (default false). */
   collapseLegs?: boolean;
   methodNotes?: string[];      // extra plain-text points for "How this list was made"
@@ -274,6 +276,7 @@ export interface VerifiedRow {
   browser_checked?: string | null; // the day a person read the row's sources on the rendered page, for sites a script cannot read
   evidence_kind?: string | null;   // 'notice' when the evidence is a dated notice or event, not visiting hours
   notice_context?: string | null;  // for a notice: what on the page establishes its year and the venue
+  taken_from?: string;             // the road whose check this row is, when it is not this road's own (see shareRows)
   placement_accepted?: string | null; // a reviewed exception: the evidence that resolves the address difference (from decisions.json)
 }
 
@@ -295,6 +298,7 @@ export interface RoadStop {
   browserChecked?: string;     // set only when the checker's row records a browser check on a real date
   noticeContext?: string;      // for a notice: what on the page establishes its year and the venue
   placedBy?: 'census' | 'directory' | 'reviewed' | 'dataset'; // where its coordinates come from (see addressMustMatch)
+  checkFrom?: string;          // the road whose check supplied this stop's row, when not this road's own
   placedNote?: string;         // for a reviewed exception: the recorded evidence that the two addresses are one
   outer?: boolean;             // beyond the stretch's tighter limit but within its further-off distance
   unmeasured?: string;         // id of the leg's unmeasured group: the mapped line is missing here, so mile and distance are not shown
@@ -580,7 +584,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
       quote, quoteSourceUrl: quote ? quoteUrl : '', checked: String(row.checked || '').trim(),
       legId: l.leg.id, mile, detourMiles,
       pastEnd: at.lineDetour > PAST_END_MILES && (atStart || atEnd) ? (atStart ? 'start' : 'end') : '',
-      ...(at.outer ? { outer: true } : {}), ...(method.has(row.id) ? { placedBy: method.get(row.id) } : cand.placedBy ? { placedBy: cand.placedBy } : {}), ...(method.get(row.id) === 'reviewed' ? { placedNote: String(row.placement_accepted).trim() } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const, noticeContext: String(row.notice_context ?? '').trim() } : {}),
+      ...(at.outer ? { outer: true } : {}), ...(method.has(row.id) ? { placedBy: method.get(row.id) } : cand.placedBy ? { placedBy: cand.placedBy } : {}), ...(method.get(row.id) === 'reviewed' ? { placedNote: String(row.placement_accepted).trim() } : {}), ...(row.taken_from ? { checkFrom: row.taken_from } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const, noticeContext: String(row.notice_context ?? '').trim() } : {}),
       ...(calendarDate(row.browser_checked) ? { browserChecked: row.browser_checked as string } : {}),
     };
     if (!isShowableStop(stop, today)) { leave('marked OPEN, but there is no usable operating evidence (excerpt, citable URL and a check date that is not in the future)'); continue; }
@@ -970,15 +974,20 @@ export function crossRoadDifferences(roads: { slug: string; stops: RoadStop[]; c
   return out;
 }
 /**
- * One record of a shared brewery. Where this road and another both check a directory id, and the other road's row can
- * be listed (OPEN, with operating evidence), that row and its geocode are used here in place of ours: its address,
- * evidence, edits and coordinates. Where the other road's check came up empty and ours did not, ours stands, and the
- * gate reports the disagreement. `theirs` must already have that road's decisions and corrections applied.
+ * One record of a shared brewery. `theirs` are another road's rows for the same directory, with that road's decisions
+ * and corrections already applied; `from` is its slug.
+ *  - 'prefer': where both roads check an id and the other road's row can be listed (OPEN, with operating evidence),
+ *    that row and its geocode replace ours: its address, evidence, edits and coordinates.
+ *  - 'fill': the other road's listable row is used only where ours cannot be listed (its check found the published
+ *    hours and ours did not). A row our own decisions settled (anything but OPEN or UNCONFIRMED) is never filled.
+ * A row taken either way is marked with where it came from.
  */
-export function shareRows(rows: VerifiedRow[], geocodes: AddressGeocode[], theirs: VerifiedRow[], theirGeocodes: AddressGeocode[]): { rows: VerifiedRow[]; geocodes: AddressGeocode[]; taken: (number | string)[] } {
-  const byId = new Map(theirs.filter((r) => r?.status === 'OPEN' && String(r.operating_evidence?.excerpt ?? '').trim() !== '').map((r) => [r.id, r]));
-  const taken = rows.filter((r) => byId.has(r.id)).map((r) => r.id), ids = new Set(taken);
-  return { rows: rows.map((r) => byId.get(r.id) ?? r), geocodes: [...geocodes.filter((g) => !ids.has(g.id)), ...theirGeocodes.filter((g) => ids.has(g.id))], taken };
+export function shareRows(rows: VerifiedRow[], geocodes: AddressGeocode[], theirs: VerifiedRow[], theirGeocodes: AddressGeocode[], mode: 'prefer' | 'fill' = 'prefer', from = ''): { rows: VerifiedRow[]; geocodes: AddressGeocode[]; taken: (number | string)[] } {
+  const listable = (r: VerifiedRow | undefined) => r?.status === 'OPEN' && String(r.operating_evidence?.excerpt ?? '').trim() !== '';
+  const byId = new Map(theirs.filter(listable).map((r) => [r.id, r]));
+  const take = (r: VerifiedRow) => byId.has(r.id) && (mode === 'prefer' || (!listable(r) && ['OPEN', 'UNCONFIRMED'].includes(String(r.status))));
+  const taken = rows.filter(take).map((r) => r.id), ids = new Set(taken);
+  return { rows: rows.map((r) => (ids.has(r.id) ? { ...byId.get(r.id)!, ...(from ? { taken_from: from } : {}) } : r)), geocodes: [...geocodes.filter((g) => !ids.has(g.id)), ...theirGeocodes.filter((g) => ids.has(g.id))], taken };
 }
 /** Directory ids listed on more than one of the roads. */
 export const sharedStopIds = (roads: { stops: RoadStop[] }[]): number[] => {

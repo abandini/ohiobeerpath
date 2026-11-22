@@ -1,16 +1,1 @@
-[
-  {
-    "allow": "62:listed",
-    "id": 62,
-    "name": "Butcher & the Brewer",
-    "recorded": "2026-11-22",
-    "why": "Listed on i-71: its check read the visiting hours on the brewery's own /contact-us page. The us-422 check read only the home page (leftover template text) and reached no decision. us-422 is a live page and is not changed without the owner's word."
-  },
-  {
-    "allow": "2322:listed",
-    "id": 2322,
-    "name": "BottleHouse Brewery",
-    "recorded": "2026-11-22",
-    "why": "Listed on i-71: its check found the brewery's current site (bottlehouse.co) and read the Lakewood hours there. The us-422 check had only the directory's dead address for the site and reached no decision. us-422 is a live page and is not changed without the owner's word."
-  }
-]
+[]

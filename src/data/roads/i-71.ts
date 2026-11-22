@@ -27,7 +27,7 @@ export const I_71: RoadConfig = {
   maxDetourMiles: 5,
   gapNoteMiles: 20,
   geometry: { source: 'OpenStreetMap ways of the Interstate 71 route relations, downloaded through the Overpass API', downloaded: C },
-  about: 'Interstate 71 runs between Louisville, Kentucky and Cleveland, Ohio, by way of Cincinnati and Columbus. This page follows it from Cleveland south-west to Louisville in three legs. It is an independent list, not an official guide, and it is not every brewery near the road.',
+  about: 'An independent list, not an official guide, of breweries near Interstate 71 from Cleveland, Ohio south-west to Louisville, Kentucky, by way of Columbus and Cincinnati, in three legs.',
   legsNote: 'These are editorial sections of one continuous interstate, divided at the point on our mapped line nearest central Columbus and at the Ohio River in Cincinnati. We assign each brewery to the leg containing its nearest mapped-road point, not by its town or state.',
   roadSources: [
     { quote: 'in Louisville, Kentucky, and its northern terminus at an interchange with I-90 in Cleveland, Ohio', url: WIKI, checked: C },

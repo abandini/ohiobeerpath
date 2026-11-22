@@ -115,6 +115,8 @@ const breadcrumbLd = (items: { name: string; url: string }[]) => ({
 });
 /** For an interstate: said near the introduction and beside the directions controls. */
 export const INTERSTATE_NOTICE = 'Nearest road points are not exits or access points. Use a navigation service to find a legal route via an interchange; a nearby brewery may require a much longer drive. Plan while parked. If you drink, do not drive: arrange a driver who will not drink, or other transport, before setting out.';
+/** The same without its last sentence, for the box at the top, where the drive notice above it already says that. */
+export const INTERSTATE_ACCESS = INTERSTATE_NOTICE.slice(0, INTERSTATE_NOTICE.indexOf(' If you drink'));
 /** For any other road: added to the drive notice. */
 export const PLAN_NOTICE = 'Plan while parked. A nearby brewery may require a much longer drive than its straight-line distance suggests.';
 /** Beside each stop's directions link. */
@@ -122,7 +124,7 @@ export const DIRECTIONS_NOTE = 'Plan while parked.', DIRECTIONS_NOTE_INTERSTATE 
 const drivingNote = (road?: RoadView) => `
       <div class="rt-driver" role="note">
         <p><strong>If you drink, do not drive.</strong> Arrange a driver who will not drink, or other transport, before you set out. This is a list of places, not a drinking itinerary.</p>${road ? `
-        <p>${h(road.config.interstate ? INTERSTATE_NOTICE : PLAN_NOTICE)}</p>` : ''}
+        <p>${h(road.config.interstate ? INTERSTATE_ACCESS : PLAN_NOTICE)}</p>` : ''}
       </div>`;
 
 // The words for the line and for what distance is measured to. On a road whose distance is to any mapped alignment
@@ -327,6 +329,11 @@ export function cohortText(c: Cohort, limit: number, checked: string): string {
   const rest = cohortBreakdown(c, limit);
   return `We checked ${plural(c.total, 'directory candidate')}, selected using directory coordinates (within ${limit} straight-line miles of our mapped line), ${checked}. We found published visiting hours for ${c.withHours}; ${c.listed} ${c.listed === 1 ? 'meets' : 'meet'} this page’s location and distance requirements.${rest.length ? ` The other ${c.total - c.listed}: ${rest.join('; ')}.` : ''}`;
 }
+/** The one-line form for the top of the page; the breakdown is in the method notes. */
+export function cohortLine(c: Cohort, checked: string): string {
+  if (!c.total) return 'Our directory had no candidate near our mapped line.';
+  return `We checked ${plural(c.total, 'directory candidate')} ${checked} and found published visiting hours for ${c.withHours}; ${c.listed} ${c.listed === 1 ? 'meets' : 'meet'} this page’s location and distance requirements.`;
+}
 /** The same for one leg: the candidates nearest it by directory coordinates. */
 export function legCohortText(c: Cohort, limit: number): string {
   if (!c.total) return 'No directory candidate was nearest this leg.';
@@ -350,8 +357,15 @@ export function pageUpdate(road: RoadView) {
   const slight = kept.filter(({ was, is }) => (was.mile !== is.mile || was.detourMiles !== is.detourMiles) && !measured.some((m) => m.is === is)).length;
   const towns = kept.filter(({ was, is }) => was.town !== is.town);
   const allPlacement = removed.length > 0 && removed.every((r) => r.why === 'notPlaced');
+  // Added on another road's check of the same listing (see shareRows 'fill'): that is the only cause the page claims.
+  const later = added.filter((x) => !!x.checkFrom), allLater = added.length > 0 && later.length === added.length;
   const parts = [u.what];
-  if (removed.length || added.length) parts.push(`The list changed from ${u.previous.length} to ${road.stops.length} stops${allPlacement ? ` because we could not establish ${removed.length === 1 ? 'an address-linked location' : 'address-linked locations'} for ${word(removed.length)} previously listed ${removed.length === 1 ? 'brewery' : 'breweries'}` : ''}${removed.length ? `; ${removed.length === 1 ? 'this removal is not a finding that the brewery' : 'these removals are not findings that the breweries'} closed` : ''}.`);
+  const took = removed.length ? (allPlacement ? `we could not establish ${removed.length === 1 ? 'an address-linked location' : 'address-linked locations'} for ${word(removed.length)} previously listed ${removed.length === 1 ? 'brewery' : 'breweries'}` : `${word(removed.length)} previously listed ${removed.length === 1 ? 'brewery was' : 'breweries were'} removed`) : '';
+  const notClosed = removed.length === 1 ? 'this removal is not a finding that the brewery closed' : 'these removals are not findings that the breweries closed';
+  const gave = added.length ? `${word(added.length)} ${added.length === 1 ? 'was' : 'were'} added${allLater ? ` after a later check found ${added.length === 1 ? 'its' : 'their'} published hours` : ''}` : '';
+  if (removed.length && added.length) parts.push(`The list changed from ${u.previous.length} to ${road.stops.length} stops: ${took} (${notClosed}), and ${gave}.`);
+  else if (removed.length) parts.push(allPlacement ? `The list changed from ${u.previous.length} to ${road.stops.length} stops because ${took}; ${notClosed}.` : `The list changed from ${u.previous.length} to ${road.stops.length} stops: ${took}; ${notClosed}.`);
+  else if (added.length) parts.push(`The list changed from ${u.previous.length} to ${road.stops.length} stops: ${gave}.`);
   const recalculated = measured.length + slight;
   if (recalculated || towns.length) parts.push(`We also ${[recalculated ? `recalculated ${recalculated === 1 ? 'one mile position or straight-line distance' : `${recalculated >= 3 ? 'several' : word(recalculated)} mile positions and straight-line distances`}` : '', towns.length ? `changed ${word(towns.length)} town ${towns.length === 1 ? 'label' : 'labels'} to match ${towns.length === 1 ? 'the brewery’s printed address' : 'the breweries’ printed addresses'}` : ''].filter(Boolean).join(' and ')}.`);
   return { date: u.date, summary: parts.join(' '), removed, added, measured, slight, towns, from: u.previous.length, to: road.stops.length };
@@ -365,7 +379,8 @@ function updateEntry(road: RoadView): string {
         <p><strong>Updated ${h(longDate(u.date))}.</strong> ${h(u.summary)}</p>${u.removed.length ? `
         <p>No longer listed (${u.removed.length}). None of these is a finding that the brewery closed:</p>
         <ul>${u.removed.map((r) => `<li><strong>${h(r.name)}</strong> (${h(r.town)}, was at mile ${mi(r.mile)}): ${h(r.reason ? `${r.reason}.` : 'it no longer meets this page’s requirements.')}</li>`).join('')}</ul>` : ''}${u.added.length ? `
-        <p>Newly listed (${u.added.length}): ${h(u.added.map((x) => x.name).join(', '))}.</p>` : ''}${u.measured.length ? `
+        <p>Added (${u.added.length}):</p>
+        <ul>${u.added.map((x) => `<li><strong>${h(x.name)}</strong> (${h(x.town)}, mile ${mi(x.mile)}): ${x.checkFrom ? 'a later check of the same listing, made for another road page, found its published hours.' : 'it now meets this page’s requirements.'}</li>`).join('')}</ul>` : ''}${u.measured.length ? `
         <p>Measurements that changed by half a mile or more along the line, or a quarter of a mile or more from it, because the brewery is now measured from its printed address:</p>
         <ul>${u.measured.map(({ was, is }) => `<li><strong>${h(is.name)}</strong>: ${[was.mile !== is.mile ? `mile ${mi(was.mile)} to ${mi(is.mile)}` : '', was.detourMiles !== is.detourMiles ? `straight-line distance ${two(was.detourMiles)} to ${two(is.detourMiles)} miles` : ''].filter(Boolean).join('; ')}</li>`).join('')}</ul>` : ''}${u.slight ? `
         <p>${plural(u.slight, 'other stop')} moved by less than that.</p>` : ''}${u.towns.length ? `
@@ -537,14 +552,8 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
   <div class="container my-4 rt">
     <div class="rt-wrap">${drivingNote(road)}${update ? `
       <div class="rt-note" role="note"><p><strong>Updated ${h(longDate(update.date))}:</strong> ${h(update.summary)} <a href="#updates">What changed, stop by stop</a>.</p></div>` : ''}
-      <p>${h(c.about)}</p>${c.legsNote ? `
-      <p>${h(c.legsNote)}</p>` : ''}
-      <p>${h(byCohort(road) ? cohortText(road.cohort!, c.maxDetourMiles, checkedWhen(road)) : coverageText(road.decided, road.candidates, c.maxDetourMiles, T.anyWay ? `a mapped alignment of ${c.shortName}` : `our mapped line of ${c.shortName}`, c.startingList))}</p>${byCohort(road) && road.notListed.length ? `
-      <details class="rt-notlisted">
-        <summary>The ${road.notListed.length} with published visiting hours that are not listed, and why</summary>
-        <p class="rt-src">None of these is a finding that the brewery has closed.</p>
-        <ul>${road.notListed.map((x) => `<li><strong>${h(x.name)}</strong>: ${h(x.reason)}.</li>`).join('')}</ul>
-      </details>` : ''}
+      <p>${h(c.about)}</p>
+      <p>${h(byCohort(road) ? cohortLine(road.cohort!, checkedWhen(road)) : coverageText(road.decided, road.candidates, c.maxDetourMiles, T.anyWay ? `a mapped alignment of ${c.shortName}` : `our mapped line of ${c.shortName}`, c.startingList))}${byCohort(road) ? ' <a href="#how">How this list was made</a>.' : ''}</p>
       <nav aria-label="Stretches of the road">
         ${c.collapseLegs ? `<p class="rt-sub">${road.legs.every((l) => l.name) ? 'Jump to a state. Each one opens to show its stops.' : 'Jump to a stretch. Its leg opens to show the stops.'}</p>` : ''}<ul class="rt-jump">${jump.join('')}</ul>
       </nav>
@@ -557,6 +566,12 @@ ${updateEntry(road)}
           <li><strong>The road.</strong> ${h(c.geometry.source)} on ${h(c.geometry.downloaded)}. ${OSM_LINK}; the data is available under the Open Database License. Where the road has two carriageways we measure along one. This is our mapped line.${joined.length ? ` Where two mapped ways do not quite meet we join them with a straight line: ${h(joined.map((l) => `${l.name || `${place(l.from)} to ${place(l.to)}`} ${plural(l.joins, 'join')} totalling ${l.joinedMiles.toFixed(2)} miles (widest ${l.widestJoinMiles.toFixed(2)})`).join('; '))}.` : ''}</li>${(c.methodNotes ?? []).map((t) => { const i = t.indexOf('. '); return `
           <li><strong>${h(i > 0 ? t.slice(0, i + 1) : '')}</strong>${h(i > 0 ? t.slice(i + 1) : t)}</li>`; }).join('')}
 ${showPlacement ? `
+          <li><strong>Coverage.</strong> ${h(cohortText(road.cohort!, c.maxDetourMiles, checkedWhen(road)))}${road.notListed.length ? `
+            <details class="rt-notlisted">
+              <summary>The ${road.notListed.length} with published visiting hours that are not listed, and why</summary>
+              <p class="rt-src">None of these is a finding that the brewery has closed.</p>
+              <ul>${road.notListed.map((x) => `<li><strong>${h(x.name)}</strong>: ${h(x.reason)}.</li>`).join('')}</ul>
+            </details>` : ''}</li>
           <li><strong>Placing a brewery.</strong> Each stop is measured from coordinates tied to the address the brewery prints, and each stop says which kind it has. ${plural(by('census'), 'stop uses', 'stops use')} the US Census geocoder’s point for an exact match of the printed address (street number, direction, street name, suffix, town and state). These are address-geocoded estimates, not surveyed entrances. ${plural(by('directory'), 'stop uses', 'stops use')} our directory’s map point, where the printed address is the directory’s address in full and the point is not a known placeholder: a point shared by two or more listings, or one that an exact address match shows to be more than a mile out. ${plural(by('reviewed'), 'stop is a reviewed exception', 'stops are reviewed exceptions')}: the geocoder matched the address with a difference in how it is written, and an editor recorded why it is the same address; the reason is shown under the stop. Nearness to the directory’s point is never enough on its own. A brewery with none of these is not listed.</li>` : ''}${c.legsNote ? `
           <li><strong>The legs.</strong> ${h(c.legsNote)}</li>` : ''}${isInterstate ? `
           <li><strong>Exits and access.</strong> ${h(INTERSTATE_NOTICE)} We do not say which exit serves a brewery.</li>` : ''}

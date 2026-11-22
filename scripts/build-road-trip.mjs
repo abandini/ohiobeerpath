@@ -54,13 +54,15 @@ if (config.ingest === 'checker-files') {
   if (edits.unmatched.length) { console.error(`decisions.json or corrections.json names rows that do not exist: ${edits.unmatched.join(', ')}`); process.exit(2); }
   for (const d of edits.applied) console.log(`  decision  ${d.id} ${d.name}: ${d.status} (${d.reason})`);
   verified = edits.rows;
-  // Shared rows (config.sharedRowsFrom): one record of a brewery that two roads list. See shareRows.
-  if (config.sharedRowsFrom) {
-    const other = join(root, 'data/roads', config.sharedRowsFrom), readOther = (f) => JSON.parse(readFileSync(join(other, f), 'utf8')), has = (f) => existsSync(join(other, f));
+  // Shared rows: one record of a brewery that two roads check. sharedRowsFrom prefers the other road's listable row;
+  // fillRowsFrom uses it only where our own check could not list the brewery. See shareRows.
+  for (const [from, mode] of [[config.sharedRowsFrom, 'prefer'], [config.fillRowsFrom, 'fill']]) {
+    if (!from) continue;
+    const other = join(root, 'data/roads', from), readOther = (f) => JSON.parse(readFileSync(join(other, f), 'utf8')), has = (f) => existsSync(join(other, f));
     const theirs = applyRowEdits(readdirSync(other).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(readOther), has('decisions.json') ? readOther('decisions.json') : [], has('corrections.json') ? readOther('corrections.json') : []).rows;
-    shared = shareRows(verified, existsSync(join(dir, 'geocodes.json')) ? read('geocodes.json') : [], theirs, has('geocodes.json') ? readOther('geocodes.json') : []);
+    shared = shareRows(verified, shared ? shared.geocodes : existsSync(join(dir, 'geocodes.json')) ? read('geocodes.json') : [], theirs, has('geocodes.json') ? readOther('geocodes.json') : [], mode, from);
     verified = shared.rows;
-    if (shared.taken.length) console.log(`  ${shared.taken.length} rows taken from ${config.sharedRowsFrom}, where the same listings are checked: ${shared.taken.join(', ')}`);
+    if (shared.taken.length) console.log(`  ${shared.taken.length} rows taken from ${from} (${mode}): ${shared.taken.join(', ')}`);
   }
 }
 

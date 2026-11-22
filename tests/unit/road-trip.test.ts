@@ -9,7 +9,7 @@ import {
 } from '../../src/lib/road-trip';
 import {
   roadTripPage, roadsIndexPage, roadSummary, roadsBlurb, coverageText, distanceLabel, directionsUrl, mapsPlace, quoteAdds, cohortText, legCohortText, pageUpdate, orderingNote, longDate, placedLabel,
-  INTERSTATE_NOTICE, PLAN_NOTICE, DIRECTIONS_NOTE, DIRECTIONS_NOTE_INTERSTATE,
+  INTERSTATE_NOTICE, INTERSTATE_ACCESS, PLAN_NOTICE, cohortLine, DIRECTIONS_NOTE, DIRECTIONS_NOTE_INTERSTATE,
   MAPS_URL_LIMIT, OSM_ATTRIBUTION, DRIVING_NOTICE,
 } from '../../src/templates/road-trip';
 import { allRoads, availableRoads, roadBySlug, roadStopFor } from '../../src/data/roads';
@@ -590,7 +590,14 @@ describe('the real road data (src/data/roads)', () => {
     const verified: VerifiedRow[] = readdirSync(dir).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(read);
     const edits = applyRowEdits(verified, read('decisions.json'), []);
     expect(edits.unmatched).toEqual([]);
-    expect(buildRoad(US_422, read('osm-ways.json'), read('candidates.json'), edits.rows, US_422_BUILT.built, undefined, read('geocodes.json')).road).toEqual(US_422_BUILT);
+    // Where this road's check could not list a brewery and the I-71 check of the same listing found its hours, that row is used.
+    const other = join(dir, '../i-71'), theirs = (f: string) => JSON.parse(readFileSync(join(other, f), 'utf8'));
+    const filled = shareRows(edits.rows, read('geocodes.json'), applyRowEdits(readdirSync(other).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(theirs), theirs('decisions.json'), theirs('corrections.json')).rows, theirs('geocodes.json'), 'fill', 'i-71');
+    expect(US_422.fillRowsFrom).toBe('i-71'); expect(filled.taken.sort()).toEqual([2322, 62]);
+    expect(buildRoad(US_422, read('osm-ways.json'), read('candidates.json'), filled.rows, US_422_BUILT.built, undefined, filled.geocodes).road).toEqual(US_422_BUILT);
+    expect(US_422_BUILT.stops.filter((s) => s.checkFrom).map((s) => [s.breweryId, s.checkFrom]).sort()).toEqual([[2322, 'i-71'], [62, 'i-71']]);
+    expect(US_422_BUILT.stops.some((s) => s.breweryId === 229)).toBe(false);   // ruled off both roads: the I-71 row for it is not listable once its decision is applied
+    for (const r of filled.rows.filter((x) => x.taken_from)) verified.splice(verified.findIndex((x) => x.id === r.id), 1, r);
     const evidenced = new Set(verified.filter((r) => r.status === 'OPEN' && r.operating_evidence?.excerpt && r.operating_evidence?.url).map((r) => r.id));
     for (const s of US_422_BUILT.stops) expect(evidenced.has(s.breweryId), s.name).toBe(true);
     for (const r of verified.filter((x) => x.status !== 'OPEN' || !x.operating_evidence)) expect(US_422_BUILT.stops.some((s) => s.breweryId === r.id), String(r.name)).toBe(false);
@@ -1209,8 +1216,9 @@ describe('location identity on a directory road', () => {
   });
   it('US 422 and I-71 are built by this rule, from the geocodes on file', () => {
     expect(US_422.addressMustMatch).toBe(true); expect(I_71.addressMustMatch).toBe(true);
-    for (const id of [261, 26, 259, 60]) expect(US_422_BUILT.stops.some((s) => s.breweryId === id), String(id)).toBe(false);   // no address, no Census match, wrong Census match, loose match with no decision
-    expect(US_422_BUILT.stops).toHaveLength(30);
+    for (const id of [261, 26, 259]) expect(US_422_BUILT.stops.some((s) => s.breweryId === id), String(id)).toBe(false);   // no address, no Census match, wrong Census match
+    expect(US_422_BUILT.stops).toHaveLength(33);
+    expect(US_422_BUILT.stops.find((s) => s.breweryId === 60)!.placedBy).toBe('reviewed'); expect(I_71_BUILT.stops.find((s) => s.breweryId === 2338)!.placedBy).toBe('reviewed');
     for (const b of [US_422_BUILT, I_71_BUILT]) for (const s of b.stops) expect(['census', 'directory', 'reviewed'], s.name).toContain(s.placedBy);
     for (const s of [...US_422_BUILT.stops, ...I_71_BUILT.stops].filter((x) => x.placedBy === 'reviewed')) expect(s.placedNote, s.name).toMatch(/^Printed ".+"; the geocoder matched ".+"\. /);
     expect(US_422_BUILT.stops.find((s) => s.breweryId === 82)!.town).toBe('Chagrin Falls');
@@ -1258,7 +1266,7 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
     expect(main.match(/<details class="rt-fold">/g)).toHaveLength(3);
     expect(main.slice(0, main.indexOf('id="how"'))).not.toMatch(/<img|shield/i);
     expect(main).toContain('Exit numbers.'); expect(main.replace(/<blockquote>.*?<\/blockquote>/gs, '')).not.toMatch(/\bexit \d/i);   // a brewery's own words may name one
-    expect(main).toContain('If you drink, do not drive.'); expect(main).toContain(OSM_ATTRIBUTION); expect(main).toContain('It is an independent list, not an official guide');
+    expect(main).toContain('If you drink, do not drive.'); expect(main).toContain(OSM_ATTRIBUTION); expect(main).toContain('An independent list, not an official guide, of breweries near Interstate 71');
     expect(main).toContain('Operating evidence: hours read on'); expect(main).not.toMatch(/driving order|detour|confirmed open|open on \d{4}/i);
     expect(roadSummary(road)).toMatch(/^\d+ breweries from our directory within 5 straight-line miles of our mapped line of I-71; these are not driving distances\. Ordered by nearest mapped-road point within each displayed group; dense stretches show places within 2 straight-line miles first, followed by those over 2 and up to 5 miles away\. Each listing is supported by published visiting hours read on the date shown\.$/);
     expect(orderingNote(road)).toBe('Ordered by nearest mapped-road point within each displayed group; dense stretches show places within 2 straight-line miles first, followed by those over 2 and up to 5 miles away.');
@@ -1267,11 +1275,17 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
   it('says where the legs are cut, and that a nearest road point is not an exit, where a reader meets them', () => {
     const text = main.replace(/<[^>]+>/g, ''), cuts = 'These are editorial sections of one continuous interstate, divided at the point on our mapped line nearest central Columbus and at the Ohio River in Cincinnati. We assign each brewery to the leg containing its nearest mapped-road point, not by its town or state.';
     expect(road.config.legsNote).toBe(cuts);
-    expect(text.indexOf(cuts)).toBeGreaterThan(0); expect(text.indexOf(cuts)).toBeLessThan(text.indexOf('Leg 1:'));
+    expect(text.indexOf(`The legs. ${cuts}`)).toBeGreaterThan(text.indexOf('How this list was made'));   // in the method notes, not above the legs
     expect(roadsIndexPage(allRoads()).replace(/<[^>]+>/g, '')).toContain(cuts);
     expect(main).not.toContain('cut at Columbus');
     expect(INTERSTATE_NOTICE).toBe('Nearest road points are not exits or access points. Use a navigation service to find a legal route via an interchange; a nearby brewery may require a much longer drive. Plan while parked. If you drink, do not drive: arrange a driver who will not drink, or other transport, before setting out.');
-    expect(text.indexOf(INTERSTATE_NOTICE)).toBeGreaterThan(0); expect(text.indexOf(INTERSTATE_NOTICE)).toBeLessThan(text.indexOf(cuts));
+    // Above the legs: the access sentences, under the drive notice (which already says not to drink and drive). In full in the method notes.
+    expect(INTERSTATE_ACCESS).toBe('Nearest road points are not exits or access points. Use a navigation service to find a legal route via an interchange; a nearby brewery may require a much longer drive. Plan while parked.');
+    expect(text.indexOf(INTERSTATE_ACCESS)).toBeGreaterThan(text.indexOf(DRIVING_NOTICE)); expect(text.indexOf(INTERSTATE_ACCESS)).toBeLessThan(text.indexOf('Leg 1:'));
+    expect(text.indexOf(`Exits and access. ${INTERSTATE_NOTICE}`)).toBeGreaterThan(text.indexOf('How this list was made'));
+    // What stays above the legs is short: the breakdown and the unlisted names are below.
+    const top = text.slice(0, text.indexOf('Leg 1:'));
+    expect(top).toContain(cohortLine(road.cohort!, 'on 2026-11-22')); expect(top).not.toMatch(/operating status unresolved|not listed, and why|editorial sections/);
     expect(DIRECTIONS_NOTE_INTERSTATE).toBe('Its nearest road point is not an exit or an access point. Plan while parked.');
     expect(main.match(/Directions \(opens Google Maps\)<\/a><\/p>\s*<p class="rt-src">Its nearest road point is not an exit or an access point\. Plan while parked\.<\/p>/g)).toHaveLength(road.stops.length);
     expect(main.replace(/<blockquote>.*?<\/blockquote>/gs, '')).not.toMatch(/\bat (the )?(an )?exit\b/i);
@@ -1302,7 +1316,7 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
     expect(edits.unmatched).toEqual([]);
     // The Cleveland listings it shares with US 422 come from that road's folder: one record of each.
     const other = join(dir, '../us-422'), theirs = (f: string) => JSON.parse(readFileSync(join(other, f), 'utf8'));
-    const shared = shareRows(edits.rows, read('geocodes.json'), applyRowEdits(readdirSync(other).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(theirs), theirs('decisions.json'), []).rows, theirs('geocodes.json'));
+    const shared = shareRows(edits.rows, read('geocodes.json'), applyRowEdits(readdirSync(other).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(theirs), theirs('decisions.json'), []).rows, theirs('geocodes.json'), 'prefer', 'us-422');
     expect(I_71.sharedRowsFrom).toBe('us-422'); expect(shared.taken).toHaveLength(13);
     expect(buildRoad(I_71, read('osm-ways.json'), read('candidates.json'), shared.rows, I_71_BUILT.built, undefined, shared.geocodes).road).toEqual(I_71_BUILT);
   });
@@ -1320,8 +1334,8 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
 describe('roads that list the same brewery agree about it', () => {
   const builts = [ROUTE_66_BUILT, I_71_BUILT, US_422_BUILT];
   const allowed = (JSON.parse(readFileSync(join(__dirname, '../../data/roads/shared-differences.json'), 'utf8')) as { allow: string; why: string }[]);
-  it('the real roads: thirteen shared listings, no difference that is not recorded', () => {
-    expect(sharedStopIds(builts)).toEqual([51, 72, 120, 130, 136, 154, 182, 207, 208, 280, 296, 308, 2356]);
+  it('the real roads: fifteen shared listings, no difference that is not recorded', () => {
+    expect(sharedStopIds(builts)).toEqual([51, 62, 72, 120, 130, 136, 154, 182, 207, 208, 280, 296, 308, 2322, 2356]);
     expect(crossRoadDifferences(builts, allowed.map((x) => x.allow))).toEqual([]);
     for (const x of allowed) expect(x.why.length, x.allow).toBeGreaterThan(40);
     // Each recorded difference is a real one: without the record the gate fails on it.
@@ -1354,6 +1368,11 @@ describe('roads that list the same brewery agree about it', () => {
     const mine = [ok(1, { address_as_printed: 'mine 1' }), ok(2, { address_as_printed: 'mine 2' }), ok(3)];
     const theirs = [ok(1, { address_as_printed: 'theirs 1' }), { ...ok(2), status: 'UNCONFIRMED' }, ok(9)];
     const geo = (id: number, address: string): AddressGeocode => ({ id, address, lat: 1, lon: 2, matched: null, source: 's', checked: TODAY });
+    // 'fill': only where ours cannot be listed and is not settled.
+    const weak = [ok(1, { address_as_printed: 'mine 1' }), { ...ok(4), status: 'UNCONFIRMED', operating_evidence: undefined }, { ...ok(5), status: 'CLOSED' }, { ...ok(6), operating_evidence: undefined }];
+    const f = shareRows(weak, [], [ok(1, { address_as_printed: 'theirs 1' }), ok(4), ok(5), ok(6)], [geo(4, 'g4')], 'fill', 'other');
+    expect(f.taken).toEqual([4, 6]); expect(f.rows.map((x) => [x.id, x.status, x.taken_from])).toEqual([[1, 'OPEN', undefined], [4, 'OPEN', 'other'], [5, 'CLOSED', undefined], [6, 'OPEN', 'other']]);
+    expect(f.geocodes.map((x) => x.id)).toEqual([4]);
     const r = shareRows(mine, [geo(1, 'mine 1'), geo(2, 'mine 2')], theirs, [geo(1, 'theirs 1'), geo(2, 'theirs 2'), geo(9, 'x')]);
     expect(r.taken).toEqual([1]); expect(r.rows.map((x) => x.address_as_printed)).toEqual(['theirs 1', 'mine 2', '3 Fixture St']);
     expect(r.geocodes.map((x) => x.address).sort()).toEqual(['mine 2', 'theirs 1']);
@@ -1368,26 +1387,35 @@ describe('the dated correction on US 422', () => {
     expect(u.from).toBe(34); expect(u.to).toBe(road.stops.length);
     expect(u.removed.map((r) => r.breweryId).sort((a, b) => a - b)).toEqual(road.config.update!.previous.map((p) => p.breweryId).filter((id) => !road.stops.some((s) => s.breweryId === id)).sort((a, b) => a - b));
     expect(u.removed.every((r) => r.why === 'notPlaced' && r.reason !== '')).toBe(true);
-    expect(u.summary).toBe(`We revised how we locate breweries using their published addresses. The list changed from 34 to ${u.to} stops because we could not establish address-linked locations for ${['', 'one', 'two', 'three', 'four', 'five'][u.removed.length]} previously listed breweries; these removals are not findings that the breweries closed. We also recalculated several mile positions and straight-line distances and changed ${['', 'one town label', 'two town labels'][u.towns.length]} to match the ${u.towns.length === 1 ? 'brewery’s printed address' : 'breweries’ printed addresses'}.`);
+    expect(u.added.map((x) => x.breweryId).sort()).toEqual(road.stops.filter((s) => s.checkFrom).map((s) => s.breweryId).sort()); expect(u.from - u.removed.length + u.added.length).toBe(u.to);
+    const n = ['', 'one', 'two', 'three', 'four', 'five'];
+    expect(u.summary).toBe(`We revised how we locate breweries using their published addresses. The list changed from 34 to ${u.to} stops: we could not establish address-linked locations for ${n[u.removed.length]} previously listed breweries (these removals are not findings that the breweries closed), and ${n[u.added.length]} were added after a later check found their published hours. We also recalculated several mile positions and straight-line distances and changed ${['', 'one town label', 'two town labels'][u.towns.length]} to match the ${u.towns.length === 1 ? 'brewery’s printed address' : 'breweries’ printed addresses'}.`);
+    expect(u.summary.split('. ').length).toBe(3);
     const levity = u.measured.find((m) => m.is.name.startsWith('Levity'))!;
     expect([levity.was.detourMiles, levity.is.detourMiles, levity.was.mile, levity.is.mile]).toEqual([3.63, 1.03, 166.7, 161.9]);
   });
   it('shows the notice before the introduction and keeps a detailed entry lower down', () => {
     const notice = `Updated 22 November 2026: ${u.summary}`;
     expect(text.indexOf(notice)).toBeGreaterThan(0); expect(text.indexOf(notice)).toBeLessThan(text.indexOf(road.config.about)); expect(text.indexOf(notice)).toBeLessThan(text.indexOf('Leg 1:'));
-    const entry = text.slice(text.indexOf('Updates to this page'), text.indexOf('How this list was made'));
+    const entry = text.slice(text.indexOf('Updates to this page'), text.lastIndexOf('How this list was made'));
     expect(entry).toContain(`Updated 22 November 2026. ${u.summary}`);
     for (const r of u.removed) expect(entry).toContain(`${r.name} (${r.town}, was at mile ${r.mile.toFixed(1)}): ${r.reason}.`);
     expect(entry).toContain('None of these is a finding that the brewery closed');
+    for (const x of u.added) expect(entry).toContain(`${x.name} (${x.town}, mile ${x.mile.toFixed(1)}): a later check of the same listing, made for another road page, found its published hours.`);
     expect(entry).toContain('Levity Brewing Co : mile 166.7 to 161.9; straight-line distance 3.63 to 1.03 miles'.replace(' :', ':'));
     for (const t of u.towns) expect(entry).toContain(`${t.is.name}: ${t.was.town} to ${t.is.town}`);
     expect(html).toContain('<a href="#updates">'); expect(html).toContain('id="updates"');
   });
   it('a road with nothing to correct shows no notice, and the numbers follow the list', () => {
+    const n = ['', 'one', 'two', 'three', 'four', 'five'];
     for (const other of allRoads().filter((r) => r.config.slug !== 'us-422')) { expect(pageUpdate(other)).toBeNull(); expect(roadTripPage(other)).not.toContain('Updates to this page'); }
     const fewer = { ...road, stops: road.stops.slice(1) }, f = pageUpdate(fewer)!;
     expect(f.to).toBe(road.stops.length - 1); expect(f.summary).toContain(`from 34 to ${road.stops.length - 1} stops`);
-    expect(f.summary).not.toContain('because we could not establish');           // one removal has no placement reason on record, so the cause is not claimed
+    expect(f.summary).not.toContain('we could not establish');                   // one removal has no placement reason on record, so the cause is not claimed
+    const own = { ...road, stops: road.stops.map((s) => ({ ...s, checkFrom: undefined })) };
+    expect(pageUpdate(own)!.summary).toContain('were added.'); expect(pageUpdate(own)!.summary).not.toContain('later check');   // nor is the cause of an addition
+    const none = { ...road, stops: road.stops.filter((s) => !s.checkFrom) };
+    expect(pageUpdate(none)!.summary).toContain(`because we could not establish address-linked locations for ${n[u.removed.length]} previously listed breweries; these removals are not findings that the breweries closed.`);
   });
 });
 

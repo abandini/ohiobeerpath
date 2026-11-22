@@ -263,6 +263,8 @@ export const US_422: RoadConfig = {
   // that address, data/roads/us-422/geocodes.json, or the directory's point when the address is the directory's in
   // full), or it stays off. See addressMustMatch in src/lib/road-trip.ts for the exact order.
   addressMustMatch: true,
+  // Where this road's check could not list a brewery and the I-71 check of the same listing found its hours, that row is used.
+  fillRowsFrom: 'i-71',
   // The page was public with 34 stops before the location rule was applied to it: the notice is generated from this.
   update: { date: '2026-11-22', what: 'We revised how we locate breweries using their published addresses.', previous: US_422_BEFORE_2026_11_22 },
   // Listed when within this straight-line distance of the road. Five miles is the low end of the "road-trip pace"

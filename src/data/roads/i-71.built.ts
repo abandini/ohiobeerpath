@@ -31,12 +31,12 @@ export const I_71_BUILT: BuiltRoad = {
       "lengthMiles": 107,
       "line": [[39.9529,-83.00061],[39.95289,-83.00946],[39.94992,-83.01517],[39.9377,-83.00927],[39.91556,-83.0155],[39.88867,-83.04218],[39.86984,-83.05617],[39.83478,-83.09744],[39.82506,-83.12787],[39.82491,-83.15303],[39.82144,-83.16852],[39.74049,-83.34081],[39.72462,-83.39123],[39.69017,-83.47019],[39.65013,-83.53815],[39.62909,-83.59032],[39.55423,-83.72609],[39.52356,-83.83301],[39.48403,-83.94678],[39.45841,-83.99345],[39.43629,-84.06642],[39.41728,-84.10987],[39.41128,-84.16579],[39.38713,-84.2081],[39.37711,-84.24128],[39.34166,-84.2788],[39.3203,-84.28875],[39.30425,-84.30179],[39.26543,-84.35717],[39.25159,-84.36501],[39.22545,-84.36667],[39.20468,-84.37228],[39.1963,-84.37681],[39.19228,-84.3869],[39.18373,-84.39531],[39.173,-84.39945],[39.17017,-84.41816],[39.16337,-84.43404],[39.15044,-84.44491],[39.14362,-84.45909],[39.14297,-84.48151],[39.13333,-84.49389],[39.09964,-84.50413],[39.097,-84.52054],[39.09221,-84.52249]],
       "candidates": 57,
-      "decided": 40,
+      "decided": 41,
       "cohort": {
         "total": 58,
         "withHours": 33,
-        "listed": 28,
-        "notPlaced": 4,
+        "listed": 29,
+        "notPlaced": 3,
         "outside": 1,
         "unresolved": 13,
         "settled": 12
@@ -85,7 +85,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 0.45,
       "pastEnd": "start",
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "136",
@@ -109,7 +110,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 0.66,
       "pastEnd": "start",
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "2356",
@@ -133,7 +135,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 0.66,
       "pastEnd": "start",
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "207",
@@ -157,7 +160,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 0.66,
       "pastEnd": "start",
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "51",
@@ -181,7 +185,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 0.83,
       "pastEnd": "start",
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "280",
@@ -205,7 +210,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 1.14,
       "pastEnd": "start",
-      "placedBy": "directory"
+      "placedBy": "directory",
+      "checkFrom": "us-422"
     },
     {
       "key": "62",
@@ -253,7 +259,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 1.38,
       "pastEnd": "start",
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "72",
@@ -277,7 +284,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 1.46,
       "pastEnd": "start",
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "208",
@@ -301,7 +309,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 1.6,
       "pastEnd": "start",
-      "placedBy": "directory"
+      "placedBy": "directory",
+      "checkFrom": "us-422"
     },
     {
       "key": "154",
@@ -325,7 +334,8 @@ export const I_71_BUILT: BuiltRoad = {
       "mile": 0,
       "detourMiles": 1.75,
       "pastEnd": "start",
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "308",
@@ -351,7 +361,8 @@ export const I_71_BUILT: BuiltRoad = {
       "pastEnd": "start",
       "outer": true,
       "placedBy": "reviewed",
-      "placedNote": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the page leaves off the suffix \"Dr\"."
+      "placedNote": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the page leaves off the suffix \"Dr\".",
+      "checkFrom": "us-422"
     },
     {
       "key": "130",
@@ -376,7 +387,8 @@ export const I_71_BUILT: BuiltRoad = {
       "detourMiles": 3.71,
       "pastEnd": "start",
       "outer": true,
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "182",
@@ -401,7 +413,8 @@ export const I_71_BUILT: BuiltRoad = {
       "detourMiles": 4.79,
       "pastEnd": "start",
       "outer": true,
-      "placedBy": "census"
+      "placedBy": "census",
+      "checkFrom": "us-422"
     },
     {
       "key": "284",
@@ -1233,6 +1246,32 @@ export const I_71_BUILT: BuiltRoad = {
       "placedBy": "census"
     },
     {
+      "key": "2338",
+      "breweryId": 2338,
+      "name": "Columbus Brewing Co",
+      "town": "Columbus",
+      "state": "OH",
+      "lat": 39.968185221797,
+      "lon": -83.070167736462,
+      "status": "OPEN",
+      "website": "https://columbusbrewing.com/",
+      "address": "2555 Harrison Dr. Columbus, OH 43204",
+      "addressSourceUrl": "https://columbusbrewing.com/location/taproom/",
+      "evidence": "Stop by 2555 Harrison Dr. Columbus, OH 43204 614-224-3626 Directions Taproom hours Monday - Wednesday: Closed Thursday - Friday: 2pm - 9pm Saturday: 12pm - 9pm Sunday: 12pm - 8pm",
+      "evidenceUrl": "https://columbusbrewing.com/location/taproom/",
+      "evidenceChecked": "2026-11-22",
+      "quote": "",
+      "quoteSourceUrl": "",
+      "checked": "2026-11-22",
+      "legId": "columbus-cincinnati",
+      "mile": 0.8,
+      "detourMiles": 3.17,
+      "pastEnd": "",
+      "outer": true,
+      "placedBy": "reviewed",
+      "placedNote": "Printed \"2555 Harrison Dr. Columbus, OH 43204\"; the geocoder matched \"2555 HARRISON RD, COLUMBUS, OH, 43204\". US Census geocoder returns a single match for 2555 Harrison in ZIP 43204 (2555 HARRISON RD), for both Dr and Rd; read 2026-11-22."
+    },
+    {
       "key": "139",
       "breweryId": 139,
       "name": "Grove City Brewing Company",
@@ -2014,19 +2053,13 @@ export const I_71_BUILT: BuiltRoad = {
   "cohort": {
     "total": 157,
     "withHours": 87,
-    "listed": 80,
-    "notPlaced": 6,
+    "listed": 81,
+    "notPlaced": 5,
     "outside": 1,
     "unresolved": 40,
     "settled": 30
   },
   "notListed": [
-    {
-      "id": 2338,
-      "name": "Columbus Brewing Co",
-      "why": "notPlaced",
-      "reason": "the geocoder matched a slightly different address (2555 HARRISON RD, COLUMBUS, OH, 43204); flagged for review, and not used without a recorded decision"
-    },
     {
       "id": 12,
       "name": "Antiques on High",
@@ -2121,7 +2154,6 @@ export const I_71_BUILT: BuiltRoad = {
     2331,
     2334,
     2336,
-    2338,
     2339,
     2343,
     2345,
