@@ -134,12 +134,13 @@ Everything is under the **data directory**, outside the checkout: `~/brewerytrip
 - `state/INITIALISED.json`: which checks have state. If a check is listed there and its state file is missing or
   cannot be read, the run **stops** with a message. It never starts a new baseline silently. Restore from `backups/`.
 - `backups/<time>/`: a copy of the state files, made at the start of every run. The newest 12 are kept.
-- `reports/<date>.md` (`<date>-confirm.md` for the confirming pass): per check a status line, counts, the lists a
+- `reports/<date>.md` (`<date>-confirm.md` for the confirming pass; a second run on the same day gets the run's time
+  in its name, so no report is overwritten): per check a status line, counts, the lists a
   person must act on, and the "could not observe" lists kept apart. For check B: counts only.
-- `internal/<date>-directory.md` and `.jsonl`: the check B detail. Internal.
-- `observations/<date>-links.jsonl`: what check C saw.
+- `internal/<run time>-directory.md` and `.jsonl`: the check B detail. Internal. Never overwritten by a later run.
+- `observations/<run time>-links.jsonl`: what check C saw. Never overwritten by a later run.
 - `pages/<date>/`: the fetched text of every GONE reading.
-- `proposals/<date>/`: `suspension.patch`, `evidence.md`, `checks.log`.
+- `proposals/<run time>/`: `suspension.patch`, `evidence.md`, `checks.log`.
 - `lock/`: held while a run is going.
 
 State is written to a temporary file and renamed, so a crash cannot leave half a file. One run at a time: the
@@ -156,8 +157,8 @@ Exit code 0 only when every check observed validly; otherwise 2.
 B and C report change against a baseline, and a baseline is something a person initialises, once, from observations
 they have read.
 
-1. The first run observes and writes its observations (`internal/<date>-directory.jsonl`,
-   `observations/<date>-links.jsonl`) but writes no state. The report says so.
+1. The first run observes and writes its observations (`internal/<run time>-directory.jsonl`,
+   `observations/<run time>-links.jsonl`) but writes no state. The report says so.
 2. Read the report and the observations.
 3. Initialise: `node scripts/monthly-check.mjs --init-baseline b --from <the directory observations file>` and
    `--init-baseline c --from <the links observations file>`.
@@ -180,7 +181,7 @@ calls closed, so the first full run will trip the prevalence floor and need this
 
 When a stop is eligible, the job builds the suspension in a **disposable git worktree** (a separate copy with its
 own files and index, made from the commit that was observed and removed afterwards) and writes to
-`proposals/<date>/`:
+`proposals/<run time>/`:
 
 - `suspension.patch`: adds the stop to `data/roads/<road>/suspended.json`, the rebuilt road files, the list as it
   stood, and the dated update entry. A brewery listed on another road is included there only when that road cites
@@ -195,7 +196,7 @@ own files and index, made from the commit that was observed and removed afterwar
 To apply one, on a branch, as any reviewed change:
 
 ```bash
-git apply ~/brewerytrip-monthly/proposals/<date>/suspension.patch
+git apply ~/brewerytrip-monthly/proposals/<run time>/suspension.patch
 node scripts/build-road-trip.mjs <road> --check     # every road
 npx tsc --noEmit && npx vitest run
 node scripts/verify-road-sources.mjs <road>         # every road

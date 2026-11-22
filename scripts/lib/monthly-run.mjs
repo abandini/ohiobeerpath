@@ -41,6 +41,9 @@ async function run({ drill }) {
   const L = await import(join(root, 'src/lib/monthly-check.ts'));
   const R = await import(join(root, 'src/lib/road-trip.ts'));
   const date = stamp().slice(0, 10), confirm = flag('--confirm'), init = opt('--init-baseline');
+  // Every file a run writes about what it saw carries the time the run began, to the second: a later run on the same
+  // day never overwrites an observations file (a baseline may rest on it), a kept page text or a report.
+  const runId = stamp().slice(0, 19).replace(/:/g, '') + 'Z';
 
   // --- Where this run keeps its files -------------------------------------------------------------------------------
   // Production: the production directory, always. A drill: a directory of its own that is not the production
@@ -335,7 +338,7 @@ async function run({ drill }) {
     // Four at a time to the status service, as the one-off sweep this was ported from did (a metered API, not a
     // brewery's site). At about 15 seconds an answer, one at a time would take a full run past five hours.
     const answers = await pool(rows, 4, (r) => `status-service-${r.id}`, ask);
-    const obsFile = join(dirs.internal, `${date}-directory.jsonl`);
+    const obsFile = join(dirs.internal, `${runId}-directory.jsonl`);
     writeFileSync(obsFile, answers.map((a) => JSON.stringify(a)).join('\n') + '\n');
     const incomplete = (why) => { recordRun(obsFile, { check: 'b', complete: false, why, directory: listings.length, looked: rows.length }); return fail(why); };
     if (refused) return incomplete(`could not observe: the status service refused our key (${refused})`);
@@ -347,7 +350,7 @@ async function run({ drill }) {
     const transitions = L.directoryTransitions(state.directory.listings, runs), counts = L.transitionCounts(transitions);
     const by = new Map(answers.map((a) => [a.id, a])), named = (a) => `${a.id} ${a.name} (${a.city}, ${a.state})`;
     const others = answers.filter((a) => a.outcome === 'OTHER_BUSINESS_AT_ADDRESS'), unread = answers.filter((a) => a.outcome === 'UNOBSERVABLE');
-    writeFileSync(join(dirs.internal, `${date}-directory.md`), [`# Directory status ${date} (internal lead, not for publication)`, '', verdict.valid ? 'The run is valid.' : `The run did NOT update the state: ${verdict.why}. Nothing below is a conclusion.`, '',
+    writeFileSync(join(dirs.internal, `${runId}-directory.md`), [`# Directory status ${date} (internal lead, not for publication)`, '', verdict.valid ? 'The run is valid.' : `The run did NOT update the state: ${verdict.why}. Nothing below is a conclusion.`, '',
       `Observations: ${obsFile} (sha256 ${hashFile(obsFile)})`, `Statuses accepted: ${JSON.stringify(count(answers.filter((a) => a.outcome === 'STATUS'), (a) => a.status))}`, '',
       `## Every change of status (${transitions.length})`, ...transitions.map((t) => { const a = by.get(t.id); return `- ${named(a)}: ${t.from} -> ${t.to}. On Maps: "${a.name_on_maps}", ${a.address_on_maps}. ${a.source} ${a.note}`; }), '',
       `## Another business at the address (${others.length}): a lead, not a status`, ...others.map((a) => `- ${named(a)}: Maps returned "${a.name_on_maps}", ${a.address_on_maps}. ${a.source} ${a.note}`), '',
@@ -365,7 +368,7 @@ async function run({ drill }) {
       const url = String(r.website_url).trim(), o = L.isSocialUrl(url) ? { kind: 'error', at: stamp(), why: '' } : await readPage(url, 20000);
       return { id: r.id, name: r.name, city: r.city, state: r.state, url, at: o.at, ...L.classifyLink(r.name, url, o) };
     });
-    const obsFile = join(dirs.observations, `${date}-links.jsonl`);
+    const obsFile = join(dirs.observations, `${runId}-links.jsonl`);
     writeFileSync(obsFile, runs.map((a) => JSON.stringify(a)).join('\n') + '\n');
     const after = await canary();
     if (after) { recordRun(obsFile, { check: 'c', complete: false, why: after, directory: listings.length, looked: rows.length }); return { ran: true, valid: false, why: `could not observe: ${after} by the end of the run`, runs, fresh: [], leads: [], obsFile }; }
@@ -412,7 +415,7 @@ async function run({ drill }) {
     // Which stops may be named: see proposalItems. A brewery whose roads cite different evidence, not all of it gone, is a conflict and is left out.
     const { items: list, conflicts } = L.proposalItems(eligible, roads.map((r) => ({ slug: r.slug, stops: r.stops.map((s) => ({ key: s.key, breweryId: s.breweryId, name: s.name, source: L.sourceOf(s.evidenceUrl, s.evidence) })) })));
     const slugs = [...new Set(list.map((x) => x.slug))];
-    const out = join(dirs.proposals, date); mkdirSync(out, { recursive: true });
+    const out = join(dirs.proposals, runId); mkdirSync(out, { recursive: true });
     const tmp = mkdtempSync(join(tmpdir(), 'brewerytrip-proposal-')), wt = join(tmp, 'checkout'), checks = [];
     const git = (...a) => execFileSync('git', a, { cwd: root, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
     const step = (cmd, args) => { const name = `${cmd} ${args.join(' ')}`; try { execFileSync(cmd, args, { cwd: wt, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 256 * 1024 * 1024, timeout: 30 * 60 * 1000 }); checks.push(`PASSED  ${name}`); return true; } catch (e) { checks.push(`FAILED  ${name} (exit ${e.status ?? '?'})\n${String(e.stdout || '').slice(-6000)}\n${String(e.stderr || '').slice(-3000)}`); return false; } };
@@ -507,7 +510,8 @@ async function run({ drill }) {
   const code = L.exitCode(outcomes);
   const summary = L.summaryLine({ date, a: A ? { ok: A.valid, ...A.counts } : undefined, b: B ? { ok: B.valid, newlyClosed: B.counts?.newlyClosed ?? 0, newlyNotFound: B.counts?.newlyNotFound ?? 0 } : undefined, c: C ? { ok: C.valid, fresh: C.fresh.length } : undefined });
   say('---', '', summary, '');
-  const reportFile = join(dirs.reports, `${date}${confirm ? '-confirm' : ''}.md`);
+  const plain = join(dirs.reports, `${date}${confirm ? '-confirm' : ''}.md`);
+  const reportFile = existsSync(plain) ? join(dirs.reports, `${runId}${confirm ? '-confirm' : ''}.md`) : plain;   // the first report of a day keeps the plain name; none is overwritten
   writeFileSync(reportFile, report.join('\n'));
   log(`report: ${reportFile}`);
   log(summary);
