@@ -54,14 +54,19 @@ export function projectOntoLine(p: LatLon, line: LatLon[], cum: number[] = cumul
   return best;
 }
 
-/** Straight-line miles from a point to the nearest part of any of the ways (every mapped alignment, either carriageway). */
-export function distanceToWays(p: LatLon, ways: LatLon[][]): number {
+/**
+ * Straight-line miles from a point to the nearest part of any of the ways (every mapped alignment, either
+ * carriageway). Only mapped ways count: a join across a gap is not a way. A segment is skipped only when its whole
+ * bounding box, widened by `reach` degrees, misses the point, so a long segment that passes near the point is never
+ * thrown out because its two ends are far away.
+ */
+export function distanceToWays(p: LatLon, ways: LatLon[][], reach = 0.35): number {
   let best = Infinity;
   for (const w of ways) {
     for (let i = 1; i < w.length; i++) {
-      // Cheap reject: a segment well over a quarter of a degree away cannot be the nearest for the distances used here.
-      if (Math.abs(w[i][0] - p[0]) > 0.3 || Math.abs(w[i][1] - p[1]) > 0.4) continue;
-      const d = pointToSegment(p, w[i - 1], w[i]).miles;
+      const a = w[i - 1], b = w[i];
+      if (p[0] < Math.min(a[0], b[0]) - reach || p[0] > Math.max(a[0], b[0]) + reach || p[1] < Math.min(a[1], b[1]) - reach || p[1] > Math.max(a[1], b[1]) + reach) continue;
+      const d = pointToSegment(p, a, b).miles;
       if (d < best) best = d;
     }
   }
@@ -243,6 +248,7 @@ export interface VerifiedRow {
   operating_evidence?: OperatingEvidence | null;
   browser_checked?: string | null; // the day a person read the row's sources on the rendered page, for sites a script cannot read
   evidence_kind?: string | null;   // 'notice' when the evidence is a dated notice or event, not visiting hours
+  notice_context?: string | null;  // for a notice: what on the page establishes its year and the venue
 }
 
 export interface RoadStop {
@@ -261,6 +267,7 @@ export interface RoadStop {
   detourMiles: number;         // straight-line distance to that nearest point (not a driving distance)
   pastEnd: '' | 'start' | 'end'; // the nearest point on the line is the end of the line itself
   browserChecked?: string;     // set only when the checker's row records a browser check on a real date
+  noticeContext?: string;      // for a notice: what on the page establishes its year and the venue
   outer?: boolean;             // beyond the stretch's tighter limit but within its further-off distance
   unmeasured?: string;         // id of the leg's unmeasured group: the mapped line is missing here, so mile and distance are not shown
   evidenceKind?: 'notice';     // the evidence is a dated notice or event, not visiting hours
@@ -314,6 +321,41 @@ export function isShowableStop(s: Partial<RoadStop> | null | undefined, today: s
 }
 
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/**
+ * Everything wrong with a stop for the road it is on; empty when it may be shown. This is the check the builder, the
+ * page and the verifier all use. On top of the gate above:
+ * - a road whose stops are in this site's directory (stopsHavePages not false) REQUIRES a positive directory id on
+ *   every stop, and the stop's key must be that id;
+ * - a road of stand-alone stops (stopsHavePages: false) must have no directory id, and because there is no directory
+ *   page to fall back on, every stop needs a sourced street address and a link to the brewery's own site;
+ * - evidence that is a notice, not hours, must record what establishes its year and venue.
+ */
+export function stopProblems(s: Partial<RoadStop> | null | undefined, config: Pick<RoadConfig, 'stopsHavePages'>, today: string = currentDate()): string[] {
+  if (!isShowableStop(s, today)) return ['fails the gate: not OPEN, or no dated operating evidence with a citable source, or a date in the future'];
+  const out: string[] = [];
+  if (config.stopsHavePages !== false) {
+    if (!(Number.isInteger(s.breweryId) && (s.breweryId as number) > 0)) out.push('a stop on a directory road must carry a positive directory id');
+    else if (s.key !== String(s.breweryId)) out.push('the stop key must be its directory id');
+  } else {
+    if (s.breweryId !== undefined) out.push('a stand-alone stop must not carry a directory id');
+    if (!String(s.address ?? '').trim() || !citable(s.addressSourceUrl)) out.push('a stand-alone stop needs a sourced street address');
+    if (!citable(s.website)) out.push('a stand-alone stop needs a link to the brewery\'s own site');
+  }
+  if (s.evidenceKind === 'notice' && !String(s.noticeContext ?? '').trim()) out.push('a notice needs the context that establishes its year and venue');
+  return out;
+}
+
+/**
+ * True when every part of `quote` is on the page, in order. An excerpt may leave words out, marked " ... " or "…".
+ * An excerpt with nothing in it (empty, only spaces, only an ellipsis) matches nothing: it is never found.
+ */
+export function excerptFound(text: string, quote: string): boolean {
+  const parts = pageText(String(quote ?? '')).split(/\s*(?:\.\.\.|…)\s*/).map((x) => x.trim()).filter(Boolean);
+  if (!parts.length || !text) return false;
+  let at = 0;
+  for (const part of parts) { const i = text.indexOf(part, at); if (i < 0) return false; at = i + part.length; }
+  return true;
+}
 /** A link inside this site: one leading slash, then plain path characters. No scheme, no "//", no backslash, no control characters. '' when it is anything else. */
 export function safeSitePath(href: unknown): string {
   return typeof href === 'string' && /^\/(?!\/)[A-Za-z0-9\-._~/?#=&%+]*$/.test(href) && !href.includes('\\') ? href : '';
@@ -401,7 +443,8 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     const p: LatLon = [cand.latitude, cand.longitude];
     const near = legs.map((l) => ({ l, on: projectOntoLine(p, l.st.line, l.cum) })).sort((a, b) => a.on.detour - b.on.detour)[0];
     const seg = segmentAt(near.l.leg, near.on.along);
-    const detour = config.distanceTo === 'any-way' ? Math.min(near.on.detour, distanceToWays(p, ways)) : near.on.detour;
+    // 'any-way': the advertised distance is to mapped ways alone, never to a join the stitched line makes across a gap.
+    const detour = config.distanceTo === 'any-way' ? distanceToWays(p, ways) : near.on.detour;
     const tight = seg.maxDetourMiles ?? config.maxDetourMiles, limit = Math.max(tight, seg.furtherOffMiles ?? 0);
     // Too far from the line, but inside a box where the line is known to be missing: kept, in that group, unmeasured.
     const hole = detour <= limit ? undefined : legs.flatMap((l) => (l.leg.unmeasured ?? []).map((u) => ({ l, u }))).find(({ u }) => p[0] >= u.box[0] && p[0] <= u.box[2] && p[1] >= u.box[1] && p[1] <= u.box[3]);
@@ -409,6 +452,10 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     placed.set(cand.id, { cand, l, along: on.along, detour, lineDetour: on.detour, within: detour <= limit || !!hole, outer: detour > tight && detour <= limit, unmeasured: hole ? hole.u.id : '' });
   }
 
+  if (config.stopsHavePages !== false) {
+    const bad = [...candidates.map((x) => x?.id), ...verified.map((x) => x?.id)].find((id) => !(Number.isInteger(id) && (id as number) > 0));
+    if (bad !== undefined) throw new Error(`${config.slug}: a directory road needs a positive whole-number directory id on every row; got ${JSON.stringify(bad)}`);
+  }
   const seen = new Set<Id>(), decided = new Set<Id>(), stops: RoadStop[] = [];
   for (const row of verified) {
     const label = String(row?.name || `id ${row?.id}`);
@@ -438,10 +485,12 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
       quote, quoteSourceUrl: quote ? quoteUrl : '', checked: String(row.checked || '').trim(),
       legId: l.leg.id, mile, detourMiles,
       pastEnd: at.lineDetour > PAST_END_MILES && (atStart || atEnd) ? (atStart ? 'start' : 'end') : '',
-      ...(at.outer ? { outer: true } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const } : {}),
+      ...(at.outer ? { outer: true } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const, noticeContext: String(row.notice_context ?? '').trim() } : {}),
       ...(calendarDate(row.browser_checked) ? { browserChecked: row.browser_checked as string } : {}),
     };
     if (!isShowableStop(stop, today)) { leave('marked OPEN, but there is no usable operating evidence (excerpt, citable URL and a check date that is not in the future)'); continue; }
+    const wrong = stopProblems(stop, config, today);
+    if (wrong.length) { leave(`marked OPEN with evidence, but ${wrong.join('; ')}`); continue; }
     decided.add(row.id);
     stops.push(stop);
   }
@@ -556,7 +605,12 @@ const ROW_COORDINATE_FIELDS = ['coordinates', 'new_address_coordinates', 'addres
 const rowCoordinates = (r: Record<string, unknown>) => { for (const f of ROW_COORDINATE_FIELDS) { const c = readCoordinates(r[f]); if (c) return c; } return readCoordinates({ lat: r.lat, lon: r.lon }); };
 
 /** An editor's or second check's ruling on one row, kept apart from the checkers' files. Matches a dataset id or a lead's key. */
-export interface RowDecision { match: string; status?: string; evidenceKind?: 'notice'; reason: string }
+export interface RowDecision {
+  match: string; status?: string; reason: string;
+  evidenceKind?: 'notice'; noticeContext?: string;
+  /** Operating evidence an editor re-read on the brewery's own site, replacing the checker's (a notice replaced by hours, say). */
+  evidence?: { excerpt: string; url: string; checked: string };
+}
 /**
  * A correction to one field of one row, made by re-reading the cited page: the text exactly as the page prints it, or
  * null when the page does not carry it. Written by scripts/reconcile-road-excerpts.mjs, never by hand, and kept apart
@@ -568,46 +622,129 @@ export interface IngestResult {
   unplaced: { key: string; name: string; city: string; state: string; why: string }[];
   applied: { key: string; name: string; status: string; reason: string }[];
   unmatchedDecisions: string[];
+  retowned: { key: string; name: string; from: string; to: string }[]; // town taken from the printed address, not the row
+}
+const STREET_WORDS: Record<string, string> = { street: 'st', avenue: 'ave', av: 'ave', road: 'rd', boulevard: 'blvd', drive: 'dr', lane: 'ln', highway: 'hwy', parkway: 'pkwy', place: 'pl', court: 'ct', route: 'rte', rt: 'rte',
+  north: 'n', south: 's', east: 'e', west: 'w', northeast: 'ne', northwest: 'nw', southeast: 'se', southwest: 'sw', first: '1st', second: '2nd', third: '3rd', fourth: '4th', fifth: '5th', sixth: '6th', seventh: '7th', eighth: '8th', ninth: '9th' };
+const STREET_SUFFIX = new Set(['st', 'ave', 'rd', 'blvd', 'dr', 'ln', 'hwy', 'pkwy', 'pl', 'ct', 'way', 'rte', 'ter', 'cir', 'sq']);
+const DIRECTIONS = new Set(['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw']);
+/**
+ * "1800 4th Street NW, Albuquerque" -> { number: "1800", street: "4th" }: the street number and the first word of the
+ * street's own name (a leading compass word is skipped unless it is the name, as in "North Ave"), or null.
+ */
+export function streetOf(address: unknown): { number: string; street: string } | null {
+  const words = String(address ?? '').toLowerCase().replace(/[.,#]/g, ' ').split(/\s+/).filter(Boolean).map((w) => STREET_WORDS[w] ?? w);
+  const at = words.findIndex((w) => /^\d+[a-z]?$/.test(w));
+  if (at < 0) return null;
+  const rest = words.slice(at + 1);
+  while (rest.length > 1 && DIRECTIONS.has(rest[0]) && !STREET_SUFFIX.has(rest[1])) rest.shift();
+  return rest.length && !STREET_SUFFIX.has(rest[0]) ? { number: words[at], street: rest[0] } : null;
 }
 /**
- * dataset: the Open Brewery DB rows (id, name, city, state, latitude, longitude). verified: checkers' rows keyed by
- * obdb_id. leads: breweries the checkers found that the dataset lacks. A row is placed by the Census coordinates the
- * checker recorded for its printed address, else (for a row that has not moved) the dataset's coordinates; a row with
- * neither cannot be placed and is reported, never guessed. MOVED and RENAMED rows that carry operating evidence for the
- * new address are treated as open there. Decisions override a row's status.
+ * The same-location check: do two addresses share a street number and the first word of the street name? False when
+ * either cannot be read. (It cannot tell "100 Main St" from "100 Main Ave" in the same town; it is there to catch a
+ * brewery that has moved, where the number or the street changes.)
+ */
+export function sameStreet(a: unknown, b: unknown): boolean {
+  const x = streetOf(a), y = streetOf(b);
+  return !!x && !!y && x.number === y.number && x.street === y.street;
+}
+const plainTown = (t: string) => t.toLowerCase().replace(/\bsaint\b/g, 'st').replace(/[.']/g, '').replace(/\s+/g, ' ').trim();
+const TOWN_ALIASES: Record<string, string> = { okc: 'oklahoma city', la: 'los angeles', abq: 'albuquerque', stl: 'st louis' };
+const STATE_NAMES = 'Illinois|Missouri|Kansas|Oklahoma|Texas|New Mexico|Arizona|California';
+/**
+ * The town a printed address names, so the town shown with a stop agrees with its address. If the address names the
+ * town the row already has (or a usual short form of it), that stands. Otherwise: a town we know that appears in the
+ * address (the last one, since the town follows the street); failing that, the words between the street and the
+ * state. Null when the address names no town at all.
+ */
+export function townInAddress(address: unknown, known: string[], listed = ''): string | null {
+  const raw = String(address ?? '').trim();
+  if (!raw) return null;
+  const text = ` ${plainTown(raw.replace(/[,·]/g, ' '))} `, mine = plainTown(listed);
+  const names = (t: string) => text.includes(` ${t} `) || Object.entries(TOWN_ALIASES).some(([short, full]) => full === t && text.includes(` ${short} `));
+  if (mine && names(mine)) return listed;
+  let best: { town: string; at: number; len: number } | null = null;
+  for (const town of known) {
+    const t = plainTown(town); if (!t) continue;
+    const at = text.lastIndexOf(` ${t} `);
+    if (at >= 0 && (!best || at + t.length > best.at + best.len || (at + t.length === best.at + best.len && t.length > best.len))) best = { town, at, len: t.length };
+  }
+  if (best) return best.town;
+  // "..., Lebanon, Missouri 65536" or "... 1st Street Alhambra, CA 91801": what sits just before the state.
+  const m = raw.match(new RegExp(`^(.*?)[,\\s]+(?:[A-Z]{2}|${STATE_NAMES})\\.?,?\\s*(?:\\d{5}(?:-\\d{4})?)?\\s*$`));
+  if (!m) return null;
+  const before = m[1].trim(), afterComma = before.includes(',') ? before.slice(before.lastIndexOf(',') + 1).trim() : '';
+  let town = afterComma;
+  if (!town) { const words = before.replace(/[.#]/g, ' ').split(/\s+/); let cut = -1; words.forEach((w, i) => { if (STREET_SUFFIX.has(STREET_WORDS[w.toLowerCase()] ?? w.toLowerCase()) || /^\d/.test(w) || DIRECTIONS.has(w.toLowerCase())) cut = i; }); town = words.slice(cut + 1).join(' ').trim(); }
+  if (!town || /\d/.test(town) || town.split(/\s+/).length > 4) return null;
+  if (TOWN_ALIASES[plainTown(town)] === mine && mine) return listed;
+  return town === town.toUpperCase() ? town.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase()) : town;
+}
+
+/**
+ * dataset: the Open Brewery DB rows (id, name, city, state, address_1, latitude, longitude). verified: checkers' rows
+ * keyed by obdb_id. leads: breweries the checkers found that the dataset lacks.
+ *
+ * The coordinates a row is measured from must be those of the address it prints:
+ * - Census coordinates the checker recorded for the printed address are used when the row has them;
+ * - the dataset's coordinates are used ONLY when the final printed address (after corrections) has the same street
+ *   number and street as the dataset's address (sameStreet), whatever the row's status word says;
+ * - a row with neither cannot be placed: it is reported and stays off the list, never guessed.
+ * The town shown is the one the printed address names, when it names a town we know and that differs from the row's.
+ * MOVED and RENAMED rows that carry operating evidence are treated as open at the printed address. Decisions override
+ * a row's status (and may supply evidence an editor re-read); corrections replace text with what the page prints.
  */
 export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verified: Record<string, unknown>[], leads: Record<string, unknown>[], decisions: RowDecision[] = [], corrections: RowCorrection[] = []): IngestResult {
-  const out: IngestResult = { candidates: [], verified: [], unplaced: [], applied: [], unmatchedDecisions: [] };
+  const out: IngestResult = { candidates: [], verified: [], unplaced: [], applied: [], unmatchedDecisions: [], retowned: [] };
   const byId = new Map(dataset.map((d) => [String(d.id), d]));
-  const rule = new Map(decisions.map((d) => [d.match, d])), used = new Set<string>();
+  const rule = new Map(decisions.map((d) => [d.match, d])), used = new Set<string>(), fixed = new Set<string>();
   const keys = new Set<string>();
   const unique = (base: string) => { let k = base || 'stop', n = 1; while (keys.has(k)) k = `${base}-${++n}`; keys.add(k); return k; };
+  const towns = [...new Set([...dataset, ...verified, ...leads].map((r) => String(r.city ?? '').trim()).filter(Boolean))];
   const evidenceOf = (r: Record<string, unknown>) => { const e = r.operating_evidence as OperatingEvidence | null | undefined; return e && typeof e === 'object' && String(e.excerpt ?? '').trim() ? e : null; };
-  const add = (r: Record<string, unknown>, key: string, status: string, at: { lat: number; lon: number } | null, why: string, matches: string[]) => {
-    const name = String(r.name ?? '').trim(), city = String(r.city ?? '').trim(), state = stateAbbr(r.state), ev = evidenceOf(r);
+  // One row: rulings and corrections first, so that everything after (placement, town) works from the final text.
+  const make = (r: Record<string, unknown>, key: string, status: string, matches: string[]): VerifiedRow => {
+    const name = String(r.name ?? '').trim();
     const d = matches.map((m) => rule.get(m)).find(Boolean);
-    if (d) { used.add(d.match); status = d.status ?? status; out.applied.push({ key, name, status, reason: d.reason }); }
-    out.verified.push({
+    let ev = evidenceOf(r);
+    if (d) { used.add(d.match); status = d.status ?? status; if (d.evidence) ev = { ...d.evidence }; out.applied.push({ key, name, status, reason: d.reason }); }
+    const row: VerifiedRow = {
       id: key, name, status, official_url: (r.official_url as string) ?? null,
       address_as_printed: (r.address_as_printed as string) ?? null, address_source_url: (r.address_source_url as string) ?? null,
       quote: (r.quote as string) ?? null, quote_source_url: (r.quote_source_url as string) ?? null,
       notes: [d ? d.reason : '', String(r.notes ?? '')].filter(Boolean).join(' | ') || null,
-      checked: String(r.checked ?? ev?.checked ?? '') || null, operating_evidence: ev, browser_checked: (r.browser_checked as string) ?? null, evidence_kind: d?.evidenceKind ?? (r.evidence_kind as string) ?? null,
-    });
+      checked: String(r.checked ?? ev?.checked ?? '') || null, operating_evidence: ev, browser_checked: (r.browser_checked as string) ?? null,
+      evidence_kind: d?.evidence ? null : d?.evidenceKind ?? (r.evidence_kind as string) ?? null, notice_context: d?.noticeContext ?? (r.notice_context as string) ?? null,
+    };
+    for (const c of corrections.filter((x) => x.key === key)) {
+      fixed.add(`${c.key}\n${c.field}`);
+      if (c.field === 'evidence') row.operating_evidence = c.value && row.operating_evidence ? { ...row.operating_evidence, excerpt: c.value, ...(c.url ? { url: c.url } : {}) } : null;
+      else if (c.field === 'address') { row.address_as_printed = c.value; if (!c.value) row.address_source_url = null; }
+      else { row.quote = c.value; if (!c.value) row.quote_source_url = null; }
+    }
+    return row;
+  };
+  const place = (r: Record<string, unknown>, row: VerifiedRow, at: { lat: number; lon: number } | null, why: string) => {
+    const listed = String(r.city ?? '').trim(), state = stateAbbr(r.state), key = String(row.id), name = String(row.name ?? '');
+    const printed = townInAddress(row.address_as_printed, towns, listed), city = printed ?? listed;
+    if (printed && plainTown(printed) !== plainTown(listed)) out.retowned.push({ key, name, from: listed, to: printed });
+    out.verified.push(row);
     if (at) out.candidates.push({ id: key, name, city, state, latitude: at.lat, longitude: at.lon });
     else out.unplaced.push({ key, name, city, state, why });
   };
   const openByName = new Map<string, VerifiedRow>();
   for (const r of verified) {
     const id = String(r.obdb_id ?? ''), d = byId.get(id), raw = String(r.status ?? '');
-    const moved = raw === 'MOVED', here = rowCoordinates(r), dataAt = d ? readCoordinates({ lat: d.latitude, lon: d.longitude }) : null;
-    // A moved brewery is placed only by coordinates for its new address; the dataset's point is the old one.
-    const at = here ?? (moved ? null : dataAt);
     const status = (raw === 'MOVED' || raw === 'RENAMED') && evidenceOf(r) ? 'OPEN' : raw;
-    const base = stopKey(r.name, r.city);
-    add(r, unique(base), status, at, moved ? 'moved, and no coordinates were recorded for the new address' : 'no coordinates in the dataset or the row', [id]);
-    const made = out.verified[out.verified.length - 1];
-    if (made.status === 'OPEN') openByName.set(base, made);
+    const base = stopKey(r.name, r.city), row = make(r, unique(base), status, [id]);
+    const here = rowCoordinates(r), dataAt = d ? readCoordinates({ lat: d.latitude, lon: d.longitude }) : null;
+    const same = !!d && sameStreet(row.address_as_printed, d.address_1 ?? d.street);
+    // A row that will not be listed keeps the dataset's point, so it still counts in the coverage figures.
+    place(r, row, here ?? (same || row.status !== 'OPEN' ? dataAt : null), !row.address_as_printed
+      ? 'no printed address to compare with the dataset\'s, and no Census coordinates for it'
+      : 'the printed address is not the dataset\'s (street number or street differ), and no Census coordinates were recorded for it');
+    if (row.status === 'OPEN') openByName.set(base, row);
   }
   // A lead that is the same place as a dataset row already listed as open (same name and town) is not listed twice:
   // the lead carries Census coordinates for the printed address, so it is kept and the dataset row is marked a duplicate.
@@ -616,16 +753,10 @@ export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verifi
     const at = rowCoordinates(r);
     if (twin && at) { twin.status = 'DUPLICATE'; twin.notes = `same place as the lead of the same name, which has Census coordinates | ${twin.notes ?? ''}`; }
     const key = unique(base);
-    add(r, key, evidenceOf(r) ? 'OPEN' : 'UNCONFIRMED', at, String(r.coordinates_note ?? 'the checker recorded no coordinates'), [key, base, `lead:${String(r.name ?? '').trim()}`]);
+    place(r, make(r, key, evidenceOf(r) ? 'OPEN' : 'UNCONFIRMED', [key, base, `lead:${String(r.name ?? '').trim()}`]), at, String(r.coordinates_note ?? 'the checker recorded no coordinates'));
   }
   for (const d of decisions) if (!used.has(d.match)) out.unmatchedDecisions.push(d.match);
-  for (const c of corrections) {
-    const row = out.verified.find((v) => v.id === c.key);
-    if (!row) { out.unmatchedDecisions.push(`correction:${c.key}`); continue; }
-    if (c.field === 'evidence') row.operating_evidence = c.value && row.operating_evidence ? { ...row.operating_evidence, excerpt: c.value, ...(c.url ? { url: c.url } : {}) } : null;
-    else if (c.field === 'address') { row.address_as_printed = c.value; if (!c.value) row.address_source_url = null; }
-    else { row.quote = c.value; if (!c.value) row.quote_source_url = null; }
-  }
+  for (const c of corrections) if (!fixed.has(`${c.key}\n${c.field}`)) out.unmatchedDecisions.push(`correction:${c.key}`);
   return out;
 }
 
@@ -640,6 +771,7 @@ export interface LegView {
   stops: StopView[]; segments: SegmentView[]; towns: number; // stops: the measured ones, in line order
   unmeasured: { id: string; name: string; note: string; stops: StopView[] }[]; // groups where the line is missing: no mile, no distance
   joins: number; joinedMiles: number; widestJoinMiles: number;
+  listed: number;              // measured and unmeasured together
   gaps: { fromMile: number; toMile: number; miles: number }[]; // every stretch long enough to note, ends of the line included
   leadGapMiles: number | null; // start of the leg to the first listed stop, when long enough to note
   longestGap: { fromMile: number; toMile: number; miles: number } | null; // between consecutive listed stops; null with fewer than two
@@ -670,7 +802,7 @@ export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = c
     const b = built.legs.find((x) => x.id === leg.id);
     const length = b?.lengthMiles ?? 0, segs = leg.segments?.length ? leg.segments : [{ id: 'all', toMile: null }];
     const safeLeg = { ...leg, segments: segs };
-    const mine = problems.length ? [] : built.stops.filter((s) => isShowableStop(s, today) && s.legId === leg.id);
+    const mine = problems.length ? [] : built.stops.filter((s) => stopProblems(s, config, today).length === 0 && s.legId === leg.id);
     const groups = (leg.unmeasured ?? []).filter((u) => ID.test(String(u.id)));
     const shown = mine.filter((s) => !s.unmeasured && s.mile >= 0 && s.mile <= length + 0.05 && s.detourMiles <= Math.max(segmentAt(safeLeg, s.mile).maxDetourMiles ?? config.maxDetourMiles, segmentAt(safeLeg, s.mile).furtherOffMiles ?? 0))
       .slice().sort((a, c) => a.mile - c.mile || a.detourMiles - c.detourMiles || a.name.localeCompare(c.name));
@@ -696,6 +828,7 @@ export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = c
       leadGapMiles: stops.length ? note(stops[0].mile) : null, longestGap,
       unmeasured: groups.map((u) => ({ id: u.id, name: u.name, note: u.note, stops: mine.filter((x) => x.unmeasured === u.id).sort((a, c) => a.name.localeCompare(c.name)).map((x) => ({ ...x, n: ++n, milesFromEnd: 0, gapAfterMiles: null })) })).filter((u) => u.stops.length),
       joins: b?.joins ?? 0, joinedMiles: b?.joinedMiles ?? 0, widestJoinMiles: b?.widestJoinMiles ?? 0,
+      listed: stops.length + mine.filter((x) => x.unmeasured && groups.some((u) => u.id === x.unmeasured)).length,
       gaps: [
         ...(stops.length && note(stops[0].mile) !== null ? [{ fromMile: 0, toMile: stops[0].mile, miles: round(stops[0].mile, 1) }] : []),
         ...stops.filter((x) => x.gapAfterMiles !== null).map((x) => ({ fromMile: x.mile, toMile: round(x.mile + (x.gapAfterMiles as number), 1), miles: x.gapAfterMiles as number })),

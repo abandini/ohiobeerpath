@@ -579,12 +579,6 @@
     "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
   },
   {
-    "key": "tractor-brewing-co-wells-park-albuquerque",
-    "field": "evidence",
-    "value": "NEXT EVENT 90’s Country Covers Night w/ Back In The Saddle Band Friday, Nov 20 at 7:30 PM",
-    "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
-  },
-  {
     "key": "tractor-brewing-nob-hill-albuquerque",
     "field": "address",
     "value": "118 Tulane Dr SE Albuquerque, NM 87106",
@@ -619,5 +613,11 @@
     "field": "evidence",
     "value": "Taproom Hours Mon: Closed Tue-Thu: 4pm – 10pm Fri: 12pm – 12am Sat: 12pm – 12am Sun: 12pm – 8pm",
     "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "wild-parrot-brewing-company-pasadena",
+    "field": "evidence",
+    "value": "(8pm kitchen close) Saturday: Noon-11pm (8pm kitchen close) Sunday: Noon-8pm (7:30pm kitchen close)",
+    "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   }
 ]

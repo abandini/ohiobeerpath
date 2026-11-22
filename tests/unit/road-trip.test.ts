@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   buildRoad, cumulativeMiles, isShowableStop, unreadVerdict, verifierExit, BROWSER_CHECK_MAX_DAYS, milesBetween, projectOntoLine, simplifyLine, stitchLeg, townsName, viewRoad,
-  roadConfigProblems, safeSitePath, normaliseCheckerFiles, readCoordinates, stopKey, stateAbbr, distanceToWays, asPrinted, pageText, hoursOnly,
+  roadConfigProblems, safeSitePath, normaliseCheckerFiles, readCoordinates, stopKey, stateAbbr, distanceToWays, asPrinted, pageText, hoursOnly, sameStreet, townInAddress, stopProblems, excerptFound,
   type BuiltRoad, type CandidateRow, type LatLon, type RoadConfig, type RoadStop, type VerifiedRow,
 } from '../../src/lib/road-trip';
 import {
@@ -355,8 +355,8 @@ describe('road trip page', () => {
     expect(roadSummary(w)).toContain("Each listing is supported by published visiting hours read on the date shown. For 1, the source is not the brewery's own site.");
     expect(out).toContain("For 1 stop the source is not the brewery's own site: Untappd (untappd.com).");
     expect(out).toContain('1 page could only be read in a browser; a person read it, not our checking script.');
-    expect(roadsBlurb([w])).toBe('Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listing is supported by published visiting hours read on the date shown; some sources are third-party.');
-    expect(roadsBlurb([v])).toBe('Breweries near one road, ordered by their nearest point along our mapped line of it, with straight-line distances. Each listing is supported by published visiting hours read on the date shown.');
+    expect(roadsBlurb([w])).toBe('Breweries near one road, listed by where they fall along it, with straight-line distances that are not driving distances. Each listing is supported by published visiting hours read on the date shown; some sources are third-party.');
+    expect(roadsBlurb([v])).toBe('Breweries near one road, listed by where they fall along it, with straight-line distances that are not driving distances. Each listing is supported by published visiting hours read on the date shown.');
   });
   it('credits OpenStreetMap beside the map and in the method notes, and loads nothing for the map', () => {
     expect(OSM_ATTRIBUTION).toBe('© OpenStreetMap contributors');
@@ -647,32 +647,39 @@ describe('stops that stand alone (a road outside the directory)', () => {
 
 describe('reading the checkers\' files', () => {
   const dataset = [
-    { id: 'aaa', name: 'Old Name Ales', city: 'Alpha', state: 'Illinois', latitude: 40, longitude: -79.9 },
-    { id: 'bbb', name: 'Moved Brewing', city: 'Bravo', state: 'Illinois', latitude: 40, longitude: -79.5 },
-    { id: 'ccc', name: 'Closed Co', city: 'Charlie', state: 'Illinois', latitude: 40, longitude: -79.1 },
-    { id: 'ddd', name: 'Second Signal Brewing', city: 'Delta', state: 'Illinois', latitude: 40, longitude: -79.3 },
-    { id: 'eee', name: 'Twin Taproom', city: 'Echo', state: 'Illinois', latitude: 40, longitude: -79.6 },
-    { id: 'fff', name: 'Moved Nowhere', city: 'Foxtrot', state: 'Illinois', latitude: 40, longitude: -79.7 },
+    { id: 'aaa', name: 'Old Name Ales', city: 'Alpha', state: 'Illinois', address_1: '10 Main St', latitude: 40, longitude: -79.9 },
+    { id: 'bbb', name: 'Moved Brewing', city: 'Bravo', state: 'Illinois', address_1: '20 Old Rd', latitude: 40, longitude: -79.5 },
+    { id: 'ccc', name: 'Closed Co', city: 'Charlie', state: 'Illinois', address_1: '30 Oak Ave', latitude: 40, longitude: -79.1 },
+    { id: 'ddd', name: 'Second Signal Brewing', city: 'Delta', state: 'Illinois', address_1: '40 Elm St', latitude: 40, longitude: -79.3 },
+    { id: 'eee', name: 'Twin Taproom', city: 'Echo', state: 'Illinois', address_1: '50 Pine St', latitude: 40, longitude: -79.6 },
+    { id: 'fff', name: 'Moved Nowhere', city: 'Foxtrot', state: 'Illinois', address_1: '60 First St', latitude: 40, longitude: -79.7 },
+    { id: 'ggg', name: 'Quietly Moved', city: 'Alpha', state: 'Illinois', address_1: '70 Birch St', latitude: 40, longitude: -79.85 },
   ];
   const ev = (n: string) => ({ excerpt: `Hours ${n} Monday 12pm - 9pm`, url: `https://example.com/${n}`, checked: TODAY });
+  const site = (n: string, address: string) => ({ official_url: `https://example.com/${n}`, address_as_printed: address, address_source_url: `https://example.com/${n}/visit` });
   const verifiedRows = [
-    { obdb_id: 'aaa', name: 'Old Name Ales', city: 'Alpha', state: 'Illinois', status: 'OPEN', official_url: 'https://example.com/a', operating_evidence: ev('a') },
-    { obdb_id: 'bbb', name: 'Moved Brewing', city: 'Bravo', state: 'IL', status: 'MOVED', operating_evidence: ev('b'), new_coordinates: { lat: 40.01, lon: -79.45, coordinates_source: 'US Census geocoder' } },
+    { obdb_id: 'aaa', name: 'Old Name Ales', city: 'Alpha', state: 'Illinois', status: 'OPEN', ...site('a', '10 Main Street, Alpha, IL 60000'), operating_evidence: ev('a') },
+    { obdb_id: 'bbb', name: 'Moved Brewing', city: 'Bravo', state: 'IL', status: 'MOVED', ...site('b', '25 New Road, Hotel, IL 60000'), operating_evidence: ev('b'), new_coordinates: { lat: 40.01, lon: -79.45, coordinates_source: 'US Census geocoder' } },
     { obdb_id: 'ccc', name: 'Closed Co', city: 'Charlie', state: 'IL', status: 'CLOSED', operating_evidence: null },
-    { obdb_id: 'ddd', name: 'Second Signal Brewing', city: 'Delta', state: 'IL', status: 'OPEN', operating_evidence: ev('d') },
-    { obdb_id: 'eee', name: 'Twin Taproom', city: 'Echo', state: 'IL', status: 'RENAMED', operating_evidence: ev('e') },
-    { obdb_id: 'fff', name: 'Moved Nowhere', city: 'Foxtrot', state: 'IL', status: 'MOVED', operating_evidence: ev('f') },
+    { obdb_id: 'ddd', name: 'Second Signal Brewing', city: 'Delta', state: 'IL', status: 'OPEN', ...site('d', '40 Elm St, Delta, IL'), operating_evidence: ev('d') },
+    { obdb_id: 'eee', name: 'Twin Taproom', city: 'Echo', state: 'IL', status: 'RENAMED', ...site('e', '50 Pine St, Echo, IL'), operating_evidence: ev('e') },
+    { obdb_id: 'fff', name: 'Moved Nowhere', city: 'Foxtrot', state: 'IL', status: 'MOVED', ...site('f', '99 Somewhere Else Ave, Foxtrot, IL'), operating_evidence: ev('f') },
+    // The checker called it OPEN, but it prints a different street from the dataset's and no Census coordinates were recorded.
+    { obdb_id: 'ggg', name: 'Quietly Moved', city: 'Alpha', state: 'IL', status: 'OPEN', ...site('q', '214 West Commercial Street, Lebanon, Illinois 60000'), operating_evidence: ev('q') },
   ];
   const leadRows = [
-    { name: 'Array Coordinates', city: 'Golf', state: 'IL', operating_evidence: ev('g'), coordinates: [40, -79.2] },
-    { name: 'Object Coordinates', city: 'Hotel', state: 'Illinois', operating_evidence: ev('h'), coordinates: { lat: 40, lon: -79.25 } },
-    { name: 'Flat Coordinates', city: 'India', state: 'IL', operating_evidence: ev('i'), lat: 40, lon: -79.35 },
-    { name: 'No Coordinates', city: 'Juliet', state: 'IL', operating_evidence: ev('j'), lat: null, lon: null, coordinates_note: 'geocoder returned no match' },
+    { name: 'Array Coordinates', city: 'Golf', state: 'IL', ...site('g', '1 Golf St, Golf, IL'), operating_evidence: ev('g'), coordinates: [40, -79.2] },
+    { name: 'Object Coordinates', city: 'Hotel', state: 'Illinois', ...site('h', '2 Hotel St, Hotel, IL'), operating_evidence: ev('h'), coordinates: { lat: 40, lon: -79.25 } },
+    { name: 'Flat Coordinates', city: 'India', state: 'IL', ...site('i', '3 India St, India, IL'), operating_evidence: ev('i'), lat: 40, lon: -79.35 },
+    { name: 'No Coordinates', city: 'Juliet', state: 'IL', ...site('j', '4 Juliet St, Juliet, IL'), operating_evidence: ev('j'), lat: null, lon: null, coordinates_note: 'geocoder returned no match' },
     { name: 'No Evidence', city: 'Kilo', state: 'IL', operating_evidence: null, coordinates: [40, -79.15] },
-    { name: 'Twin Taproom', city: 'Echo', state: 'IL', operating_evidence: ev('e2'), coordinates: [40, -79.61] },
-    { name: 'Pub Not Brewery', city: 'Lima', state: 'IL', operating_evidence: ev('l'), coordinates: [40, -79.05] },
+    { name: 'Twin Taproom', city: 'Echo', state: 'IL', ...site('e2', '50 Pine St, Echo, IL'), operating_evidence: ev('e2'), coordinates: [40, -79.61] },
+    { name: 'Pub Not Brewery', city: 'Lima', state: 'IL', ...site('l', '5 Lima St, Lima, IL'), operating_evidence: ev('l'), coordinates: [40, -79.05] },
+    { name: 'No Address Ales', city: 'Golf', state: 'IL', official_url: 'https://example.com/n', operating_evidence: ev('n'), coordinates: [40, -79.22] },
+    { name: 'No Site Ales', city: 'Golf', state: 'IL', address_as_printed: '6 Golf St, Golf, IL', address_source_url: 'https://example.org/listing', operating_evidence: ev('s'), coordinates: [40, -79.23] },
   ];
-  const decisions = [{ match: 'ddd', status: 'UNCONFIRMED', reason: 'second same-day check conflicted' }, { match: 'lead:Pub Not Brewery', status: 'NOT A BREWERY TAPROOM', reason: 'editor: does not brew' }, { match: 'aaa', evidenceKind: 'notice' as const, reason: 'the evidence is a dated event' }];
+  const decisions = [{ match: 'ddd', status: 'UNCONFIRMED', reason: 'second same-day check conflicted' }, { match: 'lead:Pub Not Brewery', status: 'NOT A BREWERY TAPROOM', reason: 'editor: does not brew' }, { match: 'aaa', evidenceKind: 'notice' as const, noticeContext: 'The notice prints the date 11/24/26 and names the taproom.', reason: 'the evidence is a dated event' },
+    { match: 'lead:Flat Coordinates', reason: 'editor re-read the hours', evidence: { excerpt: 'Hours Tuesday 3pm - 9pm', url: 'https://example.com/i/hours', checked: TODAY } }];
   const got = normaliseCheckerFiles(dataset, verifiedRows, leadRows, decisions);
   const row = (key: string) => got.verified.find((r) => r.id === key)!, at = (key: string) => got.candidates.find((c) => c.id === key);
   it('reads every coordinate shape the checkers used', () => {
@@ -689,13 +696,22 @@ describe('reading the checkers\' files', () => {
     expect(new Set(got.verified.map((r) => r.id)).size).toBe(got.verified.length);
   });
   it('a row with no coordinates cannot be placed, is reported, and never becomes a stop', () => {
-    expect(got.unplaced.map((u) => [u.key, u.why])).toEqual([['moved-nowhere-foxtrot', 'moved, and no coordinates were recorded for the new address'], ['no-coordinates-juliet', 'geocoder returned no match']]);
-    expect(at('no-coordinates-juliet')).toBeUndefined(); expect(at('moved-nowhere-foxtrot')).toBeUndefined();
+    expect(got.unplaced.map((u) => u.key)).toEqual(['moved-nowhere-foxtrot', 'quietly-moved-alpha', 'no-coordinates-juliet']);
+    expect(got.unplaced[0].why).toMatch(/printed address is not the dataset's/); expect(got.unplaced[2].why).toBe('geocoder returned no match');
+    for (const k of ['no-coordinates-juliet', 'moved-nowhere-foxtrot', 'quietly-moved-alpha']) expect(at(k), k).toBeUndefined();
     const b = buildRoad({ ...CONFIG, stopsHavePages: false }, WAYS, got.candidates, got.verified, TODAY, TODAY);
-    expect(b.road.stops.some((s) => /no-coordinates|moved-nowhere/.test(s.key))).toBe(false);
+    expect(b.road.stops.some((s) => /no-coordinates|moved-nowhere|quietly-moved/.test(s.key))).toBe(false);
     expect(b.report.left.find((x) => x.id === 'no-coordinates-juliet')!.reason).toMatch(/no coordinates/);
   });
-  it('a moved brewery is placed by its new address, never the dataset\'s old point, and counts as open only with evidence', () => {
+  it('dataset coordinates are used only when the printed address is the dataset\'s; the status word does not decide it', () => {
+    expect(sameStreet('10 Main Street, Alpha, IL 60000', '10 Main St')).toBe(true); expect(sameStreet('1927 W. North Ave. Chicago, IL 60622', '1927 W North Ave')).toBe(true);
+    expect(sameStreet('1717 East 7th Street, Tulsa, OK', '1717 E. 7th Steeet')).toBe(true); expect(sameStreet('16 East Route 66 Flagstaff, AZ 86001', '16 E Route 66')).toBe(true);
+    expect(sameStreet('3313 Girard NE, Albuquerque, NM 87107', '3313 Girard Blvd NE')).toBe(true);
+    expect(sameStreet('214 West Commercial Street, Lebanon, Missouri 65536', '110 Sherman Ave')).toBe(false); expect(sameStreet('12 Main St', '14 Main St')).toBe(false);
+    expect(sameStreet(null, '10 Main St')).toBe(false); expect(sameStreet('Main Street', 'Main St')).toBe(false);
+    expect([at('old-name-ales-alpha')!.latitude, at('old-name-ales-alpha')!.longitude]).toEqual([40, -79.9]);      // same street: the dataset's point
+    expect(at('quietly-moved-alpha')).toBeUndefined();                                                              // OPEN, but a different street and no Census point
+    expect([at('closed-co-charlie')!.latitude]).toEqual([40]);                                                      // not listed anyway: kept for the coverage count
     expect([at('moved-brewing-bravo')!.latitude, at('moved-brewing-bravo')!.longitude]).toEqual([40.01, -79.45]);
     expect(row('moved-brewing-bravo').status).toBe('OPEN'); expect(row('closed-co-charlie').status).toBe('CLOSED');
   });
@@ -708,7 +724,8 @@ describe('reading the checkers\' files', () => {
     const b = buildRoad({ ...CONFIG, stopsHavePages: false }, WAYS, got.candidates, got.verified, TODAY, TODAY);
     expect(b.road.stops.map((s) => s.key)).not.toContain('second-signal-brewing-delta'); expect(b.road.stops.map((s) => s.key)).not.toContain('pub-not-brewery-lima');
     expect(b.road.stops.map((s) => s.key)).not.toContain('no-evidence-kilo');
-    expect(b.road.stops.find((s) => s.key === 'old-name-ales-alpha')!.evidenceKind).toBe('notice');
+    expect(b.road.stops.find((s) => s.key === 'old-name-ales-alpha')).toMatchObject({ evidenceKind: 'notice', noticeContext: 'The notice prints the date 11/24/26 and names the taproom.' });
+    expect(b.road.stops.find((s) => s.key === 'flat-coordinates-india')!.evidence).toBe('Hours Tuesday 3pm - 9pm');   // evidence an editor re-read replaces the checker's
   });
   it('a lead and a dataset row for the same place are listed once', () => {
     expect(row('twin-taproom-echo').status).toBe('DUPLICATE'); expect(row('twin-taproom-echo-2').status).toBe('OPEN');
@@ -741,8 +758,31 @@ describe('reading the checkers\' files', () => {
   });
   it('a dated notice is headed as a notice, not as hours', () => {
     const v = viewRoad({ ...CONFIG, stopsHavePages: false }, buildRoad({ ...CONFIG, stopsHavePages: false }, WAYS, got.candidates, got.verified, TODAY, TODAY).road, TODAY), html = roadTripPage(v);
-    expect(html).toContain(`<strong>Operating evidence: dated notice read on ${TODAY}</strong>`); expect(html).toContain(`<strong>Operating evidence: hours read on ${TODAY}</strong>`);
-    expect(roadSummary(v)).toContain('Each listing is supported by published visiting hours, or a dated notice, read on the date shown.');
+    expect(html).toContain(`<strong>Operating evidence: event notice read on ${TODAY}</strong>`); expect(html).toContain(`<strong>Operating evidence: hours read on ${TODAY}</strong>`);
+    expect(html).toContain('Event notice; regular visiting hours not established here. The notice prints the date 11/24/26 and names the taproom.');
+    expect(roadSummary(v)).toContain('Each listing is supported by published visiting hours or a dated operating notice read on the date shown.');
+    expect(roadsBlurb([v])).toContain('published visiting hours or a dated operating notice'); expect(roadsIndexPage([v])).toContain('published visiting hours or a dated operating notice');
+    // a notice with nothing to establish its year and venue is not shown
+    const bare = normaliseCheckerFiles(dataset, verifiedRows, leadRows, [{ match: 'aaa', evidenceKind: 'notice', reason: 'no context recorded' }]);
+    expect(buildRoad({ ...CONFIG, stopsHavePages: false }, WAYS, bare.candidates, bare.verified, TODAY, TODAY).road.stops.map((x) => x.key)).not.toContain('old-name-ales-alpha');
+  });
+  it('the town shown is the one the printed address names', () => {
+    const known = ['Phillipsburg', 'Rancho Cucamonga', 'Upland', 'Los Angeles', 'Albuquerque', 'Los Ranchos de Albuquerque', 'Saint Louis', 'St. Louis', 'Oklahoma City'];
+    expect(townInAddress('214 West Commercial Street, Lebanon, Missouri 65536', known, 'Phillipsburg')).toBe('Lebanon');
+    expect(townInAddress('296 N. 2ND AVE. UPLAND CA 91786', known, 'Rancho Cucamonga')).toBe('Upland');
+    expect(townInAddress('7 South 1st Street Alhambra, CA 91801', known, 'Los Angeles')).toBe('Alhambra');
+    expect(townInAddress('8305 2nd St. NW Los Ranchos de Albuquerque, NM 87114', known, 'Los Ranchos de Albuquerque')).toBe('Los Ranchos de Albuquerque');
+    expect(townInAddress('1220 S. 8th Street St. Louis, MO', known, 'St. Louis')).toBe('St. Louis');
+    expect(townInAddress('7 N Lee Avenue OKC, OK 73102', known, 'Oklahoma City')).toBe('Oklahoma City');
+    expect(townInAddress('704 W Reno Ave', known, 'Oklahoma City')).toBeNull(); expect(townInAddress(null, known, 'X')).toBeNull();
+    expect(got.candidates.find((c) => c.id === 'moved-brewing-bravo')!.city).toBe('Hotel');                    // its row said Bravo, its address says Hotel
+    expect(got.retowned).toContainEqual({ key: 'moved-brewing-bravo', name: 'Moved Brewing', from: 'Bravo', to: 'Hotel' });
+  });
+  it('a stand-alone stop needs a sourced street address and a link to its own site', () => {
+    const keys = buildRoad({ ...CONFIG, stopsHavePages: false }, WAYS, got.candidates, got.verified, TODAY, TODAY);
+    expect(keys.road.stops.map((x) => x.key)).not.toContain('no-address-ales-golf'); expect(keys.road.stops.map((x) => x.key)).not.toContain('no-site-ales-golf');
+    expect(keys.report.left.find((x) => x.id === 'no-address-ales-golf')!.reason).toMatch(/sourced street address/);
+    expect(keys.report.left.find((x) => x.id === 'no-site-ales-golf')!.reason).toMatch(/own site/);
   });
 });
 
@@ -770,7 +810,7 @@ describe('state legs, a side leg, a tighter limit and a hole in the line', () =>
     expect(stop('mid-one').legId).toBe('mid-state'); expect(stop('mid-one').mile).toBeCloseTo(0.35 * DEG_LON, 1);
     expect(v.legs.map((l) => [l.name, l.side, l.stops.length])).toEqual([['Eastland', false, 3], ['Midland', false, 1], ['Eastland: the old loop', true, 1]]);
     expect([...main.matchAll(/<h2 id="leg-[a-z-]+-h">([^<]+)<\/h2>/g)].map((m) => m[1])).toEqual(['Eastland: Westend to the Midland line', 'Midland: the Eastland line to Eastend', 'Eastland: the old loop: Loop Junction to Loop End']);
-    expect(main).toMatch(/<b>52\.9<\/b>miles of mapped line in 2 legs, plus 1 side leg/);
+    expect(main).toMatch(/<b>52\.9<\/b>miles of measuring line in 2 legs, plus 1 side leg/);
   });
   it('the side leg follows its via point and takes the stops nearest to it', () => {
     const loop = b.road.legs.find((l) => l.id === 'loop')!;
@@ -792,8 +832,8 @@ describe('state legs, a side leg, a tighter limit and a hole in the line', () =>
     expect(b.report.left.find((x) => x.id === 'too-far-dense')!.reason).toMatch(/over the limit/);
     const dense = v.legs[0].segments[0];
     expect([dense.stops.map((s) => s.key), dense.outer.map((s) => s.key), dense.limitMiles, dense.furtherOffMiles]).toEqual([['near-dense'], ['far-dense'], 1, 5]);
-    expect(main).toContain('the main list here is within 1 straight-line miles of the mapped road');
-    expect(main).toContain('<h4 class="rt-outer">A little further off (1 to 5 straight-line miles from the mapped road)</h4>');
+    expect(main).toContain('the main list here is within 1 straight-line miles of the nearest mapped alignment');
+    expect(main).toContain('<h4 class="rt-outer">A little further off (1 to 5 straight-line miles from the nearest mapped alignment)</h4>');
     expect(main.indexOf('id="stop-near-dense"')).toBeLessThan(main.indexOf('rt-outer')); expect(main.indexOf('rt-outer')).toBeLessThan(main.indexOf('id="stop-far-dense"'));
     const noOuter = buildRoad({ ...cfg, legs: [{ ...cfg.legs[0], segments: [{ id: 'dense', toMile: 12, maxDetourMiles: 1 }, { id: 'rest', toMile: null }] }, ...cfg.legs.slice(1)] }, ways, cands, rows, TODAY, TODAY).road.stops.map((s) => s.key);
     expect(noOuter).not.toContain('far-dense'); expect(noOuter).toContain('near-dense');
@@ -805,7 +845,8 @@ describe('state legs, a side leg, a tighter limit and a hole in the line', () =>
     const li = main.slice(main.indexOf('id="stop-in-hole"'), main.indexOf('</li>', main.indexOf('id="stop-in-hole"')));
     expect(li).toContain('<span>no mile</span>'); expect(li).not.toMatch(/mile \d|from the mapped road|nearest point/);
     expect(main).toContain('The line is missing in Hole City.');
-    expect(roadSummary(v)).toContain('5 breweries within 5 straight-line miles of our mapped line of FR 1'); expect(roadSummary(v)).toContain('1 more is listed without a distance where that line is missing (Hole City).');
+    expect(roadSummary(v)).toContain('5 listed breweries within 5 straight-line miles of an alignment in our downloaded FR 1 mapping; these are not driving distances. Their mile positions are measured separately, on the one line we measure along for each leg.');
+    expect(roadSummary(v)).toContain('1 more is listed without a distance where the mapping is missing (Hole City).');
     expect(v.stops).toHaveLength(6);
   });
   it('shows leg and stretch notes with their quoted sources, and one jump link per named leg', () => {
@@ -860,7 +901,7 @@ describe('Route 66 (src/data/roads/route-66)', () => {
     const noCoords = got.unplaced.map((u) => u.name);
     for (const n of ['RT66 Old School Brewing', 'Elgin Park Brewery', 'Second Street Brewery - The Railyard', 'JUNO Brewery - Edgewood']) { expect(noCoords, n).toContain(n); expect(road.stops.some((s) => s.name === n), n).toBe(false); }
     expect(road.unplaced).toBeGreaterThan(0); expect(road.unplaced).toBeLessThanOrEqual(got.unplaced.length);
-    expect(roadTripPage(road)).toContain('left out because we could not get coordinates for the printed address');
+    expect(roadTripPage(road)).toContain('left out because we could not tie coordinates to the printed address');
   });
   it('Chicago and Los Angeles use a 2-mile list with the 2-to-5-mile stops shown apart, not dropped', () => {
     const chi = road.legs.find((l) => l.id === 'illinois')!.segments[0], la = road.legs.find((l) => l.id === 'california')!.segments.at(-1)!;
@@ -885,17 +926,59 @@ describe('Route 66 (src/data/roads/route-66)', () => {
     expect(main).toContain('If you drink, do not drive.'); expect(main).toContain(OSM_ATTRIBUTION);
     expect(main).not.toMatch(/driving order|detour|confirmed open|open on \d{4}/i);
   });
-  it('gives the tribal alcohol rules as one block per leg: quoted, sourced, and with no geography of our own', () => {
-    const block = (id: string) => road.legs.find((l) => l.id === id)!.notes.find((n) => n.title === 'Alcohol rules on tribal lands near the route')!;
+  it('shows the tribal alcohol material as dated Federal Register excerpts, claiming neither geography nor current law', () => {
+    const TITLE = 'Selected Federal Register publications on tribal alcohol regulation';
+    const block = (id: string) => road.legs.find((l) => l.id === id)!.notes.find((n) => n.title === TITLE)!;
     const nm = block('new-mexico'), az = block('arizona');
-    expect(nm.sources!.map((q) => q.intro)).toEqual(['The Navajo Nation’s liquor rule, as published in the Federal Register:', 'The Pueblo of Laguna’s liquor ordinance, as described in the Federal Register:']);
-    expect(az.sources!.map((q) => q.intro)).toEqual(['The Navajo Nation’s liquor rule, as published in the Federal Register:', 'The alcohol ordinance for the Hualapai Reservation, as described in the Federal Register:']);
-    for (const n of [nm, az]) { expect(n.text).toBeUndefined(); expect(n.closing).toBe('Check locally before you travel.'); for (const q of n.sources!) expect(q.url).toMatch(/^https:\/\/www\.federalregister\.gov\//); }
-    for (const l of road.legs) for (const g of l.segments) expect(g.notes, `${l.id}/${g.id}`).toEqual([]);       // no stretch-level law notes
+    expect(nm.sources!.map((q) => q.intro)).toEqual(['Federal Register, published December 24, 2008:', 'Federal Register, published June 1, 2000:']);
+    expect(az.sources!.map((q) => q.intro)).toEqual(['Federal Register, published December 24, 2008:', 'Federal Register, published September 10, 2008:']);
+    for (const n of [nm, az]) {
+      expect(n.text).toBeUndefined();
+      expect(n.closing).toBe('These excerpts do not establish current requirements or whether they apply to your journey. Check current requirements with the relevant tribal authority before travelling.');
+      for (const q of n.sources!) { expect(q.url).toMatch(/^https:\/\/www\.federalregister\.gov\/documents\/full_text\/html\/(2000\/06\/01|2008\/09\/10|2008\/12\/24)\//); }
+    }
+    for (const l of road.legs) for (const g of l.segments) expect(g.notes, `${l.id}/${g.id}`).toEqual([]);
     const html = roadTripPage(road), text = html.replace(/<[^>]+>/g, ' ');
     expect(html).toContain('bars the transportation, sale, and consumption of alcoholic beverages on the Navajo Reservation');
-    expect(text.match(/Alcohol rules on tribal lands near the route/g)).toHaveLength(2); expect(text.match(/Check locally before you travel\./g)).toHaveLength(2);
-    expect(text).not.toMatch(/runs through or beside|passes the Pueblo|Peach Springs|East of Holbrook|Towards the Arizona line|Between Seligman/);
+    expect(text.match(new RegExp(TITLE, 'g'))).toHaveLength(2); expect(text.match(/Check current requirements with the relevant tribal authority before travelling\./g)).toHaveLength(2);
+    expect(text).not.toMatch(/tribal lands near the route|Alcohol rules on|liquor rule, as published|runs through or beside|passes the Pueblo|Peach Springs|East of Holbrook|Towards the Arizona line|Between Seligman/);
+    const outside = html.replace(/<details class="rt-fold">.*?<\/details>/gs, '');
+    expect(outside.match(new RegExp(TITLE, 'g'))).toHaveLength(2);     // never inside the collapsed part
+  });
+  it('says what the distance is measured to, and states every exception beside the rule it qualifies', () => {
+    const html = roadTripPage(road), main = html.slice(html.indexOf('<h1')), text = main.replace(/<script.*?<\/script>/gs, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    const measured = road.stops.length - road.legs.flatMap((l) => l.unmeasured).reduce((k, u) => k + u.stops.length, 0);
+    expect(roadSummary(road)).toBe(`${measured} listed breweries within 5 straight-line miles of an alignment in our downloaded Route 66 mapping; these are not driving distances. Their mile positions are measured separately, on the one line we measure along for each leg. 10 more are listed without a distance where the mapping is missing (the city of St. Louis). Each listing is supported by published visiting hours read on the date shown.`);
+    expect(text).not.toMatch(/straight-line miles of our mapped line|nearest point on our mapped line|from the mapped road/);
+    expect(text).toContain('from the nearest mapped alignment, straight-line'); expect(text).toContain('nearest point on our measuring line: mile');
+    expect(text).toContain('It is a separate measurement from the mile: it is not taken to the line we measure miles along, and never to a join across a gap.');
+    // Missouri: the visible facts, outside the fold, give both counts
+    const mo = main.slice(main.indexOf('<section id="leg-missouri"'), main.indexOf('<details', main.indexOf('<section id="leg-missouri"')));
+    expect(mo).toContain('16 measured stops in 11 towns, plus 10 unmeasured stops in the city of St. Louis');
+    expect(main).toContain('Missouri · 322.2 mapped miles · 26 listed stops (10 not measured)');
+    expect(main).toMatch(/A sketch of our measuring line with each measured stop as a dot/);
+    expect(text).toContain('The stops in the city of St. Louis are the exception to the distance test: the mapping is missing there, so they are listed in a labelled group of their own with no distance.');
+    expect(text).toContain('Measured stops are ordered by their nearest point along our measuring line, within each displayed group');
+    expect(text).toContain('Stops in the city of St. Louis are alphabetical.');
+    expect(text).toContain('Each stop must also have a street address we can source and a link to the brewery’s own site.');
+    // US 422 measures to its one line and keeps saying so
+    const us = roadTripPage(allRoads().find((r) => r.config.slug === 'us-422')!);
+    expect(us).toContain('from the mapped road, straight-line'); expect(us).toContain('nearest point on our mapped line: mile'); expect(us).not.toContain('measuring line');
+  });
+  it('every stop has a sourced address, its own site, and a town its address agrees with', () => {
+    const plain = (t: string) => t.toLowerCase().replace(/\bsaint\b/g, 'st').replace(/[.']/g, '');
+    const alias: Record<string, string> = { 'oklahoma city': 'okc', 'los angeles': 'la' };
+    for (const s of road.stops) {
+      expect(stopProblems(s, road.config), s.name).toEqual([]);
+      expect(s.address.trim(), s.name).not.toBe(''); expect(s.addressSourceUrl, s.name).toMatch(/^https?:\/\//); expect(s.website, s.name).toMatch(/^https?:\/\//);
+      // where the address names a town at all (it ends in a state or ZIP), it is the town we show
+      if (/\b(?:[A-Z]{2}|Illinois|Missouri|Oklahoma|Texas|New Mexico|Arizona|California)\.?,?\s*(?:\d{5}(?:-\d{4})?)?\s*$/.test(s.address)) { const a = ` ${plain(s.address.replace(/[,·]/g, ' '))} `, t = plain(s.town); expect(a.includes(` ${t} `) || a.includes(` ${alias[t]} `), `${s.name}: ${s.town} / ${s.address}`).toBe(true); }
+    }
+    const boat = road.stops.find((s) => s.name.startsWith('Boat Town'))!;
+    expect([boat.town, boat.address]).toEqual(['Lebanon', '214 West Commercial Street, Lebanon, Missouri 65536']);
+    for (const gone of ['Marz', 'Ponderosa', 'Rickety Cricket', '3 Iron', 'Hop Secret']) expect(road.stops.some((s) => s.name.startsWith(gone)), gone).toBe(false);
+    expect(road.stops.some((s) => s.evidenceKind === 'notice')).toBe(false);   // the three notice-only stops now rest on hours read on their own sites
+    for (const k of ['keg-grove', 'destihl-brewery', 'tractor-brewing-co-wells-park']) expect(road.stops.find((s) => s.key.startsWith(k))!.evidence, k).toMatch(/\d\s*(am|pm|:00)/i);
   });
   it('folds each leg into a closed <details>, keeping the heading, notes and long gaps in view', () => {
     const html = roadTripPage(road), main = html.slice(html.indexOf('<h1'));
@@ -903,10 +986,10 @@ describe('Route 66 (src/data/roads/route-66)', () => {
     expect(main.match(/<details class="rt-fold">/g)).toHaveLength(road.legs.length); expect(main).not.toContain('<details class="rt-fold" open');
     const leg = (id: string) => { const a = main.indexOf(`<section id="leg-${id}"`), b = main.indexOf('</details>', a); return { before: main.slice(a, main.indexOf('<details', a)), inside: main.slice(main.indexOf('<details', a), b) }; };
     const il = leg('illinois'), nm = leg('new-mexico'), ks = leg('kansas'), sf = leg('santa-fe-loop');
-    expect(il.inside).toMatch(/<summary><span class="rt-sum">Illinois · 285\.4 mapped miles · 22 listed stops<\/span><span class="rt-sum-towns">Chicago, Oak Park, /);
+    expect(il.inside).toMatch(/<summary><span class="rt-sum">Illinois · 285\.4 mapped miles · \d+ listed stops<\/span><span class="rt-sum-towns">Chicago, Oak Park, /);
     expect(il.before).toContain('<h2 id="leg-illinois-h">Illinois: Chicago to the Missouri line</h2>');
-    expect(il.before).not.toContain('class="rt-stop"'); expect(il.inside.match(/class="rt-stop"/g)).toHaveLength(22); expect(il.inside).toContain('<svg');
-    expect(nm.before).toContain('Alcohol rules on tribal lands near the route'); expect(nm.before).toMatch(/<strong>207\.1 miles<\/strong> along our mapped line with nothing on this list: from its start at the Texas line to the first listed stop/);
+    expect(il.before).not.toContain('class="rt-stop"'); expect(il.inside.match(/class="rt-stop"/g)).toHaveLength(road.legs.find((l) => l.id === 'illinois')!.listed); expect(il.inside).toContain('<svg');
+    expect(nm.before).toContain('Selected Federal Register publications on tribal alcohol regulation'); expect(nm.before).toMatch(/<strong>207\.1 miles<\/strong> along our measuring line with nothing on this list: from its start at the Texas line to the first listed stop/);
     expect(nm.before).toMatch(/to the end of the line at the Arizona line/);
     expect(ks.before).toContain('That is what our list holds, not proof that there is none.'); expect(ks.inside).toContain('Kansas · 11.9 mapped miles · nothing listed');
     expect(sf.before).toContain('Side leg'); expect(main.indexOf('id="leg-santa-fe-loop"')).toBeGreaterThan(main.indexOf('id="leg-new-mexico"'));
@@ -934,7 +1017,6 @@ describe('Route 66 (src/data/roads/route-66)', () => {
     expect(hoursOnly('Open Daily, 2 p.m. - close')).toBe('Open Daily, 2 p.m. - close'); expect(hoursOnly('No times here at all')).toBe('No times here at all');
     for (const s of road.stops.filter((x) => x.evidenceKind !== 'notice' && !/\.\.\.|…/.test(x.evidence))) { expect(hoursOnly(s.evidence), s.name).toBe(s.evidence); expect(s.evidence, s.name).not.toMatch(/\(\d{3}\) \d{3}-\d{4}$|(©|Copyright)[^\d]*\d{4}[^\d]*$/); }
     expect(road.stops.find((x) => x.key.startsWith('2nd-shift'))!.evidence).toMatch(/6:00pm$/);
-    expect(road.stops.find((x) => x.key.startsWith('rickety-cricket'))!.evidence).toBe('Hours: Sun-Thur 12-9 | Fri-Sat 12-10pm');
   });
   it('the built file is exactly what the build step makes from the checkers\' files', () => {
     const got = ingest();
@@ -942,6 +1024,74 @@ describe('Route 66 (src/data/roads/route-66)', () => {
     const { unplaced, ...rest } = ROUTE_66_BUILT;
     expect(fresh).toEqual(rest); expect(unplaced).toBe(road.unplaced);
   }, 60000);
+});
+
+describe('road-aware stop validation', () => {
+  const dir = built().road.stops[1];                                   // a US 422-style stop: directory id 1
+  const alone = viewRoad({ ...CONFIG, stopsHavePages: false }, buildRoad({ ...CONFIG, stopsHavePages: false }, WAYS, [{ ...cand(1, -79.9, 0, 'Alpha'), id: 'alpha-ales-alpha' } as CandidateRow], [{ ...ok(1), id: 'alpha-ales-alpha' } as VerifiedRow], TODAY, TODAY).road, TODAY).stops[0];
+  it('a directory road requires a positive directory id on every stop', () => {
+    expect(stopProblems(dir, CONFIG, TODAY)).toEqual([]); expect(stopProblems(dir, {}, TODAY)).toEqual([]);
+    const { breweryId: _id, ...missing } = dir;
+    expect(stopProblems(missing, CONFIG, TODAY).join(' ')).toMatch(/must carry a positive directory id/);
+    expect(stopProblems({ ...dir, breweryId: 0 }, CONFIG, TODAY)).not.toEqual([]);   // refused by the gate itself
+    expect(stopProblems({ ...dir, key: 'some-slug' }, CONFIG, TODAY).join(' ')).toMatch(/key must be its directory id/);
+    expect(stopProblems(alone, CONFIG, TODAY).join(' ')).toMatch(/positive directory id/);   // a stand-alone stop cannot pass on a directory road
+    // the page applies it: a stop with no id never shows on a directory road
+    const b = built().road, v = viewRoad(CONFIG, { ...b, stops: [...b.stops, { ...missing, key: 'no-id-brewing', name: 'No Id Brewing' } as RoadStop] }, TODAY);
+    expect(v.stops.map((s) => s.name)).not.toContain('No Id Brewing');
+    for (const s of allRoads().find((r) => r.config.slug === 'us-422')!.stops) { expect(stopProblems(s, US_422), s.name).toEqual([]); expect(s.breweryId).toBeGreaterThan(0); }
+    const { breweryId: _x, ...real } = US_422_BUILT.stops[0];
+    expect(stopProblems(real, US_422).join(' ')).toMatch(/positive directory id/);
+  });
+  it('the builder fails, and does not quietly drop the id, when a directory road is given a non-numeric id', () => {
+    expect(() => buildRoad(CONFIG, WAYS, [{ ...cand(1, -79.9), id: 'alpha-ales' } as CandidateRow], [{ ...ok(1), id: 'alpha-ales' } as VerifiedRow], TODAY, TODAY)).toThrow(/directory road needs a positive whole-number directory id/);
+    expect(() => buildRoad(CONFIG, WAYS, CANDIDATES, [...VERIFIED, { ...ok(2), id: 2.5 } as VerifiedRow], TODAY, TODAY)).toThrow(/directory id/);
+    expect(() => buildRoad(CONFIG, WAYS, CANDIDATES, VERIFIED.filter((r) => Number.isInteger(r.id)), TODAY, TODAY)).not.toThrow();
+  });
+  it('a stand-alone road accepts a stop with no id, but only with a sourced address and its own site', () => {
+    const cfg = { stopsHavePages: false as const };
+    expect(alone.breweryId).toBeUndefined(); expect(stopProblems(alone, cfg, TODAY)).toEqual([]);
+    expect(stopProblems({ ...alone, address: '' }, cfg, TODAY).join(' ')).toMatch(/sourced street address/);
+    expect(stopProblems({ ...alone, addressSourceUrl: '' }, cfg, TODAY).join(' ')).toMatch(/sourced street address/);
+    expect(stopProblems({ ...alone, website: '' }, cfg, TODAY).join(' ')).toMatch(/own site/);
+    expect(stopProblems({ ...alone, website: 'javascript:alert(1)' }, cfg, TODAY).join(' ')).toMatch(/own site/);
+    expect(stopProblems({ ...alone, breweryId: 5 }, cfg, TODAY).join(' ')).toMatch(/must not carry a directory id/);
+    expect(stopProblems({ ...alone, evidenceKind: 'notice' }, cfg, TODAY).join(' ')).toMatch(/context/);
+    expect(stopProblems({ ...alone, status: 'CLOSED' }, cfg, TODAY).join(' ')).toMatch(/fails the gate/);
+    const valid66 = ROUTE_66_BUILT.stops[0];
+    expect(valid66.breweryId).toBeUndefined(); expect(stopProblems(valid66, ROUTE_66)).toEqual([]);
+    expect(viewRoad({ ...CONFIG, stopsHavePages: false }, { ...built().road, stops: [{ ...alone, legId: 'only', address: '', addressSourceUrl: '' }] }, TODAY).stops).toEqual([]);
+  });
+});
+
+describe('distance to mapped ways, and excerpts that must really be found', () => {
+  it('keeps a long segment that passes near the point though both its ends are far away', () => {
+    const long: LatLon[][] = [[[40, -81], [40, -79]]];                 // 105 miles, one segment; its ends are each 53 miles from the point
+    expect(distanceToWays([40.01, -80], long)).toBeCloseTo(0.01 * DEG_LAT, 2);
+    expect(distanceToWays([40.01, -80], [[[42, -80.5], [38, -79.5]]])).toBeLessThan(1.5);   // a long diagonal too
+    expect(distanceToWays([45, -80], long)).toBe(Infinity);            // genuinely far: nothing in reach
+  });
+  it('a join across a gap is not a mapped way: being near only the join does not make a brewery near the road', () => {
+    const gappy: LatLon[][] = [run(-80, -79.6), run(-79.4, -79)];      // a 10.6-mile hole in the middle
+    const cfg: RoadConfig = { ...CONFIG, stopsHavePages: false, distanceTo: 'any-way', legs: [{ ...CONFIG.legs[0], lonRange: undefined, joinMiles: 12, maxJoinedMiles: 12, segments: [{ id: 'all', toMile: null }] }] };
+    const rows = [{ ...ok(1), id: 'in-the-gap' }, { ...ok(2), id: 'by-the-road' }] as VerifiedRow[];
+    const cands = [{ ...cand(1, -79.5, 0.001, 'Gap'), id: 'in-the-gap' }, { ...cand(2, -79.8, 0.001, 'Road'), id: 'by-the-road' }] as CandidateRow[];
+    const b = buildRoad(cfg, gappy, cands, rows, TODAY, TODAY);
+    expect(b.report.legs[0].bridges).toBe(1);                          // the measuring line does cross the hole
+    expect(b.road.stops.map((s) => s.key)).toEqual(['by-the-road']);   // 0.07 miles from the join, 5.3 from any mapped way
+    expect(b.report.left.find((x) => x.id === 'in-the-gap')!.reason).toMatch(/over the limit/);
+    expect(distanceToWays([LAT + 0.001, -79.5], gappy)).toBeCloseTo(0.1 * DEG_LON, 0);
+    // measured to the line instead, the same brewery would have counted: that is the difference the page now states
+    expect(buildRoad({ ...cfg, distanceTo: 'line' }, gappy, cands, rows, TODAY, TODAY).road.stops.map((s) => s.key)).toContain('in-the-gap');
+  });
+  it('an excerpt with nothing in it is never found', () => {
+    const page = pageText('<p>Hours Monday 12pm - 9pm</p><p>Closed Tuesday</p>');
+    expect(excerptFound(page, 'Monday 12pm - 9pm')).toBe(true); expect(excerptFound(page, 'Hours Monday ... Closed Tuesday')).toBe(true); expect(excerptFound(page, 'Hours … Tuesday')).toBe(true);
+    expect(excerptFound(page, 'Closed Tuesday ... Hours Monday')).toBe(false);                  // out of order
+    for (const empty of ['', '   ', '...', '…', ' ... … ... ', '\n\t']) expect(excerptFound(page, empty), JSON.stringify(empty)).toBe(false);
+    expect(excerptFound('', 'Monday')).toBe(false); expect(excerptFound(page, 'Wednesday')).toBe(false);
+    expect(excerptFound(page, undefined as unknown as string)).toBe(false);
+  });
 });
 
 describe('routes and links', () => {

@@ -11,8 +11,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "id": "illinois",
       "lengthMiles": 285.4,
       "line": [[41.87878,-87.62424],[41.87756,-87.67069],[41.86471,-87.68616],[41.82372,-87.80268],[41.78914,-87.84469],[41.69877,-88.04065],[41.65426,-88.08039],[41.5964,-88.07482],[41.55878,-88.08854],[41.42853,-88.07865],[41.37148,-88.13202],[41.31238,-88.13261],[41.30439,-88.16068],[41.19347,-88.30071],[41.18285,-88.30101],[41.18246,-88.31856],[41.09661,-88.42319],[41.09542,-88.43941],[41.08317,-88.44006],[41.05021,-88.48141],[40.90206,-88.61967],[40.88742,-88.64136],[40.86692,-88.64533],[40.65067,-88.77997],[40.51823,-88.96948],[40.51384,-88.99504],[40.45978,-88.99301],[40.44956,-89.02423],[40.42627,-89.03906],[40.15152,-89.35704],[40.14689,-89.38659],[40.13154,-89.38831],[40.0334,-89.47263],[39.95421,-89.54983],[39.95606,-89.5568],[39.94339,-89.55923],[39.88353,-89.61244],[39.85875,-89.6145],[39.84546,-89.63291],[39.82305,-89.64318],[39.78397,-89.64406],[39.78394,-89.64979],[39.69382,-89.64227],[39.59078,-89.65217],[39.41464,-89.64391],[39.32149,-89.64831],[39.23383,-89.63932],[39.18658,-89.6659],[39.13988,-89.67111],[39.07836,-89.71892],[39.0763,-89.735],[39.03359,-89.75041],[39.0031,-89.78221],[38.98392,-89.78322],[38.97874,-89.80095],[38.92971,-89.80399],[38.8405,-89.90139],[38.82695,-89.94127],[38.81273,-89.94744],[38.8014,-89.97538],[38.77972,-89.98034],[38.76,-90.01226],[38.76358,-90.17032]],
-      "candidates": 54,
-      "decided": 36,
+      "candidates": 53,
+      "decided": 35,
       "joins": 3,
       "joinedMiles": 0.03,
       "widestJoinMiles": 0.02
@@ -58,8 +58,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "id": "new-mexico",
       "lengthMiles": 375.2,
       "line": [[35.18241,-103.04249],[35.1815,-103.07442],[35.1222,-103.24925],[35.11297,-103.28339],[35.1114,-103.33113],[35.10617,-103.33109],[35.10746,-103.34781],[35.15416,-103.46213],[35.17246,-103.49136],[35.16748,-103.67387],[35.17176,-103.74396],[35.15041,-103.77862],[35.14051,-103.82478],[35.11639,-103.87007],[35.12514,-103.95264],[35.06582,-104.17651],[35.07246,-104.24451],[35.0478,-104.37687],[35.01541,-104.44707],[35.00657,-104.51706],[34.94908,-104.63782],[34.93833,-104.69374],[34.96267,-104.73863],[34.96867,-104.78702],[35.00596,-105.52425],[35.00181,-105.55418],[35.01058,-105.70579],[35.00409,-105.72341],[35.00483,-106.05005],[35.11504,-106.32579],[35.07958,-106.3879],[35.0799,-106.40675],[35.06597,-106.4226],[35.06226,-106.47069],[35.08514,-106.65611],[35.09532,-106.67567],[35.08544,-106.68561],[35.02023,-106.99748],[34.97784,-107.13532],[34.99253,-107.23223],[34.99426,-107.29752],[35.03467,-107.34229],[35.03844,-107.38264],[35.04773,-107.39913],[35.05183,-107.51455],[35.0774,-107.53013],[35.08597,-107.54659],[35.08202,-107.63006],[35.05901,-107.7065],[35.07351,-107.75539],[35.11482,-107.78549],[35.16421,-107.88718],[35.21991,-107.91523],[35.26968,-107.97786],[35.31012,-107.98925],[35.35346,-108.01743],[35.38402,-108.12924],[35.40721,-108.27343],[35.4781,-108.42679],[35.52964,-108.59974],[35.53079,-108.73363],[35.51232,-108.79318],[35.49513,-108.8869],[35.42379,-108.99456],[35.36135,-109.04827]],
-      "candidates": 18,
-      "decided": 14,
+      "candidates": 17,
+      "decided": 13,
       "joins": 1,
       "joinedMiles": 0.01,
       "widestJoinMiles": 0.01
@@ -79,7 +79,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "lengthMiles": 380,
       "line": [[35.36135,-109.04827],[35.31402,-109.09966],[35.28054,-109.17766],[35.28299,-109.23518],[35.27558,-109.26156],[35.21472,-109.33562],[35.18551,-109.45157],[35.12457,-109.5526],[35.06605,-109.76946],[35.00408,-109.8852],[34.97361,-110.08673],[34.93886,-110.13132],[34.91317,-110.15645],[34.90162,-110.15858],[34.91202,-110.24152],[34.95549,-110.31102],[34.97391,-110.51668],[35.006,-110.61645],[35.00754,-110.65925],[35.0373,-110.7242],[35.0913,-110.91472],[35.12263,-111.16444],[35.16165,-111.27231],[35.15854,-111.29806],[35.25198,-111.51839],[35.24521,-111.56486],[35.19669,-111.62298],[35.19862,-111.65321],[35.18783,-111.67834],[35.20253,-111.76427],[35.24739,-111.85187],[35.26746,-112.07375],[35.25311,-112.13453],[35.25667,-112.17396],[35.24626,-112.20956],[35.22449,-112.24095],[35.21952,-112.28185],[35.22326,-112.32494],[35.21503,-112.35651],[35.21345,-112.41084],[35.22893,-112.58194],[35.29402,-112.7372],[35.33973,-112.95096],[35.38187,-112.98662],[35.52456,-113.21307],[35.55322,-113.31717],[35.5538,-113.37841],[35.5396,-113.41675],[35.52967,-113.42265],[35.52193,-113.48655],[35.45148,-113.63175],[35.43423,-113.64825],[35.41225,-113.64719],[35.38672,-113.65921],[35.36823,-113.67237],[35.36221,-113.68756],[35.36698,-113.71144],[35.41032,-113.77725],[35.41834,-113.7997],[35.4165,-113.81697],[35.18982,-114.03594],[35.1889,-114.06203],[35.1665,-114.06154],[35.15478,-114.08695],[35.13544,-114.10099],[35.13772,-114.10999],[35.02713,-114.27976],[35.0255,-114.30444],[35.03735,-114.3535],[35.04722,-114.36295],[35.04063,-114.37305],[35.04393,-114.39184],[35.02216,-114.3827],[34.98512,-114.42514],[34.95412,-114.40998],[34.93105,-114.42343],[34.87563,-114.43688],[34.82947,-114.46663],[34.79867,-114.47109],[34.79426,-114.48067],[34.74244,-114.48469],[34.73058,-114.47716],[34.71726,-114.48566]],
       "candidates": 14,
-      "decided": 10,
+      "decided": 9,
       "joins": 5,
       "joinedMiles": 0.1,
       "widestJoinMiles": 0.04
@@ -88,8 +88,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "id": "california",
       "lengthMiles": 324.7,
       "line": [[34.71726,-114.48566],[34.71886,-114.53138],[34.76053,-114.57298],[34.75963,-114.58419],[34.76967,-114.5955],[34.79365,-114.60897],[34.83237,-114.59494],[34.85212,-114.62597],[34.86363,-114.63098],[34.89166,-114.6974],[34.87902,-114.75416],[34.92115,-114.77638],[34.94053,-114.81408],[34.93531,-114.87298],[34.91901,-114.92457],[34.91524,-114.96618],[34.9199,-115.06367],[34.89897,-115.09202],[34.85208,-115.13088],[34.81379,-115.18381],[34.75556,-115.22012],[34.57287,-115.47778],[34.56268,-115.50082],[34.55495,-115.75409],[34.60371,-115.95875],[34.63704,-116.00715],[34.68226,-116.02797],[34.72475,-116.12389],[34.72677,-116.23975],[34.73512,-116.30459],[34.77396,-116.37812],[34.78229,-116.4121],[34.82712,-116.68953],[34.83476,-116.70514],[34.8649,-116.93708],[34.88553,-116.99379],[34.89813,-117.01048],[34.89872,-117.0294],[34.87686,-117.1103],[34.82789,-117.1838],[34.80262,-117.20919],[34.78316,-117.25479],[34.74985,-117.29561],[34.74724,-117.32092],[34.69641,-117.33914],[34.60768,-117.34218],[34.58001,-117.33088],[34.53633,-117.29285],[34.5082,-117.32133],[34.34774,-117.44152],[34.33452,-117.48173],[34.31672,-117.47941],[34.29118,-117.45306],[34.2719,-117.45122],[34.25814,-117.46631],[34.19193,-117.36851],[34.13588,-117.3139],[34.10834,-117.31384],[34.10722,-117.74604],[34.129,-117.83212],[34.12874,-117.89012],[34.13971,-117.95021],[34.13995,-118.03685],[34.14836,-118.04552],[34.14581,-118.14754],[34.12007,-118.14702],[34.11113,-118.18403],[34.06268,-118.2463],[34.0743,-118.25207],[34.07979,-118.26954],[34.09245,-118.28039],[34.09055,-118.37391],[34.05059,-118.43437],[34.03862,-118.46773],[34.01646,-118.48784]],
-      "candidates": 65,
-      "decided": 45,
+      "candidates": 63,
+      "decided": 43,
       "joins": 2,
       "joinedMiles": 0.02,
       "widestJoinMiles": 0.01
@@ -301,29 +301,6 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "outer": true
     },
     {
-      "key": "marz-community-brewing-co-chicago",
-      "name": "Marz Community Brewing Co.",
-      "town": "Chicago",
-      "state": "IL",
-      "lat": 41.827819,
-      "lon": -87.6595253,
-      "status": "OPEN",
-      "website": "https://marz.beer/visit",
-      "address": "",
-      "addressSourceUrl": "",
-      "evidence": "McKinley Park Mothership Hours monday–wednesday : 4PM — 11PM thursday, friday : 4PM — Midnight saturday : 11AM — Midnight sunday : 11AM — 10PM",
-      "evidenceUrl": "https://marz.beer/visit",
-      "evidenceChecked": "2026-11-22",
-      "quote": "",
-      "quoteSourceUrl": "",
-      "checked": "2026-11-22",
-      "legId": "illinois",
-      "mile": 3.6,
-      "detourMiles": 2.89,
-      "pastEnd": "",
-      "outer": true
-    },
-    {
       "key": "kinslahger-brewing-company-oak-park",
       "name": "Kinslahger Brewing Company",
       "town": "Oak Park",
@@ -488,8 +465,8 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "website": "https://destihl.com/beer-hall-%2B-barrel-room",
       "address": "1200 Greenbriar Drive, Normal, Illinois 61761",
       "addressSourceUrl": "https://destihl.com/beer-hall-%2B-barrel-room",
-      "evidence": "tue. 11/24/26 diy candle making class (6:30 - 8:30 PM) ... join us for a cozy, creative night in the Barrel Room at DESTIHL Beer Hall!",
-      "evidenceUrl": "https://destihl.com/beer-hall-events",
+      "evidence": "Hours Monday - Thursday: 11:00 am - 9:00 pm Friday: 11:00 am - 10:00 pm Saturday: 10:00 am - 10:00 pm Sunday: 10:00 am - 9:00 pm",
+      "evidenceUrl": "https://destihl.com/beer-hall-%2B-barrel-room",
       "evidenceChecked": "2026-11-22",
       "quote": "",
       "quoteSourceUrl": "",
@@ -497,8 +474,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 125.7,
       "detourMiles": 0.23,
-      "pastEnd": "",
-      "evidenceKind": "notice"
+      "pastEnd": ""
     },
     {
       "key": "white-oak-brewing-normal",
@@ -533,7 +509,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "website": "https://keggrovebrewing.com/",
       "address": "712 E Empire St, Bloomington, Illinois 61701, United States",
       "addressSourceUrl": "https://keggrovebrewing.com/",
-      "evidence": "Please note our regular Wednesday night trivia is cancelled this week, but we will see you again on Wednesday, December 2nd.",
+      "evidence": "HOURS: MON-TUE 3:00 - 8:00 WED-THURS 3:00 - 9:00 FRIDAY: 12:00 - 10:00 SATURDAY: 12:00 - 10:00 SUNDAY: 12:00-8:00",
       "evidenceUrl": "https://keggrovebrewing.com/",
       "evidenceChecked": "2026-11-22",
       "quote": "",
@@ -542,8 +518,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "illinois",
       "mile": 130.8,
       "detourMiles": 0.58,
-      "pastEnd": "",
-      "evidenceKind": "notice"
+      "pastEnd": ""
     },
     {
       "key": "lil-beaver-brewery-bloomington",
@@ -1042,7 +1017,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
     {
       "key": "boat-town-brewing-phillipsburg",
       "name": "Boat Town Brewing",
-      "town": "Phillipsburg",
+      "town": "Lebanon",
       "state": "MO",
       "lat": 37.679543749317,
       "lon": -92.664894481119,
@@ -1788,28 +1763,6 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
-      "key": "ponderosa-brewing-company-albuquerque",
-      "name": "Ponderosa Brewing Company",
-      "town": "Albuquerque",
-      "state": "NM",
-      "lat": 35.10091248,
-      "lon": -106.6650502,
-      "status": "OPEN",
-      "website": "https://ponderosabrewing.com/",
-      "address": "",
-      "addressSourceUrl": "",
-      "evidence": "Hours Sunday 11:30-9p Monday 11:30-9p Tuesday 11:30-9p Wednesday 11:30-9p Thursday 11:30-10p",
-      "evidenceUrl": "https://ponderosabrewing.com/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "",
-      "quoteSourceUrl": "",
-      "checked": "2026-11-22",
-      "legId": "new-mexico",
-      "mile": 217.3,
-      "detourMiles": 0.52,
-      "pastEnd": ""
-    },
-    {
       "key": "santa-fe-brewing-the-brakeroom-santa-fe",
       "name": "Santa Fe Brewing - The Brakeroom",
       "town": "Santa Fe",
@@ -2084,7 +2037,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "website": "https://getplowed.com/locations/",
       "address": "1800 4th St NW Albuquerque, NM 87102",
       "addressSourceUrl": "https://getplowed.com/locations/",
-      "evidence": "NEXT EVENT 90’s Country Covers Night w/ Back In The Saddle Band Friday, Nov 20 at 7:30 PM",
+      "evidence": "Wells Park 1800 4th St NW Albuquerque, NM 87102 Today's Hours 2:00PM - 12:00PM",
       "evidenceUrl": "https://getplowed.com/locations/",
       "evidenceChecked": "2026-11-22",
       "quote": "",
@@ -2093,8 +2046,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "legId": "santa-fe-loop",
       "mile": 180.8,
       "detourMiles": 0.02,
-      "pastEnd": "",
-      "evidenceKind": "notice"
+      "pastEnd": ""
     },
     {
       "key": "marble-brewery-downtown-111-marble-ave-nw-albuquerque",
@@ -2317,50 +2269,6 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
-      "key": "rickety-cricket-brewing-and-pizzeria-kingman",
-      "name": "Rickety Cricket Brewing & Pizzeria",
-      "town": "Kingman",
-      "state": "AZ",
-      "lat": 35.189302800972,
-      "lon": -114.050596951397,
-      "status": "OPEN",
-      "website": "https://ricketycricketbrewing.com/",
-      "address": "",
-      "addressSourceUrl": "",
-      "evidence": "Hours: Sun-Thur 12-9 | Fri-Sat 12-10pm",
-      "evidenceUrl": "https://ricketycricketbrewing.com/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "twenty beers brewed on site, and a seat on Beale / Route 66",
-      "quoteSourceUrl": "https://ricketycricketbrewing.com/",
-      "checked": "2026-11-22",
-      "legId": "arizona",
-      "mile": 326.5,
-      "detourMiles": 0.07,
-      "pastEnd": ""
-    },
-    {
-      "key": "3-iron-brewing-company-colton",
-      "name": "3 Iron Brewing Company",
-      "town": "Colton",
-      "state": "CA",
-      "lat": 34.05616889,
-      "lon": -117.3066993,
-      "status": "OPEN",
-      "website": "https://www.3ironbrewingco.com/",
-      "address": "",
-      "addressSourceUrl": "",
-      "evidence": "HOURS Monday: Closed Tuesday: Closed Wednesday: 2–8 PM Thursday: 2-8PM Friday: 2–10 PM Saturday: 2–10PM",
-      "evidenceUrl": "https://www.3ironbrewingco.com/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "",
-      "quoteSourceUrl": "",
-      "checked": "2026-11-22",
-      "legId": "california",
-      "mile": 249.5,
-      "detourMiles": 3.63,
-      "pastEnd": ""
-    },
-    {
       "key": "rowdys-brewing-company-rancho-cucamonga",
       "name": "Rowdy's Brewing Company",
       "town": "Rancho Cucamonga",
@@ -2407,7 +2315,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
     {
       "key": "kings-brewing-company-rancho-cucamonga",
       "name": "Kings Brewing Company",
-      "town": "Rancho Cucamonga",
+      "town": "Upland",
       "state": "CA",
       "lat": 34.097213195506,
       "lon": -117.648373122956,
@@ -2669,28 +2577,6 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "pastEnd": ""
     },
     {
-      "key": "hop-secret-brewing-co-monrovia",
-      "name": "Hop Secret Brewing Co",
-      "town": "Monrovia",
-      "state": "CA",
-      "lat": 34.134155,
-      "lon": -118.001973,
-      "status": "OPEN",
-      "website": "https://www.hopsecretbrewing.com/",
-      "address": "",
-      "addressSourceUrl": "",
-      "evidence": "Tap Room Hours: Mon-Thurs: 4P - 10P | Fri: 4P-11P Sat: 11A - 11P | Sun: 11A - 9P",
-      "evidenceUrl": "https://www.hopsecretbrewing.com/",
-      "evidenceChecked": "2026-11-22",
-      "quote": "Hop Secret is a microbrewery and tasting room located in Monrovia, CA",
-      "quoteSourceUrl": "https://www.hopsecretbrewing.com/",
-      "checked": "2026-11-22",
-      "legId": "california",
-      "mile": 289.5,
-      "detourMiles": 0.43,
-      "pastEnd": ""
-    },
-    {
       "key": "mt-lowe-brewing-company-arcadia",
       "name": "Mt Lowe Brewing Company",
       "town": "Arcadia",
@@ -2723,7 +2609,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "website": "https://www.wildparrotbrewing.com/",
       "address": "2302 E. Colorado Blvd, Pasadena, Calif.",
       "addressSourceUrl": "https://www.wildparrotbrewing.com/",
-      "evidence": "Hours Monday-Thursday: 3-10pm (8pm kitchen close) Friday: 3-11pm (8pm kitchen close) Saturday: Noon-11pm (8pm kitchen close) Sunday: Noon-8pm (7:30pm kitchen close)",
+      "evidence": "(8pm kitchen close) Saturday: Noon-11pm (8pm kitchen close) Sunday: Noon-8pm (7:30pm kitchen close)",
       "evidenceUrl": "https://www.wildparrotbrewing.com/",
       "evidenceChecked": "2026-11-22",
       "quote": "We are neighborhood brewery, with lagers and ales brewed right in our Tap Room",
@@ -2781,7 +2667,7 @@ export const ROUTE_66_BUILT: BuiltRoad = {
     {
       "key": "ohana-brewing-company-los-angeles",
       "name": "Ohana Brewing Company",
-      "town": "Los Angeles",
+      "town": "Alhambra",
       "state": "CA",
       "lat": 34.094432099519,
       "lon": -118.127825642138,
@@ -3047,5 +2933,5 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "outer": true
     }
   ],
-  "unplaced": 7
+  "unplaced": 11
 };

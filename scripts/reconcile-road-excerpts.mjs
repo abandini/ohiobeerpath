@@ -14,7 +14,7 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
 if (!slug || !/^[a-z0-9-]+$/.test(slug)) { console.error('usage: node scripts/reconcile-road-excerpts.mjs <slug>'); process.exit(2); }
-const { normaliseCheckerFiles, pageText, asPrinted, hoursOnly } = await import(join(root, 'src/lib/road-trip.ts'));
+const { normaliseCheckerFiles, pageText, asPrinted, hoursOnly, excerptFound } = await import(join(root, 'src/lib/road-trip.ts'));
 const dir = join(root, 'data/roads', slug);
 const read = (f) => JSON.parse(readFileSync(join(dir, f), 'utf8'));
 const all = readdirSync(dir).sort(), list = (re) => all.filter((f) => re.test(f));
@@ -39,7 +39,7 @@ const page = async (url) => {
 };
 // An excerpt with words left out (" ... ") is checked part by part, in order, and left as the checker wrote it.
 const elided = (q) => /\.\.\.|…/.test(q);
-const inOrder = (text, q) => { let at = 0; for (const part of pageText(q).split(/\s*(?:\.\.\.|…)\s*/).filter(Boolean)) { const i = text.indexOf(part, at); if (i < 0) return false; at = i + part.length; } return true; };
+const inOrder = excerptFound;
 for (const row of verified) {
   if (row.status !== 'OPEN' || !row.operating_evidence) continue;
   const fields = [['evidence', row.operating_evidence.excerpt, row.operating_evidence.url, true], ['address', row.address_as_printed, row.address_source_url, false], ['quote', row.quote, row.quote_source_url, false]];
@@ -54,7 +54,7 @@ for (const row of verified) {
       // Hours evidence that stops before the hours (a name, an address, a phone number): carry on along the page to
       // the end of the hours that follow it there.
       let short = tidy(want);
-      if (field === 'evidence' && row.evidence_kind !== 'notice' && !elided(want) && short === want && !/\d\s*(?::\d\d)?\s*[ap]\.?m|\bnoon\b/i.test(want)) {
+      if (field === 'evidence' && row.evidence_kind !== 'notice' && !elided(want) && short === want && !/\d\s*(?::\d\d)?\s*[ap]\.?m|\bnoon\b|(?<![\d-])\d{1,2}(?::\d{2})?\s*[-–—]\s*\d{1,2}(?::\d{2})?(?![\d-])/i.test(want)) {
         const at = text.indexOf(want), longer = hoursOnly(text.slice(at, at + want.length + 240));
         if (longer.length > want.length && longer.length < want.length + 240) short = longer;
       }

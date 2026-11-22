@@ -15,14 +15,16 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
 if (!slug || !/^[a-z0-9-]+$/.test(slug)) { console.error('usage: node scripts/verify-road-sources.mjs <slug>'); process.exit(2); }
-const { isShowableStop, unreadVerdict, verifierExit, pageText, BROWSER_CHECK_MAX_DAYS } = await import(join(root, 'src/lib/road-trip.ts'));
+const { stopProblems, excerptFound, unreadVerdict, verifierExit, pageText, BROWSER_CHECK_MAX_DAYS } = await import(join(root, 'src/lib/road-trip.ts'));
 const pick = (mod, test) => Object.values(mod).find((v) => v && typeof v === 'object' && v.slug === slug && test(v));
 const config = pick(await import(join(root, `src/data/roads/${slug}.ts`)), (v) => Array.isArray(v.roadSources));
 const built = pick(await import(join(root, `src/data/roads/${slug}.built.ts`)), (v) => Array.isArray(v.stops));
 if (!config || !built) { console.error(`road ${slug}: config or built data not found`); process.exit(2); }
 
-const stops = built.stops.filter((s) => isShowableStop(s));
-if (stops.length !== built.stops.length) { console.error(`${built.stops.length - stops.length} stop(s) in the built file do not pass the gate: rebuild before verifying`); process.exit(2); }
+// The same road-aware check the builder and the page use (directory id on a directory road; address and own-site link
+// on a road of stand-alone stops).
+const stops = built.stops.filter((s) => stopProblems(s, config).length === 0);
+if (stops.length !== built.stops.length) { for (const s of built.stops) { const w = stopProblems(s, config); if (w.length) console.error(`${s.key}: ${w.join('; ')}`); } console.error(`${built.stops.length - stops.length} stop(s) in the built file fail validation: rebuild before verifying`); process.exit(2); }
 // Notes on legs and stretches (alcohol law on tribal land, for example) rest on quoted sources too; the same source
 // used in two notes is checked once.
 const noteSources = [...new Map(config.legs.flatMap((l) => [...(l.notes ?? []), ...(l.segments ?? []).flatMap((g) => g.notes ?? [])]).flatMap((n) => n.sources ?? []).map((q) => [`${q.url}\n${q.quote}`, q])).values()];
@@ -36,14 +38,14 @@ const pairs = [
   ]),
 ];
 const expected = config.roadSources.length + noteSources.length + stops.length + stops.filter((s) => s.quote).length + stops.filter((s) => s.address).length;
-if (!pairs.length || pairs.length !== expected || pairs.some((p) => !p.quote || !/^https?:\/\//.test(p.url || ''))) { console.error(`expected ${expected} sources with a quote and a URL, got ${pairs.length}`); process.exit(2); }
+if (!pairs.length || pairs.length !== expected || pairs.some((p) => !String(p.quote || '').replace(/\.\.\.|…/g, '').trim() || !/^https?:\/\//.test(p.url || ''))) { console.error(`expected ${expected} sources with a quote and a URL, got ${pairs.length}`); process.exit(2); }
 
 // Page text as a reader sees it (tags dropped, entities decoded, whitespace collapsed): the same function the
 // reconcile step uses, so both read a page the same way.
 const norm = pageText;
 
-// An excerpt may leave words out, marked " ... " or "…": then every part must be on the page, in that order.
-const found = (text, quote) => { let at = 0; for (const part of norm(quote).split(/\s*(?:\.\.\.|…)\s*/).filter(Boolean)) { const i = text.indexOf(part, at); if (i < 0) return false; at = i + part.length; } return true; };
+// An excerpt may leave words out (" ... "): every part must be on the page, in order. An empty excerpt is never found.
+const found = excerptFound;
 const pages = new Map(); let ok = 0, missing = 0, unread = 0, browser = 0, stale = 0;
 const today = new Date().toISOString().slice(0, 10);
 // A source the script cannot read may carry the date a person read it in a browser (browser_checked in the checker's

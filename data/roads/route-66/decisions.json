@@ -60,21 +60,6 @@
     "reason": "editor: the excerpt is an address and contact line, not visiting hours or a dated notice"
   },
   {
-    "match": "373559ad-c964-477c-a443-f0531e3f78b0",
-    "evidenceKind": "notice",
-    "reason": "editor: the evidence is a dated event on the brewery's own page, not visiting hours"
-  },
-  {
-    "match": "74311046-203d-4c6e-b156-1100b4b7a2eb",
-    "evidenceKind": "notice",
-    "reason": "editor: the evidence is a dated event on the brewery's own page, not visiting hours"
-  },
-  {
-    "match": "lead:Keg Grove Brewing Company (Bloomington)",
-    "evidenceKind": "notice",
-    "reason": "editor: the evidence is a dated notice on the brewery's own page, not visiting hours"
-  },
-  {
     "match": "lead:Dark Sky Brewing Co. Taproom & Pizzicletta",
     "status": "UNCONFIRMED",
     "reason": "editor: its own site answered 'Website Expired' (HTTP 404) when re-read later on 2026-11-22, so its evidence can no longer be read; restore when the site is back"
@@ -83,5 +68,32 @@
     "match": "lead:Dark Sky Brewing Co. Beer Garden & Atmosphere Kitchen",
     "status": "UNCONFIRMED",
     "reason": "editor: its own site answered 'Website Expired' (HTTP 404) when re-read later on 2026-11-22, so its evidence can no longer be read; restore when the site is back"
+  },
+  {
+    "match": "373559ad-c964-477c-a443-f0531e3f78b0",
+    "reason": "editor: the checker's evidence was an event notice with no year; replaced by the hours its own page prints for this taproom, re-read 2026-11-22",
+    "evidence": {
+      "excerpt": "Wells Park 1800 4th St NW Albuquerque, NM 87102 Today's Hours 2:00PM - 12:00PM",
+      "url": "https://getplowed.com/locations/",
+      "checked": "2026-11-22"
+    }
+  },
+  {
+    "match": "74311046-203d-4c6e-b156-1100b4b7a2eb",
+    "reason": "editor: the checker's evidence was an event notice; replaced by the Beer Hall hours its own page prints, re-read 2026-11-22",
+    "evidence": {
+      "excerpt": "Hours Monday - Thursday: 11:00 am - 9:00 pm Friday: 11:00 am - 10:00 pm Saturday: 10:00 am - 10:00 pm Sunday: 10:00 am - 9:00 pm",
+      "url": "https://destihl.com/beer-hall-%2B-barrel-room",
+      "checked": "2026-11-22"
+    }
+  },
+  {
+    "match": "lead:Keg Grove Brewing Company (Bloomington)",
+    "reason": "editor: the checker's evidence was a notice with no year; replaced by the Bloomington hours its own page prints, re-read 2026-11-22",
+    "evidence": {
+      "excerpt": "HOURS: MON-TUE 3:00 - 8:00 WED-THURS 3:00 - 9:00 FRIDAY: 12:00 - 10:00 SATURDAY: 12:00 - 10:00 SUNDAY: 12:00-8:00",
+      "url": "https://keggrovebrewing.com/",
+      "checked": "2026-11-22"
+    }
   }
 ]

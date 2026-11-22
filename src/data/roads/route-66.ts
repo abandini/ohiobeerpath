@@ -11,22 +11,24 @@ const C = '2026-11-22';
 const NPS_1926 = 'https://www.nps.gov/articles/000/marketing-perspective-route-66-roadside-architecture.htm';
 const NPS_1985 = 'https://www.nps.gov/articles/000/route-66-national.htm';
 const NPS_STATES = 'https://www.nps.gov/pefo/learn/news/new-route-66-exhibit-and-pull-out.htm';
-// Alcohol rules on tribal lands. Each rule is quoted with its source and introduced only by what the source itself
-// establishes. Nothing here says where the road is in relation to any of these lands: no quoted source says so.
-const TRIBAL_TITLE = 'Alcohol rules on tribal lands near the route';
-const TRIBAL_CLOSING = 'Check locally before you travel.';
+// Federal Register publications on tribal alcohol regulation. They are shown as dated source excerpts and nothing
+// more: no quoted source says where the road is in relation to any of these lands, and a notice from 2000 or 2008
+// does not establish what is required today. So the block says neither. The dates are the publication dates in the
+// documents' own URLs.
+const TRIBAL_TITLE = 'Selected Federal Register publications on tribal alcohol regulation';
+const TRIBAL_CLOSING = 'These excerpts do not establish current requirements or whether they apply to your journey. Check current requirements with the relevant tribal authority before travelling.';
 const NAVAJO = {
-  intro: 'The Navajo Nation’s liquor rule, as published in the Federal Register:',
+  intro: 'Federal Register, published December 24, 2008:',
   quote: 'Title 17, subchapter 12, of the N.N.C. bars the transportation, sale, and consumption of alcoholic beverages on the Navajo Reservation. Section 412 of Title 17 sets out exceptions to the prohibitions in the title.',
   url: 'https://www.federalregister.gov/documents/full_text/html/2008/12/24/E8-30688.html', checked: C,
 };
 const LAGUNA = {
-  intro: 'The Pueblo of Laguna’s liquor ordinance, as described in the Federal Register:',
+  intro: 'Federal Register, published June 1, 2000:',
   quote: 'This Amendment to the Pueblo of Laguna Liquor Control Ordinance regulates the issuance of licenses for the sale of alcohol beverages in package or by the drink for consumption on the premises',
   url: 'https://www.federalregister.gov/documents/full_text/html/2000/06/01/00-13612.html', checked: C,
 };
 const HUALAPAI = {
-  intro: 'The alcohol ordinance for the Hualapai Reservation, as described in the Federal Register:',
+  intro: 'Federal Register, published September 10, 2008:',
   quote: 'The Ordinance regulates and controls the possession, sale and consumption of liquor within the Hualapai Reservation.',
   url: 'https://www.federalregister.gov/documents/full_text/html/2008/09/10/E8-20953.html', checked: C,
 };
@@ -55,8 +57,7 @@ export const ROUTE_66: RoadConfig = {
   ],
   methodNotes: [
     'One line per state. OpenStreetMap maps more than one alignment in places: both directions in Illinois, older alignments in Illinois and Missouri, and an older line through Santa Fe in New Mexico. For each state we measure along the shortest continuous path through those ways from one state line to the next. That gives one line to measure on. It is not a claim about which alignment is the real one, and its length is not the road’s official length.',
-    'Distance to any alignment. A brewery’s distance is the straight line to the nearest mapped alignment of any date, so a brewery on an older alignment is not treated as far away. Its mile is still its nearest point on the one line we measure along.',
-    'Where the breweries came from. We started from the Open Brewery DB, a community dataset whose repository carries the MIT License, and added breweries our checkers found on tourism, guild and news pages. Each one was then read on its own website. Dataset rows use the dataset’s coordinates; the others, and any brewery whose printed address differs from the dataset’s, use coordinates from the US Census geocoder for the printed address.',
+    'Where the breweries came from. We started from the Open Brewery DB, a community dataset whose repository carries the MIT License, and added breweries our checkers found on tourism, guild and news pages. Each one was then read on its own website. A brewery is placed by the address it prints: the dataset’s coordinates are used only when its printed street number and street match the dataset’s; otherwise we use coordinates from the US Census geocoder for the printed address, and a brewery with neither is left off. The town shown is the one in the printed address.',
     'St. Louis. The routes through the city of St. Louis are largely missing from the OpenStreetMap relations, and our Missouri line passes north and west of the city. We give no mile and no distance for breweries in the city rather than pretend to a precision we do not have.',
   ],
   legs: [
