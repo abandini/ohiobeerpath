@@ -142,16 +142,18 @@ export const PLAIN_NO_HOURS = 'the visiting-hours evidence we cited was not foun
 export function classifyStop(i: StopInput): StopResult {
   const e = i.evidencePage;
   if (e.kind === 'no-such-domain') return { status: 'GONE', reason: 'DNS says the domain of the cited page does not exist', plain: PLAIN_NO_DOMAIN };
-  if (isParked(e)) return { status: 'GONE', reason: 'the cited address shows a domain-for-sale or parking page', plain: PLAIN_PARKED };
+  // Could the page be seen at all? That is settled before anything is concluded from it, parking included: a challenge
+  // served from a parking company's host is a challenge, not a parking page.
   const bad = presenceProblem(e);
-  if (!bad && i.evidenceFound) {
+  if (bad) return { status: 'COULD_NOT_OBSERVE', reason: i.evidenceFound ? `matching text was returned, but not by a page that loaded normally (${bad})` : bad };
+  if (isParked(e)) return { status: 'GONE', reason: 'the cited address shows a domain-for-sale or parking page', plain: PLAIN_PARKED };
+  if (i.evidenceFound) {
     if (!i.address) return { status: 'CONFIRMED', reason: 'evidence found' };
     const a = presenceProblem(i.address.page);
     if (a) return { status: 'COULD_NOT_OBSERVE', reason: `the evidence is still there, but the address page could not be read (${a})` };
     if (i.address.found) return { status: 'CONFIRMED', reason: 'evidence and address found' };
     return { status: 'COULD_NOT_OBSERVE', reason: 'the evidence is still there, but the address is no longer on the page it was read from', flag: 'address' };
   }
-  if (bad) return { status: 'COULD_NOT_OBSERVE', reason: i.evidenceFound ? `matching text was returned, but not by a page that loaded normally (${bad})` : bad };
   if (i.browserChecked) return { status: 'COULD_NOT_OBSERVE', reason: `a person read this page in a browser on ${i.browserChecked}; this script cannot read it` };
   if (e.kind !== 'page' || e.text.length < MIN_REAL_TEXT) return { status: 'COULD_NOT_OBSERVE', reason: 'almost no text (script-rendered?)' };
   if (!i.fingerprint) return { status: 'COULD_NOT_OBSERVE', reason: 'the evidence was not found, and this job has no earlier confirmed reading of the page to compare with; a person should look', flag: 'page-changed' };
@@ -412,15 +414,15 @@ export function classifyLink(name: string, listedUrl: string, o: Observation): {
   if (o.status >= 500) return { cls: 'COULD_NOT_OBSERVE', note: `server error (HTTP ${o.status})` };
   if ([404, 410].includes(o.status)) return { cls: 'DEAD', note: `HTTP ${o.status}` };
   if (o.status !== 200) return { cls: 'COULD_NOT_OBSERVE', note: `HTTP ${o.status}` };
-  if (isParked(o)) return { cls: 'PARKED', note: `domain for sale or parked: ${o.title.slice(0, 80)}` };
-  // A shell is settled before anything is concluded about identity, takeover or where the link now leads.
+  // A shell is settled before anything is concluded: parking, identity, takeover or where the link now leads.
   const shell = shellReason(o);
   if (shell) return { cls: 'COULD_NOT_OBSERVE', note: shell };
+  if (isParked(o)) return { cls: 'PARKED', note: `domain for sale or parked: ${o.title.slice(0, 80)}` };   // a positive parking page may be short
   const head = `${o.title} ${o.text.slice(0, 1500)}`, from = hostOfUrl(listedUrl), to = hostOfUrl(o.finalUrl);
   const named = namesBrewery(name, `${o.title} ${o.text}`), elsewhere = registrable(to) !== registrable(from);
   const keywords = (head.match(GAMBLING) ?? []).length >= 2 || (o.title.match(GAMBLING) ?? []).length > 0 || ADULT.test(o.title);
-  if (keywords) return named ? { cls: 'POSSIBLE_TAKEOVER', note: `possible takeover: review. Gambling or adult words on a page that still names the brewery: ${o.title.slice(0, 80)}` } : { cls: 'HIJACKED', note: `gambling or adult content, and the brewery's name is nowhere on the page: ${o.title.slice(0, 80)}` };
   if (o.text.trim().length < 200) return { cls: 'COULD_NOT_OBSERVE', note: `${elsewhere ? `redirects to ${to}: ` : ''}${o.text.trim() ? 'too little text to judge' : 'no server-rendered text'}` };
+  if (keywords) return named ? { cls: 'POSSIBLE_TAKEOVER', note: `possible takeover: review. Gambling or adult words on a page that still names the brewery: ${o.title.slice(0, 80)}` } : { cls: 'HIJACKED', note: `gambling or adult content, and the brewery's name is nowhere on the page: ${o.title.slice(0, 80)}` };
   if (elsewhere) return named ? { cls: 'MOVED', note: `now at ${to}, on a page that names the brewery` }
     : hostNamesBrewery(name, to) ? { cls: 'POSSIBLY_MOVED', note: `possibly moved: review. Redirects to ${to}, whose address carries the name but whose page does not name the brewery` }
       : { cls: 'OFF_DOMAIN', note: `redirects to ${to}, which does not name the brewery` };
@@ -467,6 +469,25 @@ export function mergeLinkState(state: LinksState, runs: LinkRun[], date: string,
 export interface CheckOutcome { ran: boolean; valid: boolean; why: string }
 /** Exit 0 only when every check that was asked for observed validly. */
 export const exitCode = (checks: CheckOutcome[]): 0 | 2 => (checks.length > 0 && checks.every((c) => c.ran && c.valid) ? 0 : 2);
+/** What building a proposal produced. `patch` is true only when a suspension patch was written. */
+export interface ProposalResult { dir: string; patch: boolean; list: { slug: string; id: number | string; name: string; order: Eligible }[]; failed: string[]; conflicts: { breweryId: number; name: string; why: string }[] }
+/**
+ * The report's lines about proposals. The count and the list are of stops named in a patch that was written, never of
+ * stops that were merely eligible. Evidence conflicts and build failures are said separately.
+ */
+export function proposalSection(eligible: number, proposal: ProposalResult | null): string[] {
+  const proposed = proposedCount(proposal), out: string[] = [];
+  out.push(`### Proposed for suspension: GONE on two observations at least 48 hours apart (${proposed})`,
+    ...(proposal?.patch ? proposal.list.map((x) => `- ${x.slug} ${x.id} ${x.name}: ${x.order.plain} (first seen ${x.order.firstSeen}, seen again ${x.order.confirmed})`) : ['- none']), '');
+  if (!proposal) return out;
+  if (proposal.patch) out.push(`Nothing was published and no file in the checkout was changed. The proposal is in ${proposal.dir}: suspension.patch, evidence.md and checks.log. ${proposal.failed.length ? `Checks that failed on the patched copy: ${proposal.failed.join('; ')}.` : 'Builds, tsc and vitest passed on the patched copy.'} A person reviews and applies it; until then each run re-reads these stops and proposes again while they stay gone.`, '');
+  else out.push(`${eligible} ${eligible === 1 ? 'stop was' : 'stops were'} GONE on two observations at least 48 hours apart, but no suspension patch was written, so nothing is proposed. The evidence is in ${proposal.dir} (evidence.md, checks.log).`, '');
+  if (!proposal.patch && proposal.failed.length) out.push(`The proposal could not be built (${proposal.failed.length}):`, ...proposal.failed.map((f) => `- ${f}`), '');
+  if (proposal.conflicts.length) out.push(`Evidence conflicts, nothing proposed (${proposal.conflicts.length}):`, ...proposal.conflicts.map((c) => `- ${c.breweryId} ${c.name}: ${c.why}`), '');
+  return out;
+}
+/** How many stops were really proposed: the ones named in a patch that was written. An eligible stop left out by an evidence conflict, or a patch that could not be built, proposes nothing. */
+export const proposedCount = (proposal: { patch: boolean; list: unknown[] } | null | undefined): number => (proposal?.patch ? proposal.list.length : 0);
 /** One sentence, under 300 characters, for a text message. Counts only: no brewery is named, and nothing is ever said to be published. */
 export function summaryLine(s: { date: string; a?: { ok: boolean; confirmed: number; goneOnce: number; proposed: number; unobserved: number }; b?: { ok: boolean; newlyClosed: number; newlyNotFound: number }; c?: { ok: boolean; fresh: number } }): string {
   const part = (label: string, ok: boolean | undefined, text: string) => (ok === undefined ? '' : ok ? `${label} ${text}` : `${label} FAILED`);

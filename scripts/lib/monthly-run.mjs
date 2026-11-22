@@ -48,7 +48,7 @@ async function run({ drill }) {
   // --- Where this run keeps its files -------------------------------------------------------------------------------
   // Production: the production directory, always. A drill: a directory of its own that is not the production
   // directory or inside it, compared as canonical paths so that a symlink or a relative spelling cannot pass.
-  const allowed = drill ? ['--confirm', '--only', '--sample-b', '--sample-c', '--data-dir', '--listings-file', '--pretend-gone', '--pretend-first-sighting', '--init-baseline', '--from'] : ['--confirm', '--only', '--listings-file', '--init-baseline', '--from'];
+  const allowed = drill ? ['--confirm', '--only', '--sample-b', '--sample-c', '--data-dir', '--listings-file', '--pretend-gone', '--pretend-first-sighting', '--init-baseline', '--from'] : ['--confirm', '--only', '--init-baseline', '--from'];
   for (const a of argv.filter((x) => x.startsWith('--'))) if (!allowed.includes(a)) throw new Stop(`${a} is not an option of the ${drill ? 'drill' : 'production'} run${drill ? '' : ' (samples, other data directories and pretended observations belong to scripts/monthly-check-drill.mjs)'}`);
   const prod = canon(productionDir()), prodDefault = canon(join(homedir(), 'brewerytrip-monthly'));
   let dataDir = '';
@@ -253,7 +253,7 @@ async function run({ drill }) {
 
   // --- The directory's open listings (read only: this SELECT is the only statement the job sends) ------------------
   function readListings() {
-    const file = opt('--listings-file');
+    const file = drill ? opt('--listings-file') : undefined;         // production reads the directory itself, always
     const sql = 'SELECT id, name, street, city, state, latitude, longitude, website_url FROM breweries WHERE closed_at IS NULL ORDER BY id';
     const raw = file ? readFileSync(file, 'utf8') : execFileSync('npx', ['wrangler', 'd1', 'execute', 'ohio-beer-path-db', '--remote', '--json', '--command', sql], { cwd: root, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
     const rows = JSON.parse(raw.slice(raw.indexOf('[')))[0]?.results;
@@ -363,7 +363,8 @@ async function run({ drill }) {
   async function checkLinks(listings) {
     const net = await canary();
     if (net) return { ran: true, valid: false, why: `could not observe: ${net}`, runs: [], fresh: [], leads: [] };
-    const rows = sample(listings.filter((r) => String(r.website_url || '').trim()), Number(opt('--sample-c')) || 0);
+    const eligibleRows = listings.filter((r) => String(r.website_url || '').trim());   // every listing that has a website link
+    const rows = sample(eligibleRows, Number(opt('--sample-c')) || 0);
     const runs = await pool(rows, 6, (r) => L.registrable(L.hostOfUrl(r.website_url)), async (r) => {
       const url = String(r.website_url).trim(), o = L.isSocialUrl(url) ? { kind: 'error', at: stamp(), why: '' } : await readPage(url, 20000);
       return { id: r.id, name: r.name, city: r.city, state: r.state, url, at: o.at, ...L.classifyLink(r.name, url, o) };
@@ -371,8 +372,8 @@ async function run({ drill }) {
     const obsFile = join(dirs.observations, `${runId}-links.jsonl`);
     writeFileSync(obsFile, runs.map((a) => JSON.stringify(a)).join('\n') + '\n');
     const after = await canary();
-    if (after) { recordRun(obsFile, { check: 'c', complete: false, why: after, directory: listings.length, looked: rows.length }); return { ran: true, valid: false, why: `could not observe: ${after} by the end of the run`, runs, fresh: [], leads: [], obsFile }; }
-    recordRun(obsFile, { check: 'c', complete: true, why: '', directory: listings.length, looked: rows.length });
+    if (after) { recordRun(obsFile, { check: 'c', complete: false, why: after, directory: listings.length, eligible: eligibleRows.length, looked: rows.length }); return { ran: true, valid: false, why: `could not observe: ${after} by the end of the run`, runs, fresh: [], leads: [], obsFile }; }
+    recordRun(obsFile, { check: 'c', complete: true, why: '', directory: listings.length, eligible: eligibleRows.length, looked: rows.length });
     const verdict = L.linkVerdict(state.links, runs);
     const fresh = verdict.valid ? L.newLinkProblems(state.links.links, runs) : [], leads = verdict.valid ? L.newLinkLeads(state.links.links, runs) : [];
     if (verdict.valid) { state.links = L.mergeLinkState(state.links, runs, date, true); writeState('links', state.links); }
@@ -396,8 +397,19 @@ async function run({ drill }) {
     if (!rec.complete) throw new Stop(`the run that wrote ${file} did not complete (${rec.why}): it cannot be a baseline`);
     if (rec.sha256 !== hashFile(file)) throw new Stop(`${file} has changed since the run that wrote it: it cannot be a baseline`);
     if (!!rec.drill !== !!drill) throw new Stop(`${file} was ${rec.drill ? '' : 'not '}written by a drill`);
-    if (!drill && rec.looked !== rec.directory) throw new Stop(`${file} covers ${rec.looked} of ${rec.directory} listings: a production baseline is the whole directory`);
+    // The complete population: for B every listing in the directory, for C every listing that has a website link.
+    const expected = init === 'b' ? rec.directory : rec.eligible;
+    if (
+      !Number.isSafeInteger(expected) || expected <= 0 ||
+      !Number.isSafeInteger(rec.looked) || rec.looked <= 0 ||
+      (!drill && rec.looked !== expected)
+    ) {
+      throw new Stop(`${file} does not cover the complete population for check ${init.toUpperCase()}`);
+    }
     const rows = readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+    if (rows.length !== rec.looked) {
+      throw new Stop(`${file} has ${rows.length} observations, but its run record says ${rec.looked}`);
+    }
     const runs = init === 'b' ? directoryRuns(rows) : rows, verdict = init === 'b' ? L.directoryVerdict({ listings: {} }, runs) : L.linkVerdict({ links: {} }, runs);
     if (!L.initMayAccept(verdict)) throw new Stop(`these observations cannot be a baseline: ${verdict.why}`);
     const baseline = { date, by: who(), file, hash: hashFile(file), source: rec.source, directory: rec.directory, listings: runs.length, counts: count(rows, (x) => (init === 'b' ? (x.outcome === 'STATUS' ? x.status : x.outcome) : x.cls)) };
@@ -453,12 +465,12 @@ async function run({ drill }) {
     const stopOf = (o) => roads.find((r) => r.slug === o.slug).stops.find((s) => s.key === o.key);
     writeFileSync(join(out, 'evidence.md'), [`# Proposed suspension, ${date}${drill ? ' (DRILL: not an observation)' : ''}`, '',
       'A person reviews this and applies it through the normal reviewed process. The job has published nothing and changed no file in the checkout.', '', sourceLine, '',
-      `Patch: suspension.patch, against commit ${base}. Checks run on the patched copy: checks.log (${failed.length ? `${failed.length} FAILED` : 'all passed'}). The source verifiers were not run on it; run them after applying.`, '',
+      patch && list.length ? `Patch: suspension.patch, against commit ${base}. Checks run on the patched copy: checks.log (${failed.length ? `${failed.length} FAILED` : 'all passed'}). The source verifiers were not run on it; run them after applying.` : `No suspension patch was written (commit ${base}). ${list.length ? 'The patch could not be built: see the checks that failed, below.' : 'Every eligible stop is in an evidence conflict: see below.'}`, '',
       ...eligible.flatMap((o) => { const s = stopOf(o); return [`## ${s.name} (${s.town})`, '', `- proposed on: ${list.filter((x) => x.order === o).map((x) => `${x.slug} (${x.id}; ${x.basis === 'observed' ? 'observed there' : 'that road cites the very same page and text, so this is the same evidence'})`).join(', ') || 'no road: evidence conflict, see below'}`, `- cited page: ${s.evidenceUrl}`, `- cited evidence: "${s.evidence}"`, `- the narrow fact: ${o.plain}`,
         `- observations, at least ${L.CONFIRM_AFTER_HOURS} hours apart (${((Date.parse(o.confirmed) - Date.parse(o.firstSeen)) / 3600000).toFixed(1)} hours from first to latest):`, ...o.records.map((g) => `  - ${g.at}: ${g.reason}${g.kept ? `. Page text kept at ${g.kept}` : ''}`), '']; }),
       ...(conflicts.length ? ['## Evidence conflicts: nothing is proposed for these', ...conflicts.map((c) => `- ${c.breweryId} ${c.name}: ${c.why}. A person should look at both citations.`), ''] : []),
       ...(failed.length ? ['## Checks that failed on the patched copy', ...failed.map((f) => `- ${f}`), ''] : [])].join('\n'));
-    return { dir: out, list, failed, conflicts, patch: !!patch };
+    return { dir: out, list, failed, conflicts, patch: !!patch && list.length > 0 };
   }
 
   // --- Run ----------------------------------------------------------------------------------------------------------
@@ -469,8 +481,10 @@ async function run({ drill }) {
 
   if (only.has('a')) { log(`Check A: road stops${confirm ? ' (confirming pass)' : ''}`); A = await checkRoads(); outcomes.push(A); }
   if (only.has('b') || only.has('c')) { try { listings = readListings(); } catch (e) { listingsError = `could not read the directory (${String(e?.message || e).split('\n')[0].slice(0, 120)})`; } }
-  if (only.has('b')) { log('Check B: directory status'); B = listings ? await checkDirectory(listings) : { ran: true, valid: false, why: listingsError }; outcomes.push(B); }
-  if (only.has('c')) { log('Check C: website links'); C = listings ? await checkLinks(listings) : { ran: true, valid: false, why: listingsError, runs: [], fresh: [], leads: [] }; outcomes.push(C); }
+  // The directory itself must be whole before B or C observes anything: under 80% of what that check's baseline saw is a short read.
+  const shortRead = (st) => (listings && st.baseline && Number.isFinite(st.baseline.directory) && listings.length < st.baseline.directory * L.COVERAGE_MIN ? `the directory read returned ${listings.length} listings; this check's baseline saw ${st.baseline.directory}` : '');
+  if (only.has('b')) { log('Check B: directory status'); const short = shortRead(state.directory); B = !listings ? { ran: true, valid: false, why: listingsError } : short ? { ran: true, valid: false, why: short } : await checkDirectory(listings); outcomes.push(B); }
+  if (only.has('c')) { log('Check C: website links'); const short = shortRead(state.links); C = !listings ? { ran: true, valid: false, why: listingsError, runs: [], fresh: [], leads: [] } : short ? { ran: true, valid: false, why: short, runs: [], fresh: [], leads: [] } : await checkLinks(listings); outcomes.push(C); }
 
   if (A) {
     if (A.valid && A.eligible.length) proposal = propose(A.eligible);
@@ -478,14 +492,13 @@ async function run({ drill }) {
     say('## A. Road stops', '', `Status: ${status(A)}${A.valid ? '' : '. Check A wrote no state and made no proposal.'}`, '', ...A.roads.map((r) => `- ${r.name}: ${r.why ? `NOT VALID (${r.why}). ` : ''}${r.read} of ${r.total} stops read; ${r.runs.filter((x) => x.status === 'CONFIRMED').length} confirmed, ${r.runs.filter((x) => x.status === 'GONE').length} gone, ${r.runs.filter((x) => x.status === 'COULD_NOT_OBSERVE').length} could not be observed`), '');
     const item = (r) => `- ${r.slug} ${r.key} ${r.name} (${r.town}): ${r.reason}. ${r.url}${r.kept ? ` (page text kept at ${r.kept})` : ''}`;
     say(`### Gone once (${A.goneOnce.length}): a person should look; the confirming pass re-reads these`, ...(A.goneOnce.length ? A.goneOnce.map(item) : ['- none']), '');
-    say(`### Proposed for suspension: GONE on two observations at least 48 hours apart (${A.eligible.length})`, ...(proposal ? proposal.list.map((x) => `- ${x.slug} ${x.id} ${x.name}: ${x.order.plain} (first seen ${x.order.firstSeen}, seen again ${x.order.confirmed})`) : ['- none']), '');
-    if (proposal) say(`Nothing was published and no file in the checkout was changed. The proposal is in ${proposal.dir}: suspension.patch${proposal.patch ? '' : ' (NOT written)'}, evidence.md and checks.log. ${proposal.failed.length ? `Checks that failed on the patched copy: ${proposal.failed.join('; ')}.` : 'Builds, tsc and vitest passed on the patched copy.'} A person reviews and applies it; until then each run re-reads these stops and proposes again while they stay gone.`, '', ...(proposal.conflicts.length ? [`Evidence conflicts, nothing proposed (${proposal.conflicts.length}):`, ...proposal.conflicts.map((c) => `- ${c.breweryId} ${c.name}: ${c.why}`), ''] : []));
+    say(...L.proposalSection(A.eligible.length, proposal));
     if (A.cleared.length) say(`### Seen gone before, found again this time (${A.cleared.length})`, ...A.cleared.map(item), '');
     const flagged = all.filter((r) => r.flag === 'address'), changed = all.filter((r) => r.flag === 'page-changed'), unseen = all.filter((r) => r.status === 'COULD_NOT_OBSERVE' && !r.flag);
     say(`### Page changed, evidence not found (${changed.length}): nothing is concluded; a person should look`, ...(changed.length ? changed.map(item) : ['- none']), '');
     say(`### Address no longer on its page, evidence still there (${flagged.length}): a person should re-read`, ...(flagged.length ? flagged.map(item) : ['- none']), '');
     say(`### Could not observe (${unseen.length}): nothing is concluded about these`, ...(unseen.length ? unseen.map(item) : ['- none']), '');
-    A.counts = { confirmed: n('CONFIRMED'), goneOnce: A.goneOnce.length, proposed: A.eligible.length, unobserved: n('COULD_NOT_OBSERVE') };
+    A.counts = { confirmed: n('CONFIRMED'), goneOnce: A.goneOnce.length, proposed: L.proposedCount(proposal), unobserved: n('COULD_NOT_OBSERVE') };
   }
   const needsInit = (c, letter, file) => (c.code === 'no-baseline' || c.code === 'first-run-prevalence' ? [`No state was written. After reading the observations, a person may initialise the baseline once: \`--init-baseline ${letter} --from ${file}\`.`, ''] : []);
   if (B) {

@@ -15,14 +15,21 @@ REPO="${MONTHLY_REPO:-/Users/auto1/CascadeProjects/ohiobrewpath}"
 DATA="${MONTHLY_DATA_DIR:-$HOME/brewerytrip-monthly}"
 LOG_DIR="${MONTHLY_LOG_DIR:-$HOME/logs}"
 
-# The canonical form of a path that may not exist yet: the real path of its nearest existing ancestor, plus the rest.
-# It creates nothing.
+# The canonical form of a path that may not exist yet: the real path of its nearest existing ancestor, plus the rest,
+# normalised (no "..", no "."). It creates nothing. The path it returns is the one used from then on.
 canon() {
-  local p="$1" rest=""
-  while [ ! -e "$p" ] && [ "$p" != "/" ]; do rest="/$(basename "$p")$rest"; p="$(dirname "$p")"; done
-  local real; real="$(cd "$p" 2>/dev/null && pwd -P)" || return 1
-  [ "$real" = "/" ] && real=""
-  printf '%s%s\n' "$real" "$rest"
+  node --input-type=module - "$1" <<'NODE'
+import { existsSync, realpathSync } from 'node:fs';
+import { resolve, dirname, basename } from 'node:path';
+
+let at = resolve(process.argv[2]);
+const rest = [];
+while (!existsSync(at) && dirname(at) !== at) {
+  rest.unshift(basename(at));
+  at = dirname(at);
+}
+console.log(resolve(realpathSync(at), ...rest));
+NODE
 }
 inside() { [ "$1" = "$2" ] || case "$1" in "$2"/*) return 0 ;; *) return 1 ;; esac; }
 
@@ -49,6 +56,13 @@ if ! mkdir "$LOCK" 2>/dev/null; then
 fi
 printf '{"pid": %s, "started": "%s", "by": "monthly-check.sh"}\n' "$$" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$LOCK/info.json"
 trap 'rm -rf "$LOCK"' EXIT
+# Interrupted, the wrapper cannot know that its child has stopped, so it keeps the lock: a person checks that no run
+# is going and removes it by hand.
+trap '
+  trap - EXIT
+  echo "Brewery Trip monthly check: wrapper interrupted; lock retained because child processes may still be running."
+  exit 2
+' HUP INT TERM
 export MONTHLY_LOCK_HELD="$LOCK"
 
 # 3. The source revision. On main, clean (working tree, index and untracked files), then exactly origin/main.

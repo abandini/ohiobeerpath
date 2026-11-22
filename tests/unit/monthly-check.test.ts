@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, symlinkSync, existsSync, readdirSync, cpSync, appendFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, symlinkSync, existsSync, readdirSync, cpSync, appendFileSync, chmodSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, spawn } from 'node:child_process';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import {
@@ -9,7 +9,7 @@ import {
   applyRoadsRun, pendingKeys, proposalItems, sourceOf, stopStateKey, citeOf, isMapsUrl, namesBrewery, hostNamesBrewery,
   parseMapsStatus, nameMatches, judgeMapsAnswer, directoryTransitions, transitionCounts, directoryVerdict, mergeDirectoryState, initMayAccept,
   classifyLink, newLinkProblems, newLinkLeads, linkVerdict, mergeLinkState,
-  exitCode, summaryLine, insideDir, lockIsStale,
+  exitCode, summaryLine, insideDir, lockIsStale, proposedCount, proposalSection,
   MIN_REAL_TEXT, SANITY_FLOOR, CONFIRM_AFTER_HOURS, STATUS_REQUEST_CAP, PLAIN_NO_HOURS, PLAIN_NO_DOMAIN, PLAIN_PARKED, PLAIN_NO_NOTICE,
   type Observation, type RoadsState, type StopRun, type LinkRun, type DirectoryRun, type DirectoryState, type LinksState, type Baseline, type PageFingerprint,
 } from '../../src/lib/monthly-check';
@@ -111,6 +111,13 @@ describe('monthly check A: an absence needs a complete observation of the same p
       expect(isParked(o), text).toBe(false); expect(absent(o).status, text).toBe('COULD_NOT_OBSERVE');
     }
     expect(isParked(page())).toBe(false); expect(isParked(page({ status: 404, title: 'this domain is for sale' }))).toBe(false);
+  });
+  it('a challenge or gate served from a parking company\'s host is a challenge, not a parking page: it concludes nothing', () => {
+    for (const o of [page({ title: 'Just a moment...', text: 'Checking your browser.', finalUrl: 'https://sedo.com/search/details/?domain=fixturebrewing.com' }), page({ title: 'Attention Required! | Cloudflare', finalUrl: 'https://www.hugedomains.com/domain_profile.cfm?d=fixture.com' }),
+      page({ title: 'Access denied', text: 'Buy this domain.' }), page({ status: 403, finalUrl: 'https://sedo.com/' }), page({ status: 503, title: 'this domain is for sale' })]) {
+      expect(absent(o).status, o.title + o.finalUrl).toBe('COULD_NOT_OBSERVE'); expect(absent(o).plain).toBeUndefined();
+      expect(classifyStop({ evidencePage: o, evidenceFound: true, address: null }).status).toBe('COULD_NOT_OBSERVE');
+    }
   });
 });
 
@@ -327,6 +334,13 @@ describe('monthly check C: website links', () => {
     expect(link(site({ title: 'Fixture Brewing | Order online', finalUrl: 'https://fixture-brewing.square.site/' }))).toBe('MOVED');
     expect(link(site(), 'https://www.facebook.com/fixturebrewing')).toBe('SOCIAL');
   });
+  it('a challenge on a parking host is not PARKED, and a page too short to judge is not HIJACKED', () => {
+    expect(link(site({ title: 'Just a moment...', text: 'Checking your browser.', finalUrl: 'https://sedo.com/search/details/?domain=fixturebrewing.com' }))).toBe('COULD_NOT_OBSERVE');
+    expect(link(site({ title: 'Attention Required! | Cloudflare', text: elsewhere, finalUrl: 'https://www.hugedomains.com/domain_profile.cfm?d=fixture.com' }))).toBe('COULD_NOT_OBSERVE');
+    expect(link(site({ title: 'Casino', text: 'Casino' }))).toBe('COULD_NOT_OBSERVE'); expect(link(site({ title: 'Situs Judi Slot Gacor', text: 'slot gacor togel judi' }))).toBe('COULD_NOT_OBSERVE');
+    // a positive parking page that is not a shell keeps its exception to the length rule
+    expect(link(site({ title: 'fixturebrewing.com is for sale', text: 'Buy this domain' }))).toBe('PARKED'); expect(link(site({ title: 'HugeDomains', text: 'Buy this domain', finalUrl: 'https://www.hugedomains.com/domain_profile.cfm?d=fixture.com' }))).toBe('PARKED');
+  });
   it('a shell is settled before anything is concluded about identity, takeover or where the link leads', () => {
     const gateText = `Please confirm your age to enter. ${'You must be of legal drinking age to view this site. '.repeat(12)}`;
     expect(link(site({ title: 'Age Verification', text: gateText, finalUrl: 'https://agegate.example/check?return=fixturebrewing.com' }))).toBe('COULD_NOT_OBSERVE');   // not OFF_DOMAIN
@@ -418,6 +432,25 @@ describe('monthly check: exit code, summary, paths and locks', () => {
     expect(p).toMatch(/1 proposed for suspension, 0 unobserved\. A proposal is waiting for review\.$/);
     for (const x of [s, p]) { expect(x.length).toBeLessThan(300); expect(x).not.toMatch(/publish/i); }
   });
+  it('"proposed" means a patch was written: an evidence conflict or a failed build proposes nothing, in the report and in the summary', () => {
+    const order = { slug: 'us-422', key: '130', plain: PLAIN_NO_HOURS, firstSeen: AT, confirmed: '2026-12-04T09:20:00.000Z', records: [] };
+    const item = { slug: 'us-422', id: 130, name: 'Goldhorn Brewery', order };
+    const written = { dir: '/data/proposals/x', patch: true, list: [item, { ...item, slug: 'i-71' }], failed: [], conflicts: [] };
+    const allConflict = { dir: '/data/proposals/x', patch: false, list: [], failed: ['the proposal could not be built: every eligible stop is in an evidence conflict'], conflicts: [{ breweryId: 130, name: 'Goldhorn Brewery', why: 'i-71 cites a different source for it, and that source is not gone on two observations of its own' }] };
+    const buildFailed = { dir: '/data/proposals/x', patch: false, list: [item], failed: ['the proposal could not be built: git worktree add failed'], conflicts: [] };
+    expect(proposedCount(written)).toBe(2); expect(proposedCount(allConflict)).toBe(0); expect(proposedCount(buildFailed)).toBe(0); expect(proposedCount(null)).toBe(0);
+    const good = proposalSection(1, written).join('\n');
+    expect(good).toContain('### Proposed for suspension: GONE on two observations at least 48 hours apart (2)'); expect(good).toContain('- us-422 130 Goldhorn Brewery: the visiting-hours evidence we cited was not found on the cited page'); expect(good).toContain('suspension.patch, evidence.md and checks.log');
+    for (const [p, eligible] of [[allConflict, 1], [buildFailed, 1]] as const) {
+      const text = proposalSection(eligible, p).join('\n');
+      expect(text).toContain('at least 48 hours apart (0)\n- none'); expect(text).toContain('no suspension patch was written, so nothing is proposed'); expect(text).not.toContain('- us-422 130'); expect(text).not.toMatch(/The proposal is in/);
+      const line = summaryLine({ date: '2026-12-04', a: { ok: true, confirmed: 230, goneOnce: 0, proposed: proposedCount(p), unobserved: 3 } });
+      expect(line).toContain('0 proposed for suspension'); expect(line).not.toContain('A proposal is waiting');
+    }
+    expect(proposalSection(1, allConflict).join('\n')).toContain('Evidence conflicts, nothing proposed (1):\n- 130 Goldhorn Brewery'); expect(proposalSection(1, buildFailed).join('\n')).toContain('The proposal could not be built (1):\n- the proposal could not be built: git worktree add failed');
+    expect(proposalSection(0, null).join('\n')).toBe('### Proposed for suspension: GONE on two observations at least 48 hours apart (0)\n- none\n');
+    expect(readFileSync(join(__dirname, '../../scripts/lib/monthly-run.mjs'), 'utf8')).toContain('No suspension patch was written');
+  });
   it('a path is inside the production directory by its canonical form, and a lock goes stale after 12 hours', () => {
     expect(insideDir('/Users/a/brewerytrip-monthly', '/Users/a/brewerytrip-monthly')).toBe(true); expect(insideDir('/Users/a/brewerytrip-monthly/state', '/Users/a/brewerytrip-monthly')).toBe(true);
     expect(insideDir('/Users/a/brewerytrip-monthly-trial', '/Users/a/brewerytrip-monthly')).toBe(false); expect(insideDir('/tmp/x', '/Users/a/brewerytrip-monthly')).toBe(false);
@@ -470,9 +503,11 @@ describe('monthly check: the entry points keep drills and production apart', () 
     expect(readdirSync(prod)).toEqual([]);                             // nothing was written there
   });
   it('the production run takes no samples, no other directory and no pretended observations', () => {
-    for (const args of [['--sample-b', '5'], ['--sample-c', '5'], ['--data-dir', join(home, 'other')], ['--pretend-gone', 'us-422/130'], ['--accept-baseline']]) {
+    for (const args of [['--sample-b', '5'], ['--sample-c', '5'], ['--data-dir', join(home, 'other')], ['--pretend-gone', 'us-422/130'], ['--accept-baseline'], ['--listings-file', join(home, 'any.json')]]) {
       const r = node('monthly-check.mjs', args); expect(r.code, args[0]).toBe(2); expect(r.out, args[0]).toContain(`${args[0]} is not an option of the production run`);
     }
+    // rejected before anything is observed or written
+    for (const d of ['observations', 'reports', 'internal']) expect(existsSync(join(prod, d)), d).toBe(false);
   });
   it('the production run refuses state written by a drill, and a drill refuses production state', () => {
     const trial = join(home, 'trial');
@@ -506,7 +541,7 @@ describe('monthly check: the entry points keep drills and production apart', () 
     const trial = join(home, 'baseline'), obs = join(trial, 'observations'); mkdirSync(obs, { recursive: true });
     const rows = (bad: number, unseen: number) => Array.from({ length: 100 }, (_, i) => JSON.stringify({ id: i + 1, name: `B${i}`, url: `http://s${i}.example`, cls: i < bad ? 'DEAD' : i < bad + unseen ? 'COULD_NOT_OBSERVE' : 'OK', note: '' })).join('\n') + '\n';
     const sha = (f: string) => createHash('sha256').update(readFileSync(f)).digest('hex');
-    const record = (f: string, more: Record<string, unknown> = {}) => writeFileSync(`${f}.run.json`, JSON.stringify({ drill: true, file: f, sha256: sha(f), date: '2026-12-01', source: 'abc', check: 'c', complete: true, why: '', directory: 1150, looked: 100, ...more }));
+    const record = (f: string, more: Record<string, unknown> = {}) => writeFileSync(`${f}.run.json`, JSON.stringify({ drill: true, file: f, sha256: sha(f), date: '2026-12-01', source: 'abc', check: 'c', complete: true, why: '', directory: 1150, eligible: 1100, looked: 100, ...more }));
     const file = (name: string, bad: number, unseen: number, more?: Record<string, unknown> | null) => { const f = join(obs, name); writeFileSync(f, rows(bad, unseen)); if (more !== null) record(f, more); return f; };
     const init = (f: string, check = 'c') => node('monthly-check-drill.mjs', ['--data-dir', trial, '--init-baseline', check, '--from', f]);
     // refused: not the output of a completed check of this kind, or not as that run left it
@@ -555,15 +590,32 @@ describe('monthly check: one commit, exactly', () => {
     const r = sh(process.execPath, [join(clone, 'scripts/monthly-check.mjs'), '--only', 'a'], clone, { MONTHLY_SOURCE_SHA: '0'.repeat(40) });
     expect(r.code).toBe(2); expect(r.out).toContain(`the wrapper prepared commit ${'0'.repeat(40)}, but the checkout is at`);
   });
-  it('a production baseline must be the whole directory, not a sample', () => {
+  it('a production baseline for C is every listing that has a website link, though some listings have none; a sample is refused', () => {
     const obs = join(data, 'observations'); mkdirSync(obs, { recursive: true });
-    const f = join(obs, '2026-12-01-links.jsonl'); writeFileSync(f, Array.from({ length: 100 }, (_, i) => JSON.stringify({ id: i + 1, url: `http://s${i}.example`, cls: 'OK', note: '' })).join('\n') + '\n');
-    const record = (looked: number) => writeFileSync(`${f}.run.json`, JSON.stringify({ file: f, sha256: createHash('sha256').update(readFileSync(f)).digest('hex'), check: 'c', complete: true, source: 'abc', directory: 1150, looked }));
+    const f = join(obs, '2026-12-01T042000Z-links.jsonl'); writeFileSync(f, Array.from({ length: 100 }, (_, i) => JSON.stringify({ id: i + 1, url: `http://s${i}.example`, cls: 'OK', note: '' })).join('\n') + '\n');
+    const record = (o: Record<string, unknown>) => writeFileSync(`${f}.run.json`, JSON.stringify({ file: f, sha256: createHash('sha256').update(readFileSync(f)).digest('hex'), check: 'c', complete: true, source: 'abc', ...o }));
     const init = () => sh(process.execPath, [join(clone, 'scripts/monthly-check.mjs'), '--init-baseline', 'c', '--from', f], clone);
-    record(100); expect(init().out).toContain('covers 100 of 1150 listings: a production baseline is the whole directory');
+    record({ directory: 1150, eligible: 1100, looked: 100 }); expect(init().out).toContain('does not cover the complete population for check C');                // a sample
+    record({ directory: 1150, looked: 100 }); expect(init().out).toContain('does not cover the complete population for check C');                               // no eligible count on record
+    record({ directory: 1150, eligible: 99, looked: 99 }); expect(init().out).toContain('has 100 observations, but its run record says 99');
     expect(existsSync(join(data, 'state', 'links.json'))).toBe(false);
-    record(1150); const ok = init(); expect(ok.code).toBe(0); expect(JSON.parse(readFileSync(join(data, 'state', 'links.json'), 'utf8'))).toMatchObject({ baseline: { directory: 1150, source: 'abc' } });
-    expect(JSON.parse(readFileSync(join(data, 'state', 'links.json'), 'utf8')).drill).toBeUndefined();
+    // the complete directory held 1,150 listings, 100 of them with a website link, and all 100 were looked at
+    record({ directory: 1150, eligible: 100, looked: 100 });
+    const ok = init(); expect(ok.code).toBe(0);
+    const state = JSON.parse(readFileSync(join(data, 'state', 'links.json'), 'utf8'));
+    expect(state).toMatchObject({ baseline: { directory: 1150, listings: 100, source: 'abc' } }); expect(state.drill).toBeUndefined(); expect(Object.keys(state.links)).toHaveLength(100);
+  });
+  it('a directory read under 80% of what the baseline saw fails check C before anything is observed, though the link count is unchanged', () => {
+    // a stand-in for `npx wrangler d1 execute`: 900 listings, the same 100 of them with a website link
+    const bin = join(tmp, 'bin'); mkdirSync(bin, { recursive: true });
+    const rows = Array.from({ length: 900 }, (_, i) => ({ id: i + 1, name: `B${i}`, street: '', city: 'X', state: 'OH', latitude: 1, longitude: 1, website_url: i < 100 ? `http://s${i}.example` : '' }));
+    writeFileSync(join(bin, 'npx'), `#!/bin/sh\ncat <<'JSON'\n${JSON.stringify([{ results: rows }])}\nJSON\n`); chmodSync(join(bin, 'npx'), 0o755);
+    const r = sh(process.execPath, [join(clone, 'scripts/monthly-check.mjs'), '--only', 'c'], clone, { PATH: `${bin}:${process.env.PATH ?? ''}` });
+    expect(r.code).toBe(2); expect(r.out).toContain('links FAILED');
+    const report = readFileSync(join(data, 'reports', readdirSync(join(data, 'reports'))[0]), 'utf8');
+    expect(report).toContain('Status: FAILED: the directory read returned 900 listings; this check\'s baseline saw 1150');
+    expect(readdirSync(join(data, 'observations')).filter((x) => !x.startsWith('2026-12-01T042000Z'))).toEqual([]);   // nothing was observed
+    expect(JSON.parse(readFileSync(join(data, 'state', 'links.json'), 'utf8')).links['1'].date).toBe('2026-12-01');      // state untouched
   });
   it('the wrapper stops, with exit 2 and nothing created, on paths inside the checkout', () => {
     const inside = wrapper({ MONTHLY_DATA_DIR: join(clone, 'data', 'monthly') });
@@ -573,6 +625,11 @@ describe('monthly check: one commit, exactly', () => {
     symlinkSync(clone, join(tmp, 'alias'));
     expect(wrapper({ MONTHLY_DATA_DIR: join(tmp, 'alias', 'data', 'monthly') }).out).toContain('must be outside the checkout');
     expect(wrapper({ MONTHLY_DATA_DIR: 'relative/dir' }).out).toContain('is not absolute');
+    // a component that does not exist yet, followed by "..", does not get a path into the checkout
+    const up = (leaf: string) => `${tmp}/not-created-yet/../checkout/${leaf}`;
+    const d = wrapper({ MONTHLY_DATA_DIR: up('data/monthly') }); expect(d.code).toBe(2); expect(d.out).toContain('must be outside the checkout');
+    const l = wrapper({ MONTHLY_LOG_DIR: up('logs') }); expect(l.code).toBe(2); expect(l.out).toContain('the log directory');
+    for (const made of [join(tmp, 'not-created-yet'), join(clone, 'data', 'monthly'), join(clone, 'logs')]) expect(existsSync(made), made).toBe(false);
     expect(git('status', '--porcelain').out.trim()).toBe('');
   });
   it('the wrapper stops when the checkout is not on main, or is not clean, and never observes "as it is"', () => {
@@ -593,4 +650,31 @@ describe('monthly check: one commit, exactly', () => {
     mkdirSync(join(data, 'lock'), { recursive: true });
     expect(wrapper().out).toContain('another run holds the lock'); expect(existsSync(join(data, 'lock'))).toBe(true);
   });
+  it('a signal to the wrapper alone does not free the lock while its child still runs', async () => {
+    // an origin whose main is a commit where the program is replaced by one that just waits
+    const t = mkdtempSync(join(tmpdir(), 'monthly-test-block-')), origin = join(t, 'origin.git'), work = join(t, 'checkout'), h = join(t, 'home'), d = join(h, 'brewerytrip-monthly'), pidFile = join(t, 'child.pid');
+    mkdirSync(h, { recursive: true });
+    const run = (cmd: string, args: string[], cwd: string) => spawnSync(cmd, args, { cwd, encoding: 'utf8', env: { PATH: process.env.PATH ?? '', HOME: h, GIT_CONFIG_GLOBAL: '/dev/null' } });
+    const g = (...a: string[]) => run('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.com', '-c', 'commit.gpgsign=false', ...a], work);
+    run('git', ['clone', '--quiet', '--no-hardlinks', clone, work], t); g('checkout', '--quiet', '-B', 'main');
+    writeFileSync(join(work, 'scripts', 'monthly-check.mjs'), `import { writeFileSync } from 'node:fs';\nwriteFileSync(${JSON.stringify(pidFile)}, String(process.pid));\nprocess.on('SIGTERM', () => {});\nsetInterval(() => {}, 1000);\n`);
+    g('add', '-A'); g('commit', '--quiet', '-m', 'a program that waits');
+    run('git', ['clone', '--quiet', '--bare', '--no-hardlinks', work, origin], t); g('remote', 'set-url', 'origin', origin); g('fetch', '--quiet', 'origin');
+    const env = { PATH: process.env.PATH ?? '', HOME: h, GIT_CONFIG_GLOBAL: '/dev/null', MONTHLY_REPO: work, MONTHLY_DATA_DIR: d, MONTHLY_LOG_DIR: join(h, 'logs') };
+    const first = spawn('/bin/bash', [join(root, 'scripts/ops/monthly-check.sh')], { cwd: t, env, stdio: 'ignore' });
+    const until = async (ok: () => boolean) => { for (let i = 0; i < 200 && !ok(); i++) await new Promise((r) => setTimeout(r, 100)); return ok(); };
+    try {
+      expect(await until(() => existsSync(pidFile))).toBe(true);        // the wrapper got through its checks and its child is running
+      const child = Number(readFileSync(pidFile, 'utf8'));
+      process.kill(first.pid!, 'SIGTERM');                             // the wrapper, and only the wrapper
+      await new Promise((r) => setTimeout(r, 1500));
+      expect(() => process.kill(child, 0)).not.toThrow();              // the child is still alive
+      expect(existsSync(join(d, 'lock'))).toBe(true);                  // so the lock is still held
+      const second = spawnSync('/bin/bash', [join(root, 'scripts/ops/monthly-check.sh')], { cwd: t, env, encoding: 'utf8' });
+      expect(second.status).toBe(2); expect(second.stdout).toContain('another run holds the lock'); expect(second.stdout).not.toContain('observing commit');
+      process.kill(child, 'SIGKILL');
+      await until(() => first.exitCode !== null || first.signalCode !== null);
+      expect(existsSync(join(d, 'lock'))).toBe(true);                  // an interrupted wrapper keeps the lock: a person removes it
+    } finally { try { process.kill(Number(readFileSync(pidFile, 'utf8')), 'SIGKILL'); } catch { /* already gone */ } first.kill('SIGKILL'); }
+  }, 60000);
 });

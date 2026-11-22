@@ -146,7 +146,8 @@ Everything is under the **data directory**, outside the checkout: `~/brewerytrip
 State is written to a temporary file and renamed, so a crash cannot leave half a file. One run at a time: the
 wrapper takes the lock (`mkdir`) before it pulls and holds it to the end; run by hand, the program takes it. A lock
 older than 12 hours is reported as stale and **not** removed: check that no run is going, then delete the `lock`
-directory by hand. The wrapper judges the data and log paths before it creates anything: they must be absolute and,
+directory by hand. If the wrapper itself is interrupted (a signal to the wrapper alone), it **keeps** the lock,
+because the program it started may still be running: the same by-hand step is needed before the next run. The wrapper judges the data and log paths before it creates anything: they must be absolute and,
 in canonical form, outside the checkout.
 
 The last line of output is a one-sentence summary under 300 characters with counts only, fit for a text message.
@@ -169,7 +170,10 @@ untouched output of a check that ran to its end: each observations file has a ru
 (`<file>.run.json`: its hash, the commit, how many listings the directory held and how many were looked at, and
 whether the check completed, meaning both connectivity checks passed, the key was accepted and the request cap was
 not reached). A file with no record, a record that says the run did not complete, or a hash that no longer matches
-is refused. A production baseline must cover the whole directory. It sets aside **only**
+is refused. A production baseline must cover the complete population: for B every listing in the directory, for C
+every listing that has a website link. Before B or C observes anything, a directory read that returns under 80% of
+the listings that check's baseline saw fails the check. The production run always reads the directory itself; a
+saved copy (`--listings-file`) is a drill option only. It sets aside **only**
 the first-run prevalence floor (how many listings are closed, or links broken, with nothing to compare with). It
 never accepts observations that failed for any other reason: unreadable answers, a short read, no grounding, an
 empty file.
