@@ -1,9 +1,51 @@
 [
   {
+    "key": "2nd-shift-brewing-st-louis",
+    "field": "evidence",
+    "value": "Hours Mon Closed Tue Closed Wed 2:00pm - 8:00pm Thu 2:00pm - 8:00pm Fri 12:00pm - 9:00pm Sat 12:00pm - 9:00pm Sun 12:00pm - 6:00pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "4-hands-brewery-and-tasting-room-st-louis",
+    "field": "evidence",
+    "value": "4 Hands Brewery & Tasting Room Monday - Thursday: 11am to 10pm Friday - Saturday: 11am to 11pm Sunday: 11am to 8pm 4 Hands at The District Monday: 11am",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "4-hands-kirkwood-kirkwood",
+    "field": "evidence",
+    "value": "4 Hands Kirkwood Monday - Thursday: 11am to 10pm Friday - Saturday: 11am to 12am Sunday: 11am to 9pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "all-rise-brewing-co-chicago",
     "field": "quote",
     "value": null,
     "reason": "not found on the page when re-read 2026-11-22"
+  },
+  {
+    "key": "alosta-brewing-co-covina",
+    "field": "evidence",
+    "value": "Alosta's 13th Anniversary Party! Open 12-11pm 4pm Brody's Hawaiian BBQ 7pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "angry-scotsman-brewing-oklahoma-city",
+    "field": "evidence",
+    "value": "Mon — Closed Tue — 3-10pm Wed — 3-10pm Thu — 3-10pm Fri — 12-11pm Sat — 12-11pm Sun — 12-9pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "anthem-brewing-co-oklahoma-city",
+    "field": "evidence",
+    "value": "taproom HOURS Monday: Closed Tue-Thu 2PM-9PM Friday: 2PM - 10PM Saturday: 12PM-10PM Sunday: 12PM - 6PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "anvil-and-forge-brewing-and-distilling-springfield",
+    "field": "evidence",
+    "value": "Tap Room Mon: Closed Tues-Thurs: 11a-9p Fri-Sat: 11a-10p Sun: 11a-4p The Foundry Kitchen Mon: Closed Tues-Thurs: 11a-8p Fri-Sat: 11a-9p Sun: 11a-3p",
+    "reason": "carried on to the hours, as the page prints them, re-read 2026-11-22"
   },
   {
     "key": "arts-district-brewing-company-los-angeles",
@@ -22,6 +64,36 @@
     "field": "evidence",
     "value": "Hours Monday – Thursday 11:30am – 9pm Friday – Saturday 11am – 10pm Sunday 11am – 9pm",
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
+  },
+  {
+    "key": "beer-outside-brewery-valley-park-2",
+    "field": "evidence",
+    "value": "932 Meramec Station Road, Suite E Valley Park, MO 63088 Wednesday - Saturday 12PM - 10PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "before-and-after-brewing-springfield",
+    "field": "evidence",
+    "value": "BEFORE AND AFTER BREWING CLOSED THANKSGIVING DAY TUESDAY-SATURDAY 10am-9pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "blue-jay-brewing-company-st-louis",
+    "field": "evidence",
+    "value": "Hours of operation SUNDAY 12-7 (kitchen 12-5) MONDAY 3-9 (kitchen closed) TUESDAY CLOSED WEDNESDAY 3-9 (kitchen 3-8) THURSDAY 3-9 (kitchen 3-8) FRIDAY 3-10 (kitchen 3-9) SATURDAY 12-10 (kitchen 12-9) CITY MATCH SATURDAYS 12-11pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "bluewood-brewing-st-louis",
+    "field": "evidence",
+    "value": "Hours Monday 3 pm 9 pm Tuesday Closed Closed Wednesday 3 pm 9 pm Thursday 3 pm 9 pm Friday 11:30 am 10 pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "boat-town-brewing-phillipsburg",
+    "field": "evidence",
+    "value": "Hours Today Closed Wednesday: 3pm - 9pm Thursday: 3pm - 9pm Friday:11am-11pm Saturday: 11am-11pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
   },
   {
     "key": "bombs-away-beer-company-albuquerque",
@@ -55,6 +127,48 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "boxing-bear-brewing-firestone-taproom-and-brewery-albuquerque",
+    "field": "evidence",
+    "value": "Firestone Taproom & Brewery 8420 Firestone Lane NE Albuquerque, New Mexico 87113 Phone: 505-503-6341 MON-SUN: 11am – 10pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "cabin-boys-brewpub-tulsa",
+    "field": "evidence",
+    "value": "Hours Monday-Thursday 3:00pm-10:00pm Friday-Saturday 11am-1:00am Sunday 11:00am-4:00pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "cerveceria-del-pueblo-pasadena",
+    "field": "evidence",
+    "value": "HOURS MONDAY 4PM - 9PM TUESDAY - THURSDAY 4PM - 10PM FRIDAY 2:30PM - 10PM SATURDAY 12PM - 10PM SUNDAY 12 PM - 8PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "civil-life-brewing-co-st-louis",
+    "field": "evidence",
+    "value": "Brewpub Hours Monday: Closed Tuesday: 3 to 10 pm Wednesday: 3 to 10 pm Thursday: 3 to 10 pm Friday: 11:30 am to 11 pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "claremont-craft-ales-claremont",
+    "field": "evidence",
+    "value": "TASTING ROOM HOURS Monday closed Tues — Fri 3:00pm — 10:00pm Saturday 1:00pm — 10:00pm Sunday 1:00pm — 8:00pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "core4-brewing-company-oklahoma-city",
+    "field": "evidence",
+    "value": "7 N Lee Avenue OKC, OK 73102 (405) 215-9671 Monday–Thursday: 4:00PM–9:00PM Friday: 12:00PM–11:00PM Saturday: 12:00PM–11:00PM Sunday: 2:00PM–8:00PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "elgin-park-brewery-tulsa",
+    "field": "evidence",
+    "value": "Hours Monday 11AM - 10PM Tuesday 11AM - 10PM Wednesday 11AM - 10PM Thursday 11AM - 10PM Friday 11AM - 11PM Saturday 11AM - 11PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "ex-novo-brewing-albuquerque-taproom-and-restaurant-albuquerque",
     "field": "address",
     "value": "701 Central Ave NW Albuquerque, NM 87102",
@@ -79,6 +193,24 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "firestone-walker-brewing-co-propagator-venice-taproom-marina-del-rey",
+    "field": "evidence",
+    "value": "Taproom Hours Sun 10am – 9pm Mon – Thu 11:30am – 9pm Fri – Sat 11:30am – 10pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "flagstaff-brewing-company-flagstaff",
+    "field": "evidence",
+    "value": "16 East Route 66 Flagstaff, AZ 86001 (928) 773-1442 Hours: 11AM til 2AM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "flapjack-brewery-berwyn",
+    "field": "evidence",
+    "value": "Hours of Operation Wednesday – Saturday: 5:00pm – 10:00pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "flock-of-moons-brewing-albuquerque",
     "field": "address",
     "value": "111 Harvard Dr SE Albuquerque, NM 87106",
@@ -87,7 +219,7 @@
   {
     "key": "flock-of-moons-brewing-albuquerque",
     "field": "evidence",
-    "value": "Winter Hours Sun-Wed 12:00pm to 10:00pm Thu 12:00pm to 11:00pm Fri-Sat 12:00pm to 12:00am © 2023-2026 Flock of Moons",
+    "value": "Winter Hours Sun-Wed 12:00pm to 10:00pm Thu 12:00pm to 11:00pm Fri-Sat 12:00pm to 12:00am",
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
@@ -115,10 +247,46 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "greenstar-brewing-at-uncommon-ground-chicago",
+    "field": "evidence",
+    "value": "KITCHEN HOURS SUNDAY 10AM - 8PM MONDAY, wednesday, tHURSDAY 11AM - 8PM closed tuesdays FRIDAY 11AM - 9PM SATURDAY 10AM - 9PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "heirloom-rustic-ales-tulsa",
+    "field": "evidence",
+    "value": "hours of operation Monday: 3-9 PM Tuesday: 3-9 PM Wednesday: 3-9 PM Thursday: 3-9 PM Friday: 3-10 PM Saturday: 12-10 PM Sunday: 12-5 PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "high-and-dry-brewing-albuquerque",
     "field": "evidence",
     "value": "Hours Mon, Tue, Wed, Thur 2:00 PM - 10:00 PM Fri, Sat 11:00 AM - 11:00 PM",
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
+  },
+  {
+    "key": "historic-brewing-company-barrel-house-flagstaff-flagstaff",
+    "field": "evidence",
+    "value": "Visit Us Sunday-Thursday: Open from 12pm-9pm Friday-Saturday: Open from 12pm-10pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "historic-brewing-company-barrel-house-williams-williams",
+    "field": "evidence",
+    "value": "Visit Us Open Daily at 11am",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "historic-brewing-company-eastside-taproom-flagstaff-flagstaff",
+    "field": "evidence",
+    "value": "Monday & Tuesday: Closed Open Wednesday - Friday 3pm-8pm Open Saturday: 1pm-8pm Open Sunday: 1pm-8pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "hold-fast-brewing-springfield",
+    "field": "evidence",
+    "value": "Hold Fast Brewing Hours: Monday - Thursday: 3 pm - 9 pm Friday - Saturday: Noon - 11 pm Sunday: Noon - 6 pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
   },
   {
     "key": "homage-brewing-los-angeles",
@@ -153,6 +321,12 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "kinslahger-brewing-company-oak-park",
+    "field": "evidence",
+    "value": "Taproom Hours Monday – Wednesday: Closed Thursday – Friday: 5pm – 10pm Saturday: 4pm – 10pm Sunday: 2pm – 6pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "la-cumbre-brewing-co-brewery-taproom-albuquerque",
     "field": "address",
     "value": "3313 Girard NE Albuquerque, NM 87107",
@@ -165,10 +339,28 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "lil-beaver-brewery-bloomington",
+    "field": "evidence",
+    "value": "Hours Mon 11:00am-9:00pm Tue 11:00am-9:00pm Wed 11:00am-9:00pm Thur 11:00am-9:00pm Fri 11:00am-9:00pm Sat 11:00am-9:00pm Sun 11:00am-4:00pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "lumberyard-brewing-co-taproom-and-grille-flagstaff",
     "field": "quote",
     "value": null,
     "reason": "not found on the page when re-read 2026-11-22"
+  },
+  {
+    "key": "marshall-brewing-co-llc-tulsa",
+    "field": "evidence",
+    "value": "VISIT OUR TAP ROOM Mon & Tues: 3pm-8pm Wed & Thur: 11am-9pm Fri: 11am-10pm Sat: Noon-10pm Sun: 1-7pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "mothers-brewing-co-springfield",
+    "field": "evidence",
+    "value": "215 S Grant Ave, Springfield, MO 65806 Mon. 2pm-9pm Tue. 2-9pm Wed. 2-9pm Thu. 2-9pm Fri. 2pm-10pm Sat. 2pm-10pm Sun. 2-9pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
   },
   {
     "key": "mt-lowe-brewing-company-arcadia",
@@ -177,22 +369,82 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "muddy-banks-brewing-company-sullivan",
+    "field": "evidence",
+    "value": "Monday - Closed Tuesday - Closed Wed - 11am-8pm Thursday - 11am-8pm Friday - 11am-9pm Sat- 11am-9pm Sun - 11am-7pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "old-tascosa-brewing-company-amarillo",
+    "field": "evidence",
+    "value": "HOURS Monday: CLOSED Tuesday: 4pm to 9pm Wednesday: 4pm to 9pm Thursday: 4pm to 10pm Friday: 11:30am to 11pm Saturday: 11:30am to 11pm Sunday: 11:30am",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "pacific-brew-haus-pacific",
+    "field": "evidence",
+    "value": "Hours Kitchen: Monday-Sunday 11am -9pm Bar: Sunday-Thursday 11am-9pm Friday & Saturday 11am-10pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "pondaseta-brewing-co-amarillo-taproom-amarillo",
+    "field": "evidence",
+    "value": "Amarillo Taproom Hours Monday 12pm – 10pm Tuesday 12pm – 10pm Wednesday 12pm – 10pm Thursday 12pm – 10pm Friday 12pm – 11pm Saturday 12pm – 11pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "ponderosa-brewing-company-albuquerque",
     "field": "evidence",
     "value": "Hours Sunday 11:30-9p Monday 11:30-9p Tuesday 11:30-9p Wednesday 11:30-9p Thursday 11:30-10p",
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "prairie-artisan-ales-okc-taproom-oklahoma-city",
+    "field": "evidence",
+    "value": "3 NE 8th St. Oklahoma City, OK 73104 Open today 11am - 10pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "public-house-brewing-company-st-james-taproom-saint-james",
+    "field": "evidence",
+    "value": "Open Hours Our Location MONDAY – TUESDAY CLOSED Wednesday – Thursday 12 PM – 8 PM Friday 12 PM – 8 PM Bar is open until 10 PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "rescue-brewing-co-upland",
+    "field": "evidence",
+    "value": "Taco Tuesday November 3, 2026 12pm-9pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "rickety-cricket-brewing-and-pizzeria-kingman",
     "field": "evidence",
-    "value": "Fri-Sat 12-10pm (928) 753-2337",
+    "value": "Hours: Sun-Thur 12-9 | Fri-Sat 12-10pm",
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
     "key": "rio-bravo-brewing-company-albuquerque",
     "field": "evidence",
-    "value": "Hours Sun-Thurs 11AM-10PM Fri-Sat 11AM-11PM Kitchen Closes 1 Hour Early",
+    "value": "Hours Sun-Thurs 11AM-10PM Fri-Sat 11AM-11PM",
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
+  },
+  {
+    "key": "rockwell-beer-company-the-grove-taproom-and-brewery-st-louis",
+    "field": "evidence",
+    "value": "Hours 11 am – 10 pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "roughtail-brewing-oklahoma-city",
+    "field": "evidence",
+    "value": "TAPROOM OPEN HOURS MON – WED 3 PM TO 9 PM THURS 11 AM TO 9 PM FRIDAY & SATURDAY 11 AM TO 10 PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "rumor-brewing-co-formerly-ale-republic-cedar-crest",
+    "field": "evidence",
+    "value": "28 Arroyo Seco, Cedar Crest, NM Open daily 11am-8pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
   },
   {
     "key": "santa-fe-brewing-co-the-beer-hall-at-hq-santa-fe",
@@ -219,6 +471,18 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "schlafly-bottleworks-maplewood",
+    "field": "evidence",
+    "value": "Hours Mon: 11am–10pm Tue: 11am–10pm Wed: 11am–10pm Thu: 11am–10pm Fri: 11am–10pm Sat: 11am–10pm Sun: 11am–9pm Kitchen closes hour early Trivia Nights Tuesdays at 7pm Wednesdays at 7pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "schlafly-tap-room-st-louis",
+    "field": "evidence",
+    "value": "Hours Mon: 11 am–10pm Tue: 11 am–10pm Wed: 11 am–10pm Thu: 11 am–10pm Fri: 11 am–10pm Sat: 11 am–10pm Sun: 12pm–10pm Kitchen closes at 9pm Sun-Thu, 10pm Fri-Sat Trivia Night Tuesdays at 7pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "second-street-brewery-rufina-taproom-santa-fe",
     "field": "address",
     "value": "2920 Rufina Street Santa Fe, NM 87507",
@@ -243,6 +507,12 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "side-project-brewing-maplewood",
+    "field": "evidence",
+    "value": "Hours: Mon: 4-8pm Tues: CLOSED Wed-Thurs: 4-8pm Friday-Sunday: 1-8pm Happy Hour every Monday 4-7:30pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "sidetrack-brewing-company-albuquerque",
     "field": "evidence",
     "value": "Opening Hours Mon - Thurs 3 pm - 11 pm Friday 3 pm - midnight",
@@ -255,10 +525,58 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "six-mile-bridge-brewery-maryland-heights",
+    "field": "evidence",
+    "value": "Tap Room Hours Monday: 11am – 10pm Tuesday: 11am – 10pm Wednesday: 11am – 10pm Thursday: 11am – 10pm Friday: 11am – 10pm Saturday: 11am – 10pm Sunday: noon",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "skeleton-key-brewery-woodridge",
+    "field": "evidence",
+    "value": "TAPROOM Open: MON/WEDS/THURS 4-10PM FRI 4-11PM SAT 12-11PM SUN 12-6PM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "skydance-brewing-company-oklahoma-city",
+    "field": "evidence",
+    "value": "Location 1 NE 7th St Oklahoma City, OK 73104 Hours Operating Hours: Sunday – Thursday 11AM – 10PM Friday -Saturday 11AM – 12AM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "smog-city-brewing-co-glendora-public-market-taproom-glendora",
+    "field": "evidence",
+    "value": "Smog City Brewing Co. at the Glendora Public Market ADDRESS & HOURS 905 E Arrow Hwy Glendora, California 91740-6109 (626) 257-3076 Monday Tuesday Wednesday Thursday Friday Saturday Sunday 12:00 pm - 9:00 pm 12:00 pm - 9:00 pm 12:00 pm - 9:00 pm 12:00 pm - 9:00 pm 12:00 pm - 10:00 pm 11:00 am - 10:00 pm 11:00 am - 9:00 pm",
+    "reason": "carried on to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "springfield-brewing-company-brewco-taproom-springfield",
+    "field": "evidence",
+    "value": "BrewCo Monday 11-8pm Tuesday closed Wednesday 11-8pm Thursday 11-8pm Friday 11-9pm Saturday 9-9pm Sunday 9-8pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "square-one-brewery-and-distillery-st-louis",
+    "field": "evidence",
+    "value": "Hours Kitchen Hours Monday-Thursday 11am to 9pm Friday 11am to 10pm Saturday 11 am to 10pm Sunday 10am to 2pm and 2:30pm to 8pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "steel-bender-brewyard-los-ranchos-de-albuquerque",
+    "field": "evidence",
+    "value": "8305 2nd St. NW Los Ranchos de Albuquerque, NM 87114 HOURS 11 a.m.-9 p.m. Sunday - Thursday 11 a.m. - 9:30 p.m.",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "stone-brewing-tap-room-pasadena-pasadena",
     "field": "evidence",
     "value": "Monday: 12:00 pm-10:00 pm Tuesday: 12:00 pm-10:00 pm Wednesday: 12:00 pm-10:00 pm Thursday: 12:00 pm-10:00 pm Friday: 11:00 am-10:00 pm",
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
+  },
+  {
+    "key": "tie-and-timber-beer-company-springfield",
+    "field": "evidence",
+    "value": "TAPROOM & BREWERY Monday – Thursday | 2 – 10 Friday – Saturday | 12 – 11 Sunday | 12 – 9",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
   },
   {
     "key": "tractor-brewing-co-wells-park-albuquerque",
@@ -279,9 +597,27 @@
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
   },
   {
+    "key": "tractor-brewing-westside-albuquerque",
+    "field": "evidence",
+    "value": "Westside 5720 McMahon Blvd NW Albuquerque, NM 87114 Today's Hours 1:00PM - 12:00AM",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "urban-chestnut-brewing-company-grove-bierhall-st-louis",
+    "field": "evidence",
+    "value": "Bierhall Hours: Mon-Wed: 3pm-10pm Thurs: 11am - 10pm Fri-Sat: 11am – 12am Sun: 11am – 9pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
     "key": "wanderlust-brewing-company-flagstaff",
     "field": "address",
     "value": "1519 N. Main Street, Suite 102 Flagstaff, AZ 86004",
     "reason": "as the page prints it, re-read 2026-11-22 (the checker's copy differed)"
+  },
+  {
+    "key": "welltown-brewing-tulsa",
+    "field": "evidence",
+    "value": "Taproom Hours Mon: Closed Tue-Thu: 4pm – 10pm Fri: 12pm – 12am Sat: 12pm – 12am Sun: 12pm – 8pm",
+    "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
   }
 ]

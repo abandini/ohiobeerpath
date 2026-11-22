@@ -73,5 +73,15 @@
     "match": "lead:Keg Grove Brewing Company (Bloomington)",
     "evidenceKind": "notice",
     "reason": "editor: the evidence is a dated notice on the brewery's own page, not visiting hours"
+  },
+  {
+    "match": "lead:Dark Sky Brewing Co. Taproom & Pizzicletta",
+    "status": "UNCONFIRMED",
+    "reason": "editor: its own site answered 'Website Expired' (HTTP 404) when re-read later on 2026-11-22, so its evidence can no longer be read; restore when the site is back"
+  },
+  {
+    "match": "lead:Dark Sky Brewing Co. Beer Garden & Atmosphere Kitchen",
+    "status": "UNCONFIRMED",
+    "reason": "editor: its own site answered 'Website Expired' (HTTP 404) when re-read later on 2026-11-22, so its evidence can no longer be read; restore when the site is back"
   }
 ]

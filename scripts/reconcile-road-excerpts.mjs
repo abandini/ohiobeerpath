@@ -14,7 +14,7 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
 if (!slug || !/^[a-z0-9-]+$/.test(slug)) { console.error('usage: node scripts/reconcile-road-excerpts.mjs <slug>'); process.exit(2); }
-const { normaliseCheckerFiles, pageText, asPrinted } = await import(join(root, 'src/lib/road-trip.ts'));
+const { normaliseCheckerFiles, pageText, asPrinted, hoursOnly } = await import(join(root, 'src/lib/road-trip.ts'));
 const dir = join(root, 'data/roads', slug);
 const read = (f) => JSON.parse(readFileSync(join(dir, f), 'utf8'));
 const all = readdirSync(dir).sort(), list = (re) => all.filter((f) => re.test(f));
@@ -48,7 +48,19 @@ for (const row of verified) {
     const text = await page(url);
     if (text === null) { console.log(`unread   ${row.id} ${field} | ${url}`); continue; }
     const want = pageText(String(value));
-    if (text.includes(want) || (elided(want) && inOrder(text, want))) continue;
+    // Hours evidence is cut back to the hours (no phone number, copyright line or stray next word after the last time).
+    const tidy = (t) => (field === 'evidence' && row.evidence_kind !== 'notice' && !elided(t) ? hoursOnly(t) : t);
+    if (text.includes(want) || (elided(want) && inOrder(text, want))) {
+      // Hours evidence that stops before the hours (a name, an address, a phone number): carry on along the page to
+      // the end of the hours that follow it there.
+      let short = tidy(want);
+      if (field === 'evidence' && row.evidence_kind !== 'notice' && !elided(want) && short === want && !/\d\s*(?::\d\d)?\s*[ap]\.?m|\bnoon\b/i.test(want)) {
+        const at = text.indexOf(want), longer = hoursOnly(text.slice(at, at + want.length + 240));
+        if (longer.length > want.length && longer.length < want.length + 240) short = longer;
+      }
+      if (short !== want && text.includes(short)) { out.push({ key: row.id, field, value: short, reason: `${short.length > want.length ? 'carried on to the hours' : 'cut back to the hours'}, as the page prints them, re-read ${today}` }); console.log(`trimmed  ${row.id} ${field}\n    was: ${want.slice(0, 150)}\n    now: ${short.slice(0, 150)}`); }
+      continue;
+    }
     // Words left out and not found in order: fall back to the first part that the page prints and that shows hours.
     const tries = elided(want) ? want.split(/\s*(?:\.\.\.|…)\s*/).filter(Boolean) : [want];
     let printed = null, at = url;
@@ -60,6 +72,7 @@ for (const row of verified) {
         if (printed) { at = other; break; }
       }
     }
+    if (printed) { const short = tidy(printed); if (short !== printed && (pages.get(at) || '').includes(short)) printed = short; }
     out.push({ key: row.id, field, value: printed, ...(at !== url ? { url: at } : {}), reason: printed ? `as the page prints it, re-read ${today} (the checker's copy differed${at !== url ? ', and the words are on this page of the same site, not the one cited' : ''})` : `not found on the page when re-read ${today}` });
     console.log(`${printed ? 'reworded' : 'DROPPED '} ${row.id} ${field}${at !== url ? ` (found on ${at})` : ''}\n    was: ${want.slice(0, 150)}\n    now: ${printed ? printed.slice(0, 150) : '(nothing)'}`);
   }

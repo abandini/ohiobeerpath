@@ -69,6 +69,13 @@ const STYLE = `<style>
   .rt-note p{margin:0 0 .3rem}
   .rt-note blockquote{margin:.4rem 0 .2rem;padding-left:.75rem;border-left:3px solid var(--rt-line)}
   .rt h4.rt-outer{margin:1.5rem 0 .25rem;font-size:1.05rem}
+  .rt-gaps{list-style:none;margin:.5rem 0;padding:0;display:grid;gap:.5rem}
+  .rt-fold{margin:.75rem 0 0;border:1px solid var(--rt-line);border-radius:10px;background:transparent}
+  .rt-fold>summary{cursor:pointer;padding:.9rem 1rem;min-height:44px;background:var(--rt-card);border-radius:10px;font-weight:600}
+  .rt-fold[open]>summary{border-bottom:1px solid var(--rt-line);border-radius:10px 10px 0 0}
+  .rt-fold>summary:focus-visible{outline:3px solid var(--rt-accent);outline-offset:2px}
+  .rt-sum-towns{display:block;font-weight:400;color:var(--rt-muted);font-size:.92rem;margin-top:.2rem}
+  .rt-fold>*:not(summary){margin-left:.75rem;margin-right:.75rem}
   .rt-where{color:var(--rt-muted)}
   .rt-dist{display:inline-block;font-size:.85rem;font-weight:600;border:1px solid var(--rt-line);border-radius:4px;padding:.05rem .4rem;background:var(--rt-card);color:var(--rt-ink)}
   .rt-marks{display:flex;flex-wrap:wrap;gap:0 1rem;font-size:.92rem}
@@ -260,12 +267,18 @@ function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
           <li class="rt-gapitem"><p class="rt-gap"><strong>${mi(s.gapAfterMiles)} miles</strong> along our mapped line from here (mile ${mi(s.mile)}) to ${h(s.mile + s.gapAfterMiles >= leg.lengthMiles - 0.05 ? `the end of the line at ${place(leg.to)}` : 'the next listed stop')}, with nothing on this list in between.</p></li>` : ''}`;
 }
 
-/** A note for travellers on a leg or stretch, with the words it rests on quoted beneath it. */
+/**
+ * A note for travellers on a leg or stretch. Our own words (if any) first, then each quoted source under the line
+ * that introduces it, then the closing line. Nothing here is hidden when a leg is collapsed.
+ */
 const noteBlock = (n: RoadNote) => `
-          <div class="rt-note" role="note">
-            <p>${h(n.text)}</p>${(n.sources ?? []).filter((q) => safeHttpUrl(q.url)).map((q) => `
+          <div class="rt-note" role="note">${n.title ? `
+            <p><strong>${h(n.title)}</strong></p>` : ''}${n.text ? `
+            <p>${h(n.text)}</p>` : ''}${(n.sources ?? []).filter((q) => safeHttpUrl(q.url)).map((q) => `${q.intro ? `
+            <p>${h(q.intro)}</p>` : ''}
             <blockquote>“${h(q.quote)}”</blockquote>
-            <p class="rt-src">${ext(safeHttpUrl(q.url), hostOf(q.url))}, read ${h(q.checked)}</p>`).join('')}
+            <p class="rt-src">${ext(safeHttpUrl(q.url), hostOf(q.url))}, read ${h(q.checked)}</p>`).join('')}${n.closing ? `
+            <p>${h(n.closing)}</p>` : ''}
           </div>`;
 
 function stretchNav(stops: StopView[], roadName: string): string {
@@ -324,6 +337,8 @@ function segmentSection(road: RoadView, leg: LegView, g: SegmentView, o: RoadPag
         </section>`;
 }
 
+const townsOf = (leg: LegView) => [...new Set([...leg.stops, ...leg.unmeasured.flatMap((u) => u.stops)].map((x) => x.town).filter(Boolean))];
+
 function legSection(road: RoadView, leg: LegView, n: number, o: RoadPageOptions): string {
   const id = `leg-${leg.id}`;
   const listed = leg.stops.length + leg.unmeasured.reduce((k, u) => k + u.stops.length, 0);
@@ -332,7 +347,9 @@ function legSection(road: RoadView, leg: LegView, n: number, o: RoadPageOptions)
     facts.push(`${plural(leg.stops.length, 'listed stop')} in ${plural(leg.towns, 'town')}`);
     if (leg.longestGap) facts.push(`longest gap between listed stops along our mapped line: ${mi(leg.longestGap.miles)} miles (mile ${mi(leg.longestGap.fromMile)} to ${mi(leg.longestGap.toMile)})`);
   }
-  const body = !leg.stops.length ? '' : `${leg.leadGapMiles !== null ? `<p class="rt-gap"><strong>${mi(leg.leadGapMiles)} miles</strong> along our mapped line from its start at ${h(place(leg.from))} to the first listed stop.</p>` : ''}
+  const collapse = road.config.collapseLegs === true;
+  const leadGap = leg.leadGapMiles !== null ? `<p class="rt-gap"><strong>${mi(leg.leadGapMiles)} miles</strong> along our mapped line from its start at ${h(place(leg.from))} to the first listed stop.</p>` : '';
+  const body = !leg.stops.length ? '' : `${collapse ? '' : leadGap}
         ${leg.segments.map((g) => segmentSection(road, leg, g, o)).join('')}`;
   // Places where the mapped line is missing: listed, but with no mile and no distance.
   const holes = leg.unmeasured.map((u) => `
@@ -343,16 +360,34 @@ function legSection(road: RoadView, leg: LegView, n: number, o: RoadPageOptions)
           <ol class="rt-stops">${u.stops.map((s) => stopItem(s, leg, o)).join('')}
           </ol>
         </section>`).join('');
-  return `
-      <section aria-labelledby="${a(id)}">
-        <h2 id="${a(id)}">${h(legHead(leg, n))}</h2>
+  const head = `
+        <h2 id="${a(id)}-h">${h(legHead(leg, n))}</h2>
         <p class="rt-sub">${leg.side ? 'Side leg · ' : ''}${leg.name && !leg.side ? '' : `${h(leg.from)} to ${h(leg.to)} · `}${h(facts.join(' · '))}</p>
         <p class="rt-sub">${h(road.config.startingList ? legCoverage(leg, road.config.maxDetourMiles) : coverageText(leg.decided, leg.candidates, road.config.maxDetourMiles, 'this leg of our mapped line'))}${listed ? '' : ' Nothing is listed on this leg.'}</p>
-        ${leg.notes.map(noteBlock).join('')}
+        ${leg.notes.map(noteBlock).join('')}`;
+  if (!collapse) return `
+      <section id="${a(id)}" aria-labelledby="${a(id)}-h">${head}
         ${legMap(leg, `map-${leg.id}`)}
         ${body}${holes}
       </section>`;
+  // Collapsed: the heading, the facts, the notes and every long gap stay in view; the sketch and the stops open on
+  // demand. A native <details>, so it works with no script; with script, a link to a stop inside opens it.
+  const towns = townsOf(leg);
+  const gaps = leg.gaps.length ? `
+        <ul class="rt-gaps">${leg.gaps.map((g) => `<li class="rt-gap"><strong>${mi(g.miles)} miles</strong> along our mapped line with nothing on this list: ${g.fromMile < 0.05 ? `from its start at ${h(place(leg.from))}` : `from mile ${mi(g.fromMile)}`} to ${g.toMile >= leg.lengthMiles - 0.05 ? `the end of the line at ${h(place(leg.to))}` : g.fromMile < 0.05 ? `the first listed stop (mile ${mi(g.toMile)})` : `mile ${mi(g.toMile)}`}.</li>`).join('')}</ul>` : '';
+  return `
+      <section id="${a(id)}" class="rt-leg" aria-labelledby="${a(id)}-h">${head}${gaps}
+        <details class="rt-fold">
+          <summary><span class="rt-sum">${h(leg.name || `${place(leg.from)} to ${place(leg.to)}`)} · ${mi(leg.lengthMiles)} mapped miles · ${listed ? plural(listed, 'listed stop') : 'nothing listed'}</span>${towns.length ? `<span class="rt-sum-towns">${h(towns.join(', '))}</span>` : `<span class="rt-sum-towns">Open for the sketch of this leg</span>`}</summary>
+          ${legMap(leg, `map-${leg.id}`)}
+          ${body}${holes}
+        </details>
+      </section>`;
 }
+
+// With collapsed legs: open the leg that holds the linked stop or stretch, or the leg itself when its heading is the
+// target. The page is complete without this; browsers that open <details> for a fragment on their own lose nothing.
+const OPEN_FOLD_JS = `<script>(function(){function go(){var id=decodeURIComponent(location.hash.slice(1));if(!id)return;var t=document.getElementById(id);if(!t)return;var d=t.closest('details.rt-fold');if(!d&&t.classList.contains('rt-leg'))d=t.querySelector('details.rt-fold');if(d&&!d.open){d.open=true;if(t.scrollIntoView)t.scrollIntoView();}}window.addEventListener('hashchange',go);go();})();</script>`;
 
 export const roadTitle = (road: RoadView) => `Breweries along ${road.config.name}`;
 /** "on 2026-11-22", or "between A and B" when the listed stops were checked on different days. */
@@ -412,7 +447,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
       <p>${h(c.about)}</p>
       <p>${h(coverageText(road.decided, road.candidates, c.maxDetourMiles, `our mapped line of ${c.shortName}`, c.startingList))}</p>
       <nav aria-label="Stretches of the road">
-        <ul class="rt-jump">${jump.join('')}</ul>
+        ${c.collapseLegs ? '<p class="rt-sub">Jump to a state. Each one opens to show its stops.</p>' : ''}<ul class="rt-jump">${jump.join('')}</ul>
       </nav>
       ${road.legs.map((l, i) => legSection(road, l, i + 1, o)).join('')}
 
@@ -437,6 +472,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
       </section>
     </div>
   </div>
+  ${c.collapseLegs ? OPEN_FOLD_JS : ''}
   <script type="application/ld+json">${jsonLd({
     '@context': 'https://schema.org', '@type': 'TouristTrip', name: title, url, description: roadSummary(road),
     touristType: 'Craft beer travelers',

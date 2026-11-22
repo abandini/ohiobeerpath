@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   buildRoad, cumulativeMiles, isShowableStop, unreadVerdict, verifierExit, BROWSER_CHECK_MAX_DAYS, milesBetween, projectOntoLine, simplifyLine, stitchLeg, townsName, viewRoad,
-  roadConfigProblems, safeSitePath, normaliseCheckerFiles, readCoordinates, stopKey, stateAbbr, distanceToWays, asPrinted, pageText,
+  roadConfigProblems, safeSitePath, normaliseCheckerFiles, readCoordinates, stopKey, stateAbbr, distanceToWays, asPrinted, pageText, hoursOnly,
   type BuiltRoad, type CandidateRow, type LatLon, type RoadConfig, type RoadStop, type VerifiedRow,
 } from '../../src/lib/road-trip';
 import {
@@ -411,7 +411,7 @@ describe('road trip page', () => {
     const out = noLd(roadTripPage(hostile));
     expect(out).not.toContain('onmouseover="alert(1)"'); expect(out).not.toContain('<script>alert(7)'); expect(out).not.toContain('javascript:');
     expect(out).not.toContain('Click me');
-    expect(out).toContain('id="leg-x&quot; onmouseover=&quot;alert(1)"'); expect(out).toContain('aria-labelledby="leg-x&quot; onmouseover=&quot;alert(1)"');
+    expect(out).toContain('id="leg-x&quot; onmouseover=&quot;alert(1)"'); expect(out).toContain('aria-labelledby="leg-x&quot; onmouseover=&quot;alert(1)-h"');
     for (const bad of ['//evil.example/x', '/\\evil.example', 'https://evil.example', 'data:text/html,x']) {
       const cfg: RoadConfig = { ...CONFIG, legs: [{ ...CONFIG.legs[0], segments: [{ id: 'a', toMile: null, link: { href: bad, text: 'Bad link text' } }] }] };
       expect(roadConfigProblems(cfg)).toHaveLength(1);
@@ -769,7 +769,7 @@ describe('state legs, a side leg, a tighter limit and a hole in the line', () =>
     expect(b.road.legs.map((l) => [l.id, l.lengthMiles])).toEqual([['east-state', 23.8], ['mid-state', 29.1], ['loop', expect.any(Number)]]);
     expect(stop('mid-one').legId).toBe('mid-state'); expect(stop('mid-one').mile).toBeCloseTo(0.35 * DEG_LON, 1);
     expect(v.legs.map((l) => [l.name, l.side, l.stops.length])).toEqual([['Eastland', false, 3], ['Midland', false, 1], ['Eastland: the old loop', true, 1]]);
-    expect([...main.matchAll(/<h2 id="leg-[a-z-]+">([^<]+)<\/h2>/g)].map((m) => m[1])).toEqual(['Eastland: Westend to the Midland line', 'Midland: the Eastland line to Eastend', 'Eastland: the old loop: Loop Junction to Loop End']);
+    expect([...main.matchAll(/<h2 id="leg-[a-z-]+-h">([^<]+)<\/h2>/g)].map((m) => m[1])).toEqual(['Eastland: Westend to the Midland line', 'Midland: the Eastland line to Eastend', 'Eastland: the old loop: Loop Junction to Loop End']);
     expect(main).toMatch(/<b>52\.9<\/b>miles of mapped line in 2 legs, plus 1 side leg/);
   });
   it('the side leg follows its via point and takes the stops nearest to it', () => {
@@ -885,12 +885,56 @@ describe('Route 66 (src/data/roads/route-66)', () => {
     expect(main).toContain('If you drink, do not drive.'); expect(main).toContain(OSM_ATTRIBUTION);
     expect(main).not.toMatch(/driving order|detour|confirmed open|open on \d{4}/i);
   });
-  it('places the alcohol-law notes with their quoted sources on the stretches concerned', () => {
-    const nm = road.legs.find((l) => l.id === 'new-mexico')!.segments.at(-1)!, az = road.legs.find((l) => l.id === 'arizona')!;
-    expect(nm.notes.map((n) => n.sources![0].url).every((u) => u.startsWith('https://www.federalregister.gov/'))).toBe(true);
-    expect(nm.notes.map((n) => n.text).join(' ')).toMatch(/Laguna.*Navajo/s);
-    expect(az.segments[0].notes[0].text).toContain('Navajo'); expect(az.segments.at(-1)!.notes[0].text).toContain('Hualapai');
-    expect(roadTripPage(road)).toContain('bars the transportation, sale, and consumption of alcoholic beverages on the Navajo Reservation');
+  it('gives the tribal alcohol rules as one block per leg: quoted, sourced, and with no geography of our own', () => {
+    const block = (id: string) => road.legs.find((l) => l.id === id)!.notes.find((n) => n.title === 'Alcohol rules on tribal lands near the route')!;
+    const nm = block('new-mexico'), az = block('arizona');
+    expect(nm.sources!.map((q) => q.intro)).toEqual(['The Navajo Nation’s liquor rule, as published in the Federal Register:', 'The Pueblo of Laguna’s liquor ordinance, as described in the Federal Register:']);
+    expect(az.sources!.map((q) => q.intro)).toEqual(['The Navajo Nation’s liquor rule, as published in the Federal Register:', 'The alcohol ordinance for the Hualapai Reservation, as described in the Federal Register:']);
+    for (const n of [nm, az]) { expect(n.text).toBeUndefined(); expect(n.closing).toBe('Check locally before you travel.'); for (const q of n.sources!) expect(q.url).toMatch(/^https:\/\/www\.federalregister\.gov\//); }
+    for (const l of road.legs) for (const g of l.segments) expect(g.notes, `${l.id}/${g.id}`).toEqual([]);       // no stretch-level law notes
+    const html = roadTripPage(road), text = html.replace(/<[^>]+>/g, ' ');
+    expect(html).toContain('bars the transportation, sale, and consumption of alcoholic beverages on the Navajo Reservation');
+    expect(text.match(/Alcohol rules on tribal lands near the route/g)).toHaveLength(2); expect(text.match(/Check locally before you travel\./g)).toHaveLength(2);
+    expect(text).not.toMatch(/runs through or beside|passes the Pueblo|Peach Springs|East of Holbrook|Towards the Arizona line|Between Seligman/);
+  });
+  it('folds each leg into a closed <details>, keeping the heading, notes and long gaps in view', () => {
+    const html = roadTripPage(road), main = html.slice(html.indexOf('<h1'));
+    expect(road.config.collapseLegs).toBe(true);
+    expect(main.match(/<details class="rt-fold">/g)).toHaveLength(road.legs.length); expect(main).not.toContain('<details class="rt-fold" open');
+    const leg = (id: string) => { const a = main.indexOf(`<section id="leg-${id}"`), b = main.indexOf('</details>', a); return { before: main.slice(a, main.indexOf('<details', a)), inside: main.slice(main.indexOf('<details', a), b) }; };
+    const il = leg('illinois'), nm = leg('new-mexico'), ks = leg('kansas'), sf = leg('santa-fe-loop');
+    expect(il.inside).toMatch(/<summary><span class="rt-sum">Illinois · 285\.4 mapped miles · 22 listed stops<\/span><span class="rt-sum-towns">Chicago, Oak Park, /);
+    expect(il.before).toContain('<h2 id="leg-illinois-h">Illinois: Chicago to the Missouri line</h2>');
+    expect(il.before).not.toContain('class="rt-stop"'); expect(il.inside.match(/class="rt-stop"/g)).toHaveLength(22); expect(il.inside).toContain('<svg');
+    expect(nm.before).toContain('Alcohol rules on tribal lands near the route'); expect(nm.before).toMatch(/<strong>207\.1 miles<\/strong> along our mapped line with nothing on this list: from its start at the Texas line to the first listed stop/);
+    expect(nm.before).toMatch(/to the end of the line at the Arizona line/);
+    expect(ks.before).toContain('That is what our list holds, not proof that there is none.'); expect(ks.inside).toContain('Kansas · 11.9 mapped miles · nothing listed');
+    expect(sf.before).toContain('Side leg'); expect(main.indexOf('id="leg-santa-fe-loop"')).toBeGreaterThan(main.indexOf('id="leg-new-mexico"'));
+    // always in view: the intro, the driving notice, the jump index and the method notes
+    const outside = main.replace(/<details class="rt-fold">.*?<\/details>/gs, '');
+    for (const t of ['If you drink, do not drive.', 'Jump to a state.', 'How this list was made', 'It is not an official guide', 'Amarillo is the only place']) expect(outside, t).toContain(t);
+    expect([...main.matchAll(/<li><a href="#(leg-[a-z-]+)">/g)].map((m) => m[1])).toEqual(road.legs.map((l) => `leg-${l.id}`));
+    // every stop is still in the page source (find-in-page once open, JSON-LD, verifier) and a small script opens a linked leg
+    expect(main.match(/class="rt-stop"/g)).toHaveLength(road.stops.length);
+    const trip = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map((m) => JSON.parse(m[1])).find((b) => b['@type'] === 'TouristTrip');
+    expect(trip.itinerary.itemListElement).toHaveLength(road.stops.length);
+    expect(main).toContain("closest('details.rt-fold')"); expect(main).toContain("addEventListener('hashchange'");
+    const levels = [...main.slice(0, main.indexOf('id="how"')).matchAll(/<h([1-6])[\s>]/g)].map((m) => Number(m[1]));
+    for (let i = 1; i < levels.length; i++) expect(levels[i] - levels[i - 1]).toBeLessThanOrEqual(1);
+    // US 422 is short enough to read straight through and is left as it was
+    expect(roadTripPage(allRoads().find((r) => r.config.slug === 'us-422')!)).not.toContain('<details class="rt-fold"');
+  });
+  it('hours evidence ends at the hours: no phone number, copyright line or stray next word', () => {
+    expect(hoursOnly('Hours Mon Closed Tue 2:00pm - 8:00pm Sun 12:00pm - 6:00pm Our')).toBe('Hours Mon Closed Tue 2:00pm - 8:00pm Sun 12:00pm - 6:00pm');
+    expect(hoursOnly('Hours: Sun-Thur 12-9 | Fri-Sat 12-10pm (928) 753-2337')).toBe('Hours: Sun-Thur 12-9 | Fri-Sat 12-10pm');
+    expect(hoursOnly('Sunday: 2pm – 6pm ©2026 - Kinslahger LLC')).toBe('Sunday: 2pm – 6pm');
+    expect(hoursOnly('Saturday 12 – 10 PM Sunday 12 – 8 PM questions')).toBe('Saturday 12 – 10 PM Sunday 12 – 8 PM');
+    expect(hoursOnly('Wed 3pm - 9pm Thursday: 3pm - 9pm Sunday, Monday: CLOSED')).toBe('Wed 3pm - 9pm Thursday: 3pm - 9pm Sunday, Monday: CLOSED');
+    expect(hoursOnly('Monday-Thursday: 3-10pm (8pm kitchen close) Sunday: Noon-8pm (7:30pm kitchen close) Menu')).toBe('Monday-Thursday: 3-10pm (8pm kitchen close) Sunday: Noon-8pm (7:30pm kitchen close)');
+    expect(hoursOnly('Open Daily, 2 p.m. - close')).toBe('Open Daily, 2 p.m. - close'); expect(hoursOnly('No times here at all')).toBe('No times here at all');
+    for (const s of road.stops.filter((x) => x.evidenceKind !== 'notice' && !/\.\.\.|…/.test(x.evidence))) { expect(hoursOnly(s.evidence), s.name).toBe(s.evidence); expect(s.evidence, s.name).not.toMatch(/\(\d{3}\) \d{3}-\d{4}$|(©|Copyright)[^\d]*\d{4}[^\d]*$/); }
+    expect(road.stops.find((x) => x.key.startsWith('2nd-shift'))!.evidence).toMatch(/6:00pm$/);
+    expect(road.stops.find((x) => x.key.startsWith('rickety-cricket'))!.evidence).toBe('Hours: Sun-Thur 12-9 | Fri-Sat 12-10pm');
   });
   it('the built file is exactly what the build step makes from the checkers\' files', () => {
     const got = ingest();

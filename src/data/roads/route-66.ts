@@ -11,9 +11,24 @@ const C = '2026-11-22';
 const NPS_1926 = 'https://www.nps.gov/articles/000/marketing-perspective-route-66-roadside-architecture.htm';
 const NPS_1985 = 'https://www.nps.gov/articles/000/route-66-national.htm';
 const NPS_STATES = 'https://www.nps.gov/pefo/learn/news/new-route-66-exhibit-and-pull-out.htm';
+// Alcohol rules on tribal lands. Each rule is quoted with its source and introduced only by what the source itself
+// establishes. Nothing here says where the road is in relation to any of these lands: no quoted source says so.
+const TRIBAL_TITLE = 'Alcohol rules on tribal lands near the route';
+const TRIBAL_CLOSING = 'Check locally before you travel.';
 const NAVAJO = {
+  intro: 'The Navajo Nation’s liquor rule, as published in the Federal Register:',
   quote: 'Title 17, subchapter 12, of the N.N.C. bars the transportation, sale, and consumption of alcoholic beverages on the Navajo Reservation. Section 412 of Title 17 sets out exceptions to the prohibitions in the title.',
   url: 'https://www.federalregister.gov/documents/full_text/html/2008/12/24/E8-30688.html', checked: C,
+};
+const LAGUNA = {
+  intro: 'The Pueblo of Laguna’s liquor ordinance, as described in the Federal Register:',
+  quote: 'This Amendment to the Pueblo of Laguna Liquor Control Ordinance regulates the issuance of licenses for the sale of alcohol beverages in package or by the drink for consumption on the premises',
+  url: 'https://www.federalregister.gov/documents/full_text/html/2000/06/01/00-13612.html', checked: C,
+};
+const HUALAPAI = {
+  intro: 'The alcohol ordinance for the Hualapai Reservation, as described in the Federal Register:',
+  quote: 'The Ordinance regulates and controls the possession, sale and consumption of liquor within the Hualapai Reservation.',
+  url: 'https://www.federalregister.gov/documents/full_text/html/2008/09/10/E8-20953.html', checked: C,
 };
 
 export const ROUTE_66: RoadConfig = {
@@ -28,6 +43,7 @@ export const ROUTE_66: RoadConfig = {
   distanceTo: 'any-way',      // distance is to the nearest mapped alignment of any date, so an older alignment is not penalised
   startingList: "the Open Brewery DB (a community dataset) and breweries our checkers found that it lacks",
   drawToleranceMiles: 0.3,
+  collapseLegs: true,         // 135 stops: each state opens on demand; notes and long gaps stay in view
   maxDetourMiles: 5,
   gapNoteMiles: 25,
   geometry: { source: 'The OpenStreetMap relations for the road signed Historic US 66 today, with the older alignments they include, downloaded through the Overpass API', downloaded: C },
@@ -96,17 +112,14 @@ export const ROUTE_66: RoadConfig = {
     {
       id: 'new-mexico', name: 'New Mexico', from: 'the Texas line', to: 'the Arizona line',
       start: [35.1824061, -103.0424908], end: [35.3613477, -109.0482706],
-      notes: [{ text: 'This is the direct line through Moriarty and Albuquerque. OpenStreetMap also maps an older line that loops north through Santa Fe; it is the side leg after this one, and breweries nearer to it are listed there.' }],
+      notes: [
+        { text: 'This is the direct line through Moriarty and Albuquerque. OpenStreetMap also maps an older line that loops north through Santa Fe; it is the side leg after this one, and breweries nearer to it are listed there.' },
+        { title: TRIBAL_TITLE, sources: [NAVAJO, LAGUNA], closing: TRIBAL_CLOSING },
+      ],
       segments: [
         { id: 'east', toMile: 150 },
         { id: 'albuquerque', toMile: 250 },
-        {
-          id: 'west', toMile: null,
-          notes: [
-            { text: 'West of Albuquerque the road passes the Pueblo of Laguna, where the sale of alcohol is licensed under the Pueblo’s own ordinance.', sources: [{ quote: 'This Amendment to the Pueblo of Laguna Liquor Control Ordinance regulates the issuance of licenses for the sale of alcohol beverages in package or by the drink for consumption on the premises', url: 'https://www.federalregister.gov/documents/full_text/html/2000/06/01/00-13612.html', checked: C }] },
-            { text: 'Towards the Arizona line the road runs through or beside Navajo Nation land. Navajo law bars carrying, selling and drinking alcohol on the reservation, with exceptions set out in the same law.', sources: [NAVAJO] },
-          ],
-        },
+        { id: 'west', toMile: null },
       ],
     },
     {
@@ -124,10 +137,11 @@ export const ROUTE_66: RoadConfig = {
     {
       id: 'arizona', name: 'Arizona', from: 'the New Mexico line', to: 'the California line',
       start: [35.3613477, -109.0482706], end: [34.7172643, -114.4856559],
+      notes: [{ title: TRIBAL_TITLE, sources: [NAVAJO, HUALAPAI], closing: TRIBAL_CLOSING }],
       segments: [
-        { id: 'east', toMile: 140, notes: [{ text: 'East of Holbrook the road runs through or beside Navajo Nation land. Navajo law bars carrying, selling and drinking alcohol on the reservation, with exceptions set out in the same law.', sources: [NAVAJO] }] },
+        { id: 'east', toMile: 140 },
         { id: 'flagstaff-williams', toMile: 230 },
-        { id: 'west', toMile: null, notes: [{ text: 'Between Seligman and Kingman the road passes through the Hualapai Reservation at Peach Springs, where the Tribe’s ordinance governs alcohol.', sources: [{ quote: 'The Ordinance regulates and controls the possession, sale and consumption of liquor within the Hualapai Reservation.', url: 'https://www.federalregister.gov/documents/full_text/html/2008/09/10/E8-20953.html', checked: C }] }] },
+        { id: 'west', toMile: null },
       ],
     },
     {

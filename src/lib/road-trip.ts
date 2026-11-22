@@ -168,7 +168,11 @@ export interface QuoteSource { quote: string; url: string; checked: string }
  * A stretch of a leg. `toMile` is where it ends along the leg; null means "to the end". Without a `name` the page names
  * it by the towns of its stops, so a heading never names a town that has no listed stop.
  */
-export interface RoadNote { text: string; sources?: QuoteSource[] }
+/**
+ * A note shown with a leg, always visible. `text` is our own plain statement (leave it out when we have nothing a
+ * source supports); each source may carry an `intro` saying only what the source itself establishes; `closing` ends it.
+ */
+export interface RoadNote { title?: string; text?: string; sources?: (QuoteSource & { intro?: string })[]; closing?: string }
 export interface RoadSegmentConfig {
   id: string; name?: string; toMile: number | null;
   maxDetourMiles?: number;   // a tighter limit for a dense stretch
@@ -215,6 +219,8 @@ export interface RoadConfig {
   distanceTo?: 'line' | 'any-way';
   /** Where the candidates came from when it is not this site's directory, for the coverage sentences ("the Open Brewery DB and our checkers' own finds"). */
   startingList?: string;
+  /** Show each leg as a closed <details> with a summary line, for a road too long to scroll (default false). */
+  collapseLegs?: boolean;
   methodNotes?: string[];      // extra plain-text points for "How this list was made"
   drawToleranceMiles?: number; // how far a dropped point may sit off the thinned line kept for drawing (default 0.12)
   maxDetourMiles: number;  // straight-line distance from the mapped line within which a brewery is listed
@@ -501,14 +507,41 @@ export function asPrinted(wanted: string, text: string, needHours = false, stree
     return k >= 2 ? run.replace(/[,;]$/, '') : null;
   }
   if (!needHours) return null;
+  // The longest run of the wanted words that the page prints, letting separators between words differ, and that
+  // still shows opening hours.
+  const loose = (from: number, to: number): string | null => {
+    const ws = tokens.slice(from, to + 1).map((w) => w.replace(/^[^\p{L}\p{N}(]+|[^\p{L}\p{N}).!?]+$/gu, '')).filter(Boolean);
+    if (!ws.length) return null;
+    try { const m = text.match(new RegExp(ws.map(esc).join('[^\\p{L}\\p{N}]{0,6}'), 'u')); return m ? m[0] : null; } catch { return null; }
+  };
   for (let i = 0; i < tokens.length; i++) {
-    let j = i, run = tokens[i];
-    if (!text.includes(run)) continue;
-    while (j + 1 < tokens.length && text.includes(`${run} ${tokens[j + 1]}`)) run += ` ${tokens[++j]}`;
+    if (loose(i, i) === null) continue;
+    let j = i, run = loose(i, i) as string;
+    for (;;) { const next = j + 1 < tokens.length ? loose(i, j + 1) : null; if (next === null) break; run = next; j++; }
     if (run.length > best.length && HOURS.test(run)) best = run;
     if (j === tokens.length - 1) break;
   }
   return best.length >= 20 ? best : null;
+}
+
+const MERIDIEM = '(?:[ap]\\.?m\\.?|[ap])(?![a-z])';
+const TIME_TOKEN = new RegExp(`\\b\\d{1,2}(?::\\d{2})?\\s*(?:${MERIDIEM})?\\s*(?:[-–—]|to)\\s*(?:\\d{1,2}(?::\\d{2})?\\s*(?:${MERIDIEM})?|noon|midnight|close)|\\d{1,2}(?::\\d{2})?\\s*${MERIDIEM}|\\bnoon\\b|\\bmidnight\\b`, 'gi');
+/**
+ * An hours excerpt cut back to the hours: whatever follows the last time is dropped (a phone number, a copyright
+ * line, the first word of the next sentence), unless it is a day marked closed. Only ever removes words from the end,
+ * so what is left is still word for word what the page prints. Text with no time in it is returned unchanged.
+ */
+export function hoursOnly(excerpt: string): string {
+  let end = -1;
+  for (const m of excerpt.matchAll(TIME_TOKEN)) end = (m.index ?? 0) + m[0].length;
+  if (end < 0) return excerpt;
+  const tail = excerpt.slice(end);
+  if (/^[\s,;.|•·:/-]*(?:(?:(?:sun|mon|tue|wed|thu|fri|sat)[a-z]*\.?[\s:,&|/-]*)+closed[\s.]*)*$/i.test(tail)) return excerpt.trim();
+  let cut = excerpt.slice(0, end);
+  // Do not stop inside a bracket: "(8pm kitchen close)" stays whole.
+  if ((cut.match(/\(/g) || []).length > (cut.match(/\)/g) || []).length) { const close = tail.indexOf(')'); if (close >= 0 && close <= 40) cut = excerpt.slice(0, end + close + 1); }
+  cut = cut.trim();
+  return cut.length >= 12 ? cut : excerpt;
 }
 
 /** A latitude and longitude from any of the shapes the checkers used, or null. */
@@ -607,6 +640,7 @@ export interface LegView {
   stops: StopView[]; segments: SegmentView[]; towns: number; // stops: the measured ones, in line order
   unmeasured: { id: string; name: string; note: string; stops: StopView[] }[]; // groups where the line is missing: no mile, no distance
   joins: number; joinedMiles: number; widestJoinMiles: number;
+  gaps: { fromMile: number; toMile: number; miles: number }[]; // every stretch long enough to note, ends of the line included
   leadGapMiles: number | null; // start of the leg to the first listed stop, when long enough to note
   longestGap: { fromMile: number; toMile: number; miles: number } | null; // between consecutive listed stops; null with fewer than two
 }
@@ -662,6 +696,10 @@ export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = c
       leadGapMiles: stops.length ? note(stops[0].mile) : null, longestGap,
       unmeasured: groups.map((u) => ({ id: u.id, name: u.name, note: u.note, stops: mine.filter((x) => x.unmeasured === u.id).sort((a, c) => a.name.localeCompare(c.name)).map((x) => ({ ...x, n: ++n, milesFromEnd: 0, gapAfterMiles: null })) })).filter((u) => u.stops.length),
       joins: b?.joins ?? 0, joinedMiles: b?.joinedMiles ?? 0, widestJoinMiles: b?.widestJoinMiles ?? 0,
+      gaps: [
+        ...(stops.length && note(stops[0].mile) !== null ? [{ fromMile: 0, toMile: stops[0].mile, miles: round(stops[0].mile, 1) }] : []),
+        ...stops.filter((x) => x.gapAfterMiles !== null).map((x) => ({ fromMile: x.mile, toMile: round(x.mile + (x.gapAfterMiles as number), 1), miles: x.gapAfterMiles as number })),
+      ],
     };
   });
   const stops = legs.flatMap((l) => [...l.stops, ...l.unmeasured.flatMap((u) => u.stops)]), dates = stops.flatMap((s) => [s.evidenceChecked]).sort();
