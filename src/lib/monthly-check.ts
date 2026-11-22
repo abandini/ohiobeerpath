@@ -37,8 +37,15 @@ export const COVERAGE_MIN = 0.8;
 // Phrases a challenge or refusal page uses. The bare word "captcha" is not one: contact forms on real pages carry it.
 const CHALLENGE = /just a moment|attention required|verify (that )?you are (a )?human|(complete|solve|pass) the captcha|captcha challenge|access denied|are you a robot|checking your browser|request blocked|403 forbidden|unusual traffic|enable javascript and cookies/i;
 const NOT_FOUND_TITLE = /\b404\b|page (was )?not found|not found\b|page (can(?:no|')t|could not) be found|\berror\b/i;
-// A page that is only a gate, a notice or an outage: it says nothing about what the real page holds.
-const SHELL = /cookie|consent|are you (over |of )?(21|legal)|legal drinking age|age verification|verify your age|coming soon|under construction|maintenance|account (has been )?suspended|suspendedpage|(site|website|page) (is )?(not|no longer|temporarily) (available|published)|temporarily unavailable|website (is |has )?expired|enable javascript|web server.s default page|default web page/i;
+// A page that is only a gate, a notice or an outage says nothing about what the real page holds. Three kinds of signal:
+//  - a title that IS a gate, at any page length (a gate can be long, and can even carry the text we are looking for);
+//  - a short title that is nothing but a notice ("Coming soon", "Maintenance", "Consent");
+//  - structure: the visible text opens with the gate's own question or notice and little follows, or the page is thin
+//    and carries a gate phrase. A cookie line on a real page is none of these.
+const GATE_TITLE = /age verification|verify your age|age[\s-]?gate|are you (over |of |at least )?(21|legal)|legal drinking age|before you continue|just a moment|attention required|access denied|account (has been )?suspended|site (is )?(under )?maintenance|maintenance mode|cookie consent|privacy consent|temporarily unavailable|service unavailable/i;
+const NOTICE_TITLE = /^\W*(coming soon|under construction|maintenance|consent|website expired|site not found|default web page|suspended)\W*$/i;
+const GATE_OPENING = /are you (over |of |at least )?(21|legal)|legal drinking age|verify your age|age verification|you must be (21|of legal)|please confirm your age|enter your (date of birth|birthday)|this site is under maintenance|account (has been )?suspended/i;
+const THIN_SHELL = /are you (over |of |at least )?(21|legal)|legal drinking age|age verification|verify your age|coming soon|under construction|maintenance|account (has been )?suspended|suspendedpage|(site|website|page) (is )?(not|no longer|temporarily) (available|published)|temporarily unavailable|website (is |has )?expired|enable javascript|web server.s default page|default web page|cookie consent|accept (all )?cookies/i;
 // Positive evidence of a domain seller's or parking page. Outages and maintenance pages are NOT here (see SHELL).
 const PARKING = /this domain (name )?(is|may be|might be) for sale|domain (name )?(is )?for sale|buy this domain|make an offer on this domain|this domain is parked|parked (free|domain)|domain parking|hugedomains|sedo\.com|sedoparking|afternic|dan\.com|buydomains|is available for purchase/i;
 const PARKING_HOSTS = ['atom.com', 'expireddomains.com', 'maxbranded.com', 'sedo.com', 'dan.com', 'hugedomains.com', 'afternic.com', 'buydomains.com', 'sedoparking.com', 'parkingcrew.net', 'bodis.com'];
@@ -55,12 +62,15 @@ export function isParked(o: Observation): boolean {
   if (o.kind !== 'page' || o.status !== 200) return false;
   return PARKING.test(o.title) || (o.text.length < 600 && PARKING.test(o.text)) || PARKING_HOSTS.includes(registrable(hostOfUrl(o.finalUrl)));
 }
-/** Why a page is only a shell (a challenge, a refusal, an error page, a consent or age gate, an outage notice), or ''. */
+/** Why a page is only a shell (a challenge, a refusal, an error page, a consent or age gate, an outage notice), or ''. Not a question of length alone. */
 export function shellReason(o: Observation): string {
   if (o.kind !== 'page') return '';
   if (CHALLENGE.test(o.title) || CHALLENGE.test(o.text.slice(0, 800)) || (o.text.length < MIN_REAL_TEXT && CHALLENGE.test(o.text))) return 'a challenge or refusal page';
   if (NOT_FOUND_TITLE.test(o.title)) return `an error page (it titles itself "${o.title.slice(0, 60)}")`;
-  if (o.text.length < MIN_REAL_TEXT && (SHELL.test(o.text) || SHELL.test(o.title))) return 'a consent, age-gate, maintenance or outage page with almost nothing else on it';
+  if (GATE_TITLE.test(o.title) || NOTICE_TITLE.test(o.title)) return `a gate or notice page (it titles itself "${o.title.slice(0, 60)}")`;
+  // The text opens with the gate's question and the gate is most of the page.
+  if (GATE_OPENING.test(o.text.slice(0, 300)) && o.text.length < 3 * MIN_REAL_TEXT) return 'a page that opens with an age gate or notice and holds little else';
+  if (o.text.length < MIN_REAL_TEXT && THIN_SHELL.test(o.text)) return 'a consent, age-gate, maintenance or outage page with almost nothing else on it';
   return '';
 }
 /** Can a match on this page be believed? Only a page that answered 200 and is not a shell. '' when it can. */
@@ -186,7 +196,10 @@ export function applyRoadsRun(state: RoadsState, runs: StopRun[], valid: boolean
   if (!valid) return { state, eligible: [], goneOnce: [], cleared: [] };
   const stops = { ...state.stops }, eligible: Eligible[] = [], goneOnce: StopRun[] = [], cleared: StopRun[] = [];
   for (const r of runs) {
-    const k = stopStateKey(r.slug, r.key), old = stops[k], was: StopState = old && old.cite === r.cite ? old : { cite: r.cite };
+    const k = stopStateKey(r.slug, r.key), old = stops[k];
+    // A changed citation wipes the entry at once, whatever this observation is: old sightings can never count again.
+    if (old && old.cite !== r.cite) stops[k] = { cite: r.cite };
+    const was: StopState = stops[k] ?? { cite: r.cite };
     if (r.status === 'CONFIRMED') { if (was.gone?.length) cleared.push(r); stops[k] = { cite: r.cite, confirmedAt: r.at, page: r.page ?? was.page }; }
     else if (r.status === 'GONE') {
       const record: GoneRecord = { at: r.at, reason: r.reason, plain: r.plain ?? PLAIN_NO_HOURS, ...(r.kept ? { kept: r.kept } : {}) };
@@ -202,22 +215,36 @@ export function applyRoadsRun(state: RoadsState, runs: StopRun[], valid: boolean
 /** The stops a confirming pass must re-read: every stop with a GONE sighting on record, eligible ones included. */
 export const pendingKeys = (state: RoadsState): string[] => Object.entries(state.stops).filter(([, v]) => (v.gone?.length ?? 0) > 0).map(([k]) => k);
 
+/** The cited source, whatever road cites it: the same page and the same cited text. */
+export const sourceOf = (evidenceUrl: string, evidence: string) => fingerprintText(`${evidenceUrl}\n${evidence}`);
+export interface RoadStopRef { key: string; breweryId?: number; name: string; source: string }
+export interface ProposalItem { slug: string; id: number | string; name: string; order: Eligible; /** why this road's stop is in the proposal */ basis: 'observed' | 'same-citation' }
 /**
- * One brewery, one record: a stop to suspend is suspended on every road that lists the same directory listing. `id`
- * is what data/roads/<slug>/suspended.json is keyed by (the directory id, or the key on a road of stand-alone stops).
+ * Which stops a proposal may name. An eligible stop is proposed on its own road. The same directory listing on
+ * another road is added only when that road cites the very same source (same page, same text: one piece of evidence,
+ * and the relationship is recorded) or is itself eligible on its own two observations. If another road cites
+ * something else for the brewery and that is not itself eligible (it was confirmed, could not be observed, was seen
+ * gone only once, or was not read), nothing is proposed for the brewery: it is an evidence conflict for a person.
+ * `id` is what data/roads/<slug>/suspended.json is keyed by (the directory id, or the key on a road of stand-alone stops).
  */
-export function suspensionsByRoad(orders: Eligible[], roads: { slug: string; stops: { key: string; breweryId?: number; name: string }[] }[]): { slug: string; id: number | string; name: string; order: Eligible }[] {
-  const out: { slug: string; id: number | string; name: string; order: Eligible }[] = [], seen = new Set<string>();
+export function proposalItems(orders: Eligible[], roads: { slug: string; stops: RoadStopRef[] }[]): { items: ProposalItem[]; conflicts: { breweryId: number; name: string; why: string }[] } {
+  const items: ProposalItem[] = [], conflicts: { breweryId: number; name: string; why: string }[] = [], done = new Set<string>();
+  const stopOf = (o: Eligible) => roads.find((r) => r.slug === o.slug)?.stops.find((s) => s.key === o.key);
   for (const o of orders) {
-    const stop = roads.find((r) => r.slug === o.slug)?.stops.find((s) => s.key === o.key);
-    if (!stop) continue;
-    for (const road of roads) for (const s of road.stops) {
-      const same = stop.breweryId !== undefined ? s.breweryId === stop.breweryId : road.slug === o.slug && s.key === o.key;
-      const id = s.breweryId ?? s.key, tag = `${road.slug}/${id}`;
-      if (same && !seen.has(tag)) { seen.add(tag); out.push({ slug: road.slug, id, name: s.name, order: o }); }
+    const stop = stopOf(o); if (!stop) continue;
+    if (stop.breweryId === undefined) { const tag = `${o.slug}/${o.key}`; if (!done.has(tag)) { done.add(tag); items.push({ slug: o.slug, id: o.key, name: stop.name, order: o, basis: 'observed' }); } continue; }
+    if (done.has(`id:${stop.breweryId}`)) continue;
+    done.add(`id:${stop.breweryId}`);
+    const mine: ProposalItem[] = []; let conflict = '';
+    for (const road of roads) for (const s of road.stops.filter((x) => x.breweryId === stop.breweryId)) {
+      const own = orders.find((x) => x.slug === road.slug && x.key === s.key);
+      if (own) mine.push({ slug: road.slug, id: stop.breweryId, name: s.name, order: own, basis: 'observed' });
+      else if (s.source === stop.source) mine.push({ slug: road.slug, id: stop.breweryId, name: s.name, order: o, basis: 'same-citation' });
+      else conflict = `${road.slug} cites a different source for it, and that source is not gone on two observations of its own`;
     }
+    if (conflict) conflicts.push({ breweryId: stop.breweryId, name: stop.name, why: conflict }); else items.push(...mine);
   }
-  return out;
+  return { items, conflicts };
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -242,7 +269,7 @@ export function parseMapsStatus(answer: string): MapsStatus | null {
 }
 const field = (answer: string, name: string) => { const m = [...answer.matchAll(new RegExp(`^\\s*${name}:\\s*(.*?)\\s*$`, 'gm'))]; return m.length === 1 ? m[0][1] : ''; };
 const NAME_NOISE = new Set(['the', 'and', 'of', 'at', 'co', 'company', 'inc', 'llc', 'brewing', 'brewery', 'brewpub', 'brewhouse', 'brew', 'beer', 'works', 'craft', 'taproom', 'tap', 'room', 'house', 'pub', 'bar', 'grill', 'restaurant', 'kitchen', 'ales', 'ale', 'a', 'on']);
-const nameWords = (n: string) => (n.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/&/g, ' and ').match(/[a-z0-9]+/g) ?? []).filter((w) => !NAME_NOISE.has(w));
+const nameWords = (n: string) => (n.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').match(/[a-z0-9]+/g) ?? []).filter((w) => !NAME_NOISE.has(w));
 /**
  * Is the name the service returned a reasonable match for the listing's name? The distinctive words of the shorter
  * name must all be in the longer one (so "Great Lakes Brewing Co" is "Great Lakes Brewing Company", and a second
@@ -254,6 +281,19 @@ export function nameMatches(listing: string, returned: string): boolean {
   const [short, long] = a.length <= b.length ? [a, new Set(b)] : [b, new Set(a)];
   return short.every((w) => long.has(w)) || a.join('') === b.join('');
 }
+/**
+ * Is this a Google Maps address? Parsed, never matched as a substring: https only, and the host and path must be one
+ * of the forms listed. The first two are the forms the service's own source annotations use (1,362 kept answers:
+ * https://maps.google.com/maps?cid=... and https://www.google.com/maps/...).
+ */
+export function isMapsUrl(u: string): boolean {
+  let x: URL; try { x = new URL(u); } catch { return false; }
+  if (x.protocol !== 'https:' || x.username || x.password || x.port) return false;
+  const host = x.hostname.toLowerCase(), path = x.pathname, under = (p: string) => path === p || path.startsWith(`${p}/`);
+  if (host === 'maps.google.com' || host === 'maps.app.goo.gl') return true;
+  if (host === 'google.com' || host === 'www.google.com' || host === 'goo.gl') return under('/maps');
+  return false;
+}
 export type DirectoryOutcome = 'STATUS' | 'OTHER_BUSINESS_AT_ADDRESS' | 'UNOBSERVABLE';
 export interface MapsJudgement { outcome: DirectoryOutcome; status: MapsStatus | null; nameOnMaps: string; addressOnMaps: string; source: string; why: string }
 /**
@@ -263,7 +303,7 @@ export interface MapsJudgement { outcome: DirectoryOutcome; status: MapsStatus |
  */
 export function judgeMapsAnswer(i: { listingName: string; shapeOk: boolean; answer: string; sources: { name: string; url: string }[] }): MapsJudgement {
   const out = (outcome: DirectoryOutcome, status: MapsStatus | null, why: string): MapsJudgement => ({ outcome, status, nameOnMaps: field(i.answer, 'NAME_ON_MAPS'), addressOnMaps: field(i.answer, 'ADDRESS_ON_MAPS'), source: maps[0]?.url ?? '', why });
-  const maps = (i.sources ?? []).filter((s) => /(^|\.)google\.[a-z.]+\/maps|maps\.google\.|maps\.app\.goo\.gl|goo\.gl\/maps/i.test(String(s?.url ?? '')));
+  const maps = (i.sources ?? []).filter((s) => isMapsUrl(String(s?.url ?? '')));
   if (!i.shapeOk) return out('UNOBSERVABLE', null, 'the response was not in the shape we expect');
   const status = parseMapsStatus(i.answer);
   if (!status) return out('UNOBSERVABLE', null, 'the answer does not state one status in the form asked for');
@@ -295,9 +335,11 @@ export function transitionCounts(t: Transition[]): { newlyClosed: number; newlyN
  */
 export function directoryVerdict(state: DirectoryState, runs: DirectoryRun[]): Verdict {
   if (!runs.length) return no('empty', 'no listing was asked about');
-  const unreadable = runs.filter((r) => r.outcome === 'UNOBSERVABLE').length;
-  if (floorTripped(unreadable, runs.length, UNOBSERVED_MAX)) return no('unreadable', `${unreadable} of ${runs.length} answers could not be accepted (not grounded, not in the form asked for, or no answer)`);
-  const good = runs.filter((r) => r.outcome === 'STATUS' && r.status), bad = (r: DirectoryRun) => isClosed(r.status) || r.status === 'NOT_FOUND';
+  // Every answer without an accepted status counts, another business at the address included: it validated no status.
+  const good = runs.filter((r) => r.outcome === 'STATUS' && r.status), unaccepted = runs.length - good.length;
+  if (!good.length) return no('unreadable', `none of the ${runs.length} answers gave an accepted status`);
+  if (floorTripped(unaccepted, runs.length, UNOBSERVED_MAX)) return no('unreadable', `${unaccepted} of ${runs.length} answers gave no accepted status (not grounded, not in the form asked for, another business at the address, or no answer)`);
+  const bad = (r: DirectoryRun) => isClosed(r.status) || r.status === 'NOT_FOUND';
   if (!state.baseline) {
     const n = good.filter(bad).length;
     return floorTripped(n, good.length) ? no('first-run-prevalence', `${n} of ${good.length} listings came back closed or not found and there is no baseline to compare with`) : no('no-baseline', 'there is no baseline yet');
@@ -321,21 +363,46 @@ export function mergeDirectoryState(state: DirectoryState, runs: DirectoryRun[],
 // ---------------------------------------------------------------------------------------------------------------------
 // Check C: website links
 
-export type LinkClass = 'OK' | 'MOVED' | 'DEAD' | 'PARKED' | 'HIJACKED' | 'OFF_DOMAIN' | 'POSSIBLE_TAKEOVER' | 'SOCIAL' | 'COULD_NOT_OBSERVE';
-/** The established problems. POSSIBLE_TAKEOVER is a lead for review, not one of them. */
+export type LinkClass = 'OK' | 'MOVED' | 'DEAD' | 'PARKED' | 'HIJACKED' | 'OFF_DOMAIN' | 'POSSIBLE_TAKEOVER' | 'POSSIBLY_MOVED' | 'SOCIAL' | 'COULD_NOT_OBSERVE';
+/** The established problems. */
 export const LINK_PROBLEMS: LinkClass[] = ['DEAD', 'PARKED', 'HIJACKED', 'OFF_DOMAIN'];
+/** Leads for a person to review. Not problems, and never counted as such. */
+export const LINK_LEADS: LinkClass[] = ['POSSIBLE_TAKEOVER', 'POSSIBLY_MOVED'];
 const SOCIAL = ['facebook.com', 'instagram.com', 'untappd.com', 'twitter.com', 'x.com', 'linktr.ee', 'yelp.com', 'tiktok.com', 'youtube.com', 'linkedin.com', 'tripadvisor.com'];
 export const isSocialUrl = (u: string): boolean => { const h = hostOfUrl(u); return SOCIAL.some((s) => h === s || h.endsWith(`.${s}`)); };
 const GAMBLING = /slot ?(gacor|online|\d{2,3}|88)|\bslot\b.*(gacor|rtp|maxwin|pragmatic)|togel|\btoto\b|judi\b|situs (judi|slot|toto|togel)|gacor|maxwin|rtp live|pragmatic play|bandar|bocoran|keluaran|pengeluaran|\bcasino\b|kasino|sweepstakes|sportsbook|\bbetting\b|bet88|\d+bet\b|sbobet/gi;
 const ADULT = /porn|xxx|escort|adult video|sex cam|viagra|cialis|payday loan|buy cheap|replica watches/i;
-const BREWISH = /brew|beer|ale\b|ales\b|lager|pub\b|taproom|tap room|tavern|cider|distill|winery|wine|ipa\b|hops?\b|stout|restaurant|bar\b|grill|brasserie|biergarten|meadery|mead\b/i;
 
 /**
- * What a listing's website link shows. DEAD: the domain does not exist, or the page answers 404 or 410. PARKED: a
- * domain seller's page. HIJACKED: gambling or adult content AND the brewery's name gone from title and body.
- * POSSIBLE_TAKEOVER: such content with the name still there (a lead to review). OFF_DOMAIN: it redirects to another
- * site that does not name the brewery. MOVED: it redirects to another site that does. A refusal, a challenge, a
- * server error (5xx), a timeout or a page too thin to judge is COULD_NOT_OBSERVE.
+ * Does this text name the brewery? Its distinctive name is the name with the generic words (brewing, brewery,
+ * company, co, beer, taproom, the, and ...) removed; EVERY remaining word must appear in the text as a whole word.
+ * One word of several is not the name, and a word inside another word is not that word. A name with no distinctive
+ * word cannot be recognised this way.
+ */
+export function namesBrewery(name: string, text: string): boolean {
+  const want = nameWords(name); if (!want.length) return false;
+  const have = new Set(nameWords(text));
+  return want.every((w) => have.has(w));
+}
+/** Does the host carry the distinctive name as one whole label ("fixture" in fixture.com or fixture-brewing.com, never in prefixture.com)? A lead, not proof. */
+export function hostNamesBrewery(name: string, host: string): boolean {
+  const want = nameWords(name); if (!want.length) return false;
+  const labels = host.toLowerCase().replace(/^www\./, '').split('.').slice(0, -1).flatMap((l) => [l, ...l.split('-')]);
+  const all = (name.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').match(/[a-z0-9]+/g) ?? []);
+  // the distinctive words run together, alone or followed by the name's own generic words ("fixturebrewing", "fixturebrewingco")
+  const forms = new Set([want.join('')]);
+  for (let n = all.length; n > 0; n--) { const head = all.slice(0, n); if (nameWords(head.join(' ')).join('') === want.join('')) forms.add(head.join('')); }
+  return labels.some((l) => forms.has(l));
+}
+
+/**
+ * What a listing's website link shows. First: could we see the page at all? A refusal, a challenge, a server error
+ * (5xx), a timeout, a gate or notice page, or a page too thin to judge is COULD_NOT_OBSERVE, and nothing below is
+ * concluded from it. Then: DEAD (the domain does not exist, or the page answers 404 or 410); PARKED (a domain
+ * seller's page); HIJACKED (gambling or adult content AND the brewery's name absent from title and body);
+ * POSSIBLE_TAKEOVER (such content, name still there: a lead); MOVED (a redirect to another site whose page names the
+ * brewery); POSSIBLY_MOVED (a redirect to a host that carries the name, on a page that does not: a lead);
+ * OFF_DOMAIN (a redirect to another site that does neither); OK (the same site, and its page names the brewery).
  */
 export function classifyLink(name: string, listedUrl: string, o: Observation): { cls: LinkClass; note: string } {
   if (isSocialUrl(listedUrl)) return { cls: 'SOCIAL', note: 'a social page; not fetched' };
@@ -343,20 +410,22 @@ export function classifyLink(name: string, listedUrl: string, o: Observation): {
   if (o.kind === 'error') return { cls: 'COULD_NOT_OBSERVE', note: o.why };
   if ([401, 403, 429].includes(o.status)) return { cls: 'COULD_NOT_OBSERVE', note: `refused (HTTP ${o.status})` };
   if (o.status >= 500) return { cls: 'COULD_NOT_OBSERVE', note: `server error (HTTP ${o.status})` };
-  if (CHALLENGE.test(o.title) || CHALLENGE.test(o.text.slice(0, 800)) || (o.text.length < MIN_REAL_TEXT && CHALLENGE.test(o.text))) return { cls: 'COULD_NOT_OBSERVE', note: 'a challenge or refusal page' };
   if ([404, 410].includes(o.status)) return { cls: 'DEAD', note: `HTTP ${o.status}` };
   if (o.status !== 200) return { cls: 'COULD_NOT_OBSERVE', note: `HTTP ${o.status}` };
+  if (isParked(o)) return { cls: 'PARKED', note: `domain for sale or parked: ${o.title.slice(0, 80)}` };
+  // A shell is settled before anything is concluded about identity, takeover or where the link now leads.
+  const shell = shellReason(o);
+  if (shell) return { cls: 'COULD_NOT_OBSERVE', note: shell };
   const head = `${o.title} ${o.text.slice(0, 1500)}`, from = hostOfUrl(listedUrl), to = hostOfUrl(o.finalUrl);
-  const tokens = nameWords(name), page = `${o.title} ${o.text}`.toLowerCase(), named = tokens.length > 0 && (tokens.some((t) => page.includes(t)) || page.replace(/[^a-z0-9]/g, '').includes(tokens.join('')));
+  const named = namesBrewery(name, `${o.title} ${o.text}`), elsewhere = registrable(to) !== registrable(from);
   const keywords = (head.match(GAMBLING) ?? []).length >= 2 || (o.title.match(GAMBLING) ?? []).length > 0 || ADULT.test(o.title);
   if (keywords) return named ? { cls: 'POSSIBLE_TAKEOVER', note: `possible takeover: review. Gambling or adult words on a page that still names the brewery: ${o.title.slice(0, 80)}` } : { cls: 'HIJACKED', note: `gambling or adult content, and the brewery's name is nowhere on the page: ${o.title.slice(0, 80)}` };
-  if (isParked(o)) return { cls: 'PARKED', note: `domain for sale or parked: ${o.title.slice(0, 80)}` };
-  const match = named || (tokens.length > 0 && tokens.some((t) => to.includes(t)));
-  if (registrable(to) !== registrable(from)) return match ? { cls: 'MOVED', note: `now at ${to}` } : o.text.length < 200 ? { cls: 'COULD_NOT_OBSERVE', note: `redirects to ${to}, a page with almost no text` } : { cls: 'OFF_DOMAIN', note: `redirects to ${to}, which does not name the brewery` };
-  if (o.text.trim().length < 200) return { cls: 'COULD_NOT_OBSERVE', note: o.text.trim() ? 'too little text to judge' : 'no server-rendered text' };
-  if (shellReason(o)) return { cls: 'COULD_NOT_OBSERVE', note: shellReason(o) };
-  if (match || BREWISH.test(head)) return { cls: 'OK', note: '' };
-  return { cls: 'COULD_NOT_OBSERVE', note: 'could not tell from the page text that this is the brewery' };
+  if (o.text.trim().length < 200) return { cls: 'COULD_NOT_OBSERVE', note: `${elsewhere ? `redirects to ${to}: ` : ''}${o.text.trim() ? 'too little text to judge' : 'no server-rendered text'}` };
+  if (elsewhere) return named ? { cls: 'MOVED', note: `now at ${to}, on a page that names the brewery` }
+    : hostNamesBrewery(name, to) ? { cls: 'POSSIBLY_MOVED', note: `possibly moved: review. Redirects to ${to}, whose address carries the name but whose page does not name the brewery` }
+      : { cls: 'OFF_DOMAIN', note: `redirects to ${to}, which does not name the brewery` };
+  if (named) return { cls: 'OK', note: '' };
+  return { cls: 'COULD_NOT_OBSERVE', note: 'the page does not name the brewery in full, so we cannot tell that this is its site' };
 }
 export interface LinkState { cls: LinkClass; date: string; url: string }
 export interface LinksState { baseline?: Baseline; links: Record<string, LinkState> }
@@ -364,20 +433,22 @@ export interface LinkRun { id: number; url: string; cls: LinkClass; note: string
 const sameAsBefore = (prev: Record<string, LinkState>, r: LinkRun) => prev[String(r.id)]?.cls === r.cls && prev[String(r.id)]?.url === r.url;
 /** Problems that are new: a problem now, on a link that was not that same problem (for that same URL) when last observed well. */
 export const newLinkProblems = (prev: Record<string, LinkState>, runs: LinkRun[]): LinkRun[] => runs.filter((r) => LINK_PROBLEMS.includes(r.cls) && !sameAsBefore(prev, r));
-/** Leads that are new: possible takeovers not seen as that before. */
-export const newLinkLeads = (prev: Record<string, LinkState>, runs: LinkRun[]): LinkRun[] => runs.filter((r) => r.cls === 'POSSIBLE_TAKEOVER' && !sameAsBefore(prev, r));
+/** Leads that are new: possible takeovers and possible moves not seen as that before. */
+export const newLinkLeads = (prev: Record<string, LinkState>, runs: LinkRun[]): LinkRun[] => runs.filter((r) => LINK_LEADS.includes(r.cls) && !sameAsBefore(prev, r));
 /** Believable, and may it update the state? The same tests as the directory's, over every problem class. */
 export function linkVerdict(state: LinksState, runs: LinkRun[]): Verdict {
   const fetched = runs.filter((r) => r.cls !== 'SOCIAL');
   if (!fetched.length) return no('empty', 'no link was fetched');
   const unobserved = fetched.filter((r) => r.cls === 'COULD_NOT_OBSERVE').length, seen = fetched.filter((r) => r.cls !== 'COULD_NOT_OBSERVE'), problem = (r: LinkRun) => LINK_PROBLEMS.includes(r.cls);
   if (floorTripped(unobserved, fetched.length, LINKS_UNOBSERVED_MAX)) return no('unreadable', `${unobserved} of ${fetched.length} links could not be observed`);
+  if (!seen.length) return no('unreadable', `none of the ${fetched.length} links could be observed`);
   if (!state.baseline) {
     const n = seen.filter(problem).length;
     return floorTripped(n, seen.length) ? no('first-run-prevalence', `${n} of ${seen.length} links came back as problems and there is no baseline to compare with`) : no('no-baseline', 'there is no baseline yet');
   }
   if (runs.length < state.baseline.listings * COVERAGE_MIN) return no('coverage', `only ${runs.length} links were looked at; the baseline had ${state.baseline.listings}`);
-  const known = seen.filter((r) => state.links[String(r.id)]), fresh = seen.filter((r) => !state.links[String(r.id)]);
+  // A cohort is a listing AND its URL: a known listing with a new address is a link seen for the first time.
+  const known = seen.filter((r) => state.links[String(r.id)]?.url === r.url), fresh = seen.filter((r) => state.links[String(r.id)]?.url !== r.url);
   const turned = newLinkProblems(state.links, known).length;
   if (floorTripped(turned, known.length)) return no('floor-new-problems', `${turned} of ${known.length} links turned into problems in one run`);
   if (cohortFloorTripped(fresh.filter(problem).length, fresh.length)) return no('floor-new-cohort', `${fresh.filter(problem).length} of ${fresh.length} links seen for the first time came back as problems`);

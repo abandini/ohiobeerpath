@@ -1,11 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, symlinkSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, symlinkSync, existsSync, readdirSync, cpSync, appendFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import {
   classifyStop, presenceProblem, shellReason, isParked, fingerprintOf, pageChanged, titleSimilarity, floorTripped, cohortFloorTripped,
-  applyRoadsRun, pendingKeys, suspensionsByRoad, stopStateKey, citeOf,
+  applyRoadsRun, pendingKeys, proposalItems, sourceOf, stopStateKey, citeOf, isMapsUrl, namesBrewery, hostNamesBrewery,
   parseMapsStatus, nameMatches, judgeMapsAnswer, directoryTransitions, transitionCounts, directoryVerdict, mergeDirectoryState, initMayAccept,
   classifyLink, newLinkProblems, newLinkLeads, linkVerdict, mergeLinkState,
   exitCode, summaryLine, insideDir, lockIsStale,
@@ -40,6 +41,19 @@ describe('monthly check A: a positive match needs a page that loaded normally', 
     }
     expect(presenceProblem(page({ text: `${body()} This form is protected by reCAPTCHA.` }))).toBe('');   // a contact form's captcha notice is not a challenge page
     expect(presenceProblem(page())).toBe(''); expect(shellReason(page({ text: `${body()} We use cookies.` }))).toBe('');   // a real page with a cookie line is not a shell
+  });
+  it('a gate is a gate at any length: a long one that carries the evidence and the address still confirms nothing', () => {
+    const longGate = `${HOURS} 1 Fixture St, Alpha, PA. ${'Please confirm your age to enter this site. '.repeat(40)}`;
+    expect(longGate.length).toBeGreaterThan(3 * MIN_REAL_TEXT);
+    for (const title of ['Age Verification', 'Are you 21 or older? | Fixture Brewing', 'AgeGate', 'Just a moment...', 'Attention Required! | Cloudflare', 'Access denied', 'Site Maintenance', 'Cookie consent', 'Before you continue', 'Coming Soon', 'Maintenance']) {
+      const gate = page({ title, text: longGate });
+      expect(shellReason(gate), title).not.toBe('');
+      expect(stop(gate, true).status, title).toBe('COULD_NOT_OBSERVE'); expect(stop(page(), true, { address: { page: gate, found: true } }).status, title).toBe('COULD_NOT_OBSERVE');
+    }
+    // structure, with an ordinary title: the text opens with the gate's question and little follows
+    expect(shellReason(page({ text: `Are you 21 or older? Yes No. ${HOURS} ${'x '.repeat(400)}` }))).not.toBe('');
+    // not gates: a real page that mentions cookies, or says something is coming soon, or has a long ordinary title with such words in it
+    for (const real of [page({ text: `${body()} We use cookies to improve your visit. Cookie policy.` }), page({ text: `${body()} Coming soon: our winter ale.` }), page({ title: 'Winter Ale Coming Soon to the Taproom | Fixture Brewing' }), page({ text: `Fixture Brewing. Hours ${HOURS}. We use cookies.` })]) expect(shellReason(real), real.title + real.text.slice(-40)).toBe('');
   });
   it('an address that can no longer be found on a healthy page is flagged for a person, and concludes nothing', () => {
     expect(stop(page(), true, { address: { page: page(), found: false } })).toMatchObject({ status: 'COULD_NOT_OBSERVE', flag: 'address' });
@@ -181,17 +195,37 @@ describe('monthly check A: state, and a proposal only on a repeated valid observ
     }
     expect(citeOf('r', '1', 'https://x.example/hours', HOURS)).toBe(CITE);
   });
-  it('a stop on two roads is proposed for both from the one record', () => {
-    const roads = [
-      { slug: 'i-71', stops: [{ key: '130', breweryId: 130, name: 'Goldhorn' }, { key: '51', breweryId: 51, name: 'Other' }] },
-      { slug: 'us-422', stops: [{ key: '130', breweryId: 130, name: 'Goldhorn' }] },
-      { slug: 'route-66', stops: [{ key: 'a-brewery-town', name: 'A Brewery' }, { key: '130', name: 'Not the same: no directory id' }] },
+  it('a changed citation wipes the entry at once, even when the new citation cannot be observed', () => {
+    const B = citeOf('r', '1', 'https://x.example/visit', HOURS);
+    const a1 = applyRoadsRun(empty, [run('1', 'GONE')], true).state;                                 // A: gone
+    const b = applyRoadsRun(a1, [run('1', 'COULD_NOT_OBSERVE', plus(24), B)], true).state;              // B: unobservable
+    expect(b.stops['r/1']).toEqual({ cite: B }); expect(pendingKeys(b)).toEqual([]);
+    const a2 = applyRoadsRun(b, [run('1', 'GONE', plus(72))], true);                                  // A again: gone, 72 hours after the first
+    expect(a2.eligible).toEqual([]); expect(a2.goneOnce.map((x) => x.key)).toEqual(['1']); expect(a2.state.stops['r/1'].gone!.map((g) => g.at)).toEqual([plus(72)]);
+    // and a confirmed fingerprint of citation A does not survive the change either
+    const conf = applyRoadsRun(empty, [run('1', 'CONFIRMED')], true).state;
+    expect(applyRoadsRun(conf, [run('1', 'COULD_NOT_OBSERVE', plus(24), B)], true).state.stops['r/1']).toEqual({ cite: B });
+  });
+  it('a stop on another road joins a proposal only on the very same citation, or on its own two observations', () => {
+    const src = sourceOf('https://goldhorn.example/', HOURS), other = sourceOf('https://goldhorn.example/visit', 'Daily 11-9');
+    const order = (slug: string, key = '130') => ({ slug, key, plain: PLAIN_NO_HOURS, firstSeen: AT, confirmed: plus(72), records: [] });
+    const roads = (i71Source: string) => [
+      { slug: 'i-71', stops: [{ key: '130', breweryId: 130, name: 'Goldhorn', source: i71Source }, { key: '51', breweryId: 51, name: 'Other', source: 'x' }] },
+      { slug: 'us-422', stops: [{ key: '130', breweryId: 130, name: 'Goldhorn', source: src }] },
+      { slug: 'route-66', stops: [{ key: 'a-brewery-town', name: 'A Brewery', source: 'y' }, { key: '130', name: 'Not the same: no directory id', source: src }] },
     ];
-    const order = { slug: 'us-422', key: '130', plain: PLAIN_NO_HOURS, firstSeen: AT, confirmed: plus(72), records: [] };
-    expect(suspensionsByRoad([order], roads).map((x) => [x.slug, x.id])).toEqual([['i-71', 130], ['us-422', 130]]);
-    expect(suspensionsByRoad([{ ...order, slug: 'route-66', key: 'a-brewery-town' }], roads).map((x) => [x.slug, x.id])).toEqual([['route-66', 'a-brewery-town']]);
-    expect(suspensionsByRoad([order, { ...order, slug: 'i-71' }], roads)).toHaveLength(2);       // seen on both roads: still one record each
-    expect(suspensionsByRoad([{ ...order, key: 'nope' }], roads)).toEqual([]);
+    // the same page and the same text on both roads: one piece of evidence, and the relationship is recorded
+    const same = proposalItems([order('us-422')], roads(src));
+    expect(same.conflicts).toEqual([]); expect(same.items.map((x) => [x.slug, x.id, x.basis])).toEqual([['i-71', 130, 'same-citation'], ['us-422', 130, 'observed']]);
+    // the other road cites something else, and that was confirmed, unobservable, gone once or not read: no proposal for the brewery at all
+    const conflict = proposalItems([order('us-422')], roads(other));
+    expect(conflict.items).toEqual([]); expect(conflict.conflicts).toEqual([{ breweryId: 130, name: 'Goldhorn', why: 'i-71 cites a different source for it, and that source is not gone on two observations of its own' }]);
+    // the other road cites something else and is itself eligible on its own observations: both, each on its own record
+    const both = proposalItems([order('us-422'), order('i-71')], roads(other));
+    expect(both.conflicts).toEqual([]); expect(both.items.map((x) => [x.slug, x.basis, x.order.slug])).toEqual([['i-71', 'observed', 'i-71'], ['us-422', 'observed', 'us-422']]);
+    // a stand-alone stop is only ever itself
+    expect(proposalItems([order('route-66', 'a-brewery-town')], roads(src)).items.map((x) => [x.slug, x.id])).toEqual([['route-66', 'a-brewery-town']]);
+    expect(proposalItems([order('us-422', 'nope')], roads(src)).items).toEqual([]);
     expect(stopStateKey('us-422', '130')).toBe('us-422/130');
   });
 });
@@ -212,6 +246,7 @@ describe('monthly check B: directory status (internal lead)', () => {
     expect(judge({ answer: answer('CLOSED_PERMANENTLY') }).status).toBe('CLOSED_PERMANENTLY');
     // no grounding, an unexpected shape, a malformed answer, no place named: unobservable, never a status
     expect(judge({ sources: [] })).toMatchObject({ outcome: 'UNOBSERVABLE', status: null }); expect(judge({ sources: [{ name: 'A blog', url: 'https://example.com/post' }] }).outcome).toBe('UNOBSERVABLE');
+    expect(judge({ sources: [{ name: 'Fake', url: 'https://example.org/maps.google.com/fake' }, { name: 'Fake', url: 'https://maps.app.goo.gl.example.org/x' }] }).outcome).toBe('UNOBSERVABLE');
     expect(judge({ shapeOk: false }).outcome).toBe('UNOBSERVABLE'); expect(judge({ answer: 'It looks open to me.' }).outcome).toBe('UNOBSERVABLE');
     expect(judge({ answer: answer('OPERATIONAL', 'N/A') }).outcome).toBe('UNOBSERVABLE'); expect(judge({ answer: 'STATUS: OPERATIONAL' }).outcome).toBe('UNOBSERVABLE');
     // a different business at the address is a lead with both names, not a status
@@ -219,6 +254,11 @@ describe('monthly check B: directory status (internal lead)', () => {
     expect(other).toMatchObject({ outcome: 'OTHER_BUSINESS_AT_ADDRESS', status: null, nameOnMaps: 'Corner Pizza & Subs' }); expect(other.why).toBe('the place returned is "Corner Pizza & Subs", not "Fixture Brewing Company"');
     // not found is a status when the answer is grounded, and unobservable when it is not
     expect(judge({ answer: answer('NOT_FOUND', 'N/A') })).toMatchObject({ outcome: 'STATUS', status: 'NOT_FOUND' }); expect(judge({ answer: answer('NOT_FOUND', 'N/A'), sources: [] }).outcome).toBe('UNOBSERVABLE');
+  });
+  it('a Maps source is a parsed https address on a listed Maps host and path, never a substring', () => {
+    for (const ok of ['https://maps.google.com/maps?cid=9170942760110186964', 'https://www.google.com/maps/reviews/data=!4m6!14m5', 'https://google.com/maps/place/Fixture', 'https://www.google.com/maps', 'https://maps.app.goo.gl/AbCdEf', 'https://goo.gl/maps/AbCdEf', 'HTTPS://MAPS.GOOGLE.COM/maps?cid=1']) expect(isMapsUrl(ok), ok).toBe(true);
+    for (const bad of ['', 'not a url', 'http://maps.google.com/maps?cid=1', 'https://example.org/maps.google.com/fake', 'https://maps.app.goo.gl.example.org/fake', 'https://maps.google.com.evil.example/maps', 'https://evil.example/?u=https://maps.google.com/maps?cid=1',
+      'https://www.google.com/search?q=maps', 'https://www.google.com/mapsfake', 'https://google.com.evil.example/maps', 'https://notgoogle.com/maps', 'https://xmaps.google.com/maps', 'https://user@maps.google.com/maps', 'https://maps.google.com:8443/maps', 'https://goo.gl/other', 'ftp://maps.google.com/maps']) expect(isMapsUrl(bad), bad).toBe(false);
   });
   it('compares names with the generic words set aside', () => {
     for (const [a, b] of [['Great Lakes Brewing Company', 'Great Lakes Brewing Co'], ['The Jolly Scholar', 'Jolly Scholar Brewing Company'], ['Hofbräuhaus Cleveland', 'Hofbrauhaus Cleveland'], ['Saucy Brew Works', 'Saucy Brew Works - Ohio City'], ['Brick and Barrel', 'Brick & Barrel']]) expect(nameMatches(a, b), `${a} / ${b}`).toBe(true);
@@ -244,6 +284,12 @@ describe('monthly check B: directory status (internal lead)', () => {
     expect(directoryVerdict(state, all(() => 'NOT_FOUND'))).toMatchObject({ valid: false, code: 'floor-not-found' });
     expect(directoryVerdict(state, all((id) => (id <= 16 ? 'NOT_FOUND' : 'OPERATIONAL'))).code).toBe('floor-not-found');
     expect(directoryVerdict(state, all((id) => (id <= 16 ? null : 'OPERATIONAL')))).toMatchObject({ valid: false, code: 'unreadable' });
+    // another business at the address validated no status: it counts toward the same floor
+    expect(directoryVerdict(state, all((id) => (id <= 16 ? 'OTHER' : 'OPERATIONAL')))).toMatchObject({ valid: false, code: 'unreadable' });
+    expect(directoryVerdict(state, all((id) => (id <= 8 ? 'OTHER' : id <= 16 ? null : 'OPERATIONAL'))).code).toBe('unreadable');
+    expect(directoryVerdict(state, all((id) => (id <= 15 ? 'OTHER' : 'OPERATIONAL'))).valid).toBe(true);
+    // no accepted status at all is never OK and never a baseline
+    for (const st of [state, { listings: {} } as DirectoryState]) { const v = directoryVerdict(st, all(() => 'OTHER')); expect(v).toMatchObject({ valid: false, code: 'unreadable' }); expect(initMayAccept(v)).toBe(false); }
     expect(directoryVerdict(state, all(() => 'OPERATIONAL', 79))).toMatchObject({ valid: false, code: 'coverage' });   // the directory read was short
     expect(directoryVerdict(state, [])).toMatchObject({ valid: false, code: 'empty' });
     expect(STATUS_REQUEST_CAP).toBe(2000);
@@ -281,6 +327,35 @@ describe('monthly check C: website links', () => {
     expect(link(site({ title: 'Fixture Brewing | Order online', finalUrl: 'https://fixture-brewing.square.site/' }))).toBe('MOVED');
     expect(link(site(), 'https://www.facebook.com/fixturebrewing')).toBe('SOCIAL');
   });
+  it('a shell is settled before anything is concluded about identity, takeover or where the link leads', () => {
+    const gateText = `Please confirm your age to enter. ${'You must be of legal drinking age to view this site. '.repeat(12)}`;
+    expect(link(site({ title: 'Age Verification', text: gateText, finalUrl: 'https://agegate.example/check?return=fixturebrewing.com' }))).toBe('COULD_NOT_OBSERVE');   // not OFF_DOMAIN
+    expect(link(site({ title: 'Before you continue', text: elsewhere, finalUrl: 'https://consent.example/' }))).toBe('COULD_NOT_OBSERVE');
+    expect(link(site({ title: 'Age Verification', text: `${body()} casino slot gacor` }))).toBe('COULD_NOT_OBSERVE');                                              // not HIJACKED or a lead
+    expect(link(site({ title: 'Site Maintenance', text: body() }))).toBe('COULD_NOT_OBSERVE');                                                                   // not OK
+    expect(link(site({ title: 'Just a moment...', text: elsewhere, finalUrl: 'https://other.example/' }))).toBe('COULD_NOT_OBSERVE');
+  });
+  it('the page must name the brewery in full, as whole words: one word of the name, or a word inside another, is not the name', () => {
+    expect(namesBrewery('North Coast Brewing Company', 'Welcome to North Coast Brewing')).toBe(true);
+    expect(namesBrewery('North Coast Brewing Company', 'The best pizza in the north of the city')).toBe(false);             // one token of two
+    expect(namesBrewery('North Coast Brewing Company', 'Northern coastal walks and coasters')).toBe(false);                 // tokens inside other words
+    expect(namesBrewery('Fixture Brewing', 'Prefixtures and fixtures for your bathroom')).toBe(false);
+    expect(namesBrewery('The Brewing Company', 'A brewing company')).toBe(false);                                           // no distinctive word: cannot be recognised
+    expect(namesBrewery('Hofbräuhaus Cleveland', 'HOFBRAUHAUS CLEVELAND: beer hall')).toBe(true);
+    const page2 = (text: string, finalUrl: string, title = 'Welcome') => site({ title, text: `${text} ${'Some ordinary words about a business in town. '.repeat(10)}`, finalUrl });
+    const north = (o: Observation) => classifyLink('North Coast Brewing Company', 'http://www.northcoastbrewing.com', o).cls;
+    expect(north(page2('North Coast Brewing has moved.', 'https://ncb-beer.example/'))).toBe('MOVED');
+    expect(north(page2('Pizza in the north end.', 'https://north-pizza.example/'))).toBe('OFF_DOMAIN');                     // an unrelated host containing one token
+    expect(north(page2('Pizza in the north end.', 'https://www.northcoastbrewing.com/'))).toBe('COULD_NOT_OBSERVE');        // same site, name not there: not OK
+    // the host carries the whole name but the page does not: a lead, not MOVED
+    const lead = classifyLink('North Coast Brewing Company', 'http://www.northcoastbrewing.com', page2('Our new online shop.', 'https://northcoast.example/'));
+    expect(lead.cls).toBe('POSSIBLY_MOVED'); expect(lead.note).toMatch(/^possibly moved: review\./);
+    expect(hostNamesBrewery('North Coast Brewing Company', 'northcoastbrewing.example')).toBe(true); expect(hostNamesBrewery('North Coast Brewing Company', 'north-coast.example')).toBe(false);
+    expect(hostNamesBrewery('North Coast Brewing Company', 'northcoastal.example')).toBe(false); expect(hostNamesBrewery('North Coast Brewing Company', 'north.example')).toBe(false);
+    expect(hostNamesBrewery('Fixture Brewing', 'prefixture.example')).toBe(false); expect(hostNamesBrewery('Fixture Brewing', 'shop.fixture-brewing.example')).toBe(true);
+    // an unrelated gambling page that happens to use one word of the name is still HIJACKED
+    expect(north(page2('slot gacor togel in the north', 'https://www.northcoastbrewing.com/', 'Situs Judi Slot Gacor'))).toBe('HIJACKED');
+  });
   it('a server error, a refusal, a challenge, a timeout or a page too thin to judge concludes nothing', () => {
     const cases: Observation[] = [timeout, site({ status: 500 }), site({ status: 502 }), site({ status: 503 }), site({ status: 403 }), site({ status: 429 }), site({ title: 'Just a moment...' }),
       site({ title: 'Fixture Brewing', text: `Verify you are human by completing the action below. ${body()}` }), site({ title: 'Fixture Brewing', text: 'Access denied' }), site({ text: '', title: '' }), site({ status: 302 })];
@@ -300,6 +375,7 @@ describe('monthly check C: website links', () => {
     const known = { ...state.links, 1: { cls: 'DEAD' as const, date: '2026-11-01', url: 'http://s1.example' } };
     const now = runs((id) => (id <= 2 ? 'DEAD' : id === 3 ? 'PARKED' : id === 4 ? 'MOVED' : id === 5 ? 'POSSIBLE_TAKEOVER' : 'OK'));
     expect(newLinkProblems(known, now).map((r) => r.id)).toEqual([2, 3]); expect(newLinkLeads(known, now).map((r) => r.id)).toEqual([5]);
+    expect(newLinkLeads(known, [{ id: 6, url: 'http://s6.example', cls: 'POSSIBLY_MOVED', note: '' }])).toHaveLength(1);
     expect(newLinkProblems(known, [{ id: 1, url: 'http://new-address.example', cls: 'DEAD', note: '' }])).toHaveLength(1);   // a changed link is a new observation
   });
   it('too many new problems, too many unobservable or a short read is a failed run that changes no state', () => {
@@ -310,6 +386,12 @@ describe('monthly check C: website links', () => {
     expect(linkVerdict(state, runs(() => 'OK', 79)).code).toBe('coverage'); expect(linkVerdict(state, []).code).toBe('empty');
     const fresh: LinkRun[] = Array.from({ length: 20 }, (_, i) => ({ id: 1000 + i, url: `http://n${i}.example`, cls: i < 4 ? 'DEAD' : 'OK', note: '' }));
     expect(linkVerdict(state, [...runs(() => 'OK'), ...fresh]).code).toBe('floor-new-cohort');
+    // a cohort is a listing AND its URL: five known listings that now point at five bad new addresses are five first-seen links
+    const moved = runs(() => 'OK').map((r) => (r.id <= 5 ? { ...r, url: `http://new${r.id}.example`, cls: 'DEAD' as const } : r));
+    expect(linkVerdict(state, moved)).toEqual({ valid: false, code: 'floor-new-cohort', why: '5 of 5 links seen for the first time came back as problems' });
+    expect(linkVerdict(state, runs(() => 'OK').map((r) => (r.id <= 2 ? { ...r, url: `http://new${r.id}.example`, cls: 'DEAD' as const } : r))).valid).toBe(true);   // two is within the small-cohort rule
+    expect(linkVerdict(state, runs(() => 'COULD_NOT_OBSERVE', 100).map((r) => ({ ...r, cls: r.id <= 29 ? 'COULD_NOT_OBSERVE' as const : 'OK' as const }))).valid).toBe(true);
+    expect(linkVerdict({ links: {} }, runs(() => 'SOCIAL').concat(runs(() => 'COULD_NOT_OBSERVE', 1))).code).toBe('unreadable');
   });
   it('a first run has a floor over every problem class, and never becomes the baseline by itself', () => {
     const none: LinksState = { links: {} };
@@ -362,7 +444,10 @@ describe('monthly check: what the programs may do', () => {
     expect(plist.match(/<key>Day<\/key><integer>(\d+)<\/integer><key>Hour<\/key><integer>4<\/integer><key>Minute<\/key><integer>20<\/integer>/g)).toHaveLength(2);
     expect(plist).toContain('<key>Day</key><integer>1</integer>'); expect(plist).toContain('<key>Day</key><integer>4</integer>');
     const sh = read('scripts/ops/monthly-check.sh');
-    expect(sh.indexOf('mkdir "$LOCK"')).toBeGreaterThan(0); expect(sh.indexOf('mkdir "$LOCK"')).toBeLessThan(sh.indexOf('git pull'));
+    expect(sh).not.toMatch(/git pull|as it is/);                                                    // no fallback to whatever is there
+    const at = (x: string) => { const i = sh.indexOf(x); expect(i, x).toBeGreaterThan(0); return i; };
+    // paths are judged before anything is created; the lock is taken before the checkout is touched
+    expect(at('must be outside the checkout')).toBeLessThan(at('mkdir -p "$LOG_DIR" "$DATA"')); expect(at('mkdir "$LOCK"')).toBeLessThan(at('git fetch --quiet origin main')); expect(at('git fetch --quiet origin main')).toBeLessThan(at('git merge --ff-only --quiet origin/main'));
     expect(sh).toContain("trap 'rm -rf \"$LOCK\"' EXIT"); expect(sh).not.toMatch(/rm -rf "\$LOCK"[^']/);            // the lock is released only by the run that took it
   });
 });
@@ -404,6 +489,8 @@ describe('monthly check: the entry points keep drills and production apart', () 
     expect(missing.code).toBe(2); expect(missing.out).toContain('the links state'); expect(missing.out).toContain('is missing, though it was initialised on 2026-11-01'); expect(missing.out).toContain('a new baseline is never started silently');
     writeFileSync(join(prod, 'state', 'links.json'), '{ "links": { "1": ');
     expect(node('monthly-check.mjs', ['--only', 'a']).out).toContain('cannot be read. Restore it from');
+    writeFileSync(join(prod, 'state', 'links.json'), JSON.stringify({ baseline: {} }));
+    expect(node('monthly-check.mjs', ['--only', 'a']).out).toContain('is not in the form expected. Restore it from');
     expect(existsSync(join(prod, 'lock'))).toBe(false);                // a stopped run does not leave its lock behind
   });
   it('one run at a time: a held lock stops the run, and a stale one is reported and left alone', () => {
@@ -415,22 +502,95 @@ describe('monthly check: the entry points keep drills and production apart', () 
     const stale = node('monthly-check-drill.mjs', ['--data-dir', trial, '--only', 'a']);
     expect(stale.code).toBe(2); expect(stale.out).toContain('more than 12 hours old and was not removed'); expect(existsSync(join(trial, 'lock', 'info.json'))).toBe(true);
   });
-  it('a baseline is initialised once, from a reviewed observations file, and only the prevalence floor is set aside', () => {
+  it('a baseline is initialised once, from the untouched output of a completed run, and only the prevalence floor is set aside', () => {
     const trial = join(home, 'baseline'), obs = join(trial, 'observations'); mkdirSync(obs, { recursive: true });
     const rows = (bad: number, unseen: number) => Array.from({ length: 100 }, (_, i) => JSON.stringify({ id: i + 1, name: `B${i}`, url: `http://s${i}.example`, cls: i < bad ? 'DEAD' : i < bad + unseen ? 'COULD_NOT_OBSERVE' : 'OK', note: '' })).join('\n') + '\n';
-    writeFileSync(join(obs, '2026-12-01-links.jsonl'), rows(20, 5)); writeFileSync(join(obs, '2026-12-02-links.jsonl'), rows(5, 60)); writeFileSync(join(home, 'outside.jsonl'), rows(0, 0));
-    const init = (file: string) => node('monthly-check-drill.mjs', ['--data-dir', trial, '--init-baseline', 'c', '--from', file]);
-    expect(init(join(obs, '2026-12-02-links.jsonl')).out).toContain('these observations cannot be a baseline: 60 of 100 links could not be observed');   // not a prevalence failure: refused
+    const sha = (f: string) => createHash('sha256').update(readFileSync(f)).digest('hex');
+    const record = (f: string, more: Record<string, unknown> = {}) => writeFileSync(`${f}.run.json`, JSON.stringify({ drill: true, file: f, sha256: sha(f), date: '2026-12-01', source: 'abc', check: 'c', complete: true, why: '', directory: 1150, looked: 100, ...more }));
+    const file = (name: string, bad: number, unseen: number, more?: Record<string, unknown> | null) => { const f = join(obs, name); writeFileSync(f, rows(bad, unseen)); if (more !== null) record(f, more); return f; };
+    const init = (f: string, check = 'c') => node('monthly-check-drill.mjs', ['--data-dir', trial, '--init-baseline', check, '--from', f]);
+    // refused: not the output of a completed check of this kind, or not as that run left it
+    expect(init(file('2026-12-02-links.jsonl', 5, 60)).out).toContain('these observations cannot be a baseline: 60 of 100 links could not be observed');   // not a prevalence failure
+    expect(init(file('2026-12-03-links.jsonl', 5, 5, null)).out).toContain('has no run record beside it');
+    expect(init(file('2026-12-04-links.jsonl', 5, 5, { complete: false, why: 'no network (ENOTFOUND) by the end of the run' })).out).toContain('did not complete (no network (ENOTFOUND) by the end of the run): it cannot be a baseline');
+    const edited = file('2026-12-05-links.jsonl', 20, 5); appendFileSync(edited, rows(0, 0).split('\n')[0] + '\n');
+    expect(init(edited).out).toContain('has changed since the run that wrote it');
+    expect(init(file('2026-12-06-links.jsonl', 5, 5, { drill: undefined })).out).toContain('was not written by a drill');
+    expect(init(file('2026-12-07-links.jsonl', 5, 5), 'b').out).toContain('is the output of check C, not B');
+    writeFileSync(join(home, 'outside.jsonl'), rows(0, 0)); record(join(home, 'outside.jsonl'));
     expect(init(join(home, 'outside.jsonl')).out).toContain('the observations file must be one this data directory holds');
     expect(existsSync(join(trial, 'state', 'links.json'))).toBe(false);
-    const done = init(join(obs, '2026-12-01-links.jsonl'));
+    // accepted: complete, untouched, and failing only the first-run prevalence floor
+    const good = file('2026-12-01-links.jsonl', 20, 5), done = init(good);
     expect(done.code).toBe(0); expect(done.out).toContain('set aside: 20 of 95 links came back as problems');
     const state = JSON.parse(readFileSync(join(trial, 'state', 'links.json'), 'utf8'));
-    expect(state.drill).toBe(true); expect(state.baseline).toMatchObject({ listings: 100, counts: { DEAD: 20, COULD_NOT_OBSERVE: 5, OK: 75 } });
-    expect(state.baseline.hash).toMatch(/^[0-9a-f]{64}$/); expect(state.baseline.by).toMatch(/@/); expect(state.baseline.file).toContain('2026-12-01-links.jsonl');
+    expect(state.drill).toBe(true); expect(state.baseline).toMatchObject({ listings: 100, directory: 1150, source: 'abc', hash: sha(good), counts: { DEAD: 20, COULD_NOT_OBSERVE: 5, OK: 75 } });
+    expect(state.baseline.by).toMatch(/@/); expect(state.baseline.file).toContain('2026-12-01-links.jsonl');
     expect(Object.keys(state.links)).toHaveLength(95); expect(state.links['1']).toEqual({ cls: 'DEAD', date: '2026-12-01', url: 'http://s0.example' });
-    expect(JSON.parse(readFileSync(join(trial, 'state', 'INITIALISED.json'), 'utf8')).links).toBeTruthy();
-    expect(init(join(obs, '2026-12-01-links.jsonl')).out).toContain('already has state: a baseline is initialised once');
+    expect(JSON.parse(readFileSync(join(trial, 'state', 'INITIALISED.json'), 'utf8'))).toMatchObject({ drill: true, links: { date: expect.any(String) } });
+    expect(init(good).out).toContain('already has state: a baseline is initialised once');
     expect(readdirSync(join(trial, 'state')).filter((f) => f.includes('.tmp-'))).toEqual([]);          // written by rename: no half-written file left
+  });
+});
+
+// The production run and the wrapper against a throwaway clone that holds the code as it is now, committed.
+describe('monthly check: one commit, exactly', () => {
+  const root = join(__dirname, '../..'), tmp = mkdtempSync(join(tmpdir(), 'monthly-test-clone-')), clone = join(tmp, 'checkout'), home = join(tmp, 'home'), data = join(home, 'brewerytrip-monthly');
+  const sh = (cmd: string, args: string[], cwd: string, env: Record<string, string> = {}) => { const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', env: { PATH: process.env.PATH ?? '', HOME: home, GIT_CONFIG_GLOBAL: '/dev/null', ...env }, timeout: 120000 }); return { code: r.status, out: `${r.stdout}${r.stderr}` }; };
+  const git = (...a: string[]) => sh('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.com', '-c', 'commit.gpgsign=false', ...a], clone);
+  mkdirSync(home, { recursive: true });
+  sh('git', ['clone', '--quiet', '--no-hardlinks', root, clone], tmp);
+  for (const d of ['scripts', 'src/lib']) cpSync(join(root, d), join(clone, d), { recursive: true });
+  git('add', '-A'); git('commit', '--quiet', '--allow-empty', '-m', 'the code under test');
+  const wrapper = (env: Record<string, string> = {}) => sh('/bin/bash', [join(root, 'scripts/ops/monthly-check.sh'), '--only', 'a'], tmp, { MONTHLY_REPO: clone, MONTHLY_DATA_DIR: data, MONTHLY_LOG_DIR: join(home, 'logs'), ...env });
+  it('the production run stops on a checkout with uncommitted or untracked changes', () => {
+    expect(git('status', '--porcelain').out.trim()).toBe('');
+    writeFileSync(join(clone, 'data', 'roads', 'us-422', 'suspended.json'), '[]');   // an untracked file that would change what is built
+    const r = sh(process.execPath, [join(clone, 'scripts/monthly-check.mjs'), '--only', 'a'], clone);
+    expect(r.code).toBe(2); expect(r.out).toContain('the checkout has uncommitted or untracked changes'); expect(r.out).toContain('give the job a checkout of its own that nobody works in');
+    expect(existsSync(join(data, 'reports')) ? readdirSync(join(data, 'reports')) : []).toEqual([]);   // nothing was observed
+    git('clean', '-fdq');
+  });
+  it('the production run stops when the checkout is not at the commit the wrapper prepared', () => {
+    const r = sh(process.execPath, [join(clone, 'scripts/monthly-check.mjs'), '--only', 'a'], clone, { MONTHLY_SOURCE_SHA: '0'.repeat(40) });
+    expect(r.code).toBe(2); expect(r.out).toContain(`the wrapper prepared commit ${'0'.repeat(40)}, but the checkout is at`);
+  });
+  it('a production baseline must be the whole directory, not a sample', () => {
+    const obs = join(data, 'observations'); mkdirSync(obs, { recursive: true });
+    const f = join(obs, '2026-12-01-links.jsonl'); writeFileSync(f, Array.from({ length: 100 }, (_, i) => JSON.stringify({ id: i + 1, url: `http://s${i}.example`, cls: 'OK', note: '' })).join('\n') + '\n');
+    const record = (looked: number) => writeFileSync(`${f}.run.json`, JSON.stringify({ file: f, sha256: createHash('sha256').update(readFileSync(f)).digest('hex'), check: 'c', complete: true, source: 'abc', directory: 1150, looked }));
+    const init = () => sh(process.execPath, [join(clone, 'scripts/monthly-check.mjs'), '--init-baseline', 'c', '--from', f], clone);
+    record(100); expect(init().out).toContain('covers 100 of 1150 listings: a production baseline is the whole directory');
+    expect(existsSync(join(data, 'state', 'links.json'))).toBe(false);
+    record(1150); const ok = init(); expect(ok.code).toBe(0); expect(JSON.parse(readFileSync(join(data, 'state', 'links.json'), 'utf8'))).toMatchObject({ baseline: { directory: 1150, source: 'abc' } });
+    expect(JSON.parse(readFileSync(join(data, 'state', 'links.json'), 'utf8')).drill).toBeUndefined();
+  });
+  it('the wrapper stops, with exit 2 and nothing created, on paths inside the checkout', () => {
+    const inside = wrapper({ MONTHLY_DATA_DIR: join(clone, 'data', 'monthly') });
+    expect(inside.code).toBe(2); expect(inside.out).toContain('must be outside the checkout'); expect(existsSync(join(clone, 'data', 'monthly'))).toBe(false);
+    const logs = wrapper({ MONTHLY_LOG_DIR: join(clone, 'logs') });
+    expect(logs.code).toBe(2); expect(logs.out).toContain('the log directory'); expect(existsSync(join(clone, 'logs'))).toBe(false);
+    symlinkSync(clone, join(tmp, 'alias'));
+    expect(wrapper({ MONTHLY_DATA_DIR: join(tmp, 'alias', 'data', 'monthly') }).out).toContain('must be outside the checkout');
+    expect(wrapper({ MONTHLY_DATA_DIR: 'relative/dir' }).out).toContain('is not absolute');
+    expect(git('status', '--porcelain').out.trim()).toBe('');
+  });
+  it('the wrapper stops when the checkout is not on main, or is not clean, and never observes "as it is"', () => {
+    const branch = git('rev-parse', '--abbrev-ref', 'HEAD').out.trim();
+    expect(branch).not.toBe('main');
+    const off = wrapper();
+    expect(off.code).toBe(2); expect(off.out).toContain(`the checkout is on '${branch}', not main`); expect(off.out).toMatch(/Brewery Trip monthly check: STOPPED before observing\./); expect(off.out).not.toContain('observing commit');
+    expect(existsSync(join(data, 'lock'))).toBe(false);                // the lock it took is released on the way out
+    git('checkout', '--quiet', '-B', 'main');
+    writeFileSync(join(clone, 'stray.txt'), 'x');
+    const dirty = wrapper();
+    expect(dirty.code).toBe(2); expect(dirty.out).toContain('the checkout has uncommitted or untracked changes'); expect(dirty.out).not.toContain('observing commit');
+    git('clean', '-fdq');
+    // on main and clean, but main here is not origin/main (it carries a commit origin does not): no fast-forward, so stop
+    const ahead = wrapper();
+    expect(ahead.code).toBe(2); expect(ahead.out).toMatch(/could not be fast-forwarded to origin\/main|is not origin\/main/); expect(ahead.out).not.toContain('observing commit');
+    // a held lock stops it before the checkout is looked at
+    mkdirSync(join(data, 'lock'), { recursive: true });
+    expect(wrapper().out).toContain('another run holds the lock'); expect(existsSync(join(data, 'lock'))).toBe(true);
   });
 });

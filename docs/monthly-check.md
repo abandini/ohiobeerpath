@@ -10,10 +10,18 @@ node scripts/monthly-check.mjs --confirm  # the confirming pass, at least 48 hou
 It runs unattended on the 1st of each month at 04:20 and again, as the confirming pass, on the 4th at 04:20
 (`scripts/ops/monthly-check.sh`, started by `scripts/ops/com.brewerytrip.monthly-check.plist`).
 
-**Version 1 publishes nothing.** It observes, keeps state, and writes a report. It never commits, never pushes, and
-never changes a file in the checkout. When a road stop has been GONE on two valid observations at least 48 hours
-apart, it writes a **proposal**: a patch that suspends the stop, with the evidence for it. A person reviews the
-proposal and applies it through the normal reviewed process.
+**Version 1 publishes nothing.** It observes, keeps state, and writes a report. It never commits and never pushes.
+When a road stop has been GONE on two valid observations at least 48 hours apart, it writes a **proposal**: a patch
+that suspends the stop, with the evidence for it. A person reviews the proposal and applies it through the normal
+reviewed process.
+
+**What it does to its checkout, exactly.** The job needs a checkout of its own that nobody works in. Before a run,
+the wrapper makes one change there: it fast-forwards `main` to `origin/main` (`git fetch origin main`, then
+`git merge --ff-only origin/main`). The run itself never edits a file in the checkout. The wrapper stops with exit 2,
+observing nothing, if the checkout is not on `main`, has any uncommitted or untracked change, cannot be fetched, or
+cannot be fast-forwarded. It never falls back to observing whatever is there. The commit observed is recorded: the
+report and any proposal carry its SHA, and a proposal is built from that same commit. Run without the wrapper, the
+program still refuses a checkout that is not clean, and records the commit.
 
 The rule behind every choice in it: **valid data is required.** A failed observation is never a pass.
 
@@ -24,7 +32,11 @@ page its operating evidence was read from, and the page its address was read fro
 
 - **CONFIRMED**: the evidence text, and the address when the stop shows one, were found again, each on a page that
   answered HTTP 200 and is not a shell (a challenge, a refusal, an error page, a consent or age gate, an outage
-  notice). Matching text returned by a 404, a 500, a consent page or a challenge page confirms nothing.
+  notice). Matching text returned by a 404, a 500, a consent page or a challenge page confirms nothing. A shell is
+  recognised by what it is, not by its length: a title that is a gate ("Age verification", "Just a moment...",
+  "Access denied", "Site maintenance", "Cookie consent"), a short title that is only a notice ("Coming soon"), text
+  that opens with a gate's question with little after it, or a thin page carrying a gate phrase. A cookie line on a
+  real page is not a gate.
 - **GONE**: one of three things.
   - The evidence is absent from a page that loaded normally with real content **and is still recognisably the page
     it was last found on**: same final host and path after redirects, a similar title, a length within half to
@@ -48,18 +60,30 @@ is kept beside the report.
 **B. Directory status.** Every open listing (`closed_at IS NULL`) is asked about through Gemini with Google Maps
 grounding: OPERATIONAL, CLOSED_TEMPORARILY, CLOSED_PERMANENTLY or NOT_FOUND. A status is accepted only when the
 response has the shape we expect, carries a Maps source (it is grounded), and names a place that is a reasonable
-match for the listing's name. A different business at the address is recorded as OTHER_BUSINESS_AT_ADDRESS with both
-names: a lead, not a status. Anything else is unobservable. Every change between two validated statuses is reported
+match for the listing's name. A Maps source is an `https` address, parsed, whose host and path are on a fixed list
+(`maps.google.com`, `google.com/maps...`, `www.google.com/maps...`, `maps.app.goo.gl`, `goo.gl/maps...`); a Maps
+address appearing inside some other address does not count. A different business at the address is recorded as
+OTHER_BUSINESS_AT_ADDRESS with both names: a lead, not a status. Anything else is unobservable. Every answer that
+gives no accepted status, leads included, counts toward the 15% not-accepted floor, and a run with no accepted status
+at all fails. Every change between two validated statuses is reported
 with both values. **This is an internal lead.** Its detail (names, answers, the name, address and source the service
 returned, the last good statuses) is written only under `internal/` in the data directory. The report carries counts
 only. It is never shown or cited on the site.
 
-**C. Website links.** Every open listing's `website_url` is fetched. DEAD: the domain does not exist, or the page
-answers 404 or 410. PARKED: a domain seller's page. HIJACKED: gambling or adult content **and** the brewery's name
-gone from the title and the body. Gambling or adult words on a page that still names the brewery are a lead called
-"possible takeover: review", not a problem. OFF_DOMAIN: a redirect to another site that does not name the brewery.
-A server error (5xx), a refusal, a challenge page, a timeout or a page too thin to judge is "could not observe" and
-keeps the last good observation.
+**C. Website links.** Every open listing's `website_url` is fetched. First, could the page be seen at all? A server
+error (5xx), a refusal, a challenge, a gate or notice page, a timeout or a page too thin to judge is "could not
+observe" and keeps the last good observation; that is settled before anything else is concluded. Then: DEAD (the
+domain does not exist, or the page answers 404 or 410); PARKED (a domain seller's page); HIJACKED (gambling or adult
+content **and** the brewery's name gone from the title and the body); OFF_DOMAIN (a redirect to another site that
+does not name the brewery); MOVED (a redirect to another site whose page does); OK (the same site, naming the
+brewery). Two leads for review, never counted as problems: "possible takeover: review" (gambling or adult words on a
+page that still names the brewery) and "possibly moved: review" (a redirect to a host that carries the name, on a
+page that does not).
+
+"Names the brewery" means the distinctive name: the listing's name with generic words (brewing, brewery, company,
+co, beer, taproom, the, and ...) removed, **every** remaining word present as a whole word. One word of several is
+not the name, and a word inside another word is not that word. A page on the brewery's own domain that does not name
+it in full is "could not observe", not OK.
 
 ## The validity rules
 
@@ -70,7 +94,8 @@ keeps the last good observation.
 3. **Sanity floors.** More than 15% of the stops on a road GONE in one run: the run is treated as broken (network,
    an API change, our parser). For the directory: more than 15% of listings with a last good status newly closed,
    or newly not found; and separately, among listings seen for the first time, more than 15% closed or not found
-   (for fewer than ten such listings: more than two). For links: the same two tests over every problem class.
+   (for fewer than ten such listings: more than two). For links: the same two tests over every problem class, where
+   "seen for the first time" means the listing **and its URL**: a known listing with a new address is a new link.
    Also failing a check: more than 15% of answers not accepted (B), more than 30% of links unobservable (C), more
    than 15% of a road's stops unobservable (A, not counting stops with a current browser check), a directory read
    that returns under 80% of the listings the baseline saw, or our own site and a known-good name unreachable at
@@ -80,7 +105,8 @@ keeps the last good observation.
    directory.
 5. **A proposal needs two distinct observations at least 48 hours apart.** Each observation carries the time that
    page was read (not the time the run began), and the 48 hours are measured between those times. A sighting is
-   bound to the stop, the cited page and the cited text: if any of them changes, earlier sightings no longer count.
+   bound to the stop, the cited page and the cited text: if any of them changes, the stop's entry is wiped at once,
+   whatever the new observation is, and earlier sightings can never count again.
    A stop that qualifies stays "eligible, proposed": each run re-reads it and proposes again for as long as it stays
    gone and nobody has acted. Found again, its sightings are cleared.
 6. **Shown dates do not change.** A CONFIRMED stop gets its re-confirmation time in the state file only. The "hours
@@ -119,7 +145,8 @@ Everything is under the **data directory**, outside the checkout: `~/brewerytrip
 State is written to a temporary file and renamed, so a crash cannot leave half a file. One run at a time: the
 wrapper takes the lock (`mkdir`) before it pulls and holds it to the end; run by hand, the program takes it. A lock
 older than 12 hours is reported as stale and **not** removed: check that no run is going, then delete the `lock`
-directory by hand.
+directory by hand. The wrapper judges the data and log paths before it creates anything: they must be absolute and,
+in canonical form, outside the checkout.
 
 The last line of output is a one-sentence summary under 300 characters with counts only, fit for a text message.
 Exit code 0 only when every check observed validly; otherwise 2.
@@ -136,7 +163,12 @@ they have read.
    `--init-baseline c --from <the links observations file>`.
 
 `--init-baseline` is allowed only when the check has no state. It fetches nothing: the baseline is exactly the file
-named, and its SHA-256 hash, the date, who ran it and the counts are recorded in the state. It sets aside **only**
+named, and its SHA-256 hash, the date, who ran it and the counts are recorded in the state. The file must be the
+untouched output of a check that ran to its end: each observations file has a run record beside it
+(`<file>.run.json`: its hash, the commit, how many listings the directory held and how many were looked at, and
+whether the check completed, meaning both connectivity checks passed, the key was accepted and the request cap was
+not reached). A file with no record, a record that says the run did not complete, or a hash that no longer matches
+is refused. A production baseline must cover the whole directory. It sets aside **only**
 the first-run prevalence floor (how many listings are closed, or links broken, with nothing to compare with). It
 never accepts observations that failed for any other reason: unreadable answers, a short read, no grounding, an
 empty file.
@@ -147,11 +179,14 @@ calls closed, so the first full run will trip the prevalence floor and need this
 ## Proposals, and applying one
 
 When a stop is eligible, the job builds the suspension in a **disposable git worktree** (a separate copy with its
-own files and index, made from the checkout's current commit and removed afterwards) and writes to
+own files and index, made from the commit that was observed and removed afterwards) and writes to
 `proposals/<date>/`:
 
-- `suspension.patch`: adds the stop to `data/roads/<road>/suspended.json` on every road that lists it, the rebuilt
-  road files, the list as it stood, and the dated update entry.
+- `suspension.patch`: adds the stop to `data/roads/<road>/suspended.json`, the rebuilt road files, the list as it
+  stood, and the dated update entry. A brewery listed on another road is included there only when that road cites
+  the very same page and text (one piece of evidence; the evidence file says so) or is itself GONE on two
+  observations of its own. If another road cites something else for the brewery and that is not gone too, nothing
+  is proposed for the brewery: it is reported as an evidence conflict for a person.
 - `evidence.md`: the stop, the cited page and text, and each GONE observation with its time and where its page text
   was kept.
 - `checks.log`: builds with `--check`, `tsc` and `vitest`, run on the patched copy. The source verifiers are not run
@@ -207,7 +242,8 @@ The drill runs the same checks by the same rules, kept away from production thre
 
 ## What the machine needs (for whoever installs it)
 
-- Node 23.6 or later, `git`, and this repository with `npm ci` done, at the path in the plist.
+- Node 23.6 or later, `git`, and a checkout of this repository **used for nothing else**, on `main`, with `npm ci`
+  done, at the path in the plist, able to fetch `origin`.
 - For checks B and C: `npx wrangler` able to read the D1 database (a Cloudflare API token in the job's environment,
   or a logged-in wrangler). Without it, B and C report "could not read the directory" and exit 2.
 - For check B: a key for the status service, read inside the program and never printed: `GEMINI_API_KEY` in the

@@ -48,7 +48,7 @@ async function run({ drill }) {
   const allowed = drill ? ['--confirm', '--only', '--sample-b', '--sample-c', '--data-dir', '--listings-file', '--pretend-gone', '--pretend-first-sighting', '--init-baseline', '--from'] : ['--confirm', '--only', '--listings-file', '--init-baseline', '--from'];
   for (const a of argv.filter((x) => x.startsWith('--'))) if (!allowed.includes(a)) throw new Stop(`${a} is not an option of the ${drill ? 'drill' : 'production'} run${drill ? '' : ' (samples, other data directories and pretended observations belong to scripts/monthly-check-drill.mjs)'}`);
   const prod = canon(productionDir()), prodDefault = canon(join(homedir(), 'brewerytrip-monthly'));
-  let dataDir = drill ? '' : real(prod);
+  let dataDir = '';
   if (drill) {
     if (!opt('--data-dir')) throw new Stop('a drill needs --data-dir, a directory of its own');
     const wanted = canon(resolve(process.cwd(), opt('--data-dir')));   // judged before anything is created
@@ -56,6 +56,23 @@ async function run({ drill }) {
     if (L.insideDir(wanted, realpathSync(root))) throw new Stop('a drill may not keep its files inside the checkout');
     dataDir = real(wanted);
   }
+  if (!drill && L.insideDir(canon(prod), realpathSync(root))) throw new Stop(`the data directory (${prod}) is inside the checkout. It must be outside it`);
+  if (!drill) dataDir = real(prod);
+
+  // --- The source revision ------------------------------------------------------------------------------------------
+  // What is observed is what is in this checkout, so the checkout must be exactly one commit: the production run needs
+  // a clean working tree and index (untracked files included), and records the commit. The wrapper has already brought
+  // the checkout level with origin/main and passes the commit it left it at; if HEAD is anything else, stop.
+  const gitOut = (...a) => execFileSync('git', a, { cwd: root, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  let sourceSha = '', dirty = '';
+  try { sourceSha = gitOut('rev-parse', 'HEAD'); dirty = gitOut('status', '--porcelain'); } catch { throw new Stop('this is not a git checkout, so the revision observed cannot be recorded'); }
+  /** Called once the lock is held and the state has been read, before anything is observed. */
+  const requireOneCommit = () => {
+    if (!drill && dirty) throw new Stop(`the checkout has uncommitted or untracked changes (${dirty.split('\n').length} paths, the first: ${dirty.split('\n')[0].trim()}). The production run observes one commit exactly: give the job a checkout of its own that nobody works in`);
+    if (process.env.MONTHLY_SOURCE_SHA && process.env.MONTHLY_SOURCE_SHA !== sourceSha) throw new Stop(`the wrapper prepared commit ${process.env.MONTHLY_SOURCE_SHA}, but the checkout is at ${sourceSha}`);
+  };
+  const sourceLine = `Source revision observed: ${sourceSha}${dirty ? ' WITH UNCOMMITTED CHANGES (a drill; a proposal is built from the commit alone)' : ''}`;
+
   const dirs = Object.fromEntries(['state', 'internal', 'reports', 'proposals', 'pages', 'backups', 'observations'].map((d) => [d, join(dataDir, d)]));
   for (const d of Object.values(dirs)) mkdirSync(d, { recursive: true });
   const only = new Set((opt('--only') || (confirm ? 'a' : 'a,b,c')).split(',').map((x) => x.trim().toLowerCase()));
@@ -65,7 +82,11 @@ async function run({ drill }) {
   // The wrapper takes the lock before it pulls and holds it to the end (MONTHLY_LOCK_HELD names the directory it
   // holds). Run by hand, the lock is taken here. A stale lock is reported, never broken.
   const lock = join(dataDir, 'lock');
-  if (process.env.MONTHLY_LOCK_HELD !== lock) {
+  for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(sig, () => process.exit(2));   // so that the lock is released on the way out
+  // The wrapper's claim to hold the lock is believed only if the lock is there and names our parent process.
+  let wrapperHolds = false;
+  if (process.env.MONTHLY_LOCK_HELD === lock) { try { wrapperHolds = Number(JSON.parse(readFileSync(join(lock, 'info.json'), 'utf8')).pid) === process.ppid; } catch { /* not held */ } if (!wrapperHolds) throw new Stop(`MONTHLY_LOCK_HELD names ${lock}, but that lock is not held by the process that started this run`); }
+  if (!wrapperHolds) {
     try { mkdirSync(lock); } catch {
       let info = {}; try { info = JSON.parse(readFileSync(join(lock, 'info.json'), 'utf8')); } catch { /* no details */ }
       const started = info.started || (existsSync(lock) ? statSync(lock).mtime.toISOString() : stamp());
@@ -80,21 +101,24 @@ async function run({ drill }) {
   const writeJson = (f, v) => { const tmp = `${f}.tmp-${process.pid}`; writeFileSync(tmp, JSON.stringify(v, null, 1) + '\n'); renameSync(tmp, f); };
   let marker = {};
   if (existsSync(files.marker)) { try { marker = JSON.parse(readFileSync(files.marker, 'utf8')); } catch { throw new Stop(`${files.marker} cannot be read. Restore it from ${dirs.backups} before running again`); } }
+  if (!!marker.drill !== !!drill && Object.keys(marker).length) throw new Stop(`${files.marker} ${marker.drill ? 'was written by a drill: a production run does not use it' : 'was not written by a drill: a drill does not touch it'}`);
   /** The state of one check. Missing or unreadable state where state is known to have existed is a hard stop, never a new start. */
   const readState = (name, empty) => {
     const f = files[name];
     if (!existsSync(f)) { if (marker[name]) throw new Stop(`the ${name} state (${f}) is missing, though it was initialised on ${marker[name].date}. Restore it from ${dirs.backups}; a new baseline is never started silently`); return empty; }
     let s; try { s = JSON.parse(readFileSync(f, 'utf8')); } catch { throw new Stop(`the ${name} state (${f}) cannot be read. Restore it from ${dirs.backups}`); }
-    if (!s || typeof s !== 'object') throw new Stop(`the ${name} state (${f}) is not in the form expected. Restore it from ${dirs.backups}`);
+    const part = { roads: 'stops', directory: 'listings', links: 'links' }[name];
+    if (!s || typeof s !== 'object' || !s[part] || typeof s[part] !== 'object' || Array.isArray(s[part])) throw new Stop(`the ${name} state (${f}) is not in the form expected. Restore it from ${dirs.backups}`);
     if (s.drill && !drill) throw new Stop(`the ${name} state (${f}) was written by a drill. A production run does not read drill state`);
     if (!s.drill && drill) throw new Stop(`the ${name} state (${f}) was not written by a drill. A drill does not touch it`);
     return s;
   };
   const writeState = (name, s) => {
     writeJson(files[name], { ...(drill ? { drill: true } : {}), ...s });
-    if (!marker[name]) { marker = { ...marker, [name]: { date } }; writeJson(files.marker, marker); }
+    if (!marker[name]) { marker = { ...(drill ? { drill: true } : {}), ...marker, [name]: { date } }; writeJson(files.marker, marker); }
   };
   const state = { roads: readState('roads', { stops: {} }), directory: readState('directory', { listings: {} }), links: readState('links', { links: {} }) };
+  requireOneCommit();
   {
     const have = Object.values(files).filter((f) => existsSync(f));
     if (have.length) {
@@ -195,7 +219,7 @@ async function run({ drill }) {
         const was = state.roads.stops[k], fingerprint = was?.cite === cite ? was.page : undefined, hit = found(e, s.evidence);
         const r = pretendGone.has(k) ? { status: 'GONE', reason: 'DRILL: pretended gone', plain: L.PLAIN_NO_HOURS }
           : L.classifyStop({ evidencePage: e, evidenceFound: hit, evidenceKind: s.evidenceKind, address: s.address ? { page: a, found: found(a, s.address) } : null, browserChecked: s.browserChecked, fingerprint });
-        const run = { slug: road.slug, key: s.key, cite, at: e.at, name: s.name, town: s.town, breweryId: s.breweryId, url: s.evidenceUrl, evidence: s.evidence,
+        const run = { slug: road.slug, key: s.key, cite, source: L.sourceOf(s.evidenceUrl, s.evidence), at: e.at, name: s.name, town: s.town, breweryId: s.breweryId, url: s.evidenceUrl, evidence: s.evidence,
           known: !!s.browserChecked && R.unreadVerdict(s.browserChecked, date) === 'browser-checked', ...r,
           ...(r.status === 'CONFIRMED' && e.kind === 'page' && R.excerptFound(e.text, s.evidence) ? { page: L.fingerprintOf(e, s.evidence) } : {}),
           ...(r.status === 'GONE' ? { kept: keep(road, s, e) } : {}) };
@@ -236,6 +260,13 @@ async function run({ drill }) {
   /** Drill only: an even spread of n rows, the same ones every time for the same list. */
   const sample = (rows, n) => (!drill || !n || n >= rows.length ? rows : Array.from({ length: n }, (_, i) => rows[Math.floor((i * rows.length) / n)]));
   const hashFile = (f) => createHash('sha256').update(readFileSync(f)).digest('hex');
+  /**
+   * The record of the run that produced an observations file, written beside it only when the check ran to its end:
+   * the file's hash, how many listings the directory held and how many were looked at, the commit, and whether the
+   * check completed (both canaries passed, the key was accepted, the cap was not reached). A baseline can only be
+   * initialised from a file with such a record that says the run completed, whose hash still matches.
+   */
+  const recordRun = (obsFile, o) => writeJson(`${obsFile}.run.json`, { ...(drill ? { drill: true } : {}), file: obsFile, sha256: hashFile(obsFile), date, source: sourceSha, ...o });
   const who = () => `${userInfo().username}@${hostname()}`;
   const count = (list, key) => list.reduce((c, x) => { const k = String(key(x)); c[k] = (c[k] || 0) + 1; return c; }, {});
 
@@ -306,10 +337,12 @@ async function run({ drill }) {
     const answers = await pool(rows, 4, (r) => `status-service-${r.id}`, ask);
     const obsFile = join(dirs.internal, `${date}-directory.jsonl`);
     writeFileSync(obsFile, answers.map((a) => JSON.stringify(a)).join('\n') + '\n');
-    if (refused) return fail(`could not observe: the status service refused our key (${refused})`);
-    if (answers.some((a) => a.why === 'request cap reached')) return fail(`stopped at the cap of ${L.STATUS_REQUEST_CAP} requests before every listing was asked about`);
+    const incomplete = (why) => { recordRun(obsFile, { check: 'b', complete: false, why, directory: listings.length, looked: rows.length }); return fail(why); };
+    if (refused) return incomplete(`could not observe: the status service refused our key (${refused})`);
+    if (answers.some((a) => a.why === 'request cap reached')) return incomplete(`stopped at the cap of ${L.STATUS_REQUEST_CAP} requests before every listing was asked about`);
     const after = await canary();
-    if (after) return fail(`could not observe: ${after} by the end of the run`);
+    if (after) return incomplete(`could not observe: ${after} by the end of the run`);
+    recordRun(obsFile, { check: 'b', complete: true, why: '', directory: listings.length, looked: rows.length });
     const runs = directoryRuns(answers), verdict = L.directoryVerdict(state.directory, runs);
     const transitions = L.directoryTransitions(state.directory.listings, runs), counts = L.transitionCounts(transitions);
     const by = new Map(answers.map((a) => [a.id, a])), named = (a) => `${a.id} ${a.name} (${a.city}, ${a.state})`;
@@ -335,7 +368,8 @@ async function run({ drill }) {
     const obsFile = join(dirs.observations, `${date}-links.jsonl`);
     writeFileSync(obsFile, runs.map((a) => JSON.stringify(a)).join('\n') + '\n');
     const after = await canary();
-    if (after) return { ran: true, valid: false, why: `could not observe: ${after} by the end of the run`, runs, fresh: [], leads: [], obsFile };
+    if (after) { recordRun(obsFile, { check: 'c', complete: false, why: after, directory: listings.length, looked: rows.length }); return { ran: true, valid: false, why: `could not observe: ${after} by the end of the run`, runs, fresh: [], leads: [], obsFile }; }
+    recordRun(obsFile, { check: 'c', complete: true, why: '', directory: listings.length, looked: rows.length });
     const verdict = L.linkVerdict(state.links, runs);
     const fresh = verdict.valid ? L.newLinkProblems(state.links.links, runs) : [], leads = verdict.valid ? L.newLinkLeads(state.links.links, runs) : [];
     if (verdict.valid) { state.links = L.mergeLinkState(state.links, runs, date, true); writeState('links', state.links); }
@@ -353,10 +387,17 @@ async function run({ drill }) {
     const file = realpathSync(resolve(process.cwd(), from));
     if (!L.insideDir(file, dataDir)) throw new Stop(`the observations file must be one this data directory holds (${dataDir})`);
     if (existsSync(files[name]) || marker[name]) throw new Stop(`the ${name} check already has state: a baseline is initialised once`);
+    // The file must be the untouched output of a check that ran to its end: its run record says so and its hash matches.
+    let rec; try { rec = JSON.parse(readFileSync(`${file}.run.json`, 'utf8')); } catch { throw new Stop(`${file} has no run record beside it (${basename(file)}.run.json): it is not the output of a completed check`); }
+    if (rec.check !== init) throw new Stop(`${file} is the output of check ${String(rec.check).toUpperCase()}, not ${init.toUpperCase()}`);
+    if (!rec.complete) throw new Stop(`the run that wrote ${file} did not complete (${rec.why}): it cannot be a baseline`);
+    if (rec.sha256 !== hashFile(file)) throw new Stop(`${file} has changed since the run that wrote it: it cannot be a baseline`);
+    if (!!rec.drill !== !!drill) throw new Stop(`${file} was ${rec.drill ? '' : 'not '}written by a drill`);
+    if (!drill && rec.looked !== rec.directory) throw new Stop(`${file} covers ${rec.looked} of ${rec.directory} listings: a production baseline is the whole directory`);
     const rows = readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
     const runs = init === 'b' ? directoryRuns(rows) : rows, verdict = init === 'b' ? L.directoryVerdict({ listings: {} }, runs) : L.linkVerdict({ links: {} }, runs);
     if (!L.initMayAccept(verdict)) throw new Stop(`these observations cannot be a baseline: ${verdict.why}`);
-    const baseline = { date, by: who(), file, hash: hashFile(file), listings: runs.length, counts: count(rows, (x) => (init === 'b' ? (x.outcome === 'STATUS' ? x.status : x.outcome) : x.cls)) };
+    const baseline = { date, by: who(), file, hash: hashFile(file), source: rec.source, directory: rec.directory, listings: runs.length, counts: count(rows, (x) => (init === 'b' ? (x.outcome === 'STATUS' ? x.status : x.outcome) : x.cls)) };
     const obsDate = (basename(file).match(/^\d{4}-\d{2}-\d{2}/) || [date])[0];
     writeState(name, init === 'b' ? L.mergeDirectoryState({ baseline, listings: {} }, runs, obsDate, true) : L.mergeLinkState({ baseline, links: {} }, runs, obsDate, true));
     log(`baseline initialised for the ${name} check from ${file}`);
@@ -368,14 +409,16 @@ async function run({ drill }) {
 
   // --- A proposal: the suspension as a patch, built in a disposable worktree, with the evidence beside it ---------
   function propose(eligible) {
-    const list = L.suspensionsByRoad(eligible, roads), slugs = [...new Set(list.map((x) => x.slug))];
+    // Which stops may be named: see proposalItems. A brewery whose roads cite different evidence, not all of it gone, is a conflict and is left out.
+    const { items: list, conflicts } = L.proposalItems(eligible, roads.map((r) => ({ slug: r.slug, stops: r.stops.map((s) => ({ key: s.key, breweryId: s.breweryId, name: s.name, source: L.sourceOf(s.evidenceUrl, s.evidence) })) })));
+    const slugs = [...new Set(list.map((x) => x.slug))];
     const out = join(dirs.proposals, date); mkdirSync(out, { recursive: true });
     const tmp = mkdtempSync(join(tmpdir(), 'brewerytrip-proposal-')), wt = join(tmp, 'checkout'), checks = [];
     const git = (...a) => execFileSync('git', a, { cwd: root, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
     const step = (cmd, args) => { const name = `${cmd} ${args.join(' ')}`; try { execFileSync(cmd, args, { cwd: wt, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 256 * 1024 * 1024, timeout: 30 * 60 * 1000 }); checks.push(`PASSED  ${name}`); return true; } catch (e) { checks.push(`FAILED  ${name} (exit ${e.status ?? '?'})\n${String(e.stdout || '').slice(-6000)}\n${String(e.stderr || '').slice(-3000)}`); return false; } };
-    let base = '', patch = '', failed = [];
+    let patch = '', failed = []; const base = sourceSha;               // the proposal is built from the very commit that was observed
     try {
-      base = git('rev-parse', 'HEAD');
+      if (!list.length) throw new Error('every eligible stop is in an evidence conflict');
       git('worktree', 'add', '--detach', wt, base);                    // its own files and its own index: the live checkout is not touched
       if (existsSync(join(root, 'node_modules'))) symlinkSync(realpathSync(join(root, 'node_modules')), join(wt, 'node_modules'));
       const paths = [];
@@ -402,20 +445,21 @@ async function run({ drill }) {
       rmSync(tmp, { recursive: true, force: true });
       try { git('worktree', 'prune'); } catch { /* nothing to prune */ }
     }
-    if (patch) writeFileSync(join(out, 'suspension.patch'), patch);
+    if (patch && list.length) writeFileSync(join(out, 'suspension.patch'), patch);
     writeFileSync(join(out, 'checks.log'), checks.join('\n\n') + '\n');
     const stopOf = (o) => roads.find((r) => r.slug === o.slug).stops.find((s) => s.key === o.key);
     writeFileSync(join(out, 'evidence.md'), [`# Proposed suspension, ${date}${drill ? ' (DRILL: not an observation)' : ''}`, '',
-      'A person reviews this and applies it through the normal reviewed process. The job has published nothing and changed no file in the checkout.', '',
+      'A person reviews this and applies it through the normal reviewed process. The job has published nothing and changed no file in the checkout.', '', sourceLine, '',
       `Patch: suspension.patch, against commit ${base}. Checks run on the patched copy: checks.log (${failed.length ? `${failed.length} FAILED` : 'all passed'}). The source verifiers were not run on it; run them after applying.`, '',
-      ...eligible.flatMap((o) => { const s = stopOf(o); return [`## ${s.name} (${s.town})`, '', `- listed on: ${list.filter((x) => x.order === o).map((x) => `${x.slug} (${x.id})`).join(', ')}`, `- cited page: ${s.evidenceUrl}`, `- cited evidence: "${s.evidence}"`, `- the narrow fact: ${o.plain}`,
+      ...eligible.flatMap((o) => { const s = stopOf(o); return [`## ${s.name} (${s.town})`, '', `- proposed on: ${list.filter((x) => x.order === o).map((x) => `${x.slug} (${x.id}; ${x.basis === 'observed' ? 'observed there' : 'that road cites the very same page and text, so this is the same evidence'})`).join(', ') || 'no road: evidence conflict, see below'}`, `- cited page: ${s.evidenceUrl}`, `- cited evidence: "${s.evidence}"`, `- the narrow fact: ${o.plain}`,
         `- observations, at least ${L.CONFIRM_AFTER_HOURS} hours apart (${((Date.parse(o.confirmed) - Date.parse(o.firstSeen)) / 3600000).toFixed(1)} hours from first to latest):`, ...o.records.map((g) => `  - ${g.at}: ${g.reason}${g.kept ? `. Page text kept at ${g.kept}` : ''}`), '']; }),
+      ...(conflicts.length ? ['## Evidence conflicts: nothing is proposed for these', ...conflicts.map((c) => `- ${c.breweryId} ${c.name}: ${c.why}. A person should look at both citations.`), ''] : []),
       ...(failed.length ? ['## Checks that failed on the patched copy', ...failed.map((f) => `- ${f}`), ''] : [])].join('\n'));
-    return { dir: out, list, failed, patch: !!patch };
+    return { dir: out, list, failed, conflicts, patch: !!patch };
   }
 
   // --- Run ----------------------------------------------------------------------------------------------------------
-  const report = [`# Brewery Trip monthly check, ${date}${confirm ? ' (confirming pass)' : ''}`, '', ...(drill ? ['**DRILL: a trial run in its own data directory. Nothing here is a production observation.**', ''] : [])];
+  const report = [`# Brewery Trip monthly check, ${date}${confirm ? ' (confirming pass)' : ''}`, '', sourceLine, '', ...(drill ? ['**DRILL: a trial run in its own data directory. Nothing here is a production observation.**', ''] : [])];
   const say = (...lines) => report.push(...lines);
   const status = (c) => (c.valid ? 'ran' : `FAILED: ${c.why}`);
   const outcomes = []; let A = null, B = null, C = null, listings = null, listingsError = '', proposal = null;
@@ -432,7 +476,7 @@ async function run({ drill }) {
     const item = (r) => `- ${r.slug} ${r.key} ${r.name} (${r.town}): ${r.reason}. ${r.url}${r.kept ? ` (page text kept at ${r.kept})` : ''}`;
     say(`### Gone once (${A.goneOnce.length}): a person should look; the confirming pass re-reads these`, ...(A.goneOnce.length ? A.goneOnce.map(item) : ['- none']), '');
     say(`### Proposed for suspension: GONE on two observations at least 48 hours apart (${A.eligible.length})`, ...(proposal ? proposal.list.map((x) => `- ${x.slug} ${x.id} ${x.name}: ${x.order.plain} (first seen ${x.order.firstSeen}, seen again ${x.order.confirmed})`) : ['- none']), '');
-    if (proposal) say(`Nothing was published and no file in the checkout was changed. The proposal is in ${proposal.dir}: suspension.patch${proposal.patch ? '' : ' (NOT written)'}, evidence.md and checks.log. ${proposal.failed.length ? `Checks that failed on the patched copy: ${proposal.failed.join('; ')}.` : 'Builds, tsc and vitest passed on the patched copy.'} A person reviews and applies it; until then each run re-reads these stops and proposes again while they stay gone.`, '');
+    if (proposal) say(`Nothing was published and no file in the checkout was changed. The proposal is in ${proposal.dir}: suspension.patch${proposal.patch ? '' : ' (NOT written)'}, evidence.md and checks.log. ${proposal.failed.length ? `Checks that failed on the patched copy: ${proposal.failed.join('; ')}.` : 'Builds, tsc and vitest passed on the patched copy.'} A person reviews and applies it; until then each run re-reads these stops and proposes again while they stay gone.`, '', ...(proposal.conflicts.length ? [`Evidence conflicts, nothing proposed (${proposal.conflicts.length}):`, ...proposal.conflicts.map((c) => `- ${c.breweryId} ${c.name}: ${c.why}`), ''] : []));
     if (A.cleared.length) say(`### Seen gone before, found again this time (${A.cleared.length})`, ...A.cleared.map(item), '');
     const flagged = all.filter((r) => r.flag === 'address'), changed = all.filter((r) => r.flag === 'page-changed'), unseen = all.filter((r) => r.status === 'COULD_NOT_OBSERVE' && !r.flag);
     say(`### Page changed, evidence not found (${changed.length}): nothing is concluded; a person should look`, ...(changed.length ? changed.map(item) : ['- none']), '');
@@ -450,10 +494,10 @@ async function run({ drill }) {
     say('## C. Website links', '', `Status: ${status(C)}`, '');
     if (C.runs.length) {
       const k = (c) => C.runs.filter((r) => r.cls === c).length, item = (r) => `- ${r.id} ${r.name} (${r.city}, ${r.state}): ${r.cls}. ${r.note}. ${r.url}`;
-      say(`${C.runs.length} links: ${['OK', 'MOVED', 'DEAD', 'PARKED', 'HIJACKED', 'OFF_DOMAIN', 'POSSIBLE_TAKEOVER', 'SOCIAL', 'COULD_NOT_OBSERVE'].map((c) => `${k(c)} ${c}`).join(', ')}.`, '', ...needsInit(C, 'c', C.obsFile));
+      say(`${C.runs.length} links: ${['OK', 'MOVED', 'DEAD', 'PARKED', 'HIJACKED', 'OFF_DOMAIN', 'POSSIBLE_TAKEOVER', 'POSSIBLY_MOVED', 'SOCIAL', 'COULD_NOT_OBSERVE'].map((c) => `${k(c)} ${c}`).join(', ')}.`, '', ...needsInit(C, 'c', C.obsFile));
       say(`### New problems (${C.fresh.length})`, ...(C.valid ? (C.fresh.length ? C.fresh.map(item) : ['- none']) : ['- not concluded: the run did not update the state']), '');
-      say(`### Possible takeover: review (${C.leads.length} new)`, ...(C.valid ? (C.leads.length ? C.leads.map(item) : ['- none']) : ['- not concluded']), '');
-      if (!C.valid) say('### What this run saw (not conclusions)', ...C.runs.filter((r) => [...L.LINK_PROBLEMS, 'POSSIBLE_TAKEOVER'].includes(r.cls)).map(item), '');
+      say(`### Leads to review: possible takeover, possibly moved (${C.leads.length} new)`, ...(C.valid ? (C.leads.length ? C.leads.map(item) : ['- none']) : ['- not concluded']), '');
+      if (!C.valid) say('### What this run saw (not conclusions)', ...C.runs.filter((r) => [...L.LINK_PROBLEMS, ...L.LINK_LEADS].includes(r.cls)).map(item), '');
       const moved = C.runs.filter((r) => r.cls === 'MOVED'), unseen = C.runs.filter((r) => r.cls === 'COULD_NOT_OBSERVE');
       say(`### Now at another address that names the brewery (${moved.length}): worth a look, not a problem`, ...(moved.length ? moved.map(item) : ['- none']), '');
       say(`### Could not observe (${unseen.length}): nothing is concluded about these`, ...(unseen.length ? unseen.map(item) : ['- none']), '');
