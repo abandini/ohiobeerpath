@@ -1,21 +1,22 @@
 [
- {
-  "match": 169,
-  "reason": "editor: reviewed placement exception, a difference in how one address is written (kept on re-read against the review standard, 2026-11-22)",
-  "acceptPlacement": {
-   "evidence": "Printed \"1255 N CARPENTER RD SUITE 100 BRUNSWICK, OH 44212\"; the geocoder matched \"1255 CARPENTER RD N, BRUNSWICK, OH, 44212\". Same number, street, town, state and ZIP code. The only difference is whether the direction \"N\" is written before or after the street name."
+  {
+    "match": 169,
+    "reason": "editor: reviewed placement exception, a difference in how one address is written (kept on re-read against the review standard, 2026-11-22)",
+    "acceptPlacement": {
+      "evidence": "Printed \"1255 N CARPENTER RD SUITE 100 BRUNSWICK, OH 44212\"; the geocoder matched \"1255 CARPENTER RD N, BRUNSWICK, OH, 44212\". Same number, street, town, state and ZIP code. The only difference is whether the direction \"N\" is written before or after the street name."
+    }
+  },
+  {
+    "match": 293,
+    "reason": "editor: reviewed placement exception, a difference in how one address is written (kept on re-read against the review standard, 2026-11-22)",
+    "acceptPlacement": {
+      "evidence": "Printed \"8584 Duke Boulevard in Mason, Ohio\"; the geocoder matched \"8584 DUKE BLVD, MASON, OH, 45040\". Same number, street, town and state. The only difference is the word \"in\" before the town."
+    }
+  },
+  {
+    "match": 229,
+    "status": "UNCONFIRMED",
+    "reason": "editor: two checks on 2026-11-22 disagree about what this venue is. One read it as a brewery taproom with printed bar hours; the other read the same site as a seasonal pop-up bar that does not say it brews. Coordinator ruling 2026-11-22: stays off both roads.",
+    "notAccepted": "two checks on the same day read its site differently, one as a brewery taproom with bar hours and one as a seasonal bar that does not say it brews, so its identity as a brewery is not established"
   }
- },
- {
-  "match": 293,
-  "reason": "editor: reviewed placement exception, a difference in how one address is written (kept on re-read against the review standard, 2026-11-22)",
-  "acceptPlacement": {
-   "evidence": "Printed \"8584 Duke Boulevard in Mason, Ohio\"; the geocoder matched \"8584 DUKE BLVD, MASON, OH, 45040\". Same number, street, town and state. The only difference is the word \"in\" before the town."
-  }
- },
- {
-  "match": 229,
-  "status": "UNCONFIRMED",
-  "reason": "editor: two checks on 2026-11-22 disagree about what this venue is. One read it as a brewery taproom with printed bar hours; the other read the same site as a seasonal pop-up bar that does not say it brews. Coordinator ruling 2026-11-22: stays off both roads."
- }
 ]

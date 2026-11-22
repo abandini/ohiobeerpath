@@ -1295,7 +1295,7 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
     expect(text.indexOf(`Exits and access. ${INTERSTATE_NOTICE}`)).toBeGreaterThan(text.indexOf('How this list was made'));
     // What stays above the legs is short: the breakdown and the unlisted names are below.
     const top = text.slice(0, text.indexOf('Leg 1:'));
-    expect(top).toContain(cohortLine(road.cohort!, 'on 2026-11-22')); expect(top).not.toMatch(/operating status unresolved|not listed, and why|editorial sections/);
+    expect(top).toContain(cohortLine(road.cohort!, 'on 2026-11-22', true)); expect(top).not.toMatch(/operating status unresolved|not listed, and why|editorial sections/);
     expect(DIRECTIONS_NOTE_INTERSTATE).toBe('Its nearest road point is not an exit or an access point. Plan while parked.');
     expect(main.match(/Directions \(opens Google Maps\)<\/a><\/p>\s*<p class="rt-src">Its nearest road point is not an exit or an access point\. Plan while parked\.<\/p>/g)).toHaveLength(road.stops.length);
     expect(main.replace(/<blockquote>.*?<\/blockquote>/gs, '')).not.toMatch(/\bat (the )?(an )?exit\b/i);
@@ -1307,7 +1307,15 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
     expect(k.listed).toBe(road.stops.length); expect(k.withHours).toBe(k.listed + k.notPlaced + k.outside);
     expect(k.listed + k.notPlaced + k.outside + k.unresolved + k.settled).toBe(k.total);
     expect(road.legs.reduce((n, l) => n + l.cohort!.total, 0)).toBe(k.total);
-    expect(text).toContain(`We checked 157 directory candidates, selected using directory coordinates (within 5 straight-line miles of our mapped line), on 2026-11-22. We found published visiting hours for ${k.withHours}; ${k.listed} meet this page’s location and distance requirements.`);
+    // One candidate's hours text was found but its identity was not established (Nano Brew), so this page says "met our evidence requirements", never "found hours"
+    expect(road.rejected.map((x) => x.id)).toEqual([229]);
+    expect(text).toContain(`We checked 157 directory candidates, selected using directory coordinates (within 5 straight-line miles of our mapped line), on 2026-11-22. ${k.withHours} candidates met our visiting-hours evidence requirements; ${k.listed} are listed and ${k.withHours - k.listed} are withheld for placement or distance.`);
+    expect(text).toContain(`${k.unresolved} unresolved: visiting-hours evidence was not accepted or brewery identity was not established`); expect(text).not.toMatch(/We found published visiting hours|could not confirm published visiting hours/);
+    expect(text).toContain(`The ${road.notListed.length} candidates with accepted visiting-hours evidence that are not listed, and why`);
+    expect(text).toContain('Hours text found but not accepted as evidence, or identity not established (1)'); expect(text).toContain('Nano Brew Cleveland: two checks on the same day read its site differently');
+    // US 422 names no such candidate and keeps its wording
+    const us = allRoads().find((r) => r.config.slug === 'us-422')!, ustext = roadTripPage(us).replace(/<[^>]+>/g, '');
+    expect(us.rejected).toEqual([]); expect(ustext).toContain('and found published visiting hours for'); expect(ustext).not.toContain('met our visiting-hours evidence requirements');
     expect(text).not.toMatch(/could not be confirmed either way|We reached a decision on/);
     // The one that makes 157 into 156 within the limit: placed by its printed address, it is beyond the limit.
     expect(road.notListed.filter((x) => x.why === 'outside').map((x) => x.id)).toEqual([2390]);
@@ -1346,7 +1354,7 @@ describe('Interstate 75 (src/data/roads/i-75)', () => {
   const dir = join(__dirname, '../../data/roads/i-75');
   const read = (f: string) => JSON.parse(readFileSync(join(dir, f), 'utf8'));
   const verified: VerifiedRow[] = readdirSync(dir).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(read);
-  const html = roadTripPage(road), main = html.slice(html.indexOf('<h1')), text = main.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+  const html = roadTripPage(road), main = html.slice(html.indexOf('<h1')), text = main.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
   const ids = new Set(road.stops.map((s) => s.breweryId));
   it('is a directory road in five legs, Sault Ste. Marie to Richmond, Kentucky, and joins the index without taking the headline', () => {
     expect(roadConfigProblems(road.config)).toEqual([]); expect(road.config.stopsHavePages).not.toBe(false); expect(road.config.headline).not.toBe(true);
@@ -1373,14 +1381,19 @@ describe('Interstate 75 (src/data/roads/i-75)', () => {
   });
   it('leaves off the rows the checkers flagged, each for its own reason', () => {
     // 711 no printed address; 545 a same-day line only; 450 hours only in an undated FAQ; 34 served with HTTP 404; 941 a visitor centre; 302 not established as a brewery
-    for (const id of [711, 545, 450, 34, 941, 302]) expect(ids.has(id), String(id)).toBe(false);
+    for (const id of [711, 545, 34, 941, 302]) expect(ids.has(id), String(id)).toBe(false);
+    // 450 Dearborn: its own FAQ states regular weekly hours, so it is accepted like any other hours text and placed by an exact Census match
+    expect(road.stops.find((s) => s.breweryId === 450)).toMatchObject({ placedBy: 'census', evidenceUrl: 'https://dearbornbrewing.com/frequent-questions' });
     // unplaced: locality name, suffix or street form differs, or the geocoder had no match; and two beyond the limit once placed
-    for (const id of [474, 58, 98, 602, 449, 628, 453, 369, 10, 337, 115, 312, 643, 2390]) expect(ids.has(id), String(id)).toBe(false);
+    for (const id of [474, 58, 98, 602, 449, 628, 453, 369, 337, 115, 312, 643, 2390]) expect(ids.has(id), String(id)).toBe(false);
     for (const r of verified.filter((x) => x.status !== 'OPEN')) expect(ids.has(r.id as number), String(r.name)).toBe(false);
     const decided = read('decisions.json') as { match: number; status?: string; reason: string }[];
-    expect(decided.filter((d) => d.status).map((d) => [d.match, d.status]).sort((a, b) => (a[0] as number) - (b[0] as number))).toEqual([[34, 'UNCONFIRMED'], [302, 'UNCONFIRMED'], [450, 'UNCONFIRMED'], [545, 'UNCONFIRMED'], [941, 'NOT A BREWERY TAPROOM']]);
+    expect(decided.filter((d) => d.status).map((d) => [d.match, d.status]).sort((a, b) => (a[0] as number) - (b[0] as number))).toEqual([[34, 'UNCONFIRMED'], [302, 'UNCONFIRMED'], [545, 'UNCONFIRMED'], [941, 'NOT A BREWERY TAPROOM']]);
     // placed by the form on the cited page: Earnest Westgate at 3134, Rolling Oak with the footer ZIP, Country Boy at its printed address, not the directory's
-    expect(road.stops.find((s) => s.breweryId === 97)!.address).toBe('3134 W Central Ave., Toledo, OH 43606'); expect(road.stops.find((s) => s.breweryId === 637)!.address).toBe('509 Norway St, Grayling, MI 49738');
+    // Earnest Westgate prints two street numbers on its own pages: held. Rolling Oak prints one address with two ZIP codes: listed, with a note quoting both.
+    expect(ids.has(97)).toBe(false);
+    const ro = road.stops.find((s) => s.breweryId === 637)!;
+    expect(ro.address).toBe('509 Norway St, Grayling, MI 49738'); expect(ro.conflict).toEqual({ text: "This brewery's page prints two ZIP codes (49738 and 49748); the street address, town and state agree.", sources: [{ quote: '509 Norway St, Grayling, MI 49738', url: 'https://www.rollingoakbrewing.com/' }, { quote: '509 Norway St. Grayling, MI 49748', url: 'https://www.rollingoakbrewing.com/' }] });
     const cb = road.stops.find((s) => s.breweryId === 906)!; expect([cb.address, cb.placedBy]).toEqual(['101 Innovation Way Georgetown, KY 40324', 'census']);
     expect(JSON.stringify(read('candidates.json'))).not.toMatch(/second_signal|OPERATIONAL|CLOSED_PERMANENTLY/);
     for (const f of readdirSync(dir).filter((x) => /^verified/.test(x))) expect(readFileSync(join(dir, f), 'utf8'), f).not.toMatch(/second signal|second_signal|CLOSED_PERMANENTLY|NOT_FOUND|status signal/i);
@@ -1403,14 +1416,29 @@ describe('Interstate 75 (src/data/roads/i-75)', () => {
   });
   it('tells coverage by cohort, names the breweries with hours that are not listed, and labels seasonal hours', () => {
     const k = road.cohort!;
-    expect(k.total).toBe(137); expect(k.listed).toBe(road.stops.length); expect(k.held).toBe(2); expect(k.withHours).toBe(k.listed + k.notPlaced + k.outside + k.held!); expect(k.listed + k.notPlaced + k.outside + k.held! + k.unresolved + k.settled).toBe(k.total);
+    expect(k.total).toBe(137); expect(k.listed).toBe(road.stops.length); expect(k.held).toBe(3); expect(k.withHours).toBe(k.listed + k.notPlaced + k.outside + k.held!); expect(k.listed + k.notPlaced + k.outside + k.held! + k.unresolved + k.settled).toBe(k.total);
     // Inside the Five: hours found, but the table reads out of order as text, so both are held and named with that reason
-    expect(road.notListed.filter((x) => x.why === 'held').map((x) => [x.id, x.reason])).toEqual([[177, 'its hours table could not be read in order by our script; awaiting a read by a person'], [175, 'its hours table could not be read in order by our script; awaiting a read by a person']]);
-    expect(ids.has(177) || ids.has(175)).toBe(false); expect(text).toContain('2 with published visiting hours, held until a person has read the page');
-    // two stops whose own sites print two different times say so
-    expect(road.stops.filter((s) => s.twoTimes).map((s) => s.breweryId).sort()).toEqual([183, 80]); expect(main.match(/This brewery’s site prints two different times for this day; we show the one on the page we cite\. Check before you go\./g)).toHaveLength(2);
+    expect(road.notListed.filter((x) => x.why === 'held').map((x) => [x.id, x.reason])).toEqual([[97, 'its own pages print two street numbers (3134 W Central Ave. and 3142 W Central Ave., Toledo); held until a first-hand source settles which is the visiting address'], [177, 'its hours table could not be read in order by our script; awaiting a read by a person'], [175, 'its hours table could not be read in order by our script; awaiting a read by a person']]);
+    expect(ids.has(177) || ids.has(175)).toBe(false); expect(text).toContain('3 with accepted visiting-hours evidence, held until a person has read the page or settled which address is the one to visit');
+    // a sourced note under each stop whose own pages disagree: what differs, both texts quoted, and which one is shown
+    expect(road.stops.filter((s) => s.conflict).map((s) => s.breweryId).sort((a, b) => a! - b!)).toEqual([80, 183, 637]);
+    const stopText = (id: number) => { const at = main.indexOf(`id="stop-${id}"`); return main.slice(at, main.indexOf('</li>', at)).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&'); };
+    const juniper = stopText(183);
+    expect(juniper).toContain('Its own pages disagree. Its page prints two hours blocks that disagree on the Friday and Saturday closing time: 11pm in the block at the top of the page, 10pm in the block at the foot. The hours shown above are from the block at the top.');
+    expect(juniper).toContain('“Friday & Saturday - 8am - 11pm”'); expect(juniper).toContain('“Friday & Saturday - 8am - 10pm”'); expect(juniper).toContain('Check before you go.');
+    const piqua = stopText(80);
+    expect(piqua).toContain('different opening times for every day it is open, Tuesday to Sunday: 11:00 AM on the home page, 11:30am on the location page. The hours shown above are from the home page.');
+    expect(piqua).toContain('“Tues, Wed, Thurs 11:00 AM - 10 PM Fri, Sat 11:00 AM - 11 PM Sun 11:00 AM - 9 PM”'); expect(piqua).toContain('“Tue - Thur 11:30am - 10pm Fri - Sat 11:30am - 11pm Sun 11:30am - 9pm”');
+    const at80 = main.indexOf('id="stop-80"'); expect(main.slice(at80, main.indexOf('</li>', at80))).toContain('href="https://crookedhandle.com/piqua-crooked-handle-brewing-co-piqua-locations"');
+    expect(main).not.toContain('prints two different times for this day');
+    // candidates whose hours text was found but not accepted, or whose identity is not established, are named with the reason
+    expect(road.rejected.map((x) => x.id).sort((a, b) => (a as number) - (b as number))).toEqual([34, 302, 545, 941]);
+    for (const x of road.rejected) expect(text).toContain(`${x.name}: ${x.reason}.`);
+    expect(text).toContain('Hours text found but not accepted as evidence, or identity not established (4)'); expect(text).toContain('These are editorial decisions about evidence.');
     expect(road.legs.reduce((n, l) => n + l.cohort!.total, 0)).toBe(137);
-    expect(text).toContain(`We checked 137 directory candidates on 2026-11-22 and found published visiting hours for ${k.withHours}; ${k.listed} meet this page’s location and distance requirements.`);
+    expect(text).toContain(`We checked 137 directory candidates on 2026-11-22. ${k.withHours} candidates met our visiting-hours evidence requirements; ${k.listed} are listed and ${k.withHours - k.listed} are withheld for placement, distance or pending manual review.`);
+    expect(text).toContain(`${k.unresolved} unresolved: visiting-hours evidence was not accepted or brewery identity was not established`); expect(text).toContain(`The ${road.notListed.length} candidates with accepted visiting-hours evidence that are not listed, and why`);
+    expect(text).not.toMatch(/We found published visiting hours|found published visiting hours for|could not confirm published visiting hours/); expect(roadsIndexPage(allRoads()).replace(/<[^>]+>/g, '')).toContain(`${k.withHours} candidates met our visiting-hours evidence requirements; ${k.listed} are listed`);
     expect(road.notListed.filter((x) => x.why === 'outside').map((x) => x.id).sort()).toEqual([2390, 643]);
     for (const x of road.notListed) expect(text).toContain(`${x.name}: ${x.reason}.`);
     expect(text).toContain('None of these is a finding that the brewery has closed.');
@@ -1464,7 +1492,7 @@ describe('roads that list the same brewery agree about it', () => {
     expect(crossRoadDifferences(pair({ mile: 99, detourMiles: 4, legId: 'x', segmentId: 'y', key: 'k' }))).toEqual([]);
     const changes: Partial<RoadStop>[] = [{ name: 'Other' }, { town: 'Lakewood' }, { state: 'PA' }, { address: '1 Other St' }, { addressSourceUrl: 'https://example.com/a' }, { website: 'https://example.com' },
       { evidence: 'Mon 1-2' }, { evidenceUrl: 'https://example.com/h' }, { evidenceChecked: '2026-11-01' }, { evidenceKind: 'notice' }, { lat: 1 }, { lon: 2 }, { placedBy: 'directory' }, { placedNote: 'x' }, { browserChecked: '2026-11-22' },
-      { quote: 'Other words.' }, { quoteSourceUrl: 'https://example.com/q' }, { checked: '2026-10-01' }, { noticeContext: 'the page names another year' }, { seasonal: true }, { twoTimes: true }];
+      { quote: 'Other words.' }, { quoteSourceUrl: 'https://example.com/q' }, { checked: '2026-10-01' }, { noticeContext: 'the page names another year' }, { seasonal: true }, { conflict: { text: 'x', sources: [{ quote: 'q', url: 'https://example.com/c' }] } }];
     expect(changes.map((c) => Object.keys(c)[0]).sort()).toEqual([...SHARED_STOP_FIELDS].sort());   // every compared field is tried
     for (const c of changes) { const d = crossRoadDifferences(pair(c)); expect(d, JSON.stringify(c)).toHaveLength(1); expect(d[0]).toMatch(new RegExp(`^130 .*: ${Object.keys(c)[0]} is .* on a but .* on b$`)); }
     for (const c of changes) expect(crossRoadDifferences(pair(c), [`130:${Object.keys(c)[0]}`]), JSON.stringify(c)).toEqual([]);   // unless recorded

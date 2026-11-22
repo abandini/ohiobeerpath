@@ -9,6 +9,15 @@
     "checked": "2026-11-22"
   },
   {
+    "id": 10,
+    "address": "6182 Chambersburg Rd. Huber Heights, OH 45424",
+    "lat": 39.847073831455,
+    "lon": -84.117975856515,
+    "matched": "6182 CHAMBERSBURG RD, HUBER HEIGHTS, OH, 45424",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
     "id": 22,
     "address": "4064 US-42, Mason, OH 45036",
     "lat": 39.378046200928,
@@ -374,6 +383,15 @@
     "lat": 44.64779398587,
     "lon": -84.708824142449,
     "matched": "2552 I- 75 BUS LP, GRAYLING, MI, 49738",
+    "source": "US Census geocoder",
+    "checked": "2026-11-22"
+  },
+  {
+    "id": 450,
+    "address": "21930 Michigan Ave Dearborn, MI 48124",
+    "lat": 42.306481652981,
+    "lon": -83.243215512495,
+    "matched": "21930 MICHIGAN AVE, DEARBORN, MI, 48124",
     "source": "US Census geocoder",
     "checked": "2026-11-22"
   },

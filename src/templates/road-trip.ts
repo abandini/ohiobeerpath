@@ -237,8 +237,8 @@ export const quoteAdds = (s: StopView): boolean => s.quote.trim().length >= 45 &
 
 /** "hours" unless the checker's row says the evidence is a dated notice or event. */
 const evidenceHeading = (s: StopView) => `Operating evidence: ${s.evidenceKind === 'notice' ? 'event notice' : 'hours'} read on ${s.evidenceChecked}`;
-/** Said under a stop whose own site prints two different times for the same day. */
-export const TWO_TIMES_LABEL = 'This brewery’s site prints two different times for this day; we show the one on the page we cite. Check before you go.';
+/** Heads the note under a stop whose own pages disagree about something shown there. */
+export const CONFLICT_LABEL = 'Its own pages disagree.';
 /** Said under a stop whose cited page prints hours that change with the season or on holidays. */
 export const SEASONAL_LABEL = 'Seasonal or holiday hours: the page says these hours change by season or on holidays.';
 /** Said under a stop that is listed on a notice, not on hours. */
@@ -274,8 +274,11 @@ function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
               <p class="rt-src">${h(NOTICE_LABEL)}${s.noticeContext ? ` ${h(s.noticeContext)}` : ''}</p>` : ''}
               <blockquote>“${h(s.evidence)}”</blockquote>
               <p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))}. Check current opening information with the brewery before you travel.</p>${s.seasonal ? `
-              <p class="rt-src"><strong>${h(SEASONAL_LABEL)}</strong></p>` : ''}${s.twoTimes ? `
-              <p class="rt-src"><strong>${h(TWO_TIMES_LABEL)}</strong></p>` : ''}
+              <p class="rt-src"><strong>${h(SEASONAL_LABEL)}</strong></p>` : ''}${s.conflict ? `
+              <p class="rt-src"><strong>${h(CONFLICT_LABEL)}</strong> ${h(s.conflict.text)}</p>${s.conflict.sources.filter((q) => safeHttpUrl(q.url)).map((q) => `
+              <blockquote>“${h(q.quote)}”</blockquote>
+              <p class="rt-src">Read on ${ext(safeHttpUrl(q.url), hostOf(q.url))}, ${h(s.evidenceChecked)}</p>`).join('')}
+              <p class="rt-src">Check before you go.</p>` : ''}
               ${quoteAdds(s) ? `<blockquote>“${h(s.quote)}”</blockquote>
               <p class="rt-src">Also read on ${ext(quoteUrl, hostOf(quoteUrl))}, ${h(s.checked)}</p>` : ''}
               ${placedLabel(s) ? `<p class="rt-src">${h(placedLabel(s))}</p>` : ''}
@@ -321,32 +324,47 @@ export const longDate = (d: string) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.e
 /** True when a road's coverage is told by cohort: a directory road built under the location rule. */
 const byCohort = (road: RoadView) => !!road.cohort && road.config.addressMustMatch === true && !road.config.startingList;
 /** What became of the candidates that are not listed, each counted once, in a fixed order. Empty parts are left out. */
-export function cohortBreakdown(c: Cohort, limit: number): string[] {
+export function cohortBreakdown(c: Cohort, limit: number, strict = false): string[] {
+  const had = strict ? 'with accepted visiting-hours evidence' : 'with published visiting hours';
   return [
-    c.unresolved ? `${c.unresolved} with operating status unresolved (we could not confirm published visiting hours)` : '',
-    c.notPlaced ? `${c.notPlaced} with published visiting hours but no location we could tie to the printed address` : '',
-    c.held ? `${c.held} with published visiting hours, held until a person has read the page` : '',
-    c.outside ? `${c.outside} with published visiting hours, placed by the printed address, but then more than ${limit} straight-line miles from our mapped line` : '',
+    c.unresolved ? (strict ? `${c.unresolved} unresolved: visiting-hours evidence was not accepted or brewery identity was not established` : `${c.unresolved} with operating status unresolved (we could not confirm published visiting hours)`) : '',
+    c.notPlaced ? `${c.notPlaced} ${had} but no location we could tie to the printed address` : '',
+    c.held ? `${c.held} ${had}, held until a person has read the page or settled which address is the one to visit` : '',
+    c.outside ? `${c.outside} ${had}, placed by the printed address, but then more than ${limit} straight-line miles from our mapped line` : '',
     c.settled ? `${c.settled} found closed, moved, a duplicate of another listing or not a taproom` : '',
   ].filter(Boolean);
 }
+/**
+ * "N are listed and M are withheld for placement, distance or pending manual review": the reasons named are only the
+ * ones that apply. Used where a road has candidates whose hours text was found but not accepted as evidence, so that
+ * "found hours" is never said of evidence we turned down.
+ */
+export function acceptedSentence(c: Cohort): string {
+  const withheld = c.withHours - c.listed, why = [c.notPlaced ? 'placement' : '', c.outside ? 'distance' : '', c.held ? 'pending manual review' : ''].filter(Boolean);
+  const reasons = why.length > 1 ? `${why.slice(0, -1).join(', ')} or ${why[why.length - 1]}` : why[0] ?? '';
+  return `${plural(c.withHours, 'candidate')} met our visiting-hours evidence requirements; ${c.listed} ${c.listed === 1 ? 'is' : 'are'} listed${withheld ? ` and ${withheld} ${withheld === 1 ? 'is' : 'are'} withheld for ${reasons}` : ''}.`;
+}
 /** The opening coverage statement for a directory road: the cohort checked, how many had hours, how many are listed, and the rest by reason. */
-export function cohortText(c: Cohort, limit: number, checked: string): string {
+export function cohortText(c: Cohort, limit: number, checked: string, strict = false): string {
   if (!c.total) return `Our directory had no candidate within ${limit} straight-line miles of our mapped line.`;
-  const rest = cohortBreakdown(c, limit);
-  return `We checked ${plural(c.total, 'directory candidate')}, selected using directory coordinates (within ${limit} straight-line miles of our mapped line), ${checked}. We found published visiting hours for ${c.withHours}; ${c.listed} ${c.listed === 1 ? 'meets' : 'meet'} this page’s location and distance requirements.${rest.length ? ` The other ${c.total - c.listed}: ${rest.join('; ')}.` : ''}`;
+  const rest = cohortBreakdown(c, limit, strict), head = `We checked ${plural(c.total, 'directory candidate')}, selected using directory coordinates (within ${limit} straight-line miles of our mapped line), ${checked}.`;
+  return strict ? `${head} ${acceptedSentence(c)}${rest.length ? ` The ${c.total - c.listed} not listed: ${rest.join('; ')}.` : ''}`
+    : `${head} We found published visiting hours for ${c.withHours}; ${c.listed} ${c.listed === 1 ? 'meets' : 'meet'} this page’s location and distance requirements.${rest.length ? ` The other ${c.total - c.listed}: ${rest.join('; ')}.` : ''}`;
 }
 /** The one-line form for the top of the page; the breakdown is in the method notes. */
-export function cohortLine(c: Cohort, checked: string): string {
+export function cohortLine(c: Cohort, checked: string, strict = false): string {
   if (!c.total) return 'Our directory had no candidate near our mapped line.';
-  return `We checked ${plural(c.total, 'directory candidate')} ${checked} and found published visiting hours for ${c.withHours}; ${c.listed} ${c.listed === 1 ? 'meets' : 'meet'} this page’s location and distance requirements.`;
+  return strict ? `We checked ${plural(c.total, 'directory candidate')} ${checked}. ${acceptedSentence(c)}`
+    : `We checked ${plural(c.total, 'directory candidate')} ${checked} and found published visiting hours for ${c.withHours}; ${c.listed} ${c.listed === 1 ? 'meets' : 'meet'} this page’s location and distance requirements.`;
 }
 /** The same for one leg: the candidates nearest it by directory coordinates. */
-export function legCohortText(c: Cohort, limit: number): string {
+export function legCohortText(c: Cohort, limit: number, strict = false): string {
   if (!c.total) return 'No directory candidate was nearest this leg.';
-  const rest = cohortBreakdown(c, limit);
-  return `${plural(c.total, 'directory candidate')} nearest this leg by directory coordinates: published visiting hours found for ${c.withHours}, ${c.listed} listed.${rest.length ? ` Not listed: ${rest.join('; ')}.` : ''}`;
+  const rest = cohortBreakdown(c, limit, strict);
+  return `${plural(c.total, 'directory candidate')} nearest this leg by directory coordinates: ${strict ? `${c.withHours} met our visiting-hours evidence requirements` : `published visiting hours found for ${c.withHours}`}, ${c.listed} listed.${rest.length ? ` Not listed: ${rest.join('; ')}.` : ''}`;
 }
+/** A road that names candidates whose hours text was not accepted says "accepted evidence", never "found hours". */
+const strictWording = (road: RoadView) => road.rejected.length > 0;
 const checkedWhen = (road: RoadView) => (road.checkedFrom === road.checkedTo ? `on ${road.checkedTo}` : `between ${road.checkedFrom} and ${road.checkedTo}`);
 
 /**
@@ -453,7 +471,7 @@ function legSection(road: RoadView, leg: LegView, n: number, o: RoadPageOptions)
   const head = `
         <h2 id="${a(id)}-h">${h(legHead(leg, n))}</h2>
         <p class="rt-sub">${leg.side ? 'Side leg · ' : ''}${leg.name && !leg.side ? '' : `${h(leg.from)} to ${h(leg.to)} · `}${h(facts.join(' · '))}</p>
-        <p class="rt-sub">${h(byCohort(road) && leg.cohort ? legCohortText(leg.cohort, road.config.maxDetourMiles) : road.config.startingList ? legCoverage(leg, road.config.maxDetourMiles) : coverageText(leg.decided, leg.candidates, road.config.maxDetourMiles, `this leg of ${T.line}`))}${listed ? '' : ' Nothing is listed on this leg.'}</p>
+        <p class="rt-sub">${h(byCohort(road) && leg.cohort ? legCohortText(leg.cohort, road.config.maxDetourMiles, strictWording(road)) : road.config.startingList ? legCoverage(leg, road.config.maxDetourMiles) : coverageText(leg.decided, leg.candidates, road.config.maxDetourMiles, `this leg of ${T.line}`))}${listed ? '' : ' Nothing is listed on this leg.'}</p>
         ${leg.notes.map(noteBlock).join('')}`;
   if (!collapse) return `
       <section id="${a(id)}" aria-labelledby="${a(id)}-h">${head}
@@ -557,7 +575,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
     <div class="rt-wrap">${drivingNote(road)}${update ? `
       <div class="rt-note" role="note"><p><strong>Updated ${h(longDate(update.date))}:</strong> ${h(updateSummary(update))} <a href="#${a(updateAnchor(update))}">What changed, stop by stop</a>.</p></div>` : ''}
       <p>${h(c.about)}</p>
-      <p>${h(byCohort(road) ? cohortLine(road.cohort!, checkedWhen(road)) : coverageText(road.decided, road.candidates, c.maxDetourMiles, T.anyWay ? `a mapped alignment of ${c.shortName}` : `our mapped line of ${c.shortName}`, c.startingList))}${byCohort(road) ? ' <a href="#how">How this list was made</a>.' : ''}</p>
+      <p>${h(byCohort(road) ? cohortLine(road.cohort!, checkedWhen(road), strictWording(road)) : coverageText(road.decided, road.candidates, c.maxDetourMiles, T.anyWay ? `a mapped alignment of ${c.shortName}` : `our mapped line of ${c.shortName}`, c.startingList))}${byCohort(road) ? ' <a href="#how">How this list was made</a>.' : ''}</p>
       <nav aria-label="Stretches of the road">
         ${c.collapseLegs ? `<p class="rt-sub">${road.legs.every((l) => l.name) ? 'Jump to a state. Each one opens to show its stops.' : 'Jump to a stretch. Its leg opens to show the stops.'}</p>` : ''}<ul class="rt-jump">${jump.join('')}</ul>
       </nav>
@@ -570,11 +588,16 @@ ${updateEntries(road)}
           <li><strong>The road.</strong> ${h(c.geometry.source)} on ${h(c.geometry.downloaded)}. ${OSM_LINK}; the data is available under the Open Database License. Where the road has two carriageways we measure along one. This is our mapped line.${joined.length ? ` Where two mapped ways do not quite meet we join them with a straight line: ${h(joined.map((l) => `${l.name || `${place(l.from)} to ${place(l.to)}`} ${plural(l.joins, 'join')} totalling ${l.joinedMiles.toFixed(2)} miles (widest ${l.widestJoinMiles.toFixed(2)})`).join('; '))}.` : ''}</li>${(c.methodNotes ?? []).map((t) => { const i = t.indexOf('. '); return `
           <li><strong>${h(i > 0 ? t.slice(0, i + 1) : '')}</strong>${h(i > 0 ? t.slice(i + 1) : t)}</li>`; }).join('')}
 ${showPlacement ? `
-          <li><strong>Coverage.</strong> ${h(cohortText(road.cohort!, c.maxDetourMiles, checkedWhen(road)))}${road.notListed.length ? `
+          <li><strong>Coverage.</strong> ${h(cohortText(road.cohort!, c.maxDetourMiles, checkedWhen(road), strictWording(road)))}${road.notListed.length ? `
             <details class="rt-notlisted">
-              <summary>The ${road.notListed.length} with published visiting hours that are not listed, and why</summary>
+              <summary>${strictWording(road) ? `The ${road.notListed.length} candidates with accepted visiting-hours evidence that are not listed, and why` : `The ${road.notListed.length} with published visiting hours that are not listed, and why`}</summary>
               <p class="rt-src">None of these is a finding that the brewery has closed.</p>
               <ul>${road.notListed.map((x) => `<li><strong>${h(x.name)}</strong>: ${h(x.reason)}.</li>`).join('')}</ul>
+            </details>` : ''}${road.rejected.length ? `
+            <details class="rt-notlisted">
+              <summary>Hours text found but not accepted as evidence, or identity not established (${road.rejected.length})</summary>
+              <p class="rt-src">These are editorial decisions about evidence. None is a finding that the brewery has closed, or that it publishes no hours.</p>
+              <ul>${road.rejected.map((x) => `<li><strong>${h(x.name)}</strong>: ${h(x.reason)}.</li>`).join('')}</ul>
             </details>` : ''}</li>
           <li><strong>Placing a brewery.</strong> Each stop is measured from coordinates tied to the address the brewery prints, and each stop says which kind it has. ${plural(by('census'), 'stop uses', 'stops use')} the US Census geocoder’s point for an exact match of the printed address (street number, direction, street name, suffix, town and state). These are address-geocoded estimates, not surveyed entrances. ${plural(by('directory'), 'stop uses', 'stops use')} our directory’s map point, where the printed address is the directory’s address in full and the point is not a known placeholder: a point shared by two or more listings, or one that an exact address match shows to be more than a mile out. ${plural(by('reviewed'), 'stop is a reviewed exception', 'stops are reviewed exceptions')}: the geocoder matched the address with a difference in how it is written, and an editor recorded why it is the same address; the reason is shown under the stop. Nearness to the directory’s point is never enough on its own. A brewery with none of these is not listed.</li>` : ''}${c.legsNote ? `
           <li><strong>The legs.</strong> ${h(c.legsNote)}</li>` : ''}${isInterstate ? `
@@ -623,9 +646,9 @@ export function roadsIndexPage(roads: RoadView[], subdomain?: SubdomainContext):
         <li class="rt-card${r.config.headline ? ' rt-headline' : ''}">
           <h2><a href="/roads/${a(r.config.slug)}">${h(roadTitle(r))}</a></h2>
           <p>${h(roadSummary(r))}</p>${byCohort(r) ? `
-          <p>${h(cohortText(r.cohort!, r.config.maxDetourMiles, checkedWhen(r)))}</p>` : ''}${r.config.legsNote ? `
+          <p>${h(cohortText(r.cohort!, r.config.maxDetourMiles, checkedWhen(r), strictWording(r)))}</p>` : ''}${r.config.legsNote ? `
           <p>${h(r.config.legsNote)}</p>` : ''}
-          <ul>${r.legs.map((l) => { const k = l.stops.length + l.unmeasured.reduce((q, u) => q + u.stops.length, 0); return `<li>${l.name ? `${h(l.name)}${l.side ? '' : `: ${h(place(l.from))} to ${h(place(l.to))}`}` : `${h(place(l.from))} to ${h(place(l.to))}`}: ${mi(l.lengthMiles)} miles of mapped line, ${k ? plural(k, 'listed stop') : 'nothing listed'}; ${byCohort(r) && l.cohort ? `${plural(l.cohort.total, 'directory candidate')} checked, published visiting hours found for ${l.cohort.withHours}` : l.candidates ? `a decision reached on ${l.decided} of ${l.candidates} nearby ${r.config.startingList ? 'breweries we started from' : 'directory breweries'}` : 'no nearby brewery on the list we started from'}</li>`; }).join('')}</ul>
+          <ul>${r.legs.map((l) => { const k = l.stops.length + l.unmeasured.reduce((q, u) => q + u.stops.length, 0); return `<li>${l.name ? `${h(l.name)}${l.side ? '' : `: ${h(place(l.from))} to ${h(place(l.to))}`}` : `${h(place(l.from))} to ${h(place(l.to))}`}: ${mi(l.lengthMiles)} miles of mapped line, ${k ? plural(k, 'listed stop') : 'nothing listed'}; ${byCohort(r) && l.cohort ? `${plural(l.cohort.total, 'directory candidate')} checked, ${strictWording(r) ? `${l.cohort.withHours} met our visiting-hours evidence requirements` : `published visiting hours found for ${l.cohort.withHours}`}` : l.candidates ? `a decision reached on ${l.decided} of ${l.candidates} nearby ${r.config.startingList ? 'breweries we started from' : 'directory breweries'}` : 'no nearby brewery on the list we started from'}</li>`; }).join('')}</ul>
           <p><a href="/roads/${a(r.config.slug)}">See the list for ${h(r.config.shortName)}</a></p>
         </li>`;
   const content = `${STYLE}

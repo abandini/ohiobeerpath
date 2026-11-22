@@ -2058,6 +2058,13 @@ export const I_71_BUILT: BuiltRoad = {
       "reason": "once located by its printed address it is 7.6 miles from the mapped line, beyond this page's limit"
     }
   ],
+  "rejected": [
+    {
+      "id": 229,
+      "name": "Nano Brew Cleveland",
+      "reason": "two checks on the same day read its site differently, one as a brewery taproom with bar hours and one as a seasonal bar that does not say it brews, so its identity as a brewery is not established"
+    }
+  ],
   "checkedNotListed": [
     9,
     12,

@@ -35,9 +35,11 @@ const pairs = [
     { what: `stop ${s.key} operating evidence`, quote: s.evidence, url: s.evidenceUrl, browser: s.browserChecked },
     ...(s.quote ? [{ what: `stop ${s.key} quote`, quote: s.quote, url: s.quoteSourceUrl, browser: s.browserChecked }] : []),
     ...(s.address ? [{ what: `stop ${s.key} address`, quote: s.address, url: s.addressSourceUrl, browser: s.browserChecked }] : []),
+    // a note that the brewery's own pages disagree quotes each claim: each must be on the page it names
+    ...(s.conflict?.sources ?? []).map((q) => ({ what: `stop ${s.key} conflict note`, quote: q.quote, url: q.url, browser: s.browserChecked })),
   ]),
 ];
-const expected = config.roadSources.length + noteSources.length + stops.length + stops.filter((s) => s.quote).length + stops.filter((s) => s.address).length;
+const expected = config.roadSources.length + noteSources.length + stops.length + stops.filter((s) => s.quote).length + stops.filter((s) => s.address).length + stops.reduce((n, s) => n + (s.conflict?.sources?.length ?? 0), 0);
 if (!pairs.length || pairs.length !== expected || pairs.some((p) => !String(p.quote || '').replace(/\.\.\.|…/g, '').trim() || !/^https?:\/\//.test(p.url || ''))) { console.error(`expected ${expected} sources with a quote and a URL, got ${pairs.length}`); process.exit(2); }
 
 // Page text as a reader sees it (tags dropped, entities decoded, whitespace collapsed): the same function the

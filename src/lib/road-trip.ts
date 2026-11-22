@@ -272,7 +272,8 @@ export interface VerifiedRow {
   notice_context?: string | null;  // for a notice: what on the page establishes its year and the venue
   taken_from?: string;             // the road whose check this row is, when it is not this road's own (see shareRows)
   seasonal?: boolean;               // the page says these hours change by season or on holidays (from decisions.json)
-  two_times?: boolean;              // its own site prints two different times for a day (from decisions.json)
+  conflict?: StopConflict;          // its own pages disagree about something shown here (from decisions.json)
+  not_accepted_reason?: string;     // hours text was found but not accepted as evidence, or identity is not established: why (from decisions.json)
   held_reason?: string;             // hours found, but the listing is held for this reason (from decisions.json)
   placement_accepted?: string | null; // a reviewed exception: the evidence that resolves the address difference (from decisions.json)
 }
@@ -297,7 +298,7 @@ export interface RoadStop {
   placedBy?: 'census' | 'directory' | 'reviewed' | 'dataset'; // where its coordinates come from (see addressMustMatch)
   checkFrom?: string;          // the road whose check supplied this stop's row, when not this road's own
   seasonal?: boolean;          // the cited page says the hours change with the season or on holidays
-  twoTimes?: boolean;          // the brewery's own site prints two different times for a day
+  conflict?: StopConflict;     // the brewery's own pages disagree about something shown here: what, with both texts quoted
   placedNote?: string;         // for a reviewed exception: the recorded evidence that the two addresses are one
   outer?: boolean;             // beyond the stretch's tighter limit but within its further-off distance
   unmeasured?: string;         // id of the leg's unmeasured group: the mapped line is missing here, so mile and distance are not shown
@@ -312,10 +313,14 @@ export interface RoadStop {
  */
 export interface Cohort { total: number; withHours: number; listed: number; notPlaced: number; outside: number; unresolved: number; settled: number; /** published hours found, but the listing is held by an editor's decision (see RowDecision.hold); present only when there are some, and counted in withHours */ held?: number }
 /** A candidate with published hours that is not on the list, and why, in words fit to print. */
+/** Something the brewery's own pages disagree about: our words for what differs, and each claim quoted from the page it is on. */
+export interface StopConflict { text: string; sources: { quote: string; url: string }[] }
+/** A candidate whose hours text was found but not accepted as evidence, or whose identity as a brewery is not established. */
+export interface NotAccepted { id: number | string; name: string; reason: string }
 export interface NotListed { id: number | string; name: string; why: 'notPlaced' | 'outside' | 'held'; reason: string }
 export interface BuiltLeg { id: string; lengthMiles: number; line: LatLon[]; candidates: number; decided: number; cohort?: Cohort; joins?: number; joinedMiles?: number; widestJoinMiles?: number }
 /** What the build step writes: stops with their place on the road, and a thinned line for drawing. */
-export interface BuiltRoad { slug: string; built: string; legs: BuiltLeg[]; stops: RoadStop[]; unplaced?: number; cohort?: Cohort; notListed?: NotListed[]; /** Directory ids this road checked and does not list (for the cross-road gate). */ checkedNotListed?: number[] }
+export interface BuiltRoad { slug: string; built: string; legs: BuiltLeg[]; stops: RoadStop[]; unplaced?: number; cohort?: Cohort; notListed?: NotListed[]; /** hours text found but not accepted, or identity not established: named on the page */ rejected?: NotAccepted[]; /** Directory ids this road checked and does not list (for the cross-road gate). */ checkedNotListed?: number[] }
 export interface BuildReport {
   geocoded: (number | string)[]; // stops placed by Census coordinates for the printed address, not the directory's point
   left: { id: number | string; name: string; reason: string }[];
@@ -551,7 +556,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
   }
   const usesGeocode = (id: Id) => method.get(id) === 'census' || method.get(id) === 'reviewed';
   const seen = new Set<Id>(), decided = new Set<Id>(), stops: RoadStop[] = [];
-  const fate = new Map<Id, 'listed' | 'notPlaced' | 'outside' | 'held'>(), notListed: NotListed[] = [];
+  const fate = new Map<Id, 'listed' | 'notPlaced' | 'outside' | 'held'>(), notListed: NotListed[] = [], rejected: NotAccepted[] = [];
   for (const row of verified) {
     const label = String(row?.name || `id ${row?.id}`);
     const leave = (reason: string) => report.left.push({ id: row?.id, name: label, reason });
@@ -560,6 +565,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
     if (seen.has(row.id)) { leave('second row for the same brewery id'); continue; }
     seen.add(row.id);
     if (row.status !== 'OPEN') {
+      if (String(row.not_accepted_reason ?? '').trim()) rejected.push({ id: row.id, name: label, reason: String(row.not_accepted_reason).trim() });
       if (DECIDED_NOT_LISTED.includes(String(row.status))) decided.add(row.id);
       leave(`status ${row.status || 'missing'}`); continue;
     }
@@ -585,7 +591,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
       quote, quoteSourceUrl: quote ? quoteUrl : '', checked: String(row.checked || '').trim(),
       legId: l.leg.id, mile, detourMiles,
       pastEnd: at.lineDetour > PAST_END_MILES && (atStart || atEnd) ? (atStart ? 'start' : 'end') : '',
-      ...(at.outer ? { outer: true } : {}), ...(method.has(row.id) ? { placedBy: method.get(row.id) } : cand.placedBy ? { placedBy: cand.placedBy } : {}), ...(method.get(row.id) === 'reviewed' ? { placedNote: String(row.placement_accepted).trim() } : {}), ...(row.seasonal ? { seasonal: true } : {}), ...(row.two_times ? { twoTimes: true } : {}), ...(row.taken_from ? { checkFrom: row.taken_from } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const, noticeContext: String(row.notice_context ?? '').trim() } : {}),
+      ...(at.outer ? { outer: true } : {}), ...(method.has(row.id) ? { placedBy: method.get(row.id) } : cand.placedBy ? { placedBy: cand.placedBy } : {}), ...(method.get(row.id) === 'reviewed' ? { placedNote: String(row.placement_accepted).trim() } : {}), ...(row.seasonal ? { seasonal: true } : {}), ...(row.conflict ? { conflict: row.conflict } : {}), ...(row.taken_from ? { checkFrom: row.taken_from } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const, noticeContext: String(row.notice_context ?? '').trim() } : {}),
       ...(calendarDate(row.browser_checked) ? { browserChecked: row.browser_checked as string } : {}),
     };
     if (!isShowableStop(stop, today)) { leave('marked OPEN, but there is no usable operating evidence (excerpt, citable URL and a check date that is not in the future)'); continue; }
@@ -627,7 +633,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
       slug: config.slug, built,
       legs: legs.map((l) => ({ id: l.leg.id, lengthMiles: round(l.st.lengthMiles, 1), line: simplifyLine(l.st.line, config.drawToleranceMiles ?? 0.12).map((q) => [round(q[0], 5), round(q[1], 5)] as LatLon), candidates: l.candidates, decided: l.decided, cohort: tally(cohortRows.filter((c) => home.get(c.id) === l.leg.id)),
         ...(l.st.bridges ? { joins: l.st.bridges, joinedMiles: round(l.st.bridgedMiles, 2), widestJoinMiles: round(Math.max(...l.st.joins.map((j) => j.miles)), 2) } : {}) })),
-      stops, cohort: tally(cohortRows), notListed,
+      stops, cohort: tally(cohortRows), notListed, ...(rejected.length ? { rejected } : {}),
       ...(config.stopsHavePages !== false ? { checkedNotListed: cohortRows.filter((c) => rowFor.has(c.id) && fate.get(c.id) !== 'listed' && typeof c.id === 'number').map((c) => c.id as number).sort((a, b) => a - b) } : {}),
     },
     report,
@@ -730,8 +736,10 @@ export interface RowDecision {
   evidence?: { excerpt: string; url: string; checked: string };
   /** Hours were found, but the listing is held: the reason, in words fit to print (counted and named on the page). */
   hold?: string;
-  /** The brewery's own site prints two different times for a day: the stop says so. */
-  twoTimes?: boolean;
+  /** The brewery's own pages disagree about something shown under the stop: the stop says what, quoting both. */
+  conflict?: StopConflict;
+  /** Hours text was found but is not accepted as visiting-hours evidence, or the brewery's identity is not established: why, in words fit to print. The row is named on the page. */
+  notAccepted?: string;
   /** The page says these hours change with the season or on holidays: the stop is labelled so. */
   seasonal?: boolean;
   /** A reviewed exception to placement: accept the Census coordinates for this row, for the reason given. */
@@ -753,7 +761,7 @@ export function applyRowEdits(rows: VerifiedRow[], decisions: RowDecision[] = []
   const out = rows.map((r) => {
     let row = r;
     const d = decisions.find((x) => String(x.match) === String(r.id));
-    if (d) { hit.add(`d:${d.match}`); row = { ...row, status: d.status ?? row.status, notes: `${d.reason} | ${row.notes ?? ''}`, ...(d.evidence ? { operating_evidence: { ...d.evidence } } : {}), ...(d.acceptPlacement?.evidence ? { placement_accepted: d.acceptPlacement.evidence } : {}), ...(d.seasonal ? { seasonal: true } : {}), ...(d.twoTimes ? { two_times: true } : {}), ...(d.hold ? { held_reason: d.hold } : {}) }; applied.push({ id: r.id, name: String(r.name ?? ''), status: String(row.status ?? ''), reason: d.reason }); }
+    if (d) { hit.add(`d:${d.match}`); row = { ...row, status: d.status ?? row.status, notes: `${d.reason} | ${row.notes ?? ''}`, ...(d.evidence ? { operating_evidence: { ...d.evidence } } : {}), ...(d.acceptPlacement?.evidence ? { placement_accepted: d.acceptPlacement.evidence } : {}), ...(d.seasonal ? { seasonal: true } : {}), ...(d.conflict ? { conflict: d.conflict } : {}), ...(d.notAccepted ? { not_accepted_reason: d.notAccepted } : {}), ...(d.hold ? { held_reason: d.hold } : {}) }; applied.push({ id: r.id, name: String(r.name ?? ''), status: String(row.status ?? ''), reason: d.reason }); }
     for (const c of corrections.filter((x) => x.key === String(r.id))) {
       hit.add(`c:${c.key}:${c.field}`);
       if (c.field === 'evidence') row = { ...row, operating_evidence: c.value && row.operating_evidence ? { ...row.operating_evidence, excerpt: c.value, ...(c.url ? { url: c.url } : {}) } : null };
@@ -991,7 +999,7 @@ export function makeUpdateEvent(date: string, what: string, before: UpdateStop[]
 // Cross-road consistency
 
 /** The facts about a brewery that must be the same on every road that lists it. Miles and distances differ by road and are not here. */
-export const SHARED_STOP_FIELDS = ['name', 'town', 'state', 'address', 'addressSourceUrl', 'website', 'evidence', 'evidenceUrl', 'evidenceChecked', 'evidenceKind', 'lat', 'lon', 'placedBy', 'placedNote', 'browserChecked', 'seasonal', 'twoTimes',
+export const SHARED_STOP_FIELDS = ['name', 'town', 'state', 'address', 'addressSourceUrl', 'website', 'evidence', 'evidenceUrl', 'evidenceChecked', 'evidenceKind', 'lat', 'lon', 'placedBy', 'placedNote', 'browserChecked', 'seasonal', 'conflict',
   'quote', 'quoteSourceUrl', 'checked', 'noticeContext'] as const;
 /**
  * Every difference between roads in what they say about the same directory listing: its identity, printed address,
@@ -1007,7 +1015,7 @@ export function crossRoadDifferences(roads: { slug: string; stops: RoadStop[]; c
     if (!first) { seen.set(stop.breweryId, { slug: road.slug, stop }); continue; }
     for (const f of SHARED_STOP_FIELDS) {
       const a = first.stop[f] ?? '', b = stop[f] ?? '';
-      if (a !== b && !ok.has(`${stop.breweryId}:${f}`)) out.push(`${stop.breweryId} ${stop.name}: ${f} is ${JSON.stringify(a)} on ${first.slug} but ${JSON.stringify(b)} on ${road.slug}`);
+      if (JSON.stringify(a) !== JSON.stringify(b) && !ok.has(`${stop.breweryId}:${f}`)) out.push(`${stop.breweryId} ${stop.name}: ${f} is ${JSON.stringify(a)} on ${first.slug} but ${JSON.stringify(b)} on ${road.slug}`);
     }
   }
   // Listed on one road, checked and left off on another: the roads disagree about whether it belongs on a list at all.
@@ -1060,7 +1068,7 @@ export interface LegView {
 export interface RoadView {
   config: RoadConfig; legs: LegView[]; stops: StopView[]; // stops: every listed stop, measured and unmeasured
   unplaced: number;            // evidenced breweries left off because no coordinates could be had for them
-  cohort: Cohort | null; notListed: NotListed[];
+  cohort: Cohort | null; notListed: NotListed[]; rejected: NotAccepted[];
   updates: UpdateEvent[];      // dated updates to a page that was already public, as recorded (set by the registry)
   candidates: number; decided: number;
   problems: string[];          // what is wrong with the config, if anything
@@ -1121,7 +1129,7 @@ export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = c
   });
   const stops = legs.flatMap((l) => [...l.stops, ...l.unmeasured.flatMap((u) => u.stops)]), dates = stops.flatMap((s) => [s.evidenceChecked]).sort();
   return {
-    config, legs, stops, problems, unplaced: Math.max(0, built.unplaced ?? 0), cohort: built.cohort ?? null, notListed: built.notListed ?? [], updates: [],
+    config, legs, stops, problems, unplaced: Math.max(0, built.unplaced ?? 0), cohort: built.cohort ?? null, notListed: built.notListed ?? [], rejected: built.rejected ?? [], updates: [],
     candidates: legs.reduce((a, l) => a + l.candidates, 0), decided: legs.reduce((a, l) => a + l.decided, 0),
     available: config.publish === true && problems.length === 0 && stops.length > 0,
     checkedFrom: dates[0] || '', checkedTo: dates[dates.length - 1] || '',

@@ -37,7 +37,6 @@ export const I_75: RoadConfig = {
   ],
   methodNotes: [
     'Where this page stops. Interstate 75 runs on south to Florida. This page follows it from its north end at Sault Ste. Marie as far as Richmond, Kentucky, because the most southerly listing in our directory within 5 straight-line miles of the road is in Richmond.',
-    'Two listings counted in the coverage figures need a word. One (in Miamisburg) prints visiting hours, but its site does not say beer is brewed there, so it is counted with the unresolved. One (in Lexington) is a visitor centre with brewery and distillery tours and prints tour hours, not taproom hours, so it is counted with those that are not taprooms.',
     'Exit numbers. We do not give them. The road data we work from is the line of the road only and carries no exit numbers, so each stop is placed by its mile along our line instead. That mile is our measurement from the start of the leg, not a milepost and not an exit number.',
   ],
   legs: [

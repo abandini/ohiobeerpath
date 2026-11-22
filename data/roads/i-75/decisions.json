@@ -2,27 +2,26 @@
   {
     "match": 545,
     "status": "UNCONFIRMED",
-    "reason": "editor: hours not established. Its site prints only a same-day line (\"Open today until 10:00 pm\"), which is not printed visiting hours."
-  },
-  {
-    "match": 450,
-    "status": "UNCONFIRMED",
-    "reason": "editor: hours not established. The only hours on its site are in an undated FAQ answer."
+    "reason": "editor: hours not established. Its site prints only a same-day line (\"Open today until 10:00 pm\"), which is not printed visiting hours.",
+    "notAccepted": "its site prints only a same-day line (\"Open today until 10:00 pm\"), not weekly visiting hours"
   },
   {
     "match": 34,
     "status": "UNCONFIRMED",
-    "reason": "editor: not a healthy observation. The server answers every URL with HTTP 404 while printing the address and hours."
+    "reason": "editor: not a healthy observation. The server answers every URL with HTTP 404 while printing the address and hours.",
+    "notAccepted": "its hours are on pages its server answers with HTTP 404 (page not found), so they were not read from a page that loaded normally"
   },
   {
     "match": 941,
     "status": "NOT A BREWERY TAPROOM",
-    "reason": "editor: a visitor centre with brewery and distillery tours. Its pages (lexingtonbrewingco.com and /distilleries-tours, read 2026-11-22) print visitor-centre and tour hours and nowhere mention a taproom or tasting room with visiting hours."
+    "reason": "editor: a visitor centre with brewery and distillery tours. Its pages (lexingtonbrewingco.com and /distilleries-tours, read 2026-11-22) print visitor-centre and tour hours and nowhere mention a taproom or tasting room with visiting hours.",
+    "notAccepted": "its pages print tour and visitor-centre hours only, not taproom or tasting-room hours"
   },
   {
     "match": 302,
     "status": "UNCONFIRMED",
-    "reason": "editor: not established as a brewery. Its own site (starcitybrewing.com, read 2026-11-22) prints hours and lists beers on tap but does not say beer is brewed there."
+    "reason": "editor: not established as a brewery. Its own site (starcitybrewing.com, read 2026-11-22) prints hours and lists beers on tap but does not say beer is brewed there.",
+    "notAccepted": "its site prints visiting hours, but does not say beer is brewed there, so it is not established as a brewery"
   },
   {
     "match": 449,
@@ -45,7 +44,19 @@
     "acceptPlacement": {
       "evidence": "Printed \"145 S. Main Street Downtown Bowling Green, OH\"; the geocoder matched \"145 S MAIN ST, BOWLING GREEN, OH, 43402\". Same number, street, town and state. The only difference is the word \"Downtown\" before the town."
     },
-    "twoTimes": true
+    "conflict": {
+      "text": "Its page prints two hours blocks that disagree on the Friday and Saturday closing time: 11pm in the block at the top of the page, 10pm in the block at the foot. The hours shown above are from the block at the top.",
+      "sources": [
+        {
+          "quote": "Friday & Saturday - 8am - 11pm",
+          "url": "https://www.juniperbrew.com/"
+        },
+        {
+          "quote": "Friday & Saturday - 8am - 10pm",
+          "url": "https://www.juniperbrew.com/"
+        }
+      ]
+    }
   },
   {
     "match": 177,
@@ -60,6 +71,40 @@
   {
     "match": 80,
     "reason": "editor: its home page says it opens at 11:00 AM and its locations page says 11:30am",
-    "twoTimes": true
+    "conflict": {
+      "text": "Its home page and its Piqua location page give different opening times for every day it is open, Tuesday to Sunday: 11:00 AM on the home page, 11:30am on the location page. The hours shown above are from the home page.",
+      "sources": [
+        {
+          "quote": "Tues, Wed, Thurs 11:00 AM - 10 PM Fri, Sat 11:00 AM - 11 PM Sun 11:00 AM - 9 PM",
+          "url": "https://crookedhandle.com/"
+        },
+        {
+          "quote": "Tue - Thur 11:30am - 10pm Fri - Sat 11:30am - 11pm Sun 11:30am - 9pm",
+          "url": "https://crookedhandle.com/piqua-crooked-handle-brewing-co-piqua-locations"
+        }
+      ]
+    }
+  },
+  {
+    "match": 97,
+    "reason": "coordinator 2026-11-22: held. Its Westgate page prints 3134 W Central Ave. twice, but the map link on that same page and the address on the home page say 3142 W Central Ave.; no first-hand page settles it",
+    "hold": "its own pages print two street numbers (3134 W Central Ave. and 3142 W Central Ave., Toledo); held until a first-hand source settles which is the visiting address"
+  },
+  {
+    "match": 637,
+    "reason": "editor: one location. The cited page prints the address twice, with the same number, street, town and state: \"509 Norway St. Grayling, MI 49748\" beside the hours and \"509 Norway St, Grayling, MI 49738\" in its footer. Only the ZIP code differs; the footer form is shown and is the one the geocoder matched exactly",
+    "conflict": {
+      "text": "This brewery's page prints two ZIP codes (49738 and 49748); the street address, town and state agree.",
+      "sources": [
+        {
+          "quote": "509 Norway St, Grayling, MI 49738",
+          "url": "https://www.rollingoakbrewing.com/"
+        },
+        {
+          "quote": "509 Norway St. Grayling, MI 49748",
+          "url": "https://www.rollingoakbrewing.com/"
+        }
+      ]
+    }
   }
 ]

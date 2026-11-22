@@ -31,14 +31,14 @@ export const I_75_BUILT: BuiltRoad = {
       "lengthMiles": 154.1,
       "line": [[43.48802,-83.92369],[43.4787,-83.90674],[43.4642,-83.89148],[43.39985,-83.89106],[43.36726,-83.86851],[43.33479,-83.8619],[43.2431,-83.77018],[43.16465,-83.76873],[43.1514,-83.76365],[43.05998,-83.76259],[43.04414,-83.7542],[43.02638,-83.75432],[43.01502,-83.74775],[42.99749,-83.74928],[42.97777,-83.72675],[42.95181,-83.7233],[42.91361,-83.67106],[42.9069,-83.65266],[42.90018,-83.64595],[42.8951,-83.6319],[42.87134,-83.5961],[42.85282,-83.59104],[42.82367,-83.57168],[42.81024,-83.56771],[42.74695,-83.49256],[42.73905,-83.4663],[42.74117,-83.44931],[42.74701,-83.43336],[42.74524,-83.39491],[42.73254,-83.37375],[42.7257,-83.35581],[42.70771,-83.3289],[42.70519,-83.29285],[42.69634,-83.27192],[42.69427,-83.2531],[42.67992,-83.24122],[42.63082,-83.23852],[42.61478,-83.23301],[42.60486,-83.19962],[42.60394,-83.16694],[42.59372,-83.15947],[42.5612,-83.15729],[42.55906,-83.1519],[42.55955,-83.12444],[42.55547,-83.11752],[42.49371,-83.11689],[42.47042,-83.10974],[42.46044,-83.1053],[42.45447,-83.09521],[42.4258,-83.09404],[42.39763,-83.06899],[42.38838,-83.06957],[42.34595,-83.04469],[42.3365,-83.05967],[42.33159,-83.08443],[42.32097,-83.08192],[42.31633,-83.08431],[42.30076,-83.12064],[42.29111,-83.12948],[42.27526,-83.1605],[42.22775,-83.21237],[42.21806,-83.21579],[42.19849,-83.23904],[42.18669,-83.24324],[42.08261,-83.24234],[42.05825,-83.26205],[42.0384,-83.28624],[41.9507,-83.3615],[41.94463,-83.36299],[41.93097,-83.35837],[41.90987,-83.36609],[41.87171,-83.4007],[41.82931,-83.42997],[41.81167,-83.44872],[41.77187,-83.47986],[41.73209,-83.48899]],
       "candidates": 29,
-      "decided": 14,
+      "decided": 15,
       "cohort": {
         "total": 30,
-        "withHours": 17,
-        "listed": 10,
+        "withHours": 18,
+        "listed": 11,
         "notPlaced": 6,
         "outside": 1,
-        "unresolved": 9,
+        "unresolved": 8,
         "settled": 4
       },
       "joins": 4,
@@ -55,11 +55,11 @@ export const I_75_BUILT: BuiltRoad = {
         "total": 28,
         "withHours": 20,
         "listed": 14,
-        "notPlaced": 4,
+        "notPlaced": 3,
         "outside": 0,
         "unresolved": 5,
         "settled": 3,
-        "held": 2
+        "held": 3
       },
       "joins": 1,
       "joinedMiles": 0.01,
@@ -127,7 +127,20 @@ export const I_75_BUILT: BuiltRoad = {
       "mile": 141,
       "detourMiles": 0.99,
       "pastEnd": "",
-      "placedBy": "census"
+      "placedBy": "census",
+      "conflict": {
+        "text": "This brewery's page prints two ZIP codes (49738 and 49748); the street address, town and state agree.",
+        "sources": [
+          {
+            "quote": "509 Norway St, Grayling, MI 49738",
+            "url": "https://www.rollingoakbrewing.com/"
+          },
+          {
+            "quote": "509 Norway St. Grayling, MI 49748",
+            "url": "https://www.rollingoakbrewing.com/"
+          }
+        ]
+      }
     },
     {
       "key": "681",
@@ -419,28 +432,27 @@ export const I_75_BUILT: BuiltRoad = {
       "placedBy": "census"
     },
     {
-      "key": "97",
-      "breweryId": 97,
-      "name": "Earnest Brew Works - Westgate",
-      "town": "Toledo",
-      "state": "OH",
-      "lat": 41.677453118136,
-      "lon": -83.621269373769,
+      "key": "450",
+      "breweryId": 450,
+      "name": "Dearborn Brewing",
+      "town": "Dearborn",
+      "state": "MI",
+      "lat": 42.306481652981,
+      "lon": -83.243215512495,
       "status": "OPEN",
-      "website": "https://www.earnestbrewworks.com/westgate/",
-      "address": "3134 W Central Ave., Toledo, OH 43606",
-      "addressSourceUrl": "https://www.earnestbrewworks.com/westgate/",
-      "evidence": "hours + location Sunday: 1pm to 8pm Monday & Tuesday: 4pm to 9pm Wednesday & Thursday: 4pm to 10pm Friday: 2pm to 11pm Saturday: Noon to 11pm",
-      "evidenceUrl": "https://www.earnestbrewworks.com/westgate/",
+      "website": "https://dearbornbrewing.com/",
+      "address": "21930 Michigan Ave Dearborn, MI 48124",
+      "addressSourceUrl": "https://dearbornbrewing.com/contact-us-2",
+      "evidence": "What are your hours? Our normal hours are 4:30pm-10pm Monday through Thursday, 4:30pm-Midnight on Friday and Saturday.",
+      "evidenceUrl": "https://dearbornbrewing.com/frequent-questions",
       "evidenceChecked": "2026-11-22",
-      "quote": "",
-      "quoteSourceUrl": "",
+      "quote": "Dearborn Brewing is a small microbrewery that brews hand crafted beers with an on-site taproom.",
+      "quoteSourceUrl": "https://dearbornbrewing.com/",
       "checked": "2026-11-22",
-      "legId": "ohio-line-dayton",
-      "mile": 7.1,
-      "detourMiles": 2.51,
+      "legId": "saginaw-ohio-line",
+      "mile": 112.6,
+      "detourMiles": 4.56,
       "pastEnd": "",
-      "outer": true,
       "placedBy": "census"
     },
     {
@@ -566,7 +578,19 @@ export const I_75_BUILT: BuiltRoad = {
       "pastEnd": "",
       "placedBy": "reviewed",
       "placedNote": "Printed \"145 S. Main Street Downtown Bowling Green, OH\"; the geocoder matched \"145 S MAIN ST, BOWLING GREEN, OH, 43402\". Same number, street, town and state. The only difference is the word \"Downtown\" before the town.",
-      "twoTimes": true
+      "conflict": {
+        "text": "Its page prints two hours blocks that disagree on the Friday and Saturday closing time: 11pm in the block at the top of the page, 10pm in the block at the foot. The hours shown above are from the block at the top.",
+        "sources": [
+          {
+            "quote": "Friday & Saturday - 8am - 11pm",
+            "url": "https://www.juniperbrew.com/"
+          },
+          {
+            "quote": "Friday & Saturday - 8am - 10pm",
+            "url": "https://www.juniperbrew.com/"
+          }
+        ]
+      }
     },
     {
       "key": "107",
@@ -639,7 +663,19 @@ export const I_75_BUILT: BuiltRoad = {
       "detourMiles": 1.06,
       "pastEnd": "",
       "placedBy": "census",
-      "twoTimes": true
+      "conflict": {
+        "text": "Its home page and its Piqua location page give different opening times for every day it is open, Tuesday to Sunday: 11:00 AM on the home page, 11:30am on the location page. The hours shown above are from the home page.",
+        "sources": [
+          {
+            "quote": "Tues, Wed, Thurs 11:00 AM - 10 PM Fri, Sat 11:00 AM - 11 PM Sun 11:00 AM - 9 PM",
+            "url": "https://crookedhandle.com/"
+          },
+          {
+            "quote": "Tue - Thur 11:30am - 10pm Fri - Sat 11:30am - 11pm Sun 11:30am - 9pm",
+            "url": "https://crookedhandle.com/piqua-crooked-handle-brewing-co-piqua-locations"
+          }
+        ]
+      }
     },
     {
       "key": "141",
@@ -662,6 +698,30 @@ export const I_75_BUILT: BuiltRoad = {
       "legId": "ohio-line-dayton",
       "mile": 148.4,
       "detourMiles": 1.3,
+      "pastEnd": "",
+      "placedBy": "census"
+    },
+    {
+      "key": "10",
+      "breweryId": 10,
+      "name": "Alematic Artisan Ales",
+      "town": "Huber Heights",
+      "state": "OH",
+      "lat": 39.847073831455,
+      "lon": -84.117975856515,
+      "status": "OPEN",
+      "website": "https://www.alematicbrewing.com/",
+      "address": "6182 Chambersburg Rd. Huber Heights, OH 45424",
+      "addressSourceUrl": "https://www.alematicbrewing.com/visit-us/",
+      "evidence": "Coffee Bar & Taproom Monday 8am – 3pm Tuesday 8am – 9pm Wednesday 8am – 10pm Thursday 8am – 10pm Friday 8am – 10pm Saturday 8am – 10pm Sunday 8am – 3pm",
+      "evidenceUrl": "https://www.alematicbrewing.com/visit-us/",
+      "evidenceChecked": "2026-11-22",
+      "quote": "",
+      "quoteSourceUrl": "",
+      "checked": "2026-11-22",
+      "legId": "ohio-line-dayton",
+      "mile": 151.4,
+      "detourMiles": 3.8,
       "pastEnd": "",
       "placedBy": "census"
     },
@@ -1565,13 +1625,13 @@ export const I_75_BUILT: BuiltRoad = {
   ],
   "cohort": {
     "total": 137,
-    "withHours": 76,
-    "listed": 59,
-    "notPlaced": 13,
+    "withHours": 77,
+    "listed": 60,
+    "notPlaced": 12,
     "outside": 2,
-    "unresolved": 42,
+    "unresolved": 41,
     "settled": 19,
-    "held": 2
+    "held": 3
   },
   "notListed": [
     {
@@ -1623,6 +1683,12 @@ export const I_75_BUILT: BuiltRoad = {
       "reason": "the geocoder matched a different address (13121 PROSPECT ST, DEARBORN, MI, 48126), 0.27 miles from the directory's point"
     },
     {
+      "id": 97,
+      "name": "Earnest Brew Works - Westgate",
+      "why": "held",
+      "reason": "its own pages print two street numbers (3134 W Central Ave. and 3142 W Central Ave., Toledo); held until a first-hand source settles which is the visiting address"
+    },
+    {
       "id": 58,
       "name": "Buffalo Rock Brewing Co - Bayside",
       "why": "notPlaced",
@@ -1665,27 +1731,43 @@ export const I_75_BUILT: BuiltRoad = {
       "reason": "the geocoder matched a different address (5304 GATEWAY CENTRE BLVD, FLINT, MI, 48507), 5.08 miles from the directory's point"
     },
     {
-      "id": 10,
-      "name": "Alematic Artisan Ales",
-      "why": "notPlaced",
-      "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
-    },
-    {
       "id": 337,
       "name": "Warped Wing Brewing Company",
       "why": "notPlaced",
       "reason": "the geocoder found no match for its printed address, and the directory holds no matching street address"
     }
   ],
+  "rejected": [
+    {
+      "id": 941,
+      "name": "Town Branch Distillery",
+      "reason": "its pages print tour and visitor-centre hours only, not taproom or tasting-room hours"
+    },
+    {
+      "id": 545,
+      "name": "Kuhnhenn Brewing Co",
+      "reason": "its site prints only a same-day line (\"Open today until 10:00 pm\"), not weekly visiting hours"
+    },
+    {
+      "id": 302,
+      "name": "Peerless Mill Inn & Brewery",
+      "reason": "its site prints visiting hours, but does not say beer is brewed there, so it is not established as a brewery"
+    },
+    {
+      "id": 34,
+      "name": "Bock Family Brewing",
+      "reason": "its hours are on pages its server answers with HTTP 404 (page not found), so they were not read from a page that loaded normally"
+    }
+  ],
   "checkedNotListed": [
     9,
-    10,
     14,
     33,
     34,
     50,
     58,
     68,
+    97,
     98,
     115,
     116,
@@ -1712,7 +1794,6 @@ export const I_75_BUILT: BuiltRoad = {
     391,
     397,
     449,
-    450,
     453,
     455,
     474,
