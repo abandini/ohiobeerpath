@@ -1,0 +1,4 @@
+-- Revert of 0025 (run by hand; not a migration): puts Modern Methods Brewing Company (id 218) back as it was on 2026-11-22.
+UPDATE breweries SET street = '', postal_code = '', website_url = 'http://www.modernmethodsbrew.com', about_quote = NULL,
+  about_source_url = NULL, about_checked_at = NULL, photos = NULL, photo_credit = NULL, visit_notes = NULL
+WHERE id = 218 AND name = 'Modern Methods Brewing Company';

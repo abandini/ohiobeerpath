@@ -27,6 +27,8 @@ export interface Env {
 export interface BreweryPhoto {
   url: string; // same-origin path under /images/
   alt: string; // factual description only
+  width?: number; // pixel size of the stored file, so a portrait photo reserves the right space; both or neither
+  height?: number;
 }
 
 // A first-hand note from a Brewery Trip visit. date is the visit day (YYYY-MM-DD); text is plain text.

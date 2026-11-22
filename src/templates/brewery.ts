@@ -106,7 +106,13 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
   // Support real brewery photos when available, fallback to gradient
   // Hero photo: owner-supplied gallery photo first (same-origin /images/ path), else legacy image_url, else gradient.
   // One validator for every image path that reaches the CSS url() or an <img src>: see safeImagePath.
-  const photos = (brewery.photos || []).map(p => ({ url: safeImagePath(p.url), alt: p.alt })).filter(p => p.url !== '' && p.alt.trim() !== '');
+  // width/height come from the stored file when the row gives both as whole numbers from 1 to 10000; otherwise the
+  // long-standing 1600x739 default (the first owner photos were all that shape).
+  const photoDim = (n: unknown): number | null => (typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 10000 ? n : null);
+  const photos = (brewery.photos || []).map(p => {
+    const w = photoDim(p.width), h = photoDim(p.height);
+    return { url: safeImagePath(p.url), alt: p.alt, width: w && h ? w : 1600, height: w && h ? h : 739 };
+  }).filter(p => p.url !== '' && p.alt.trim() !== '');
   const heroImage = photos[0]?.url || safeImagePath(brewery.image_url);
   const heroBackground = heroImage
     ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${escapeAttr(heroImage)}'); background-size: cover; background-position: center;`
@@ -117,7 +123,7 @@ export function breweryPage(brewery: Brewery, googleMapsApiKey?: string, nearbyB
           <div class="content-card brewery-photos">
             <h2><i class="bi bi-images text-warning"></i> Photos</h2>
             <div class="photo-grid">
-              ${photos.map(p => `<figure><img src="${escapeAttr(p.url)}" alt="${escapeAttr(p.alt)}" loading="lazy" width="1600" height="739"></figure>`).join('')}
+              ${photos.map(p => `<figure><img src="${escapeAttr(p.url)}" alt="${escapeAttr(p.alt)}" loading="lazy" width="${p.width}" height="${p.height}"></figure>`).join('')}
             </div>
             ${photoCredit ? `<p class="photo-credit">${escapeHtml(photoCredit)}</p>` : ''}
           </div>` : '';

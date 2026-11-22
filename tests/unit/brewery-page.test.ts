@@ -194,6 +194,19 @@ describe('owner-supplied photos', () => {
     expect(html).toContain('<p class="photo-credit">Photo: Brewery Trip visit, Oct 17, 2026</p>');
     expect(html).toContain("url('/images/breweries/brighten/taproom-1.webp')");
   });
+  it('uses a photo\'s own width and height when both are whole numbers, and the 1600x739 default otherwise', () => {
+    const html = breweryPage({ ...base, photos: [
+      { url: '/images/breweries/x/portrait.webp', alt: 'Portrait', width: 1071, height: 1600 },
+      { url: '/images/breweries/x/no-size.webp', alt: 'No size' },
+      { url: '/images/breweries/x/half.webp', alt: 'Half', width: 900 },
+      { url: '/images/breweries/x/bad.webp', alt: 'Bad', width: '1"><script>' as unknown as number, height: 1.5 },
+      { url: '/images/breweries/x/huge.webp', alt: 'Huge', width: 20000, height: 100 },
+    ] });
+    expect(html).toContain('alt="Portrait" loading="lazy" width="1071" height="1600">');
+    for (const alt of ['No size', 'Half', 'Bad', 'Huge']) expect(html).toContain(`alt="${alt}" loading="lazy" width="1600" height="739">`);
+    expect(html).not.toContain('width="1"');
+    expect(html).not.toContain('"><script>');
+  });
   it('rejects CSS-injection and path-traversal image paths at the hero and gallery', () => {
     const inj = "/images/x');background-image:url(https://example.org/pixel);/*";
     const html = breweryPage({ ...base, photos: [{ url: inj, alt: 'x' }, { url: '/images/../other/x.webp', alt: 'y' }], image_url: inj });
