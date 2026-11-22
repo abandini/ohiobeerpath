@@ -237,12 +237,6 @@ export interface RoadConfig {
   /** For a directory road whose legs are editorial cuts of one road: the sentence that says where the cuts are. */
   legsNote?: string;
   /**
-   * A dated correction to a page that was already public. `previous` is the list as it stood before (id, name, town,
-   * mile, distance); the notice and its detailed entry are worked out by comparing it with the list as it is now, so
-   * they cannot drift from the page.
-   */
-  update?: { date: string; what: string; previous: { breweryId: number; name: string; town: string; mile: number; detourMiles: number }[] };
-  /**
    * Directory roads that share breweries: for any directory id that this road and the named road both check, the
    * named road's row, edits and geocode are used here too, so the two pages cannot tell different stories.
    */
@@ -750,7 +744,7 @@ export function applyRowEdits(rows: VerifiedRow[], decisions: RowDecision[] = []
     for (const c of corrections.filter((x) => x.key === String(r.id))) {
       hit.add(`c:${c.key}:${c.field}`);
       if (c.field === 'evidence') row = { ...row, operating_evidence: c.value && row.operating_evidence ? { ...row.operating_evidence, excerpt: c.value, ...(c.url ? { url: c.url } : {}) } : null };
-      else if (c.field === 'address') row = { ...row, address_as_printed: c.value, address_source_url: c.value ? row.address_source_url : null };
+      else if (c.field === 'address') row = { ...row, address_as_printed: c.value, address_source_url: c.value ? (c.url ?? row.address_source_url) : null, ...(c.value ? { notes: `${c.reason} | ${row.notes ?? ''}` } : {}) };
       else row = { ...row, quote: c.value, quote_source_url: c.value ? row.quote_source_url : null };
     }
     return row;
@@ -945,10 +939,47 @@ export function normaliseCheckerFiles(dataset: Record<string, unknown>[], verifi
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
+// Dated updates to a page that was already public
+
+/** A stop as an update records it: enough to say what was listed, where, and how it was measured. */
+export interface UpdateStop { breweryId: number; name: string; town: string; mile: number; detourMiles: number }
+/**
+ * One completed update to a public page, written once (scripts/record-road-update.mjs) and never recomputed: the list
+ * before and after, why each stop left or joined, and what was re-measured. The page renders its dated notice and its
+ * detailed entry from this record alone, so a later change to the list cannot rewrite an earlier entry.
+ */
+export interface UpdateEvent {
+  date: string; what: string;
+  before: UpdateStop[]; after: UpdateStop[];
+  removed: (UpdateStop & { why: 'notPlaced' | 'outside' | ''; reason: string })[];
+  added: (UpdateStop & { laterCheck: boolean })[];
+  /** Mile moved by half a mile or more, or straight-line distance by a quarter of a mile or more. */
+  measured: { breweryId: number; name: string; was: { mile: number; detourMiles: number }; is: { mile: number; detourMiles: number } }[];
+  slight: number;              // stops whose figures moved by less than that
+  towns: { breweryId: number; name: string; was: string; is: string }[];
+}
+/** Works an update out from the list as it was and the list as it is at the moment of recording. */
+export function makeUpdateEvent(date: string, what: string, before: UpdateStop[], stops: RoadStop[], notListed: NotListed[] = []): UpdateEvent {
+  const slim = (s: RoadStop): UpdateStop => ({ breweryId: s.breweryId as number, name: s.name, town: s.town, mile: s.mile, detourMiles: s.detourMiles });
+  const listed = stops.filter((s) => s.breweryId !== undefined), now = new Map(listed.map((s) => [s.breweryId as number, s])), was = new Map(before.map((x) => [x.breweryId, x]));
+  const kept = before.filter((x) => now.has(x.breweryId)).map((x) => ({ was: x, is: now.get(x.breweryId)! }));
+  const material = (k: { was: UpdateStop; is: RoadStop }) => Math.abs(k.was.mile - k.is.mile) >= 0.5 || Math.abs(k.was.detourMiles - k.is.detourMiles) >= 0.25;
+  return {
+    date, what, before: before.map((x) => ({ ...x })), after: listed.map(slim),
+    removed: before.filter((x) => !now.has(x.breweryId)).map((x) => { const n = notListed.find((y) => y.id === x.breweryId); return { ...x, why: n?.why ?? '', reason: n?.reason ?? '' }; }),
+    added: listed.filter((s) => !was.has(s.breweryId as number)).map((s) => ({ ...slim(s), laterCheck: !!s.checkFrom })),
+    measured: kept.filter(material).map(({ was: w, is }) => ({ breweryId: w.breweryId, name: is.name, was: { mile: w.mile, detourMiles: w.detourMiles }, is: { mile: is.mile, detourMiles: is.detourMiles } })),
+    slight: kept.filter((k) => !material(k) && (k.was.mile !== k.is.mile || k.was.detourMiles !== k.is.detourMiles)).length,
+    towns: kept.filter(({ was: w, is }) => w.town !== is.town).map(({ was: w, is }) => ({ breweryId: w.breweryId, name: is.name, was: w.town, is: is.town })),
+  };
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
 // Cross-road consistency
 
 /** The facts about a brewery that must be the same on every road that lists it. Miles and distances differ by road and are not here. */
-export const SHARED_STOP_FIELDS = ['name', 'town', 'state', 'address', 'addressSourceUrl', 'website', 'evidence', 'evidenceUrl', 'evidenceChecked', 'evidenceKind', 'lat', 'lon', 'placedBy', 'placedNote', 'browserChecked'] as const;
+export const SHARED_STOP_FIELDS = ['name', 'town', 'state', 'address', 'addressSourceUrl', 'website', 'evidence', 'evidenceUrl', 'evidenceChecked', 'evidenceKind', 'lat', 'lon', 'placedBy', 'placedNote', 'browserChecked',
+  'quote', 'quoteSourceUrl', 'checked', 'noticeContext'] as const;
 /**
  * Every difference between roads in what they say about the same directory listing: its identity, printed address,
  * town and state, operating evidence with its source and date, and the coordinates it is measured from with their
@@ -1017,6 +1048,7 @@ export interface RoadView {
   config: RoadConfig; legs: LegView[]; stops: StopView[]; // stops: every listed stop, measured and unmeasured
   unplaced: number;            // evidenced breweries left off because no coordinates could be had for them
   cohort: Cohort | null; notListed: NotListed[];
+  updates: UpdateEvent[];      // dated updates to a page that was already public, as recorded (set by the registry)
   candidates: number; decided: number;
   problems: string[];          // what is wrong with the config, if anything
   /** Published: the config says publish: true, the config is sound, and at least one stop passes the gate. One decision, used by every route, link and listing. */
@@ -1076,7 +1108,7 @@ export function viewRoad(config: RoadConfig, built: BuiltRoad, today: string = c
   });
   const stops = legs.flatMap((l) => [...l.stops, ...l.unmeasured.flatMap((u) => u.stops)]), dates = stops.flatMap((s) => [s.evidenceChecked]).sort();
   return {
-    config, legs, stops, problems, unplaced: Math.max(0, built.unplaced ?? 0), cohort: built.cohort ?? null, notListed: built.notListed ?? [],
+    config, legs, stops, problems, unplaced: Math.max(0, built.unplaced ?? 0), cohort: built.cohort ?? null, notListed: built.notListed ?? [], updates: [],
     candidates: legs.reduce((a, l) => a + l.candidates, 0), decided: legs.reduce((a, l) => a + l.decided, 0),
     available: config.publish === true && problems.length === 0 && stops.length > 0,
     checkedFrom: dates[0] || '', checkedTo: dates[dates.length - 1] || '',

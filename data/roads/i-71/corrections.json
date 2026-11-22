@@ -94,5 +94,12 @@
     "field": "evidence",
     "value": "Tue-Thursday 5-10ish Friday 5-11ish Sat 2-11ish Sun 2-10",
     "reason": "cut back to the hours, as the page prints them, re-read 2026-11-22"
+  },
+  {
+    "key": "2338",
+    "field": "address",
+    "value": "2555 Harrison Rd. Columbus, OH 43204",
+    "url": "https://columbusbrewing.com/contact/",
+    "reason": "as its contact page prints it, re-read 2026-11-22. The site prints \"2555 Harrison Rd.\" on its home page, its contact page and its taproom page; one line on the taproom page says \"2555 Harrison Dr.\", which the checker copied"
   }
 ]

@@ -369,15 +369,6 @@
     "checked": "2026-11-22"
   },
   {
-    "id": 229,
-    "address": "1859 West 25th Street, Cleveland",
-    "lat": 41.485790665717,
-    "lon": -81.704569162867,
-    "matched": "1859 W 25TH ST, CLEVELAND, OH, 44113",
-    "source": "US Census geocoder",
-    "checked": "2026-11-22"
-  },
-  {
     "id": 230,
     "address": "106 Karl Brown Way Loveland, OH 45140",
     "lat": 39.268043182595,
@@ -658,7 +649,7 @@
   },
   {
     "id": 2338,
-    "address": "2555 Harrison Dr. Columbus, OH 43204",
+    "address": "2555 Harrison Rd. Columbus, OH 43204",
     "lat": 39.968185221797,
     "lon": -83.070167736462,
     "matched": "2555 HARRISON RD, COLUMBUS, OH, 43204",

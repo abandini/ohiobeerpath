@@ -4,9 +4,11 @@
 // availableRoads(), so there is one decision.
 // The views are worked out when first asked for on a given day, never at module load: the gate compares check dates
 // with today, and a Worker's clock is not set until it is handling a request.
+// A road's dated updates (*.updates.ts) are records written once; they are attached here and never recomputed.
 import { currentDate, viewRoad, type RoadView } from '../../lib/road-trip';
 import { US_422 } from './us-422';
 import { US_422_BUILT } from './us-422.built';
+import { US_422_UPDATES } from './us-422.updates';
 import { ROUTE_66 } from './route-66';
 import { ROUTE_66_BUILT } from './route-66.built';
 import { I_71 } from './i-71';
@@ -14,7 +16,7 @@ import { I_71_BUILT } from './i-71.built';
 
 let memo: { day: string; roads: RoadView[] } | null = null;
 export function allRoads(today: string = currentDate()): RoadView[] {
-  if (!memo || memo.day !== today) memo = { day: today, roads: [viewRoad(ROUTE_66, ROUTE_66_BUILT, today), viewRoad(I_71, I_71_BUILT, today), viewRoad(US_422, US_422_BUILT, today)] };
+  if (!memo || memo.day !== today) memo = { day: today, roads: [viewRoad(ROUTE_66, ROUTE_66_BUILT, today), viewRoad(I_71, I_71_BUILT, today), { ...viewRoad(US_422, US_422_BUILT, today), updates: US_422_UPDATES }] };
   return memo.roads;
 }
 

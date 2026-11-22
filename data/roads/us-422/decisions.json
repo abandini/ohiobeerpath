@@ -1,16 +1,9 @@
 [
   {
     "match": 308,
-    "reason": "editor: reviewed placement exception (accepted by the coordinator 2026-11-22)",
+    "reason": "editor: reviewed placement exception, a missing suffix that the brewery's own page prints in full (kept on re-read against the review standard, 2026-11-22)",
     "acceptPlacement": {
-      "evidence": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the page leaves off the suffix \"Dr\"."
-    }
-  },
-  {
-    "match": 60,
-    "reason": "coordinator: reviewed placement exception",
-    "acceptPlacement": {
-      "evidence": "Printed \"11610 Washington Street, Chagrin Falls, OH 44023\"; the geocoder matched \"11610 E WASHINGTON ST, CHAGRIN FALLS, OH, 44023\". US Census geocoder returns a single match for 11610 Washington St in ZIP 44023 (11610 E WASHINGTON ST), also when asked for W Washington St; read 2026-11-22."
+      "evidence": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the address line leaves off the suffix. The brewery's own contact page also prints the full form: \"You can find us in Cleveland’s Battery Park neighborhood at 7524 Father Frascati Drive\" (terrestrialbrewing.com/contact/, read 2026-11-22)."
     }
   }
 ]

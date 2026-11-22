@@ -16,7 +16,7 @@ import { medalsFor } from '../data/medals';
 import { DOWNTOWN_TOUR, GABF_WINDOW } from '../data/tours/downtown-cleveland';
 import { DEFAULT_STALE_AFTER_DAYS } from '../services/taplist';
 import type { SubdomainContext } from '../types';
-import { safeSitePath, type Cohort, type LatLon, type LegView, type RoadNote, type RoadView, type SegmentView, type StopView } from '../lib/road-trip';
+import { safeSitePath, type Cohort, type LatLon, type LegView, type RoadNote, type RoadView, type SegmentView, type StopView, type UpdateEvent } from '../lib/road-trip';
 
 // A road crosses state lines, so its one canonical home is the national site, whichever host served the page.
 const SITE = 'https://brewerytrip.com';
@@ -343,49 +343,46 @@ export function legCohortText(c: Cohort, limit: number): string {
 const checkedWhen = (road: RoadView) => (road.checkedFrom === road.checkedTo ? `on ${road.checkedTo}` : `between ${road.checkedFrom} and ${road.checkedTo}`);
 
 /**
- * What changed on a page that was already public, worked out from the list as it was (config.update.previous) and the
- * list as it is. Material: a mile position that moved by half a mile or more, or a straight-line distance by a quarter.
+ * The two or three sentences of a recorded update, from the record alone (never from the page's current stops): what
+ * was revised, how the list changed and why, and what was re-measured. A cause is claimed only when every removal (or
+ * every addition) on record has it.
  */
-export function pageUpdate(road: RoadView) {
-  const u = road.config.update; if (!u) return null;
-  const now = new Map(road.stops.filter((s) => s.breweryId !== undefined).map((s) => [s.breweryId as number, s]));
-  const before = new Map(u.previous.map((x) => [x.breweryId, x]));
-  const removed = u.previous.filter((x) => !now.has(x.breweryId)).map((x) => ({ ...x, reason: road.notListed.find((n) => n.id === x.breweryId)?.reason ?? '', why: road.notListed.find((n) => n.id === x.breweryId)?.why ?? '' }));
-  const added = road.stops.filter((s) => s.breweryId !== undefined && !before.has(s.breweryId));
-  const kept = u.previous.filter((x) => now.has(x.breweryId)).map((x) => ({ was: x, is: now.get(x.breweryId)! }));
-  const measured = kept.filter(({ was, is }) => Math.abs(was.mile - is.mile) >= 0.5 || Math.abs(was.detourMiles - is.detourMiles) >= 0.25);
-  const slight = kept.filter(({ was, is }) => (was.mile !== is.mile || was.detourMiles !== is.detourMiles) && !measured.some((m) => m.is === is)).length;
-  const towns = kept.filter(({ was, is }) => was.town !== is.town);
-  const allPlacement = removed.length > 0 && removed.every((r) => r.why === 'notPlaced');
-  // Added on another road's check of the same listing (see shareRows 'fill'): that is the only cause the page claims.
-  const later = added.filter((x) => !!x.checkFrom), allLater = added.length > 0 && later.length === added.length;
-  const parts = [u.what];
-  const took = removed.length ? (allPlacement ? `we could not establish ${removed.length === 1 ? 'an address-linked location' : 'address-linked locations'} for ${word(removed.length)} previously listed ${removed.length === 1 ? 'brewery' : 'breweries'}` : `${word(removed.length)} previously listed ${removed.length === 1 ? 'brewery was' : 'breweries were'} removed`) : '';
-  const notClosed = removed.length === 1 ? 'this removal is not a finding that the brewery closed' : 'these removals are not findings that the breweries closed';
-  const gave = added.length ? `${word(added.length)} ${added.length === 1 ? 'was' : 'were'} added${allLater ? ` after a later check found ${added.length === 1 ? 'its' : 'their'} published hours` : ''}` : '';
-  if (removed.length && added.length) parts.push(`The list changed from ${u.previous.length} to ${road.stops.length} stops: ${took} (${notClosed}), and ${gave}.`);
-  else if (removed.length) parts.push(allPlacement ? `The list changed from ${u.previous.length} to ${road.stops.length} stops because ${took}; ${notClosed}.` : `The list changed from ${u.previous.length} to ${road.stops.length} stops: ${took}; ${notClosed}.`);
-  else if (added.length) parts.push(`The list changed from ${u.previous.length} to ${road.stops.length} stops: ${gave}.`);
-  const recalculated = measured.length + slight;
-  if (recalculated || towns.length) parts.push(`We also ${[recalculated ? `recalculated ${recalculated === 1 ? 'one mile position or straight-line distance' : `${recalculated >= 3 ? 'several' : word(recalculated)} mile positions and straight-line distances`}` : '', towns.length ? `changed ${word(towns.length)} town ${towns.length === 1 ? 'label' : 'labels'} to match ${towns.length === 1 ? 'the brewery’s printed address' : 'the breweries’ printed addresses'}` : ''].filter(Boolean).join(' and ')}.`);
-  return { date: u.date, summary: parts.join(' '), removed, added, measured, slight, towns, from: u.previous.length, to: road.stops.length };
+export function updateSummary(e: UpdateEvent): string {
+  const removed = e.removed.length, added = e.added.length, from = e.before.length, to = e.after.length;
+  const allPlacement = removed > 0 && e.removed.every((r) => r.why === 'notPlaced'), allLater = added > 0 && e.added.every((x) => x.laterCheck);
+  const took = removed ? (allPlacement ? `we could not establish ${removed === 1 ? 'an address-linked location' : 'address-linked locations'} for ${word(removed)} previously listed ${removed === 1 ? 'brewery' : 'breweries'}` : `${word(removed)} previously listed ${removed === 1 ? 'brewery was' : 'breweries were'} removed`) : '';
+  const notClosed = removed === 1 ? 'this removal is not a finding that the brewery closed' : 'these removals are not findings that the breweries closed';
+  const gave = added ? `${word(added)} ${added === 1 ? 'was' : 'were'} added${allLater ? ` after a later check found ${added === 1 ? 'its' : 'their'} published hours` : ''}` : '';
+  const parts = [e.what];
+  if (removed && added) parts.push(`The list changed from ${from} to ${to} stops: ${took} (${notClosed}), and ${gave}.`);
+  else if (removed) parts.push(allPlacement ? `The list changed from ${from} to ${to} stops because ${took}; ${notClosed}.` : `The list changed from ${from} to ${to} stops: ${took}; ${notClosed}.`);
+  else if (added) parts.push(`The list changed from ${from} to ${to} stops: ${gave}.`);
+  const recalculated = e.measured.length + e.slight, towns = e.towns.length;
+  if (recalculated || towns) parts.push(`We also ${[recalculated ? `recalculated ${recalculated === 1 ? 'one mile position or straight-line distance' : `${recalculated >= 3 ? 'several' : word(recalculated)} mile positions and straight-line distances`}` : '', towns ? `changed ${word(towns)} town ${towns === 1 ? 'label' : 'labels'} to match ${towns === 1 ? 'the brewery’s printed address' : 'the breweries’ printed addresses'}` : ''].filter(Boolean).join(' and ')}.`);
+  return parts.join(' ');
 }
 const two = (n: number) => n.toFixed(2);
-function updateEntry(road: RoadView): string {
-  const u = pageUpdate(road); if (!u) return '';
+/** The newest recorded update first. */
+const newestFirst = (road: RoadView) => [...road.updates].sort((x, y) => (x.date < y.date ? 1 : -1));
+const updateAnchor = (e: UpdateEvent) => `update-${e.date}`;
+/** The permanent entries, one per recorded update, each rendered from its own record. */
+export function updateEntries(road: RoadView): string {
+  if (!road.updates.length) return '';
   return `
       <section aria-labelledby="updates" class="rt-how">
-        <h2 id="updates">Updates to this page</h2>
-        <p><strong>Updated ${h(longDate(u.date))}.</strong> ${h(u.summary)}</p>${u.removed.length ? `
+        <h2 id="updates">Updates to this page</h2>${newestFirst(road).map((u) => `
+        <div id="${a(updateAnchor(u))}">
+        <p><strong>Updated ${h(longDate(u.date))}.</strong> ${h(updateSummary(u))}</p>${u.removed.length ? `
         <p>No longer listed (${u.removed.length}). None of these is a finding that the brewery closed:</p>
-        <ul>${u.removed.map((r) => `<li><strong>${h(r.name)}</strong> (${h(r.town)}, was at mile ${mi(r.mile)}): ${h(r.reason ? `${r.reason}.` : 'it no longer meets this page’s requirements.')}</li>`).join('')}</ul>` : ''}${u.added.length ? `
+        <ul>${u.removed.map((r) => `<li><strong>${h(r.name)}</strong> (${h(r.town)}, was at mile ${mi(r.mile)}): ${h(r.reason ? `${r.reason}.` : 'it no longer met this page’s requirements.')}</li>`).join('')}</ul>` : ''}${u.added.length ? `
         <p>Added (${u.added.length}):</p>
-        <ul>${u.added.map((x) => `<li><strong>${h(x.name)}</strong> (${h(x.town)}, mile ${mi(x.mile)}): ${x.checkFrom ? 'a later check of the same listing, made for another road page, found its published hours.' : 'it now meets this page’s requirements.'}</li>`).join('')}</ul>` : ''}${u.measured.length ? `
-        <p>Measurements that changed by half a mile or more along the line, or a quarter of a mile or more from it, because the brewery is now measured from its printed address:</p>
-        <ul>${u.measured.map(({ was, is }) => `<li><strong>${h(is.name)}</strong>: ${[was.mile !== is.mile ? `mile ${mi(was.mile)} to ${mi(is.mile)}` : '', was.detourMiles !== is.detourMiles ? `straight-line distance ${two(was.detourMiles)} to ${two(is.detourMiles)} miles` : ''].filter(Boolean).join('; ')}</li>`).join('')}</ul>` : ''}${u.slight ? `
+        <ul>${u.added.map((x) => `<li><strong>${h(x.name)}</strong> (${h(x.town)}, mile ${mi(x.mile)}): ${x.laterCheck ? 'a later check of the same listing, made for another road page, found its published hours.' : 'it met this page’s requirements.'}</li>`).join('')}</ul>` : ''}${u.measured.length ? `
+        <p>Measurements that changed by half a mile or more along the line, or a quarter of a mile or more from it, because the brewery was then measured from its printed address:</p>
+        <ul>${u.measured.map(({ name, was, is }) => `<li><strong>${h(name)}</strong>: ${[was.mile !== is.mile ? `mile ${mi(was.mile)} to ${mi(is.mile)}` : '', was.detourMiles !== is.detourMiles ? `straight-line distance ${two(was.detourMiles)} to ${two(is.detourMiles)} miles` : ''].filter(Boolean).join('; ')}</li>`).join('')}</ul>` : ''}${u.slight ? `
         <p>${plural(u.slight, 'other stop')} moved by less than that.</p>` : ''}${u.towns.length ? `
         <p>Town labels changed to the town the printed address names:</p>
-        <ul>${u.towns.map(({ was, is }) => `<li><strong>${h(is.name)}</strong>: ${h(was.town)} to ${h(is.town)}</li>`).join('')}</ul>` : ''}
+        <ul>${u.towns.map((t) => `<li><strong>${h(t.name)}</strong>: ${h(t.was)} to ${h(t.is)}</li>`).join('')}</ul>` : ''}
+        </div>`).join('')}
       </section>`;
 }
 
@@ -521,7 +518,7 @@ export const roadsBlurb = (roads: RoadView[]) =>
 
 export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
   T = termsFor(road); showPlacement = byCohort(road); isInterstate = road.config.interstate === true;
-  const update = pageUpdate(road), by = (m: string) => road.stops.filter((s) => s.placedBy === m).length;
+  const update = newestFirst(road)[0], by = (m: string) => road.stops.filter((s) => s.placedBy === m).length;
   const c = road.config, url = `${SITE}/roads/${c.slug}`, title = roadTitle(road);
   const holes = road.legs.flatMap((l) => l.unmeasured), hasOuter = road.legs.some((l) => l.segments.some((g) => g.outer.length));
   const through = road.legs.filter((l) => !l.side), sides = road.legs.filter((l) => l.side);
@@ -551,14 +548,14 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
 
   <div class="container my-4 rt">
     <div class="rt-wrap">${drivingNote(road)}${update ? `
-      <div class="rt-note" role="note"><p><strong>Updated ${h(longDate(update.date))}:</strong> ${h(update.summary)} <a href="#updates">What changed, stop by stop</a>.</p></div>` : ''}
+      <div class="rt-note" role="note"><p><strong>Updated ${h(longDate(update.date))}:</strong> ${h(updateSummary(update))} <a href="#${a(updateAnchor(update))}">What changed, stop by stop</a>.</p></div>` : ''}
       <p>${h(c.about)}</p>
       <p>${h(byCohort(road) ? cohortLine(road.cohort!, checkedWhen(road)) : coverageText(road.decided, road.candidates, c.maxDetourMiles, T.anyWay ? `a mapped alignment of ${c.shortName}` : `our mapped line of ${c.shortName}`, c.startingList))}${byCohort(road) ? ' <a href="#how">How this list was made</a>.' : ''}</p>
       <nav aria-label="Stretches of the road">
         ${c.collapseLegs ? `<p class="rt-sub">${road.legs.every((l) => l.name) ? 'Jump to a state. Each one opens to show its stops.' : 'Jump to a stretch. Its leg opens to show the stops.'}</p>` : ''}<ul class="rt-jump">${jump.join('')}</ul>
       </nav>
       ${road.legs.map((l, i) => legSection(road, l, i + 1, o)).join('')}
-${updateEntry(road)}
+${updateEntries(road)}
 
       <section aria-labelledby="how" class="rt-how">
         <h2 id="how">How this list was made</h2>

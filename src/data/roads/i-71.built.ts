@@ -361,7 +361,7 @@ export const I_71_BUILT: BuiltRoad = {
       "pastEnd": "start",
       "outer": true,
       "placedBy": "reviewed",
-      "placedNote": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the page leaves off the suffix \"Dr\".",
+      "placedNote": "Printed \"7524 Father Frascati, Cleveland, OH 44102\"; the geocoder matched \"7524 FATHER FRASCATI DR, CLEVELAND, OH, 44102\". Same number, street name, town, state and ZIP code; the address line leaves off the suffix. The brewery's own contact page also prints the full form: \"You can find us in Cleveland’s Battery Park neighborhood at 7524 Father Frascati Drive\" (terrestrialbrewing.com/contact/, read 2026-11-22).",
       "checkFrom": "us-422"
     },
     {
@@ -612,7 +612,7 @@ export const I_71_BUILT: BuiltRoad = {
       "detourMiles": 0.42,
       "pastEnd": "",
       "placedBy": "reviewed",
-      "placedNote": "Printed \"1255 N CARPENTER RD SUITE 100 BRUNSWICK, OH 44212\"; the geocoder matched \"1255 CARPENTER RD N, BRUNSWICK, OH, 44212\". Same number, street, town, state and ZIP code; the direction is written before the street name on the page and after it by the geocoder."
+      "placedNote": "Printed \"1255 N CARPENTER RD SUITE 100 BRUNSWICK, OH 44212\"; the geocoder matched \"1255 CARPENTER RD N, BRUNSWICK, OH, 44212\". Same number, street, town, state and ZIP code. The only difference is whether the direction \"N\" is written before or after the street name."
     },
     {
       "key": "31",
@@ -905,7 +905,7 @@ export const I_71_BUILT: BuiltRoad = {
       "detourMiles": 0.83,
       "pastEnd": "",
       "placedBy": "reviewed",
-      "placedNote": "Printed \"7020-A Huntley Rd. Worthington, OH 43229\"; the geocoder matched \"7020 HUNTLEY RD, COLUMBUS, OH, 43229\". Same street number, street and ZIP code. \"-A\" is a unit letter, and Worthington and Columbus are both used as the post-office town for ZIP 43229."
+      "placedNote": "Printed \"7020-A Huntley Rd. Worthington, OH 43229\"; the geocoder matched \"7020 HUNTLEY RD, COLUMBUS, OH, 43229\". Same street number, street and ZIP code. The differences are the unit letter \"-A\" and the city name written for ZIP 43229."
     },
     {
       "key": "119",
@@ -1255,8 +1255,8 @@ export const I_71_BUILT: BuiltRoad = {
       "lon": -83.070167736462,
       "status": "OPEN",
       "website": "https://columbusbrewing.com/",
-      "address": "2555 Harrison Dr. Columbus, OH 43204",
-      "addressSourceUrl": "https://columbusbrewing.com/location/taproom/",
+      "address": "2555 Harrison Rd. Columbus, OH 43204",
+      "addressSourceUrl": "https://columbusbrewing.com/contact/",
       "evidence": "Stop by 2555 Harrison Dr. Columbus, OH 43204 614-224-3626 Directions Taproom hours Monday - Wednesday: Closed Thursday - Friday: 2pm - 9pm Saturday: 12pm - 9pm Sunday: 12pm - 8pm",
       "evidenceUrl": "https://columbusbrewing.com/location/taproom/",
       "evidenceChecked": "2026-11-22",
@@ -1268,8 +1268,7 @@ export const I_71_BUILT: BuiltRoad = {
       "detourMiles": 3.17,
       "pastEnd": "",
       "outer": true,
-      "placedBy": "reviewed",
-      "placedNote": "Printed \"2555 Harrison Dr. Columbus, OH 43204\"; the geocoder matched \"2555 HARRISON RD, COLUMBUS, OH, 43204\". US Census geocoder returns a single match for 2555 Harrison in ZIP 43204 (2555 HARRISON RD), for both Dr and Rd; read 2026-11-22."
+      "placedBy": "census"
     },
     {
       "key": "139",
@@ -1415,7 +1414,7 @@ export const I_71_BUILT: BuiltRoad = {
       "detourMiles": 0.41,
       "pastEnd": "",
       "placedBy": "reviewed",
-      "placedNote": "Printed \"8584 Duke Boulevard in Mason, Ohio\"; the geocoder matched \"8584 DUKE BLVD, MASON, OH, 45040\". Same number, street, town and state; the page puts the word \"in\" before the town."
+      "placedNote": "Printed \"8584 Duke Boulevard in Mason, Ohio\"; the geocoder matched \"8584 DUKE BLVD, MASON, OH, 45040\". Same number, street, town and state. The only difference is the word \"in\" before the town."
     },
     {
       "key": "230",
@@ -1536,7 +1535,7 @@ export const I_71_BUILT: BuiltRoad = {
       "detourMiles": 4.58,
       "pastEnd": "",
       "placedBy": "reviewed",
-      "placedNote": "Printed \"11276 Chester Road Sharonville, OH 45246\"; the geocoder matched \"11276 CHESTER RD, CINCINNATI, OH, 45246\". Same number, street, state and ZIP code; Sharonville and Cincinnati are both used as the post-office town for ZIP 45246."
+      "placedNote": "Printed \"11276 Chester Road Sharonville, OH 45246\"; the geocoder matched \"11276 CHESTER RD, CINCINNATI, OH, 45246\". Same street number, street and ZIP code. The only difference is the city name written for ZIP 45246."
     },
     {
       "key": "196",
