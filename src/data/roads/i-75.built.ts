@@ -1638,7 +1638,7 @@ export const I_75_BUILT: BuiltRoad = {
       "id": 115,
       "name": "Fifty West Deerfield",
       "why": "notPlaced",
-      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-22, and the directory holds no matching street address"
+      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-23, and the directory holds no matching street address"
     },
     {
       "id": 312,
@@ -1674,7 +1674,7 @@ export const I_75_BUILT: BuiltRoad = {
       "id": 369,
       "name": "Atwater Brewing Co",
       "why": "notPlaced",
-      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-22, and the directory holds no matching street address"
+      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-23, and the directory holds no matching street address"
     },
     {
       "id": 453,
@@ -1734,7 +1734,7 @@ export const I_75_BUILT: BuiltRoad = {
       "id": 337,
       "name": "Warped Wing Brewing Company",
       "why": "notPlaced",
-      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-22, and the directory holds no matching street address"
+      "reason": "no exact Census match was returned for its printed address when checked on 2026-11-23, and the directory holds no matching street address"
     }
   ],
   "rejected": [

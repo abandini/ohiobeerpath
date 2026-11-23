@@ -159,7 +159,7 @@
     "lon": null,
     "matched": null,
     "source": "US Census geocoder",
-    "checked": "2026-11-22"
+    "checked": "2026-11-23"
   },
   {
     "id": 117,
@@ -348,7 +348,7 @@
     "lon": null,
     "matched": null,
     "source": "US Census geocoder",
-    "checked": "2026-11-22"
+    "checked": "2026-11-23"
   },
   {
     "id": 340,
@@ -366,7 +366,7 @@
     "lon": null,
     "matched": null,
     "source": "US Census geocoder",
-    "checked": "2026-11-22"
+    "checked": "2026-11-23"
   },
   {
     "id": 381,
@@ -636,7 +636,7 @@
     "lon": null,
     "matched": null,
     "source": "US Census geocoder",
-    "checked": "2026-11-22"
+    "checked": "2026-11-23"
   },
   {
     "id": 2382,
@@ -681,6 +681,6 @@
     "lon": null,
     "matched": null,
     "source": "US Census geocoder",
-    "checked": "2026-11-22"
+    "checked": "2026-11-23"
   }
 ]
