@@ -36,6 +36,15 @@
     "checked": "2026-11-22"
   },
   {
+    "id": 44,
+    "address": "1956 Carter Rd, Cleveland, OH 44113",
+    "lat": 41.488476281829,
+    "lon": -81.698187106637,
+    "matched": "1956 CARTER RD, CLEVELAND, OH, 44113",
+    "source": "US Census geocoder",
+    "checked": "2026-11-23"
+  },
+  {
     "id": 51,
     "address": "1844 COLUMBUS RD, CLEVELAND, OH 44113, US",
     "lat": 41.490024686326,

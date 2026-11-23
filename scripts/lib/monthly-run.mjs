@@ -48,7 +48,7 @@ async function run({ drill }) {
   // --- Where this run keeps its files -------------------------------------------------------------------------------
   // Production: the production directory, always. A drill: a directory of its own that is not the production
   // directory or inside it, compared as canonical paths so that a symlink or a relative spelling cannot pass.
-  const allowed = drill ? ['--confirm', '--only', '--sample-b', '--sample-c', '--data-dir', '--listings-file', '--pretend-gone', '--pretend-first-sighting', '--init-baseline', '--from'] : ['--confirm', '--only', '--init-baseline', '--from'];
+  const allowed = drill ? ['--confirm', '--only', '--sample-b', '--sample-c', '--data-dir', '--listings-file', '--pretend-gone', '--pretend-first-sighting', '--pretend-today', '--init-baseline', '--from'] : ['--confirm', '--only', '--init-baseline', '--from'];
   for (const a of argv.filter((x) => x.startsWith('--'))) if (!allowed.includes(a)) throw new Stop(`${a} is not an option of the ${drill ? 'drill' : 'production'} run${drill ? '' : ' (samples, other data directories and pretended observations belong to scripts/monthly-check-drill.mjs)'}`);
   const prod = canon(productionDir()), prodDefault = canon(join(homedir(), 'brewerytrip-monthly'));
   let dataDir = '';
@@ -200,6 +200,10 @@ async function run({ drill }) {
   // Drill only: stops made to read as GONE, and a pretended first sighting some hours in the past.
   const pretendGone = new Set(drill ? String(opt('--pretend-gone') || '').split(',').map((x) => x.trim()).filter(Boolean) : []);
   const pretendFirst = drill ? Number(opt('--pretend-first-sighting')) || 0 : 0;
+  // Drill only: the day on which browser checks and Google Maps citations are judged current or expired, to see what
+  // a later run will report. A day before today is refused.
+  const creditDate = drill && opt('--pretend-today') ? opt('--pretend-today') : date;
+  if (creditDate !== date && (!/^\d{4}-\d{2}-\d{2}$/.test(creditDate) || creditDate < date)) throw new Stop('--pretend-today takes a date that is today or later');
   async function checkRoads() {
     const out = { ran: true, valid: true, why: '', roads: [], eligible: [], goneOnce: [], cleared: [] };
     const net = await canary();
@@ -218,12 +222,16 @@ async function run({ drill }) {
       const stops = confirm ? road.stops.filter((s) => pending.has(L.stopStateKey(road.slug, s.key))) : road.stops, mine = [];
       for (const s of stops) {
         const k = L.stopStateKey(road.slug, s.key), cite = L.citeOf(road.slug, s.key, s.evidenceUrl, s.evidence);
-        const e = await page(s.evidenceUrl), a = s.address ? await page(s.addressSourceUrl) : null;
+        // Hours cited to Google Maps are not re-read: this job does not request Google Maps. The stop is reported as not
+        // observed, with that reason, and its address page is not read either (nothing would be concluded from it alone).
+        const viaMaps = s.evidenceVia === 'google-maps';
+        const e = viaMaps ? { kind: 'error', at: stamp(), why: 'cited to Google Maps' } : await page(s.evidenceUrl), a = s.address && !viaMaps ? await page(s.addressSourceUrl) : null;
         const was = state.roads.stops[k], fingerprint = was?.cite === cite ? was.page : undefined, hit = found(e, s.evidence);
-        const r = pretendGone.has(k) ? { status: 'GONE', reason: 'DRILL: pretended gone', plain: L.PLAIN_NO_HOURS }
+        const r = viaMaps ? { status: 'COULD_NOT_OBSERVE', reason: `its opening hours are cited to Google Maps (checked ${s.evidenceChecked}${R.unreadVerdict(s.evidenceChecked, creditDate) === 'browser-checked' ? '' : `, which is more than ${R.BROWSER_CHECK_MAX_DAYS} days ago: EXPIRED, re-check it or take the stop off`}); this job does not read Google Maps, so a person re-checks it` }
+          : pretendGone.has(k) ? { status: 'GONE', reason: 'DRILL: pretended gone', plain: L.PLAIN_NO_HOURS }
           : L.classifyStop({ evidencePage: e, evidenceFound: hit, evidenceKind: s.evidenceKind, address: s.address ? { page: a, found: found(a, s.address) } : null, browserChecked: s.browserChecked, fingerprint });
         const run = { slug: road.slug, key: s.key, cite, source: L.sourceOf(s.evidenceUrl, s.evidence), at: e.at, name: s.name, town: s.town, breweryId: s.breweryId, url: s.evidenceUrl, evidence: s.evidence,
-          known: !!s.browserChecked && R.unreadVerdict(s.browserChecked, date) === 'browser-checked', ...r,
+          known: (!!s.browserChecked && R.unreadVerdict(s.browserChecked, creditDate) === 'browser-checked') || (viaMaps && R.unreadVerdict(s.evidenceChecked, creditDate) === 'browser-checked'), ...r,
           ...(r.status === 'CONFIRMED' && e.kind === 'page' && R.excerptFound(e.text, s.evidence) ? { page: L.fingerprintOf(e, s.evidence) } : {}),
           ...(r.status === 'GONE' ? { kept: keep(road, s, e) } : {}) };
         mine.push(run);

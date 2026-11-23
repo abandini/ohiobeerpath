@@ -1,0 +1,26 @@
+{
+ "listing": 44,
+ "asked": "2026-11-23T11:08:50Z",
+ "service": "Gemini API, Grounding with Google Maps (interactions endpoint)",
+ "model": "gemini-4-hydrogen",
+ "query_sent": [
+  "BrewDog Cleveland Outpost, 1956 Carter Rd, Cleveland, OH 44113"
+ ],
+ "places_returned": [
+  {
+   "place_id": "ChIJ0csm-D7xMIgRzoQHOC02mxg",
+   "name": "BrewDog Cleveland Outpost - Google Maps",
+   "url": "https://maps.google.com/maps?cid=1773070446141867214"
+  }
+ ],
+ "answer_text": "STATUS: OPERATIONAL\nNAME: BrewDog Cleveland Outpost\nADDRESS: 1956 Carter Rd, Cleveland, OH 44113\nHOURS:\nMonday: 11 AM–10 PM\nTuesday: 11 AM–10 PM\nWednesday: 11 AM–10 PM\nThursday: 11 AM–10 PM\nFriday: 11 AM–12 AM\nSaturday: 11 AM–12 AM\nSunday: 11 AM–10 PM",
+ "annotation_count": 10,
+ "distinct_annotations": [
+  {
+   "place_id": "ChIJ0csm-D7xMIgRzoQHOC02mxg",
+   "name": "BrewDog Cleveland Outpost - Google Maps",
+   "url": "https://maps.google.com/maps?cid=1773070446141867214"
+  }
+ ],
+ "note": "Kept for audit: the grounded answer and its place citation as returned. Signature blobs and token counts are left out. The stored excerpt in decisions.json is the HOURS lines with narrow no-break spaces replaced by ordinary spaces."
+}

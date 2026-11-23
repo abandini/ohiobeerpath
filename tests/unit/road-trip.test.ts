@@ -5,7 +5,7 @@ import {
   buildRoad, cumulativeMiles, isShowableStop, unreadVerdict, verifierExit, BROWSER_CHECK_MAX_DAYS, milesBetween, projectOntoLine, simplifyLine, stitchLeg, townsName, viewRoad,
   roadConfigProblems, safeSitePath, normaliseCheckerFiles, applyRowEdits, readCoordinates, stopKey, stateAbbr, distanceToWays, asPrinted, pageText, hoursOnly, sameStreet, sameLocation, townInAddress, stopProblems, excerptFound,
   type AddressGeocode, type BuiltRoad, type CandidateRow, type LatLon, type RoadConfig, type RoadStop, type VerifiedRow,
-  applySuspensions, type Suspension, shareRows, crossRoadDifferences, sharedStopIds, SHARED_STOP_FIELDS, makeUpdateEvent, type RoadView,
+  applySuspensions, type Suspension, shareRows, crossRoadDifferences, sharedStopIds, SHARED_STOP_FIELDS, makeUpdateEvent, isGoogleMapsUrl, mapsEvidenceProblems, type RoadView,
 } from '../../src/lib/road-trip';
 import {
   roadTripPage, roadsIndexPage, roadSummary, roadsBlurb, coverageText, distanceLabel, directionsUrl, mapsPlace, quoteAdds, cohortText, legCohortText, updateSummary, orderingNote, longDate, placedLabel,
@@ -602,9 +602,9 @@ describe('the real road data (src/data/roads)', () => {
     // Where this road's check could not list a brewery and the I-71 check of the same listing found its hours, that row is used.
     const other = join(dir, '../i-71'), theirs = (f: string) => JSON.parse(readFileSync(join(other, f), 'utf8'));
     const filled = shareRows(edits.rows, read('geocodes.json'), applyRowEdits(readdirSync(other).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(theirs), theirs('decisions.json'), theirs('corrections.json')).rows, theirs('geocodes.json'), 'fill', 'i-71');
-    expect(US_422.fillRowsFrom).toBe('i-71'); expect(filled.taken.sort()).toEqual([2322, 235, 62]);   // sorted as text; 235 Noble Beast was read in a browser for I-71 on 2026-11-23
+    expect(US_422.fillRowsFrom).toBe('i-71'); expect(filled.taken.sort()).toEqual([2322, 235, 44, 62]);   // sorted as text; 235 Noble Beast was read in a browser for I-71 on 2026-11-23, 44 BrewDog is listed with Google Maps hours
     expect(buildRoad(US_422, read('osm-ways.json'), read('candidates.json'), suspendedRows('us-422', filled.rows), US_422_BUILT.built, undefined, filled.geocodes).road).toEqual(US_422_BUILT);
-    expect(US_422_BUILT.stops.filter((s) => s.checkFrom).map((s) => [s.breweryId, s.checkFrom]).sort()).toEqual([[2322, 'i-71'], [235, 'i-71'], [62, 'i-71']]);
+    expect(US_422_BUILT.stops.filter((s) => s.checkFrom).map((s) => [s.breweryId, s.checkFrom]).sort()).toEqual([[2322, 'i-71'], [235, 'i-71'], [44, 'i-71'], [62, 'i-71']]);
     expect(US_422_BUILT.stops.some((s) => s.breweryId === 229)).toBe(false);   // ruled off both roads: the I-71 row for it is not listable once its decision is applied
     for (const r of filled.rows.filter((x) => x.taken_from)) verified.splice(verified.findIndex((x) => x.id === r.id), 1, r);
     const evidenced = new Set(verified.filter((r) => r.status === 'OPEN' && r.operating_evidence?.excerpt && r.operating_evidence?.url).map((r) => r.id));
@@ -1226,7 +1226,7 @@ describe('location identity on a directory road', () => {
   it('US 422 and I-71 are built by this rule, from the geocodes on file', () => {
     expect(US_422.addressMustMatch).toBe(true); expect(I_71.addressMustMatch).toBe(true);
     for (const id of [261, 26, 259, 60]) expect(US_422_BUILT.stops.some((s) => s.breweryId === id), String(id)).toBe(false);   // no address, no Census match, wrong Census match, a different street line with nothing to tie the two together
-    expect(US_422_BUILT.stops).toHaveLength(33 - suspendedOn('us-422').length);
+    expect(US_422_BUILT.stops).toHaveLength(34 - suspendedOn('us-422').length);
     // Columbus Brewing is placed by an exact match of the address its site prints, not by an exception.
     const cbc = I_71_BUILT.stops.find((s) => s.breweryId === 2338)!;
     expect([cbc.placedBy, cbc.address, cbc.addressSourceUrl, cbc.placedNote]).toEqual(['census', '2555 Harrison Rd. Columbus, OH 43204', 'https://columbusbrewing.com/contact/', undefined]);
@@ -1267,8 +1267,24 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
   });
   it('leaves off the retired, held, script-rendered and misplaced rows', () => {
     const ids = new Set(road.stops.map((s) => s.breweryId));
-    for (const id of [2313, 2345, 2339, 238, 103, 892, 2326, 39, 278, 44, 2464, 75, 338, 327, 234, 66, 939, 2455, 2390]) expect(ids.has(id), String(id)).toBe(false);
-    for (const r of verified.filter((x) => x.status !== 'OPEN')) expect(ids.has(r.id as number), String(r.name)).toBe(false);
+    for (const id of [2313, 2345, 2339, 238, 103, 892, 2326, 39, 278, 2464, 75, 338, 327, 234, 66, 939, 2455, 2390]) expect(ids.has(id), String(id)).toBe(false);
+    // a row the checker left unconfirmed is listed only by a recorded decision, and the only one is 44 BrewDog, whose hours are cited to Google Maps
+    for (const r of verified.filter((x) => x.status !== 'OPEN' && x.id !== 44)) expect(ids.has(r.id as number), String(r.name)).toBe(false);
+    const bd = road.stops.find((s) => s.breweryId === 44)!;
+    expect(bd).toMatchObject({ evidenceVia: 'google-maps', evidenceSourceName: 'BrewDog Cleveland Outpost - Google Maps', evidenceUrl: 'https://maps.google.com/maps?cid=1773070446141867214', address: '1956 Carter Rd, Cleveland, OH 44113', addressSourceUrl: 'https://usa.brewdog.com/pages/bars/cleveland-outpost', placedBy: 'census' });
+    expect(road.stops.filter((s) => s.evidenceVia).map((s) => s.breweryId)).toEqual([44]);
+    for (const other of allRoads().filter((r) => !['i-71', 'us-422'].includes(r.config.slug))) expect(other.stops.some((s) => s.evidenceVia || isGoogleMapsUrl(s.evidenceUrl))).toBe(false);
+    // no checker file marks evidence as from Google Maps: only a recorded decision can
+    expect(verified.some((x) => (x.operating_evidence as { via?: string } | null)?.via)).toBe(false);
+    {
+      const at = main.indexOf('id="stop-44"'), li = main.slice(at, main.indexOf('</li>', at)), words = li.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(li).toContain('Operating evidence: opening hours returned by Google’s Maps-grounded Gemini service on 2026-11-23, citing <span translate="no" style="white-space:nowrap">Google Maps</span>');
+      expect(li).toContain('As returned by the service (spacing normalised; not a quotation from a page): Monday: 11 AM–10 PM'); expect(li).not.toContain('<blockquote>“Monday: 11 AM');
+      expect(li).not.toMatch(/(?<!<span translate="no" style="white-space:nowrap">)Google Maps(?!\))/);   // every "Google Maps" under the stop is protected (the directions link says "(opens Google Maps)")
+      expect(li).toContain('href="https://maps.google.com/maps?cid=1773070446141867214"'); expect(words).toContain('Source cited by the service: BrewDog Cleveland Outpost - Google Maps'); expect(words).toContain('a person saw the same hours on that page in a browser on 2026-11-23.'); expect(words).toContain('not a current timetable');
+      expect(words).toContain('These hours are not from the brewery’s own page'); expect(words).not.toContain('Read on maps.google.com');
+      expect(main.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ')).toContain('For 1 stop the opening hours are not a quotation from a page: they are what Google’s Maps-grounded Gemini service returned on the date shown, citing Google Maps ,'); expect(main).toContain('id="update-2026-11-23-2"'); expect(main).toContain('id="update-2026-11-23"');
+    }
     expect(JSON.stringify(read('candidates.json'))).not.toMatch(/second_signal|OPERATIONAL|CLOSED_PERMANENTLY/);   // the internal signal is not in the repo
     expect(main + roadsIndexPage([road])).not.toMatch(/second same-day|second_signal/i);
   });
@@ -1284,7 +1300,7 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
     expect(main).toContain('Exit numbers.'); expect(main.replace(/<blockquote>.*?<\/blockquote>/gs, '')).not.toMatch(/\bexit \d/i);   // a brewery's own words may name one
     expect(main).toContain('If you drink, do not drive.'); expect(main).toContain(OSM_ATTRIBUTION); expect(main).toContain('An independent list, not an official guide, of breweries near Interstate 71');
     expect(main).toContain('Operating evidence: hours read on'); expect(main).not.toMatch(/driving order|detour|confirmed open|open on \d{4}/i);
-    expect(roadSummary(road)).toMatch(/^\d+ breweries from our directory within 5 straight-line miles of our mapped line of I-71; these are not driving distances\. Ordered by nearest mapped-road point within each displayed group; dense stretches show places within 2 straight-line miles first, followed by those over 2 and up to 5 miles away\. Each listing is supported by published visiting hours read on the date shown\.$/);
+    expect(roadSummary(road)).toMatch(/^\d+ breweries from our directory within 5 straight-line miles of our mapped line of I-71; these are not driving distances\. Ordered by nearest mapped-road point within each displayed group; dense stretches show places within 2 straight-line miles first, followed by those over 2 and up to 5 miles away\. Each listing is supported by published visiting hours read on the date shown\. For 1, the hours are as returned by Google's Maps-grounded service, citing Google Maps\.$/);
     expect(orderingNote(road)).toBe('Ordered by nearest mapped-road point within each displayed group; dense stretches show places within 2 straight-line miles first, followed by those over 2 and up to 5 miles away.');
     expect(roadsIndexPage(allRoads()).replace(/<[^>]+>/g, '')).toContain(orderingNote(road));
   });
@@ -1472,12 +1488,32 @@ describe('Interstate 75 (src/data/roads/i-75)', () => {
   });
 });
 
+describe('hours cited to Google Maps', () => {
+  const ok: Partial<RoadStop> = { evidenceVia: 'google-maps', evidenceUrl: 'https://maps.google.com/maps?cid=1', evidenceSourceName: 'A Place - Google Maps', address: '1 Main St, Town, OH 44000', addressSourceUrl: 'https://www.example.com/visit', website: 'https://example.com/', evidenceNote: 'Its page shows its hours only after a script runs; a person saw them there.' };
+  it('recognises only real Google Maps addresses', () => {
+    for (const u of ['https://maps.google.com/maps?cid=1', 'https://www.google.com/maps/place/x', 'https://maps.app.goo.gl/abc', 'https://goo.gl/maps/abc']) expect(isGoogleMapsUrl(u), u).toBe(true);
+    for (const u of ['http://maps.google.com/maps?cid=1', 'https://example.com/?u=https://maps.google.com/', 'https://www.google.com/search?q=maps', 'https://maps.google.com.evil.example/', '', 'not a url']) expect(isGoogleMapsUrl(u), u).toBe(false);
+  });
+  it('needs the mark, a Maps link, the returned name, a first-hand address and the brewery site; and unmarked evidence may not cite Maps', () => {
+    expect(mapsEvidenceProblems(ok)).toEqual([]);
+    expect(mapsEvidenceProblems({ ...ok, evidenceUrl: 'https://example.com/hours' })).toEqual(['Google Maps evidence must link to Google Maps']);
+    expect(mapsEvidenceProblems({ ...ok, evidenceSourceName: ' ' })).toEqual(['Google Maps evidence must name the place as Google Maps returned it']);
+    expect(mapsEvidenceProblems({ ...ok, addressSourceUrl: 'https://maps.google.com/maps?cid=1' })).toEqual(["a stop with Google Maps hours needs an address read from the brewery's own site"]);
+    expect(mapsEvidenceProblems({ ...ok, addressSourceUrl: 'https://other.example.org/x' })).toHaveLength(1);   // another site's page is not the brewery's own
+    expect(mapsEvidenceProblems({ ...ok, evidenceNote: 'too short' })).toEqual(['Google Maps evidence must record, for this stop, why its hours are not from its own page']);
+    expect(mapsEvidenceProblems({ ...ok, address: '' })).toHaveLength(1); expect(mapsEvidenceProblems({ ...ok, website: '' })).toHaveLength(2);
+    expect(mapsEvidenceProblems({ ...ok, evidenceKind: 'notice' })).toHaveLength(1); expect(mapsEvidenceProblems({ ...ok, browserChecked: '2026-11-23' })).toHaveLength(1);
+    expect(mapsEvidenceProblems({ ...ok, evidenceVia: undefined })).toEqual(['evidence that cites Google Maps must be marked as from Google Maps']);
+    expect(mapsEvidenceProblems({ evidenceUrl: 'https://example.com/hours' })).toEqual([]);
+  });
+});
+
 describe('roads that list the same brewery agree about it', () => {
   const builts = [ROUTE_66_BUILT, I_71_BUILT, US_422_BUILT], all = [...builts, I_75_BUILT];
   const allowed = (JSON.parse(readFileSync(join(__dirname, '../../data/roads/shared-differences.json'), 'utf8')) as { allow: string; why: string }[]);
   it('the real roads: fifteen shared listings, no difference that is not recorded', () => {
     const off = new Set([...suspendedOn('i-71'), ...suspendedOn('us-422')].map((x) => x.id));
-    expect(sharedStopIds(builts)).toEqual([51, 62, 72, 120, 130, 136, 154, 182, 207, 208, 235, 280, 296, 308, 2322, 2356].filter((id) => !off.has(id)));
+    expect(sharedStopIds(builts)).toEqual([44, 51, 62, 72, 120, 130, 136, 154, 182, 207, 208, 235, 280, 296, 308, 2322, 2356].filter((id) => !off.has(id)));
     // I-75 shares its Cincinnati and northern Kentucky listings with I-71, and none with US 422 or Route 66
     const withI75 = sharedStopIds([I_71_BUILT, I_75_BUILT]);
     expect(withI75).toEqual([22, 76, 121, 123, 132, 150, 203, 212, 269, 293, 304, 902, 908, 921, 946, 2382, 2395, 2460]); expect(sharedStopIds([US_422_BUILT, I_75_BUILT])).toEqual([]);
@@ -1499,7 +1535,7 @@ describe('roads that list the same brewery agree about it', () => {
     expect(crossRoadDifferences(pair({ mile: 99, detourMiles: 4, legId: 'x', segmentId: 'y', key: 'k' }))).toEqual([]);
     const changes: Partial<RoadStop>[] = [{ name: 'Other' }, { town: 'Lakewood' }, { state: 'PA' }, { address: '1 Other St' }, { addressSourceUrl: 'https://example.com/a' }, { website: 'https://example.com' },
       { evidence: 'Mon 1-2' }, { evidenceUrl: 'https://example.com/h' }, { evidenceChecked: '2026-11-01' }, { evidenceKind: 'notice' }, { lat: 1 }, { lon: 2 }, { placedBy: 'directory' }, { placedNote: 'x' }, { browserChecked: '2026-11-22' },
-      { quote: 'Other words.' }, { quoteSourceUrl: 'https://example.com/q' }, { checked: '2026-10-01' }, { noticeContext: 'the page names another year' }, { seasonal: true }, { conflict: { text: 'x', sources: [{ quote: 'q', url: 'https://example.com/c' }] } }];
+      { quote: 'Other words.' }, { quoteSourceUrl: 'https://example.com/q' }, { checked: '2026-10-01' }, { noticeContext: 'the page names another year' }, { seasonal: true }, { conflict: { text: 'x', sources: [{ quote: 'q', url: 'https://example.com/c' }] } }, { evidenceVia: 'google-maps' }, { evidenceSourceName: 'A Place - Google Maps' }, { evidenceNote: 'x' }];
     expect(changes.map((c) => Object.keys(c)[0]).sort()).toEqual([...SHARED_STOP_FIELDS].sort());   // every compared field is tried
     for (const c of changes) { const d = crossRoadDifferences(pair(c)); expect(d, JSON.stringify(c)).toHaveLength(1); expect(d[0]).toMatch(new RegExp(`^130 .*: ${Object.keys(c)[0]} is .* on a but .* on b$`)); }
     for (const c of changes) expect(crossRoadDifferences(pair(c), [`130:${Object.keys(c)[0]}`]), JSON.stringify(c)).toEqual([]);   // unless recorded

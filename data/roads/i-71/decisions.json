@@ -18,5 +18,18 @@
     "status": "UNCONFIRMED",
     "reason": "editor: two checks on 2026-11-22 disagree about what this venue is. One read it as a brewery taproom with printed bar hours; the other read the same site as a seasonal pop-up bar that does not say it brews. Coordinator ruling 2026-11-22: stays off both roads.",
     "notAccepted": "two checks on the same day read its site differently, one as a brewery taproom with bar hours and one as a seasonal bar that does not say it brews, so its identity as a brewery is not established"
+  },
+  {
+    "match": 44,
+    "status": "OPEN",
+    "reason": "coordinator 2026-11-23, on the owner's decision of that day that Google Maps data may be shown with attribution: the brewery's own page shows its hours only after a script runs (a person saw them there in a browser on 2026-11-23: Mon-Thu and Sun 11am-10pm, Fri-Sat 11am-12am), and the source check cannot re-read them. The hours cited are as returned for this place by Google's Maps-grounded Gemini service on 2026-11-23 (status OPERATIONAL, address 1956 Carter Rd, Cleveland, OH 44113); they agree with the browser read. The address is from the brewery's own page.",
+    "evidence": {
+      "excerpt": "Monday: 11 AM–10 PM Tuesday: 11 AM–10 PM Wednesday: 11 AM–10 PM Thursday: 11 AM–10 PM Friday: 11 AM–12 AM Saturday: 11 AM–12 AM Sunday: 11 AM–10 PM",
+      "url": "https://maps.google.com/maps?cid=1773070446141867214",
+      "checked": "2026-11-23",
+      "via": "google-maps",
+      "sourceName": "BrewDog Cleveland Outpost - Google Maps",
+      "note": "Its page shows its hours only after a script runs, which our checks cannot re-read; a person saw the same hours on that page in a browser on 2026-11-23."
+    }
   }
 ]

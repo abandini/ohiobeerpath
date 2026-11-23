@@ -32,7 +32,7 @@ const pairs = [
   ...config.roadSources.map((s) => ({ what: 'road', quote: s.quote, url: s.url })),
   ...noteSources.map((s) => ({ what: 'note', quote: s.quote, url: s.url })),
   ...stops.flatMap((s) => [
-    { what: `stop ${s.key} operating evidence`, quote: s.evidence, url: s.evidenceUrl, browser: s.browserChecked },
+    { what: `stop ${s.key} operating evidence`, quote: s.evidence, url: s.evidenceUrl, browser: s.browserChecked, ...(s.evidenceVia === 'google-maps' ? { maps: s.evidenceChecked } : {}) },
     ...(s.quote ? [{ what: `stop ${s.key} quote`, quote: s.quote, url: s.quoteSourceUrl, browser: s.browserChecked }] : []),
     ...(s.address ? [{ what: `stop ${s.key} address`, quote: s.address, url: s.addressSourceUrl, browser: s.browserChecked }] : []),
     // a note that the brewery's own pages disagree quotes each claim: each must be on the page it names
@@ -48,8 +48,12 @@ const norm = pageText;
 
 // An excerpt may leave words out (" ... "): every part must be on the page, in order. An empty excerpt is never found.
 const found = excerptFound;
-const pages = new Map(); let ok = 0, missing = 0, unread = 0, browser = 0, stale = 0;
-const today = new Date().toISOString().slice(0, 10);
+const pages = new Map(); let ok = 0, missing = 0, unread = 0, browser = 0, stale = 0, maps = 0;
+// --as-of YYYY-MM-DD: judge browser checks and Google Maps citations as they will stand on a LATER day, to see what
+// is about to expire. An earlier day is refused: this option can only make the check stricter, never looser.
+const realToday = new Date().toISOString().slice(0, 10), asOfAt = process.argv.indexOf('--as-of'), asOf = asOfAt > 0 ? process.argv[asOfAt + 1] : '';
+if (asOfAt > 0 && (!/^\d{4}-\d{2}-\d{2}$/.test(asOf || '') || asOf < realToday)) { console.error('--as-of takes a date that is today or later'); process.exit(2); }
+const today = asOf || realToday;
 // A source the script cannot read may carry the date a person read it in a browser (browser_checked in the checker's
 // row). It is reported and counted separately, never as found by this script, and only for BROWSER_CHECK_MAX_DAYS days.
 const notRead = (p, show, why) => {
@@ -59,6 +63,14 @@ const notRead = (p, show, why) => {
   else { unread++; console.log(`unread  ${show} (${why})`); }
 };
 for (const p of pairs) {
+  // Hours cited to Google Maps are not re-read here: this script does not request Google Maps. They are counted on their
+  // own, never as found, and only while the check is no older than BROWSER_CHECK_MAX_DAYS days; after that they fail.
+  if (p.maps) {
+    const show = `${p.what}: ${p.quote.slice(0, 70)} | ${p.url}`;
+    if (unreadVerdict(p.maps, today) === 'browser-checked') { maps++; console.log(`maps-sourced ${p.maps}  ${show} (cited to Google Maps; not read by this script)`); }
+    else { stale++; console.log(`unread  ${show} (cited to Google Maps on ${p.maps}, which is older than ${BROWSER_CHECK_MAX_DAYS} days or not a date)`); }
+    continue;
+  }
   if (!pages.has(p.url)) {
     try {
       const r = await fetch(p.url, { headers: { 'user-agent': 'BreweryTripBot/1.0 (+https://brewerytrip.com/about)', accept: 'text/html,*/*;q=0.5' }, signal: AbortSignal.timeout(30000) });
@@ -81,5 +93,5 @@ for (const p of pairs) {
   else if (page.thin) notRead(p, show, 'almost no text (needs a browser?)');
   else { missing++; console.log(`MISSING ${show}`); }
 }
-console.log(`${ok}/${pairs.length} found by this script, ${browser} browser-checked by a person, ${missing} missing, ${unread + stale} unread${stale ? ` (${stale} with a browser check that is too old)` : ''} (${pages.size} pages requested)`);
+console.log(`${ok}/${pairs.length} found by this script, ${browser} browser-checked by a person, ${maps} cited to Google Maps, ${missing} missing, ${unread + stale} unread${stale ? ` (${stale} with a browser check that is too old)` : ''} (${pages.size} pages requested)`);
 process.exit(verifierExit({ total: pairs.length, missing, unread, stale }));

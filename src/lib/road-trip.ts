@@ -260,7 +260,8 @@ export interface CandidateRow { id: number | string; name: string; city: string;
 /** Coordinates for a printed address from the US Census geocoder, keyed by row id (written by scripts/geocode-road-addresses.mjs). */
 export interface AddressGeocode { id: number | string; address: string; lat: number | null; lon: number | null; matched?: string | null; source?: string; checked?: string }
 /** Proof the place was operating: a verbatim excerpt (printed visiting hours, a dated notice), its page, the day read. */
-export interface OperatingEvidence { excerpt?: string | null; url?: string | null; checked?: string | null }
+/** `via: 'google-maps'` marks opening hours taken from Google Maps, not from a page of the brewery's: `url` is then the Google Maps link and `sourceName` the place name Google Maps returned. Set only by a recorded decision (see RowDecision.evidence). */
+export interface OperatingEvidence { excerpt?: string | null; url?: string | null; checked?: string | null; via?: 'google-maps'; sourceName?: string | null; /** for Google Maps evidence: why this stop's hours are not from its own page, and what a person saw there, in words fit to print */ note?: string | null }
 /** A checker's finding for one candidate. Only status OPEN with operating evidence becomes a stop. */
 export interface VerifiedRow {
   id: number | string; name?: string | null; status?: string | null; official_url?: string | null;
@@ -295,6 +296,9 @@ export interface RoadStop {
   detourMiles: number;         // straight-line distance to that nearest point (not a driving distance)
   pastEnd: '' | 'start' | 'end'; // the nearest point on the line is the end of the line itself
   browserChecked?: string;     // set only when the checker's row records a browser check on a real date
+  evidenceVia?: 'google-maps'; // the hours are as listed on Google Maps, not read from a page of the brewery's (see mapsEvidenceProblems)
+  evidenceSourceName?: string; // for Google Maps evidence: the place name Google Maps returned, shown and linked as the source
+  evidenceNote?: string;       // for Google Maps evidence: this stop's own explanation (why not its own page; what a person saw there)
   noticeContext?: string;      // for a notice: what on the page establishes its year and the venue
   placedBy?: 'census' | 'directory' | 'reviewed' | 'dataset'; // where its coordinates come from (see addressMustMatch)
   checkFrom?: string;          // the road whose check supplied this stop's row, when not this road's own
@@ -389,6 +393,34 @@ export function stopProblems(s: Partial<RoadStop> | null | undefined, config: Pi
     if (!citable(s.website)) out.push('a stand-alone stop needs a link to the brewery\'s own site');
   }
   if (s.evidenceKind === 'notice' && !String(s.noticeContext ?? '').trim()) out.push('a notice needs the context that establishes its year and venue');
+  out.push(...mapsEvidenceProblems(s));
+  return out;
+}
+
+/** True for an address on Google Maps: the only places a Google Maps source may link to. */
+export function isGoogleMapsUrl(url: string | null | undefined): boolean {
+  let u: URL; try { u = new URL(String(url ?? '')); } catch { return false; }
+  if (u.protocol !== 'https:') return false;
+  const h = u.hostname.toLowerCase();
+  return h === 'maps.google.com' || h === 'maps.app.goo.gl' || ((h === 'www.google.com' || h === 'google.com') && u.pathname.startsWith('/maps')) || (h === 'goo.gl' && u.pathname.startsWith('/maps'));
+}
+/**
+ * The rules for hours taken from Google Maps (Bill, 2026-11-23: Maps data may be shown, attributed). Google's terms for
+ * Maps-grounded results require the source to be attributed to Google Maps, named as returned, and linked. Ours add:
+ * the address must still come from a page that is not Google's, the brewery must have a site of its own on record,
+ * and evidence that is NOT marked as from Google Maps may never cite a Google Maps address.
+ */
+export function mapsEvidenceProblems(s: Partial<RoadStop>): string[] {
+  const out: string[] = [], maps = isGoogleMapsUrl(s.evidenceUrl);
+  if (s.evidenceVia !== 'google-maps') { if (maps || s.evidenceSourceName || s.evidenceNote) out.push('evidence that cites Google Maps must be marked as from Google Maps'); return out; }
+  if (!maps) out.push('Google Maps evidence must link to Google Maps');
+  if (!String(s.evidenceSourceName ?? '').trim()) out.push('Google Maps evidence must name the place as Google Maps returned it');
+  if (s.evidenceKind === 'notice') out.push('Google Maps evidence is opening hours, never a notice');
+  const host = (u: unknown) => { try { return new URL(String(u ?? '')).hostname.toLowerCase().replace(/^www\./, ''); } catch { return ''; } };
+  if (!citable(s.website)) out.push('a stop with Google Maps hours needs the brewery\'s own site on record');
+  if (!String(s.address ?? '').trim() || !citable(s.addressSourceUrl) || !host(s.website) || host(s.addressSourceUrl) !== host(s.website)) out.push('a stop with Google Maps hours needs an address read from the brewery\'s own site');
+  if (String(s.evidenceNote ?? '').trim().length < 40) out.push('Google Maps evidence must record, for this stop, why its hours are not from its own page');
+  if (s.browserChecked) out.push('a browser check applies to a page of the brewery\'s, not to Google Maps evidence');
   return out;
 }
 
@@ -603,6 +635,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
       pastEnd: at.lineDetour > PAST_END_MILES && (atStart || atEnd) ? (atStart ? 'start' : 'end') : '',
       ...(at.outer ? { outer: true } : {}), ...(method.has(row.id) ? { placedBy: method.get(row.id) } : cand.placedBy ? { placedBy: cand.placedBy } : {}), ...(method.get(row.id) === 'reviewed' ? { placedNote: String(row.placement_accepted).trim() } : {}), ...(row.seasonal ? { seasonal: true } : {}), ...(row.conflict ? { conflict: row.conflict } : {}), ...(row.taken_from ? { checkFrom: row.taken_from } : {}), ...(at.unmeasured ? { unmeasured: at.unmeasured } : {}), ...(row.evidence_kind === 'notice' ? { evidenceKind: 'notice' as const, noticeContext: String(row.notice_context ?? '').trim() } : {}),
       ...(calendarDate(row.browser_checked) ? { browserChecked: row.browser_checked as string } : {}),
+      ...(ev.via === 'google-maps' ? { evidenceVia: 'google-maps' as const, evidenceSourceName: String(ev.sourceName ?? '').trim(), evidenceNote: String(ev.note ?? '').trim() } : {}),
     };
     if (!isShowableStop(stop, today)) { leave('marked OPEN, but there is no usable operating evidence (excerpt, citable URL and a check date that is not in the future)'); continue; }
     const wrong = stopProblems(stop, config, today);
@@ -745,7 +778,7 @@ export interface RowDecision {
   match: string; status?: string; reason: string;
   evidenceKind?: 'notice'; noticeContext?: string;
   /** Operating evidence an editor re-read on the brewery's own site, replacing the checker's (a notice replaced by hours, say). */
-  evidence?: { excerpt: string; url: string; checked: string };
+  evidence?: { excerpt: string; url: string; checked: string; via?: 'google-maps'; sourceName?: string; note?: string };
   /** Hours were found, but the listing is held: the reason, in words fit to print (counted and named on the page). */
   hold?: string;
   /** The brewery's own pages disagree about something shown under the stop: the stop says what, quoting both. */
@@ -999,9 +1032,11 @@ export interface UpdateStop { breweryId?: number; key?: string; name: string; to
  */
 export interface UpdateEvent {
   date: string; what: string;
+  /** 2, 3, ... for a second or later update recorded on the same date as one already published; absent on the first. */
+  nth?: number;
   before: UpdateStop[]; after: UpdateStop[];
   removed: (UpdateStop & { why: 'notPlaced' | 'outside' | 'held' | 'suspended' | ''; reason: string })[];
-  added: (UpdateStop & { laterCheck: boolean })[];
+  added: (UpdateStop & { laterCheck: boolean; /** its hours are cited to Google's service, not to a page of the brewery's */ via?: 'google-maps' })[];
   /** Mile moved by half a mile or more, or straight-line distance by a quarter of a mile or more. */
   measured: { breweryId?: number; key?: string; name: string; was: { mile: number; detourMiles: number }; is: { mile: number; detourMiles: number } }[];
   slight: number;              // stops whose figures moved by less than that
@@ -1019,7 +1054,7 @@ export function makeUpdateEvent(date: string, what: string, before: UpdateStop[]
   return {
     date, what, before: before.map((x) => ({ ...x })), after: stops.map(slim),
     removed: before.filter((x) => !now.has(id(x))).map((x) => { const n = notListed.find((y) => String(y.id) === String(x.breweryId ?? x.key)); return { ...x, why: n?.why ?? '', reason: n?.reason ?? '' }; }),
-    added: stops.filter((s) => !was.has(id(s))).map((s) => ({ ...slim(s), laterCheck: !!s.checkFrom })),
+    added: stops.filter((s) => !was.has(id(s))).map((s) => ({ ...slim(s), laterCheck: !!s.checkFrom, ...(s.evidenceVia ? { via: s.evidenceVia } : {}) })),
     measured: kept.filter(material).map(({ was: w, is }) => ({ ...ref(w), name: is.name, was: { mile: w.mile, detourMiles: w.detourMiles }, is: { mile: is.mile, detourMiles: is.detourMiles } })),
     slight: kept.filter((k) => !material(k) && (k.was.mile !== k.is.mile || k.was.detourMiles !== k.is.detourMiles)).length,
     towns: kept.filter(({ was: w, is }) => w.town !== is.town).map(({ was: w, is }) => ({ ...ref(w), name: is.name, was: w.town, is: is.town })),
@@ -1030,7 +1065,7 @@ export function makeUpdateEvent(date: string, what: string, before: UpdateStop[]
 // Cross-road consistency
 
 /** The facts about a brewery that must be the same on every road that lists it. Miles and distances differ by road and are not here. */
-export const SHARED_STOP_FIELDS = ['name', 'town', 'state', 'address', 'addressSourceUrl', 'website', 'evidence', 'evidenceUrl', 'evidenceChecked', 'evidenceKind', 'lat', 'lon', 'placedBy', 'placedNote', 'browserChecked', 'seasonal', 'conflict',
+export const SHARED_STOP_FIELDS = ['name', 'town', 'state', 'address', 'addressSourceUrl', 'website', 'evidence', 'evidenceUrl', 'evidenceChecked', 'evidenceKind', 'lat', 'lon', 'placedBy', 'placedNote', 'browserChecked', 'evidenceVia', 'evidenceSourceName', 'evidenceNote', 'seasonal', 'conflict',
   'quote', 'quoteSourceUrl', 'checked', 'noticeContext'] as const;
 /**
  * Every difference between roads in what they say about the same directory listing: its identity, printed address,

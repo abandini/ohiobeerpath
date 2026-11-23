@@ -16,7 +16,7 @@ import { medalsFor } from '../data/medals';
 import { DOWNTOWN_TOUR, GABF_WINDOW } from '../data/tours/downtown-cleveland';
 import { DEFAULT_STALE_AFTER_DAYS } from '../services/taplist';
 import type { SubdomainContext } from '../types';
-import { safeSitePath, type Cohort, type LatLon, type LegView, type RoadNote, type RoadView, type SegmentView, type StopView, type UpdateEvent } from '../lib/road-trip';
+import { BROWSER_CHECK_MAX_DAYS, safeSitePath, type Cohort, type LatLon, type LegView, type RoadNote, type RoadView, type SegmentView, type StopView, type UpdateEvent } from '../lib/road-trip';
 
 // A road crosses state lines, so its one canonical home is the national site, whichever host served the page.
 const SITE = 'https://brewerytrip.com';
@@ -237,6 +237,11 @@ export const quoteAdds = (s: StopView): boolean => s.quote.trim().length >= 45 &
 
 /** "hours" unless the checker's row says the evidence is a dated notice or event. */
 const evidenceHeading = (s: StopView) => `Operating evidence: ${s.evidenceKind === 'notice' ? 'event notice' : 'hours'} read on ${s.evidenceChecked}`;
+/** "Google Maps" as Google's attribution guidelines require it: unmodified, on one line, never translated. */
+export const GOOGLE_MAPS = '<span translate="no" style="white-space:nowrap">Google Maps</span>';
+export const viaMaps = (s: StopView) => s.evidenceVia === 'google-maps';
+/** Escaped text with every "Google Maps" in it protected as the attribution guidelines require. */
+export const gm = (text: string) => h(text).replace(/Google Maps/g, GOOGLE_MAPS);
 /** Heads the note under a stop whose own pages disagree about something shown there. */
 export const CONFLICT_LABEL = 'Its own pages disagree.';
 /** Said under a stop whose cited page prints hours that change with the season or on holidays. */
@@ -270,10 +275,10 @@ function stopItem(s: StopView, leg: LegView, o: RoadPageOptions): string {
                 ? `<p>${h(s.address)} <span class="rt-src">(as printed on ${ext(addressUrl, hostOf(addressUrl))})</span></p>`
                 : `<p class="rt-src">We do not have a sourced street address for this listing.</p>`}
               ${marks(s, o)}
-              <p class="rt-why"><strong>${h(evidenceHeading(s))}</strong></p>${s.evidenceKind === 'notice' ? `
+              <p class="rt-why"><strong>${viaMaps(s) ? `Operating evidence: opening hours returned by Google’s Maps-grounded Gemini service on ${h(s.evidenceChecked)}, citing ${GOOGLE_MAPS}` : h(evidenceHeading(s))}</strong></p>${s.evidenceKind === 'notice' ? `
               <p class="rt-src">${h(NOTICE_LABEL)}${s.noticeContext ? ` ${h(s.noticeContext)}` : ''}</p>` : ''}
-              <blockquote>“${h(s.evidence)}”</blockquote>
-              <p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))}. Check current opening information with the brewery before you travel.</p>${s.seasonal ? `
+              ${viaMaps(s) ? `<p class="rt-src">As returned by the service (spacing normalised; not a quotation from a page): ${h(s.evidence)}</p>` : `<blockquote>“${h(s.evidence)}”</blockquote>`}
+              ${viaMaps(s) ? `<p class="rt-src">Source cited by the service: <a href="${a(evidenceUrl)}" rel="noopener" target="_blank">${gm(s.evidenceSourceName || s.name)}</a>, ${GOOGLE_MAPS}. These hours are not from the brewery’s own page. ${h(s.evidenceNote || '')} The address above is from the brewery’s own site. This is dated evidence that the brewery was operating, not a current timetable: check current opening information with the brewery before you travel.</p>` : `<p class="rt-src">Read on ${ext(evidenceUrl, hostOf(evidenceUrl))}. Check current opening information with the brewery before you travel.</p>`}${s.seasonal ? `
               <p class="rt-src"><strong>${h(SEASONAL_LABEL)}</strong></p>` : ''}${s.conflict ? `
               <p class="rt-src"><strong>${h(CONFLICT_LABEL)}</strong> ${h(s.conflict.text)}</p>${s.conflict.sources.filter((q) => safeHttpUrl(q.url)).map((q) => `
               <blockquote>“${h(q.quote)}”</blockquote>
@@ -377,11 +382,11 @@ const checkedWhen = (road: RoadView) => (road.checkedFrom === road.checkedTo ? `
  */
 export function updateSummary(e: UpdateEvent): string {
   const removed = e.removed.length, added = e.added.length, from = e.before.length, to = e.after.length;
-  const allPlacement = removed > 0 && e.removed.every((r) => r.why === 'notPlaced'), allLater = added > 0 && e.added.every((x) => x.laterCheck);
+  const allPlacement = removed > 0 && e.removed.every((r) => r.why === 'notPlaced'), allLater = added > 0 && e.added.every((x) => x.laterCheck && !x.via), allService = added > 0 && e.added.every((x) => x.via === 'google-maps');
   const allSuspended = removed > 0 && e.removed.every((r) => r.why === 'suspended');
   const took = removed ? (allSuspended ? `${word(removed)} ${removed === 1 ? 'stop was' : 'stops were'} suspended after a monthly re-check, pending review, because the ${removed === 1 ? 'page we cite for it no longer supports' : 'pages we cite for them no longer support'} the listing` : allPlacement ? `we could not establish ${removed === 1 ? 'an address-linked location' : 'address-linked locations'} for ${word(removed)} previously listed ${removed === 1 ? 'brewery' : 'breweries'}` : `${word(removed)} previously listed ${removed === 1 ? 'brewery was' : 'breweries were'} removed`) : '';
   const notClosed = removed === 1 ? 'this removal is not a finding that the brewery closed' : 'these removals are not findings that the breweries closed';
-  const gave = added ? `${word(added)} ${added === 1 ? 'was' : 'were'} added${allLater ? ` after a later check found ${added === 1 ? 'its' : 'their'} published hours` : ''}` : '';
+  const gave = added ? `${word(added)} ${added === 1 ? 'was' : 'were'} added${allService ? ' under that rule' : allLater ? ` after a later check found ${added === 1 ? 'its' : 'their'} published hours` : ''}` : '';
   const parts = [e.what];
   if (removed && added) parts.push(`The list changed from ${from} to ${to} stops: ${took} (${notClosed}), and ${gave}.`);
   else if (removed) parts.push(allSuspended ? `The list changed from ${from} to ${to} stops: ${took}; ${removed === 1 ? 'this is not a finding that the brewery closed' : 'these are not findings that the breweries closed'}.` : allPlacement ? `The list changed from ${from} to ${to} stops because ${took}; ${notClosed}.` : `The list changed from ${from} to ${to} stops: ${took}; ${notClosed}.`);
@@ -392,8 +397,8 @@ export function updateSummary(e: UpdateEvent): string {
 }
 const two = (n: number) => n.toFixed(2);
 /** The newest recorded update first. */
-const newestFirst = (road: RoadView) => [...road.updates].sort((x, y) => (x.date < y.date ? 1 : -1));
-const updateAnchor = (e: UpdateEvent) => `update-${e.date}`;
+const newestFirst = (road: RoadView) => [...road.updates].sort((x, y) => (x.date !== y.date ? (x.date < y.date ? 1 : -1) : (y.nth ?? 1) - (x.nth ?? 1)));
+const updateAnchor = (e: UpdateEvent) => `update-${e.date}${e.nth && e.nth > 1 ? `-${e.nth}` : ''}`;
 /** The permanent entries, one per recorded update, each rendered from its own record. */
 export function updateEntries(road: RoadView): string {
   if (!road.updates.length) return '';
@@ -401,11 +406,11 @@ export function updateEntries(road: RoadView): string {
       <section aria-labelledby="updates" class="rt-how">
         <h2 id="updates">Updates to this page</h2>${newestFirst(road).map((u) => `
         <div id="${a(updateAnchor(u))}">
-        <p><strong>Updated ${h(longDate(u.date))}.</strong> ${h(updateSummary(u))}</p>${u.removed.length ? `
+        <p><strong>Updated ${h(longDate(u.date))}.</strong> ${gm(updateSummary(u))}</p>${u.removed.length ? `
         <p>No longer listed (${u.removed.length}). None of these is a finding that the brewery closed:</p>
         <ul>${u.removed.map((r) => `<li><strong>${h(r.name)}</strong> (${h(r.town)}, was at mile ${mi(r.mile)}): ${h(r.reason ? `${r.reason}.` : 'it no longer met this page’s requirements.')}</li>`).join('')}</ul>` : ''}${u.added.length ? `
         <p>Added (${u.added.length}):</p>
-        <ul>${u.added.map((x) => `<li><strong>${h(x.name)}</strong> (${h(x.town)}, mile ${mi(x.mile)}): ${x.laterCheck ? 'a later check of the same listing, made for another road page, found its published hours.' : 'it met this page’s requirements.'}</li>`).join('')}</ul>` : ''}${u.measured.length ? `
+        <ul>${u.added.map((x) => `<li><strong>${h(x.name)}</strong> (${h(x.town)}, mile ${mi(x.mile)}): ${x.via === 'google-maps' ? `added under the rule, new on this date, that accepts attributed results of Google’s Maps-grounded Gemini service citing ${GOOGLE_MAPS}.` : x.laterCheck ? 'a later check of the same listing, made for another road page, found its published hours.' : 'it met this page’s requirements.'}</li>`).join('')}</ul>` : ''}${u.measured.length ? `
         <p>Measurements that changed by half a mile or more along the line, or a quarter of a mile or more from it, because the brewery was then measured from its printed address:</p>
         <ul>${u.measured.map(({ name, was, is }) => `<li><strong>${h(name)}</strong>: ${[was.mile !== is.mile ? `mile ${mi(was.mile)} to ${mi(is.mile)}` : '', was.detourMiles !== is.detourMiles ? `straight-line distance ${two(was.detourMiles)} to ${two(is.detourMiles)} miles` : ''].filter(Boolean).join('; ')}</li>`).join('')}</ul>` : ''}${u.slight ? `
         <p>${plural(u.slight, 'other stop')} moved by less than that.</p>` : ''}${u.towns.length ? `
@@ -506,8 +511,10 @@ export const roadTitle = (road: RoadView) => `Breweries along ${road.config.name
 export const checkedPhrase = (road: RoadView) => road.checkedFrom === road.checkedTo ? `on ${road.checkedTo}` : `between ${road.checkedFrom} and ${road.checkedTo}`;
 /** True when the operating evidence was read on the brewery's own site (same host as the site the checker recorded for it). */
 export const fromOwnSite = (s: StopView) => !!hostOf(s.website) && hostOf(s.website) === hostOf(s.evidenceUrl);
+/** Stops whose evidence is a third-party page other than Google Maps (those are counted and described on their own). */
+const thirdParty = (s: StopView) => !fromOwnSite(s) && s.evidenceVia !== 'google-maps';
 /** Hosts of sources that are not the brewery's own site, for the method notes ("untappd.com"). */
-export const thirdPartyHosts = (road: RoadView) => [...new Set(road.stops.filter((s) => !fromOwnSite(s)).map((s) => hostOf(s.evidenceUrl)).filter(Boolean))].sort();
+export const thirdPartyHosts = (road: RoadView) => [...new Set(road.stops.filter(thirdParty).map((s) => hostOf(s.evidenceUrl)).filter(Boolean))].sort();
 /**
  * One plain sentence pair saying exactly what the list is. Used on the page, in the meta description, on the index,
  * and in llms.txt. The date is when we read the hours, never a claim the place was open that day; straight-line, not
@@ -526,7 +533,7 @@ export const orderingNote = (road: RoadView) => {
 };
 export const roadSummary = (road: RoadView) => {
   const loose = road.legs.flatMap((l) => l.unmeasured), unmeasured = loose.reduce((k, u) => k + u.stops.length, 0);
-  const n = road.stops.length - unmeasured, other = road.stops.filter((s) => !fromOwnSite(s)).length, c = road.config, groups = outerGroups(road);
+  const n = road.stops.length - unmeasured, other = road.stops.filter(thirdParty).length, onMaps = road.stops.filter(viaMaps).length, c = road.config, groups = outerGroups(road);
   const lead = c.distanceTo === 'any-way'
     // Distance is to any mapped alignment; miles are on the one line chosen for each leg. Two measurements, said as two.
     ? `${plural(n, 'listed brewery', 'listed breweries')} within ${c.maxDetourMiles} straight-line miles of an alignment in our downloaded ${c.shortName} mapping; these are not driving distances. Their mile positions are measured separately, on the one line we measure along for each leg. `
@@ -536,7 +543,7 @@ export const roadSummary = (road: RoadView) => {
       : `${plural(n, 'brewery', 'breweries')}${c.startingList ? '' : ' from our directory'} within ${c.maxDetourMiles} straight-line miles of our mapped line of ${c.shortName}, ordered by their nearest point along it; these are not driving distances. `;
   return lead
     + (unmeasured ? `${unmeasured} more ${unmeasured === 1 ? 'is' : 'are'} listed without a distance where ${c.distanceTo === 'any-way' ? 'the mapping' : 'that line'} is missing (${loose.map((u) => u.name.replace(/^In /, '')).join(', ')}). ` : '')
-    + `Each listing is supported by ${evidenceWords([road])} read on the date shown.${other ? ` For ${other}, the source is not the brewery's own site.` : ''}`;
+    + `Each listing is supported by ${evidenceWords([road])} read on the date shown.${other ? ` For ${other}, the source is not the brewery's own site.` : ''}${onMaps ? ` For ${onMaps}, the hours are as returned by Google's Maps-grounded service, citing Google Maps.` : ''}`;
 };
 /**
  * The section in one or two sentences, for places that link to it (/trails, llms.txt). Says the same thing as the pages
@@ -554,7 +561,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
   const through = road.legs.filter((l) => !l.side), sides = road.legs.filter((l) => l.side);
   const totalMiles = through.reduce((n, l) => n + l.lengthMiles, 0);
   const joined = road.legs.filter((l) => l.joins > 0);
-  const others = thirdPartyHosts(road), byEye = road.stops.filter((s) => s.browserChecked).length;
+  const others = thirdPartyHosts(road), byEye = road.stops.filter((s) => s.browserChecked).length, byMaps = road.stops.filter(viaMaps).length;
   const listedOn = (l: LegView) => l.stops.length + l.unmeasured.reduce((k, u) => k + u.stops.length, 0);
   // Named legs (states) get one jump link each; otherwise one per stretch that has stops.
   const jump = road.legs.flatMap((l) => l.name
@@ -578,7 +585,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
 
   <div class="container my-4 rt">
     <div class="rt-wrap">${drivingNote(road)}${update ? `
-      <div class="rt-note" role="note"><p><strong>Updated ${h(longDate(update.date))}:</strong> ${h(updateSummary(update))} <a href="#${a(updateAnchor(update))}">What changed, stop by stop</a>.</p></div>` : ''}
+      <div class="rt-note" role="note"><p><strong>Updated ${h(longDate(update.date))}:</strong> ${gm(updateSummary(update))} <a href="#${a(updateAnchor(update))}">What changed, stop by stop</a>.</p></div>` : ''}
       <p>${h(c.about)}</p>
       <p>${h(byCohort(road) ? cohortLine(road.cohort!, checkedWhen(road), strictWording(road)) : coverageText(road.decided, road.candidates, c.maxDetourMiles, T.anyWay ? `a mapped alignment of ${c.shortName}` : `our mapped line of ${c.shortName}`, c.startingList))}${byCohort(road) ? ' <a href="#how">How this list was made</a>.' : ''}${road.cohort?.suspended ? ` ${byCohort(road) ? 'Not listed for now' : 'Among those not listed'}: ${h(SUSPENDED_COUNT(road.cohort.suspended))}.` : ''}</p>
       <nav aria-label="Stretches of the road">
@@ -616,10 +623,10 @@ ${suspended.length ? `
             ? 'A straight line from the brewery to the nearest alignment in our downloaded mapping, of any date. It is a separate measurement from the mile: it is not taken to the line we measure miles along, and never to a join across a gap.'
             : 'A straight line from the brewery to the nearest point on our mapped line.'} Driving distance and access may differ substantially.</li>
           <li><strong>Who is listed.</strong> A brewery is here when it is ${c.startingList ? `on the list we started from (${h(c.startingList)})` : 'in our directory'}, sits within ${c.maxDetourMiles} straight-line miles of ${T.anyWay ? 'a mapped alignment' : 'our mapped line'}, and its listing is supported by ${h(evidenceWords([road]))} that we read on the date shown.${holes.length ? ` The stops ${h(holes.map((u) => u.name.replace(/^In /, 'in ')).join(' and '))} are the exception to the distance test: the mapping is missing there, so they are listed in a labelled group of their own with no distance.` : ''}${c.stopsHavePages === false ? ' Each stop must also have a street address we can source and a link to the brewery’s own site.' : ''} Ones we found closed or moved, and ones we could not confirm, are left out.${road.unplaced ? ` ${plural(road.unplaced, 'more brewery', 'more breweries')} with that evidence ${road.unplaced === 1 ? 'is' : 'are'} left out because we could not tie coordinates to the printed address (no Census match, or no printed address to check against), so we could not place ${road.unplaced === 1 ? 'it' : 'them'}.` : ''}</li>
-          <li><strong>Sources.</strong> Each excerpt is copied from the page linked under it, on the date shown. Addresses are copied from the page named beside them.${others.length ? ` For ${plural(road.stops.filter((s) => !fromOwnSite(s)).length, 'stop')} the source is not the brewery's own site: ${h(others.map((x) => (x === 'untappd.com' ? 'Untappd (untappd.com)' : x)).join(', '))}.` : ''}${byEye ? ` ${plural(byEye, 'page')} could only be read in a browser; a person read ${byEye === 1 ? 'it' : 'those'}, not our checking script.` : ''}</li>
+          <li><strong>Sources.</strong> Each excerpt${byMaps ? ' shown in quotation marks' : ''} is copied from the page linked under it, on the date shown. Addresses are copied from the page named beside them.${others.length ? ` For ${plural(road.stops.filter(thirdParty).length, 'stop')} the source is not the brewery's own site: ${h(others.map((x) => (x === 'untappd.com' ? 'Untappd (untappd.com)' : x)).join(', '))}.` : ''}${byEye ? ` ${plural(byEye, 'page')} could only be read in a browser; a person read ${byEye === 1 ? 'it' : 'those'}, not our checking script.` : ''}${byMaps ? ` For ${plural(byMaps, 'stop')} the opening hours are not a quotation from a page: they are what Google’s Maps-grounded Gemini service returned on the date shown, citing ${GOOGLE_MAPS}, with the cited source named and linked under the stop and the reason given there. Our checking script does not read ${GOOGLE_MAPS}; a person asks the service again within ${BROWSER_CHECK_MAX_DAYS} days, or the stop comes off the list.` : ''}</li>
           <li><strong>Towns.</strong> ${c.startingList ? 'The town shown with a stop is the one its printed address names. Where the address names no town, it is the one in the list we started from.' : c.addressMustMatch ? 'The town shown with a stop is the one its printed address names. Where the address names no town, it is the one in our directory.' : "Town names are the ones in our directory. A brewery's printed address sometimes names a different post-office town."}</li>
           <li><strong>Google Maps links.</strong> We send Google the brewery name and sourced address where available. Otherwise we use its name and ${c.startingList ? 'listed' : 'directory'} town and state; town and state may also supplement an incomplete address. Check the destination before travelling. Google chooses the route, which may not follow the road.</li>
-          <li><strong>Opening hours.</strong> The hours under a stop are quoted as the source printed them on the date we read them. They support listing the brewery as operating. They do not mean it was open on that date, and they are not a current timetable. Check current opening information with the brewery before you travel.</li>
+          <li><strong>Opening hours.</strong> The hours under a stop are quoted as the source printed them on the date we read them${byMaps ? `, except where the stop says they were returned by Google’s Maps-grounded Gemini service: those are the service’s output on the date shown, not a quotation` : ''}. They support listing the brewery as operating. They do not mean it was open on that date, and they are not a current timetable. Check current opening information with the brewery before you travel.</li>
         </ul>
         <details>
           <summary>Sources for what we say about the road</summary>
