@@ -4,4 +4,889 @@
 // published: a later change to the page gets a new dated entry.
 import type { UpdateEvent } from '../../lib/road-trip';
 
-export const I_75_UPDATES: UpdateEvent[] = [];
+export const I_75_UPDATES: UpdateEvent[] = [
+ {
+  "date": "2026-11-23",
+  "what": "A person looked at the rendered hours on four brewery pages in a browser. Two stops were added; two stay off the list, for the reasons given beside their names under Coverage. We also asked the US Census geocoder again about every printed address it had not matched; none matched, so the date beside those names changed and nothing else.",
+  "before": [
+   {
+    "breweryId": 637,
+    "name": "Rolling Oak Brewing Co",
+    "town": "Grayling",
+    "mile": 141,
+    "detourMiles": 0.99
+   },
+   {
+    "breweryId": 681,
+    "name": "The Highway Brewing Co.",
+    "town": "West Branch",
+    "mile": 182.4,
+    "detourMiles": 1.41
+   },
+   {
+    "breweryId": 702,
+    "name": "Tri City Brewing Co",
+    "town": "Bay City",
+    "mile": 232,
+    "detourMiles": 1.82
+   },
+   {
+    "breweryId": 488,
+    "name": "Frankenmuth Brewing Co",
+    "town": "Frankenmuth",
+    "mile": 15.5,
+    "detourMiles": 4.85
+   },
+   {
+    "breweryId": 674,
+    "name": "Tenacity Brewing",
+    "town": "Flint",
+    "mile": 35.5,
+    "detourMiles": 2.57
+   },
+   {
+    "breweryId": 611,
+    "name": "Parkers Hilltop Brewery",
+    "town": "Clarkston",
+    "mile": 65.5,
+    "detourMiles": 2.27
+   },
+   {
+    "breweryId": 477,
+    "name": "Fillmore 13 Brewery",
+    "town": "Pontiac",
+    "mile": 77,
+    "detourMiles": 2.73
+   },
+   {
+    "breweryId": 500,
+    "name": "Granite City Food & Brewery (#28)",
+    "town": "Troy",
+    "mile": 85,
+    "detourMiles": 0.17
+   },
+   {
+    "breweryId": 509,
+    "name": "Griffin Claw Brewing Co",
+    "town": "Birmingham",
+    "mile": 85.1,
+    "detourMiles": 2.32
+   },
+   {
+    "breweryId": 640,
+    "name": "Royal Oak Brewery",
+    "town": "Royal Oak",
+    "mile": 91.7,
+    "detourMiles": 1.37
+   },
+   {
+    "breweryId": 461,
+    "name": "Eastern Market Brewing Company",
+    "town": "Detroit",
+    "mile": 102.9,
+    "detourMiles": 0.31
+   },
+   {
+    "breweryId": 451,
+    "name": "Detroit Beer Co",
+    "town": "Detroit",
+    "mile": 103.4,
+    "detourMiles": 0.35
+   },
+   {
+    "breweryId": 381,
+    "name": "Batch Brewing Co",
+    "town": "Detroit",
+    "mile": 104.3,
+    "detourMiles": 0.47
+   },
+   {
+    "breweryId": 450,
+    "name": "Dearborn Brewing",
+    "town": "Dearborn",
+    "mile": 112.6,
+    "detourMiles": 4.56
+   },
+   {
+    "breweryId": 2404,
+    "name": "Patron Saints Brewery",
+    "town": "Toledo",
+    "mile": 7.5,
+    "detourMiles": 4.09
+   },
+   {
+    "breweryId": 6,
+    "name": "60cc Brewing",
+    "town": "Toledo",
+    "mile": 7.5,
+    "detourMiles": 4.97
+   },
+   {
+    "breweryId": 209,
+    "name": "Maumee Bay Brewing Co.",
+    "town": "Toledo",
+    "mile": 10.3,
+    "detourMiles": 0.55
+   },
+   {
+    "breweryId": 96,
+    "name": "Earnest Brew Works",
+    "town": "Toledo",
+    "mile": 15.8,
+    "detourMiles": 2.29
+   },
+   {
+    "breweryId": 183,
+    "name": "Juniper Brewing Company",
+    "town": "Bowling Green",
+    "mile": 30.7,
+    "detourMiles": 1.74
+   },
+   {
+    "breweryId": 107,
+    "name": "False Chord Brewing",
+    "town": "Findlay",
+    "mile": 53.9,
+    "detourMiles": 1.17
+   },
+   {
+    "breweryId": 117,
+    "name": "Findlay Brewing Company",
+    "town": "Findlay",
+    "mile": 53.9,
+    "detourMiles": 1.28
+   },
+   {
+    "breweryId": 80,
+    "name": "Crooked Handle Brewing Co. Piqua",
+    "town": "Piqua",
+    "mile": 129.5,
+    "detourMiles": 1.06
+   },
+   {
+    "breweryId": 141,
+    "name": "Hairless Hare Brewery",
+    "town": "Vandalia",
+    "mile": 148.4,
+    "detourMiles": 1.3
+   },
+   {
+    "breweryId": 10,
+    "name": "Alematic Artisan Ales",
+    "town": "Huber Heights",
+    "mile": 151.4,
+    "detourMiles": 3.8
+   },
+   {
+    "breweryId": 112,
+    "name": "Fifth Street Brewpub",
+    "town": "Dayton",
+    "mile": 156.6,
+    "detourMiles": 1.28
+   },
+   {
+    "breweryId": 195,
+    "name": "Little Fish Brewing Company - Dayton",
+    "town": "Dayton",
+    "mile": 156.7,
+    "detourMiles": 0.74
+   },
+   {
+    "breweryId": 2340,
+    "name": "Dayton Beer Co Production Brewery & Bierhall",
+    "town": "Dayton",
+    "mile": 156.8,
+    "detourMiles": 0.74
+   },
+   {
+    "breweryId": 317,
+    "name": "Toxic Brew Company",
+    "town": "Dayton",
+    "mile": 157.8,
+    "detourMiles": 0.92
+   },
+   {
+    "breweryId": 37,
+    "name": "Branch & Bone Artisan Ales",
+    "town": "Dayton",
+    "mile": 0.1,
+    "detourMiles": 1.39
+   },
+   {
+    "breweryId": 65,
+    "name": "Carillon Brewing Company",
+    "town": "Dayton",
+    "mile": 2.1,
+    "detourMiles": 0.29
+   },
+   {
+    "breweryId": 106,
+    "name": "Eudora Brewing Company",
+    "town": "Dayton",
+    "mile": 2.3,
+    "detourMiles": 3.91
+   },
+   {
+    "breweryId": 147,
+    "name": "Heavier Than Air Brewing Co",
+    "town": "Centerville",
+    "mile": 9.8,
+    "detourMiles": 3.06
+   },
+   {
+    "breweryId": 2376,
+    "name": "Lock 27 Brewing",
+    "town": "Centerville",
+    "mile": 10.3,
+    "detourMiles": 3.73
+   },
+   {
+    "breweryId": 81,
+    "name": "Crooked Handle Brewing Company",
+    "town": "Springboro",
+    "mile": 12.9,
+    "detourMiles": 0.93
+   },
+   {
+    "breweryId": 22,
+    "name": "BC's Brewing Company",
+    "town": "Mason",
+    "mile": 27.1,
+    "detourMiles": 4.61
+   },
+   {
+    "breweryId": 76,
+    "name": "The Common Beer Company",
+    "town": "Mason",
+    "mile": 29.8,
+    "detourMiles": 3.18
+   },
+   {
+    "breweryId": 132,
+    "name": "Grainworks Brewing Company",
+    "town": "West Chester",
+    "mile": 30,
+    "detourMiles": 0.2
+   },
+   {
+    "breweryId": 293,
+    "name": "Sonder Brewing",
+    "town": "Mason",
+    "mile": 30.9,
+    "detourMiles": 4.74
+   },
+   {
+    "breweryId": 203,
+    "name": "March First Brewing",
+    "town": "Cincinnati",
+    "mile": 38,
+    "detourMiles": 4.97
+   },
+   {
+    "breweryId": 123,
+    "name": "Fretboard Brewing Company",
+    "town": "Blue Ash",
+    "mile": 38.8,
+    "detourMiles": 3.91
+   },
+   {
+    "breweryId": 151,
+    "name": "HighGrain Brewing Company Brentwood",
+    "town": "Cincinnati",
+    "mile": 42.2,
+    "detourMiles": 2.86
+   },
+   {
+    "breweryId": 150,
+    "name": "HighGrain Brewing Company",
+    "town": "Cincinnati",
+    "mile": 42.6,
+    "detourMiles": 3.53
+   },
+   {
+    "breweryId": 2460,
+    "name": "Wiedemann Brewing Co, LLC",
+    "town": "Cincinnati",
+    "mile": 43.2,
+    "detourMiles": 0.48
+   },
+   {
+    "breweryId": 111,
+    "name": "Fibonacci Brewing Company",
+    "town": "Mount Healthy",
+    "mile": 44.4,
+    "detourMiles": 4.31
+   },
+   {
+    "breweryId": 121,
+    "name": "Fretboard Brewing at Factory 52",
+    "town": "Norwood",
+    "mile": 45.4,
+    "detourMiles": 2.64
+   },
+   {
+    "breweryId": 2382,
+    "name": "MadTree Brewing",
+    "town": "Cincinnati",
+    "mile": 45.4,
+    "detourMiles": 3.63
+   },
+   {
+    "breweryId": 54,
+    "name": "Brink Brewing Co.",
+    "town": "Cincinnati",
+    "mile": 47.8,
+    "detourMiles": 2.9
+   },
+   {
+    "breweryId": 340,
+    "name": "West Side Brewing",
+    "town": "Cincinnati",
+    "mile": 49.1,
+    "detourMiles": 3.16
+   },
+   {
+    "breweryId": 269,
+    "name": "Rhinegeist",
+    "town": "Cincinnati",
+    "mile": 51.7,
+    "detourMiles": 0.66
+   },
+   {
+    "breweryId": 2395,
+    "name": "Northern Row Brewery & Distillery",
+    "town": "Cincinnati",
+    "mile": 51.7,
+    "detourMiles": 0.72
+   },
+   {
+    "breweryId": 212,
+    "name": "mellotone beer project",
+    "town": "Cincinnati",
+    "mile": 52.7,
+    "detourMiles": 0.69
+   },
+   {
+    "breweryId": 908,
+    "name": "Darkness Brewing",
+    "town": "Bellevue",
+    "mile": 52.9,
+    "detourMiles": 2.06
+   },
+   {
+    "breweryId": 304,
+    "name": "Streetside Brewery",
+    "town": "Cincinnati",
+    "mile": 52.9,
+    "detourMiles": 4.85
+   },
+   {
+    "breweryId": 921,
+    "name": "Hofbrauhaus Newport",
+    "town": "Newport",
+    "mile": 53.2,
+    "detourMiles": 1.5
+   },
+   {
+    "breweryId": 946,
+    "name": "Wooden Cask Brewing Company",
+    "town": "Newport",
+    "mile": 53.5,
+    "detourMiles": 1.53
+   },
+   {
+    "breweryId": 902,
+    "name": "Braxton Brewing Company",
+    "town": "Covington",
+    "mile": 0.5,
+    "detourMiles": 0.64
+   },
+   {
+    "breweryId": 906,
+    "name": "Country Boy Brewing - Georgetown",
+    "town": "Georgetown",
+    "mile": 63.6,
+    "detourMiles": 2.16
+   },
+   {
+    "breweryId": 943,
+    "name": "West Sixth Brewing Co",
+    "town": "Lexington",
+    "mile": 78.6,
+    "detourMiles": 2.28
+   },
+   {
+    "breweryId": 900,
+    "name": "Blue Stallion Brewing Company",
+    "town": "Lexington",
+    "mile": 78.6,
+    "detourMiles": 2.78
+   },
+   {
+    "breweryId": 931,
+    "name": "Mirror Twin Brewing",
+    "town": "Lexington",
+    "mile": 79.4,
+    "detourMiles": 2.59
+   }
+  ],
+  "after": [
+   {
+    "breweryId": 637,
+    "name": "Rolling Oak Brewing Co",
+    "town": "Grayling",
+    "mile": 141,
+    "detourMiles": 0.99
+   },
+   {
+    "breweryId": 681,
+    "name": "The Highway Brewing Co.",
+    "town": "West Branch",
+    "mile": 182.4,
+    "detourMiles": 1.41
+   },
+   {
+    "breweryId": 702,
+    "name": "Tri City Brewing Co",
+    "town": "Bay City",
+    "mile": 232,
+    "detourMiles": 1.82
+   },
+   {
+    "breweryId": 488,
+    "name": "Frankenmuth Brewing Co",
+    "town": "Frankenmuth",
+    "mile": 15.5,
+    "detourMiles": 4.85
+   },
+   {
+    "breweryId": 674,
+    "name": "Tenacity Brewing",
+    "town": "Flint",
+    "mile": 35.5,
+    "detourMiles": 2.57
+   },
+   {
+    "breweryId": 611,
+    "name": "Parkers Hilltop Brewery",
+    "town": "Clarkston",
+    "mile": 65.5,
+    "detourMiles": 2.27
+   },
+   {
+    "breweryId": 477,
+    "name": "Fillmore 13 Brewery",
+    "town": "Pontiac",
+    "mile": 77,
+    "detourMiles": 2.73
+   },
+   {
+    "breweryId": 500,
+    "name": "Granite City Food & Brewery (#28)",
+    "town": "Troy",
+    "mile": 85,
+    "detourMiles": 0.17
+   },
+   {
+    "breweryId": 509,
+    "name": "Griffin Claw Brewing Co",
+    "town": "Birmingham",
+    "mile": 85.1,
+    "detourMiles": 2.32
+   },
+   {
+    "breweryId": 640,
+    "name": "Royal Oak Brewery",
+    "town": "Royal Oak",
+    "mile": 91.7,
+    "detourMiles": 1.37
+   },
+   {
+    "breweryId": 461,
+    "name": "Eastern Market Brewing Company",
+    "town": "Detroit",
+    "mile": 102.9,
+    "detourMiles": 0.31
+   },
+   {
+    "breweryId": 451,
+    "name": "Detroit Beer Co",
+    "town": "Detroit",
+    "mile": 103.4,
+    "detourMiles": 0.35
+   },
+   {
+    "breweryId": 381,
+    "name": "Batch Brewing Co",
+    "town": "Detroit",
+    "mile": 104.3,
+    "detourMiles": 0.47
+   },
+   {
+    "breweryId": 450,
+    "name": "Dearborn Brewing",
+    "town": "Dearborn",
+    "mile": 112.6,
+    "detourMiles": 4.56
+   },
+   {
+    "breweryId": 2404,
+    "name": "Patron Saints Brewery",
+    "town": "Toledo",
+    "mile": 7.5,
+    "detourMiles": 4.09
+   },
+   {
+    "breweryId": 6,
+    "name": "60cc Brewing",
+    "town": "Toledo",
+    "mile": 7.5,
+    "detourMiles": 4.97
+   },
+   {
+    "breweryId": 209,
+    "name": "Maumee Bay Brewing Co.",
+    "town": "Toledo",
+    "mile": 10.3,
+    "detourMiles": 0.55
+   },
+   {
+    "breweryId": 96,
+    "name": "Earnest Brew Works",
+    "town": "Toledo",
+    "mile": 15.8,
+    "detourMiles": 2.29
+   },
+   {
+    "breweryId": 175,
+    "name": "Inside The Five Brewing",
+    "town": "Perrysburg",
+    "mile": 18.1,
+    "detourMiles": 1.43
+   },
+   {
+    "breweryId": 183,
+    "name": "Juniper Brewing Company",
+    "town": "Bowling Green",
+    "mile": 30.7,
+    "detourMiles": 1.74
+   },
+   {
+    "breweryId": 107,
+    "name": "False Chord Brewing",
+    "town": "Findlay",
+    "mile": 53.9,
+    "detourMiles": 1.17
+   },
+   {
+    "breweryId": 117,
+    "name": "Findlay Brewing Company",
+    "town": "Findlay",
+    "mile": 53.9,
+    "detourMiles": 1.28
+   },
+   {
+    "breweryId": 80,
+    "name": "Crooked Handle Brewing Co. Piqua",
+    "town": "Piqua",
+    "mile": 129.5,
+    "detourMiles": 1.06
+   },
+   {
+    "breweryId": 141,
+    "name": "Hairless Hare Brewery",
+    "town": "Vandalia",
+    "mile": 148.4,
+    "detourMiles": 1.3
+   },
+   {
+    "breweryId": 10,
+    "name": "Alematic Artisan Ales",
+    "town": "Huber Heights",
+    "mile": 151.4,
+    "detourMiles": 3.8
+   },
+   {
+    "breweryId": 112,
+    "name": "Fifth Street Brewpub",
+    "town": "Dayton",
+    "mile": 156.6,
+    "detourMiles": 1.28
+   },
+   {
+    "breweryId": 195,
+    "name": "Little Fish Brewing Company - Dayton",
+    "town": "Dayton",
+    "mile": 156.7,
+    "detourMiles": 0.74
+   },
+   {
+    "breweryId": 2340,
+    "name": "Dayton Beer Co Production Brewery & Bierhall",
+    "town": "Dayton",
+    "mile": 156.8,
+    "detourMiles": 0.74
+   },
+   {
+    "breweryId": 317,
+    "name": "Toxic Brew Company",
+    "town": "Dayton",
+    "mile": 157.8,
+    "detourMiles": 0.92
+   },
+   {
+    "breweryId": 37,
+    "name": "Branch & Bone Artisan Ales",
+    "town": "Dayton",
+    "mile": 0.1,
+    "detourMiles": 1.39
+   },
+   {
+    "breweryId": 65,
+    "name": "Carillon Brewing Company",
+    "town": "Dayton",
+    "mile": 2.1,
+    "detourMiles": 0.29
+   },
+   {
+    "breweryId": 106,
+    "name": "Eudora Brewing Company",
+    "town": "Dayton",
+    "mile": 2.3,
+    "detourMiles": 3.91
+   },
+   {
+    "breweryId": 147,
+    "name": "Heavier Than Air Brewing Co",
+    "town": "Centerville",
+    "mile": 9.8,
+    "detourMiles": 3.06
+   },
+   {
+    "breweryId": 2376,
+    "name": "Lock 27 Brewing",
+    "town": "Centerville",
+    "mile": 10.3,
+    "detourMiles": 3.73
+   },
+   {
+    "breweryId": 81,
+    "name": "Crooked Handle Brewing Company",
+    "town": "Springboro",
+    "mile": 12.9,
+    "detourMiles": 0.93
+   },
+   {
+    "breweryId": 134,
+    "name": "Gravel Road Brewing Company",
+    "town": "Middletown",
+    "mile": 19.7,
+    "detourMiles": 4.52
+   },
+   {
+    "breweryId": 22,
+    "name": "BC's Brewing Company",
+    "town": "Mason",
+    "mile": 27.1,
+    "detourMiles": 4.61
+   },
+   {
+    "breweryId": 76,
+    "name": "The Common Beer Company",
+    "town": "Mason",
+    "mile": 29.8,
+    "detourMiles": 3.18
+   },
+   {
+    "breweryId": 132,
+    "name": "Grainworks Brewing Company",
+    "town": "West Chester",
+    "mile": 30,
+    "detourMiles": 0.2
+   },
+   {
+    "breweryId": 293,
+    "name": "Sonder Brewing",
+    "town": "Mason",
+    "mile": 30.9,
+    "detourMiles": 4.74
+   },
+   {
+    "breweryId": 203,
+    "name": "March First Brewing",
+    "town": "Cincinnati",
+    "mile": 38,
+    "detourMiles": 4.97
+   },
+   {
+    "breweryId": 123,
+    "name": "Fretboard Brewing Company",
+    "town": "Blue Ash",
+    "mile": 38.8,
+    "detourMiles": 3.91
+   },
+   {
+    "breweryId": 151,
+    "name": "HighGrain Brewing Company Brentwood",
+    "town": "Cincinnati",
+    "mile": 42.2,
+    "detourMiles": 2.86
+   },
+   {
+    "breweryId": 150,
+    "name": "HighGrain Brewing Company",
+    "town": "Cincinnati",
+    "mile": 42.6,
+    "detourMiles": 3.53
+   },
+   {
+    "breweryId": 2460,
+    "name": "Wiedemann Brewing Co, LLC",
+    "town": "Cincinnati",
+    "mile": 43.2,
+    "detourMiles": 0.48
+   },
+   {
+    "breweryId": 111,
+    "name": "Fibonacci Brewing Company",
+    "town": "Mount Healthy",
+    "mile": 44.4,
+    "detourMiles": 4.31
+   },
+   {
+    "breweryId": 121,
+    "name": "Fretboard Brewing at Factory 52",
+    "town": "Norwood",
+    "mile": 45.4,
+    "detourMiles": 2.64
+   },
+   {
+    "breweryId": 2382,
+    "name": "MadTree Brewing",
+    "town": "Cincinnati",
+    "mile": 45.4,
+    "detourMiles": 3.63
+   },
+   {
+    "breweryId": 54,
+    "name": "Brink Brewing Co.",
+    "town": "Cincinnati",
+    "mile": 47.8,
+    "detourMiles": 2.9
+   },
+   {
+    "breweryId": 340,
+    "name": "West Side Brewing",
+    "town": "Cincinnati",
+    "mile": 49.1,
+    "detourMiles": 3.16
+   },
+   {
+    "breweryId": 269,
+    "name": "Rhinegeist",
+    "town": "Cincinnati",
+    "mile": 51.7,
+    "detourMiles": 0.66
+   },
+   {
+    "breweryId": 2395,
+    "name": "Northern Row Brewery & Distillery",
+    "town": "Cincinnati",
+    "mile": 51.7,
+    "detourMiles": 0.72
+   },
+   {
+    "breweryId": 212,
+    "name": "mellotone beer project",
+    "town": "Cincinnati",
+    "mile": 52.7,
+    "detourMiles": 0.69
+   },
+   {
+    "breweryId": 908,
+    "name": "Darkness Brewing",
+    "town": "Bellevue",
+    "mile": 52.9,
+    "detourMiles": 2.06
+   },
+   {
+    "breweryId": 304,
+    "name": "Streetside Brewery",
+    "town": "Cincinnati",
+    "mile": 52.9,
+    "detourMiles": 4.85
+   },
+   {
+    "breweryId": 921,
+    "name": "Hofbrauhaus Newport",
+    "town": "Newport",
+    "mile": 53.2,
+    "detourMiles": 1.5
+   },
+   {
+    "breweryId": 946,
+    "name": "Wooden Cask Brewing Company",
+    "town": "Newport",
+    "mile": 53.5,
+    "detourMiles": 1.53
+   },
+   {
+    "breweryId": 902,
+    "name": "Braxton Brewing Company",
+    "town": "Covington",
+    "mile": 0.5,
+    "detourMiles": 0.64
+   },
+   {
+    "breweryId": 906,
+    "name": "Country Boy Brewing - Georgetown",
+    "town": "Georgetown",
+    "mile": 63.6,
+    "detourMiles": 2.16
+   },
+   {
+    "breweryId": 943,
+    "name": "West Sixth Brewing Co",
+    "town": "Lexington",
+    "mile": 78.6,
+    "detourMiles": 2.28
+   },
+   {
+    "breweryId": 900,
+    "name": "Blue Stallion Brewing Company",
+    "town": "Lexington",
+    "mile": 78.6,
+    "detourMiles": 2.78
+   },
+   {
+    "breweryId": 931,
+    "name": "Mirror Twin Brewing",
+    "town": "Lexington",
+    "mile": 79.4,
+    "detourMiles": 2.59
+   }
+  ],
+  "removed": [],
+  "added": [
+   {
+    "breweryId": 175,
+    "name": "Inside The Five Brewing",
+    "town": "Perrysburg",
+    "mile": 18.1,
+    "detourMiles": 1.43,
+    "laterCheck": false
+   },
+   {
+    "breweryId": 134,
+    "name": "Gravel Road Brewing Company",
+    "town": "Middletown",
+    "mile": 19.7,
+    "detourMiles": 4.52,
+    "laterCheck": false
+   }
+  ],
+  "measured": [],
+  "slight": 0,
+  "towns": []
+ }
+];

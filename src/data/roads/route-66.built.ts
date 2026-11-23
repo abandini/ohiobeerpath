@@ -5,7 +5,7 @@ import type { BuiltRoad } from '../../lib/road-trip';
 
 export const ROUTE_66_BUILT: BuiltRoad = {
   "slug": "route-66",
-  "built": "2026-11-22",
+  "built": "2026-11-23",
   "legs": [
     {
       "id": "illinois",
@@ -2780,12 +2780,12 @@ export const ROUTE_66_BUILT: BuiltRoad = {
       "website": "https://bennyboybrewing.com/",
       "address": "1821 Daly St. Los Angeles, CA 90031",
       "addressSourceUrl": "https://bennyboybrewing.com/",
-      "evidence": "Hours Monday: 4-9PM Tuesday-Thursday: 4-10pm Friday: 3PM-midnight Saturday: 12pm-midnight Sunday: 12pm-10pm ... November 19, 2026 Soul Sunsets with Blaec Elite DJs",
+      "evidence": "Hours Monday: 4-9PM Tuesday-Thursday: 4-10pm Friday: 3PM-midnight Saturday: 12pm-midnight Sunday: 12pm-10pm",
       "evidenceUrl": "https://bennyboybrewing.com/",
-      "evidenceChecked": "2026-11-22",
+      "evidenceChecked": "2026-11-23",
       "quote": "",
       "quoteSourceUrl": "",
-      "checked": "2026-11-22",
+      "checked": "2026-11-23",
       "legId": "california",
       "mile": 306.6,
       "detourMiles": 1.18,

@@ -223,12 +223,18 @@
  {
   "id": 235,
   "name": "Noble Beast Brewing Co.",
-  "status": "UNCONFIRMED",
+  "status": "OPEN",
   "official_url": "https://www.noblebeastbeer.com/",
-  "address_as_printed": null,
-  "address_source_url": null,
-  "notes": "script-rendered. Home page is a Square Online template whose embedded hours data is placeholder (San Francisco address, Mon-Fri 9-5); real hours not readable without a browser. A person should open https://www.noblebeastbeer.com/ and read the Location & Hours block. Directory address 1470 Lakeside Ave E not printed in fetched HTML. Brews on site (per the Anthology site: \"main brewery and restaurant in downtown Cleveland at 1470 Lakeside Ave\"), which is a statement on a sister site, not hours.",
-  "checked": "2026-11-22"
+  "address_as_printed": "1470 Lakeside Ave E Cleveland, Ohio 44114-1137",
+  "address_source_url": "https://www.noblebeastbeer.com/",
+  "notes": "script-rendered. Home page is a Square Online template whose embedded hours data is placeholder (San Francisco address, Mon-Fri 9-5); real hours not readable without a browser. A person should open https://www.noblebeastbeer.com/ and read the Location & Hours block. Directory address 1470 Lakeside Ave E not printed in fetched HTML. Brews on site (per the Anthology site: \"main brewery and restaurant in downtown Cleveland at 1470 Lakeside Ave\"), which is a statement on a sister site, not hours. 2026-11-23: read in a real browser by the coordinator (the page is script-rendered and loads normally for a person): the rendered \"Location & Hours\" block prints the Lakeside Ave address and a weekly schedule, not the template placeholder that is in the page source. The block also says \"Kitchen Closes 1 Hr Before Bar\" and to check its socials for holiday hours.",
+  "checked": "2026-11-23",
+  "browser_checked": "2026-11-23",
+  "operating_evidence": {
+   "excerpt": "Monday Closed Tuesday 11:30 am - 11:00 pm Wednesday 11:30 am - 11:00 pm Thursday 11:30 am - 11:00 pm Friday 11:30 am - 12:00 am Saturday 11:30 am - 12:00 am Sunday 11:30 am - 10:00 pm",
+   "url": "https://www.noblebeastbeer.com/",
+   "checked": "2026-11-23"
+  }
  },
  {
   "id": 2360,
@@ -286,7 +292,7 @@
   "address_source_url": "https://usa.brewdog.com/pages/bars/cleveland-outpost",
   "quote": "With 28 taps pouring BrewDog and local craft brews, plus a patio packed with river views, fire pits, and outdoor games.",
   "quote_source_url": "https://usa.brewdog.com/pages/bars/cleveland-outpost",
-  "notes": "script-rendered. Hours load by script (\"Checking hours...\", \"Loading hours...\"); a person should open https://usa.brewdog.com/pages/bars/cleveland-outpost and click \"View opening hours\". Page footer shows 2015-2026. Does not say it brews on site (taps BrewDog and local beer): if it does not brew it would be NOT A BREWERY TAPROOM.",
+  "notes": "script-rendered. Hours load by script (\"Checking hours...\", \"Loading hours...\"); a person should open https://usa.brewdog.com/pages/bars/cleveland-outpost and click \"View opening hours\". Page footer shows 2015-2026. Does not say it brews on site (taps BrewDog and local beer): if it does not brew it would be NOT A BREWERY TAPROOM. 2026-11-23: opened in a real browser by the coordinator; once its script has run the page shows a \"BAR OPENING HOURS\" list for all seven days (Mon-Thu and Sun 11am-10pm, Fri-Sat 11am-12am). Not listed: the page serves plenty of text to our script but not those hours, so the source check cannot find the quote and reports it missing; a browser check is recorded only for pages the script cannot read at all.",
   "checked": "2026-11-22"
  },
  {

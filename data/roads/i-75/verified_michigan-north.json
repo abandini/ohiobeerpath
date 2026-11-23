@@ -26,13 +26,17 @@
  {
   "id": 391,
   "name": "Biere De Mac Brew Works",
-  "status": "UNCONFIRMED",
+  "status": "OPEN",
   "official_url": "https://www.bieredemac.com/",
-  "address_as_printed": null,
-  "address_source_url": null,
-  "operating_evidence": null,
-  "notes": "script-rendered: the HTML is an empty React shell (page text is only the title). The site's JavaScript bundle (not citable as page text) contains an address '14277 Mackinaw Hwy / Mackinaw City, MI 49701' and an hours table: Monday Closed, Tuesday Closed, Wednesday 12:00 PM – 9:00 PM, Thursday 12:00 PM – 9:00 PM, Friday 12:00 PM – 10:00 PM, Saturday 12:00 PM – 10:00 PM, Sunday 12:00 PM – 7:00 PM, with no season stated. A person should open https://www.bieredemac.com/#visit in a browser and confirm the Hours & Location section. Directory street is '14277 N Mackinaw Hwy'. Brewery, restaurant and beer garden per meta description.",
-  "checked": "2026-11-22"
+  "address_as_printed": "14277 Mackinaw Hwy Mackinaw City, MI 49701",
+  "address_source_url": "https://www.bieredemac.com/",
+  "operating_evidence": {
+   "excerpt": "HOURS MONDAY Closed TUESDAY Closed WEDNESDAY 12:00 PM – 9:00 PM THURSDAY 12:00 PM – 9:00 PM FRIDAY 12:00 PM – 10:00 PM SATURDAY 12:00 PM – 10:00 PM SUNDAY 12:00 PM – 7:00 PM",
+   "url": "https://www.bieredemac.com/",
+   "checked": "2026-11-23"
+  },
+  "notes": "script-rendered: the HTML is an empty React shell (page text is only the title). The site's JavaScript bundle (not citable as page text) contains an address '14277 Mackinaw Hwy / Mackinaw City, MI 49701' and an hours table: Monday Closed, Tuesday Closed, Wednesday 12:00 PM – 9:00 PM, Thursday 12:00 PM – 9:00 PM, Friday 12:00 PM – 10:00 PM, Saturday 12:00 PM – 10:00 PM, Sunday 12:00 PM – 7:00 PM, with no season stated. A person should open https://www.bieredemac.com/#visit in a browser and confirm the Hours & Location section. Directory street is '14277 N Mackinaw Hwy'. Brewery, restaurant and beer garden per meta description. 2026-11-23: read in a real browser by the coordinator (the page is script-rendered and loads normally for a person): the rendered \"Visit the Brewery\" block prints the address and a weekly schedule. No browser_checked date is recorded on this row: it is not listed, so the source check does not read it.",
+  "checked": "2026-11-23"
  },
  {
   "id": 655,

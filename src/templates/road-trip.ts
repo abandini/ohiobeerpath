@@ -331,7 +331,7 @@ export function cohortBreakdown(c: Cohort, limit: number, strict = false): strin
   return [
     c.unresolved ? (strict ? `${c.unresolved} unresolved: visiting-hours evidence was not accepted or brewery identity was not established` : `${c.unresolved} with operating status unresolved (we could not confirm published visiting hours)`) : '',
     c.notPlaced ? `${c.notPlaced} ${had} but no location we could tie to the printed address` : '',
-    c.held ? `${c.held} ${had}, held until a person has read the page or settled which address is the one to visit` : '',
+    c.held ? `${c.held} ${had}, held for the reason given beside each name below` : '',
     c.outside ? `${c.outside} ${had}, placed by the printed address, but then more than ${limit} straight-line miles from our mapped line` : '',
     c.settled ? `${c.settled} found closed, moved, a duplicate of another listing or not a taproom` : '',
     c.suspended ? SUSPENDED_COUNT(c.suspended) : '',

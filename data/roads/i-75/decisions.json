@@ -59,16 +59,6 @@
     }
   },
   {
-    "match": 177,
-    "reason": "coordinator 2026-11-22: held until the hours table is read in a browser",
-    "hold": "its hours table could not be read in order by our script; awaiting a read by a person"
-  },
-  {
-    "match": 175,
-    "reason": "coordinator 2026-11-22: held until the hours table is read in a browser",
-    "hold": "its hours table could not be read in order by our script; awaiting a read by a person"
-  },
-  {
     "match": 80,
     "reason": "editor: its home page says it opens at 11:00 AM and its locations page says 11:30am",
     "conflict": {
@@ -106,5 +96,10 @@
         }
       ]
     }
+  },
+  {
+    "match": 177,
+    "reason": "coordinator 2026-11-23: the table was read in a browser; the only passage of the page text that gives a day beside its hours as the table shows them is \"FRIDAY 4pm-12am\", 15 characters, and the gate requires more than 15",
+    "hold": "a person read its hours table on 2026-11-23; the only passage of the page's text that gives a day beside its hours as the table shows them is \"FRIDAY 4pm-12am\", which is shorter than the minimum we cite"
   }
 ]

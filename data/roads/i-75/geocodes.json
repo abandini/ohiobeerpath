@@ -198,6 +198,15 @@
     "checked": "2026-11-22"
   },
   {
+    "id": 134,
+    "address": "916 1st Ave. Middletown, OH 45044",
+    "lat": 39.516222756503,
+    "lon": -84.406872190273,
+    "matched": "916 1ST AVE, MIDDLETOWN, OH, 45044",
+    "source": "US Census geocoder",
+    "checked": "2026-11-23"
+  },
+  {
     "id": 141,
     "address": "738 W. National Rd. Vandalia, OH 45377",
     "lat": 39.889666843728,
@@ -376,6 +385,15 @@
     "matched": "1400 PORTER ST, DETROIT, MI, 48216",
     "source": "US Census geocoder",
     "checked": "2026-11-22"
+  },
+  {
+    "id": 391,
+    "address": "14277 Mackinaw Hwy Mackinaw City, MI 49701",
+    "lat": 45.75823029731,
+    "lon": -84.732149607343,
+    "matched": "14277 N MACKINAW HWY, MACKINAW CITY, MI, 49701",
+    "source": "US Census geocoder",
+    "checked": "2026-11-23"
   },
   {
     "id": 449,

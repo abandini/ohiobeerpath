@@ -537,7 +537,7 @@ export function buildRoad(config: RoadConfig, ways: LatLon[][], candidates: Cand
       else noPlace.set(cand.id, !printed ? 'it prints no street address, so no location can be tied to one'
         : same ? 'its printed address is the directory\'s, but the directory\'s map point is a placeholder (shared with another listing, or shown to be wrong by an exact address match) and the geocoder did not match the address exactly'
           : mine && off <= 0.25 ? `the geocoder matched a slightly different address (${g!.matched}); flagged for review, and not used without a recorded decision`
-            : mine ? `the geocoder matched a different address (${g!.matched}), ${off.toFixed(2)} miles from the directory's point`
+            : mine ? `the Census geocoder matched a different address (${g!.matched}) from the one it prints (${printed}), so the match is not exact and is not used`
               : `no exact Census match was returned for its printed address when checked${geoAsked.get(String(cand.id)) ? ` on ${geoAsked.get(String(cand.id))}` : ''}, and the directory holds no matching street address`);
     }
     const near = legs.map((l) => ({ l, on: projectOntoLine(p, l.st.line, l.cum) })).sort((a, b) => a.on.detour - b.on.detour)[0];

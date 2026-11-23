@@ -5,7 +5,7 @@ import type { BuiltRoad } from '../../lib/road-trip';
 
 export const I_75_BUILT: BuiltRoad = {
   "slug": "i-75",
-  "built": "2026-11-22",
+  "built": "2026-11-23",
   "legs": [
     {
       "id": "sault-saginaw",
@@ -15,11 +15,11 @@ export const I_75_BUILT: BuiltRoad = {
       "decided": 5,
       "cohort": {
         "total": 10,
-        "withHours": 4,
+        "withHours": 5,
         "listed": 3,
-        "notPlaced": 1,
+        "notPlaced": 2,
         "outside": 0,
-        "unresolved": 4,
+        "unresolved": 3,
         "settled": 2
       },
       "joins": 1,
@@ -50,16 +50,16 @@ export const I_75_BUILT: BuiltRoad = {
       "lengthMiles": 157.8,
       "line": [[41.73209,-83.48899],[41.72034,-83.50191],[41.69334,-83.50407],[41.68684,-83.55219],[41.68828,-83.56215],[41.68172,-83.57068],[41.66955,-83.57202],[41.66504,-83.56448],[41.65857,-83.56253],[41.65066,-83.54894],[41.64166,-83.54862],[41.63375,-83.54212],[41.61169,-83.54044],[41.59236,-83.55594],[41.53761,-83.61574],[41.52645,-83.62118],[41.44673,-83.62207],[41.42756,-83.6155],[41.37253,-83.61611],[41.33873,-83.62534],[41.30844,-83.62713],[41.26713,-83.64781],[41.24925,-83.64853],[41.23613,-83.65405],[41.21676,-83.64975],[41.17192,-83.64916],[41.14907,-83.65863],[41.07648,-83.65997],[41.05005,-83.67252],[41.02776,-83.67321],[41.01771,-83.68689],[41.00134,-83.68708],[40.97196,-83.73724],[40.92144,-83.80563],[40.91443,-83.82345],[40.91261,-83.84079],[40.88557,-83.87663],[40.88154,-83.90141],[40.84218,-83.95921],[40.82906,-83.96373],[40.826,-83.98636],[40.76901,-84.0729],[40.76414,-84.07541],[40.70298,-84.07563],[40.69906,-84.08173],[40.69787,-84.11027],[40.68227,-84.12713],[40.67284,-84.13129],[40.63897,-84.13216],[40.57637,-84.16907],[40.42144,-84.16913],[40.39606,-84.16109],[40.33073,-84.15892],[40.32321,-84.16236],[40.30805,-84.17953],[40.25278,-84.18337],[40.23424,-84.19588],[40.19654,-84.20717],[40.16768,-84.22383],[40.12862,-84.21538],[40.0841,-84.23368],[40.00946,-84.22937],[39.97934,-84.19438],[39.97066,-84.18969],[39.79949,-84.18978],[39.78838,-84.18368],[39.77416,-84.18638],[39.76893,-84.19743],[39.76097,-84.20095]],
       "candidates": 28,
-      "decided": 17,
+      "decided": 18,
       "cohort": {
         "total": 28,
         "withHours": 20,
-        "listed": 14,
+        "listed": 15,
         "notPlaced": 3,
         "outside": 0,
         "unresolved": 5,
         "settled": 3,
-        "held": 3
+        "held": 2
       },
       "joins": 1,
       "joinedMiles": 0.01,
@@ -70,14 +70,14 @@ export const I_75_BUILT: BuiltRoad = {
       "lengthMiles": 53.6,
       "line": [[39.76097,-84.20095],[39.75025,-84.20544],[39.73039,-84.2064],[39.7193,-84.21458],[39.70922,-84.22863],[39.6855,-84.22941],[39.66125,-84.23594],[39.62615,-84.23025],[39.58967,-84.24159],[39.52131,-84.31877],[39.45505,-84.32801],[39.39618,-84.36208],[39.36295,-84.36827],[39.34839,-84.38132],[39.33384,-84.4122],[39.31079,-84.435],[39.29366,-84.44182],[39.26152,-84.4406],[39.24036,-84.4513],[39.22852,-84.45042],[39.21828,-84.45978],[39.20161,-84.46822],[39.19001,-84.48078],[39.17298,-84.49193],[39.16976,-84.50348],[39.1625,-84.5101],[39.15736,-84.53483],[39.15268,-84.53951],[39.13362,-84.53275],[39.11951,-84.53551],[39.10644,-84.531],[39.10036,-84.52274],[39.09018,-84.52267]],
       "candidates": 54,
-      "decided": 35,
+      "decided": 36,
       "cohort": {
         "total": 55,
-        "withHours": 30,
-        "listed": 27,
+        "withHours": 31,
+        "listed": 28,
         "notPlaced": 2,
         "outside": 1,
-        "unresolved": 17,
+        "unresolved": 16,
         "settled": 8
       },
       "joins": 1,
@@ -555,6 +555,30 @@ export const I_75_BUILT: BuiltRoad = {
       "placedBy": "census"
     },
     {
+      "key": "175",
+      "breweryId": 175,
+      "name": "Inside The Five Brewing",
+      "town": "Perrysburg",
+      "state": "OH",
+      "lat": 41.557847922375,
+      "lon": -83.630080587169,
+      "status": "OPEN",
+      "website": "https://www.insidethefivebrewing.com/perrysburg",
+      "address": "127 w. third Street, perrysburg, Oh 43551",
+      "addressSourceUrl": "https://www.insidethefivebrewing.com/perrysburg",
+      "evidence": "TUESDAY 11am-10pm",
+      "evidenceUrl": "https://www.insidethefivebrewing.com/perrysburg",
+      "evidenceChecked": "2026-11-23",
+      "quote": "",
+      "quoteSourceUrl": "",
+      "checked": "2026-11-23",
+      "legId": "ohio-line-dayton",
+      "mile": 18.1,
+      "detourMiles": 1.43,
+      "pastEnd": "",
+      "placedBy": "census"
+    },
+    {
       "key": "183",
       "breweryId": 183,
       "name": "Juniper Brewing Company",
@@ -967,6 +991,31 @@ export const I_75_BUILT: BuiltRoad = {
       "detourMiles": 0.93,
       "pastEnd": "",
       "placedBy": "census"
+    },
+    {
+      "key": "134",
+      "breweryId": 134,
+      "name": "Gravel Road Brewing Company",
+      "town": "Middletown",
+      "state": "OH",
+      "lat": 39.516222756503,
+      "lon": -84.406872190273,
+      "status": "OPEN",
+      "website": "https://gravelroadbrewingco.com/",
+      "address": "916 1st Ave. Middletown, OH 45044",
+      "addressSourceUrl": "https://gravelroadbrewingco.com/",
+      "evidence": "Taproom hours Monday + Tuesday Closed Wednesday + Thursday 4–9 PM Friday 4–9 PM Saturday 12–9 PM Sunday 12–6 PM",
+      "evidenceUrl": "https://gravelroadbrewingco.com/",
+      "evidenceChecked": "2026-11-23",
+      "quote": "",
+      "quoteSourceUrl": "",
+      "checked": "2026-11-23",
+      "legId": "dayton-cincinnati",
+      "mile": 19.7,
+      "detourMiles": 4.52,
+      "pastEnd": "",
+      "placedBy": "census",
+      "browserChecked": "2026-11-23"
     },
     {
       "key": "22",
@@ -1625,13 +1674,13 @@ export const I_75_BUILT: BuiltRoad = {
   ],
   "cohort": {
     "total": 137,
-    "withHours": 77,
-    "listed": 60,
-    "notPlaced": 12,
+    "withHours": 79,
+    "listed": 62,
+    "notPlaced": 13,
     "outside": 2,
-    "unresolved": 41,
+    "unresolved": 39,
     "settled": 19,
-    "held": 3
+    "held": 2
   },
   "notListed": [
     {
@@ -1680,7 +1729,7 @@ export const I_75_BUILT: BuiltRoad = {
       "id": 453,
       "name": "Downey Brewing Company",
       "why": "notPlaced",
-      "reason": "the geocoder matched a different address (13121 PROSPECT ST, DEARBORN, MI, 48126), 0.27 miles from the directory's point"
+      "reason": "the Census geocoder matched a different address (13121 PROSPECT ST, DEARBORN, MI, 48126) from the one it prints (13121 Prospect, Dearborn, MI 48126), so the match is not exact and is not used"
     },
     {
       "id": 97,
@@ -1698,7 +1747,7 @@ export const I_75_BUILT: BuiltRoad = {
       "id": 177,
       "name": "Inside The Five Brewing - The Fieldhouse",
       "why": "held",
-      "reason": "its hours table could not be read in order by our script; awaiting a read by a person"
+      "reason": "a person read its hours table on 2026-11-23; the only passage of the page's text that gives a day beside its hours as the table shows them is \"FRIDAY 4pm-12am\", which is shorter than the minimum we cite"
     },
     {
       "id": 98,
@@ -1707,16 +1756,16 @@ export const I_75_BUILT: BuiltRoad = {
       "reason": "the geocoder matched a slightly different address (25 S SAINT CLAIR ST, TOLEDO, OH, 43604); flagged for review, and not used without a recorded decision"
     },
     {
-      "id": 175,
-      "name": "Inside The Five Brewing",
-      "why": "held",
-      "reason": "its hours table could not be read in order by our script; awaiting a read by a person"
+      "id": 391,
+      "name": "Biere De Mac Brew Works",
+      "why": "notPlaced",
+      "reason": "the Census geocoder matched a different address (14277 N MACKINAW HWY, MACKINAW CITY, MI, 49701) from the one it prints (14277 Mackinaw Hwy Mackinaw City, MI 49701), so the match is not exact and is not used"
     },
     {
       "id": 449,
       "name": "Dead Bear Brewing Co",
       "why": "notPlaced",
-      "reason": "the geocoder matched a different address (2552 I- 75 BUS LP, GRAYLING, MI, 49738), 0.99 miles from the directory's point"
+      "reason": "the Census geocoder matched a different address (2552 I- 75 BUS LP, GRAYLING, MI, 49738) from the one it prints (2552 South I-75 Business Loop Grayling, Michigan 49738), so the match is not exact and is not used"
     },
     {
       "id": 602,
@@ -1728,7 +1777,7 @@ export const I_75_BUILT: BuiltRoad = {
       "id": 628,
       "name": "Redwood Brewing Co",
       "why": "notPlaced",
-      "reason": "the geocoder matched a different address (5304 GATEWAY CENTRE BLVD, FLINT, MI, 48507), 5.08 miles from the directory's point"
+      "reason": "the Census geocoder matched a different address (5304 GATEWAY CENTRE BLVD, FLINT, MI, 48507) from the one it prints (5304 Gateway Centre Drive Flint, MI 48507), so the match is not exact and is not used"
     },
     {
       "id": 337,
@@ -1772,9 +1821,7 @@ export const I_75_BUILT: BuiltRoad = {
     115,
     116,
     129,
-    134,
     135,
-    175,
     177,
     199,
     201,

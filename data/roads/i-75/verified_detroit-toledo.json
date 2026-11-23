@@ -451,7 +451,7 @@
   },
   "quote": "A premier taproom within Inside the Five’s brewing facility located in Toledo, OH",
   "quote_source_url": "https://www.insidethefivebrewing.com/fieldhouse",
-  "notes": "Multi-location brand (Sylvania, Perrysburg, Toledo Fieldhouse); every field is from the Fieldhouse page. The hours table reads out of order as page text; it appears to mean Mon-Tue closed, Wed-Thu 4-10pm, Fri 4pm-12am, Sat 12pm-12am, and a '12-8pm' printed after the food-truck note is probably Sunday. A person should read the table in a browser before publishing hours. Footer also prints '1040 N. WESTWOOD | TOLEDO, OH, 43607'.",
+  "notes": "Multi-location brand (Sylvania, Perrysburg, Toledo Fieldhouse); every field is from the Fieldhouse page. The hours table reads out of order as page text; it appears to mean Mon-Tue closed, Wed-Thu 4-10pm, Fri 4pm-12am, Sat 12pm-12am, and a '12-8pm' printed after the food-truck note is probably Sunday. A person should read the table in a browser before publishing hours. Footer also prints '1040 N. WESTWOOD | TOLEDO, OH, 43607'. 2026-11-23: read in a real browser by the coordinator (the page is script-rendered and loads normally for a person): the hours table, read by the position of each cell on the screen, is MONDAY CLOSED, TUESDAY CLOSED, WEDNESDAY 4-10pm, THURSDAY 4-10pm, FRIDAY 4pm-12am, SATURDAY 12pm-12am, SUNDAY 12-8pm. As page text the cells come out of order, and no passage of that text states a day and its hours as the table shows them at a length we can cite (the only adjacent pair is \"FRIDAY 4pm-12am\"). The row stays held; its evidence is left as the checker recorded it.",
   "checked": "2026-11-22"
  },
  {
@@ -533,11 +533,11 @@
   "address_as_printed": "127 w. third Street, perrysburg, Oh 43551",
   "address_source_url": "https://www.insidethefivebrewing.com/perrysburg",
   "operating_evidence": {
-   "excerpt": "hours 4-10pm MONDAY TUESDAY 11am-10pm WEDNESDAY 11am-10pm 11am-10pm THURSDAY FRIDAY 11am-11pm 11am-11pm SATURDAY BRUNCH 10am-2pm DINNER 2-10pm SUNDAY",
+   "excerpt": "TUESDAY 11am-10pm",
    "url": "https://www.insidethefivebrewing.com/perrysburg",
-   "checked": "2026-11-22"
+   "checked": "2026-11-23"
   },
-  "notes": "Multi-location brand; every field is from the Downtown Perrysburg brewpub page (directory row has no street; coordinates match downtown Perrysburg). The hours table reads out of order as page text; a person should read it in a browser before publishing hours. Footer prints the address as 'PERRYSBURG 127 W THIRD ST | PERRYSBURG, OH 43551'. Full-service brewpub with kitchen.",
-  "checked": "2026-11-22"
+  "notes": "Multi-location brand; every field is from the Downtown Perrysburg brewpub page (directory row has no street; coordinates match downtown Perrysburg). The hours table reads out of order as page text; a person should read it in a browser before publishing hours. Footer prints the address as 'PERRYSBURG 127 W THIRD ST | PERRYSBURG, OH 43551'. Full-service brewpub with kitchen. 2026-11-23: read in a real browser by the coordinator (the page is script-rendered and loads normally for a person): the hours table, read by the position of each cell on the screen, is MONDAY 4-10pm, TUESDAY 11am-10pm, WEDNESDAY 11am-10pm, THURSDAY 11am-10pm, FRIDAY 11am-11pm, SATURDAY 11am-11pm, SUNDAY BRUNCH 10am-2pm and DINNER 2-10pm. As page text the cells come out of order, so the excerpt is the one day whose name and time are adjacent in the text and agree with the table as shown.",
+  "checked": "2026-11-23"
  }
 ]

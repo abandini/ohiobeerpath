@@ -602,9 +602,9 @@ describe('the real road data (src/data/roads)', () => {
     // Where this road's check could not list a brewery and the I-71 check of the same listing found its hours, that row is used.
     const other = join(dir, '../i-71'), theirs = (f: string) => JSON.parse(readFileSync(join(other, f), 'utf8'));
     const filled = shareRows(edits.rows, read('geocodes.json'), applyRowEdits(readdirSync(other).filter((f) => /^verified.*\.json$/.test(f)).sort().flatMap(theirs), theirs('decisions.json'), theirs('corrections.json')).rows, theirs('geocodes.json'), 'fill', 'i-71');
-    expect(US_422.fillRowsFrom).toBe('i-71'); expect(filled.taken.sort()).toEqual([2322, 62]);
+    expect(US_422.fillRowsFrom).toBe('i-71'); expect(filled.taken.sort()).toEqual([2322, 235, 62]);   // sorted as text; 235 Noble Beast was read in a browser for I-71 on 2026-11-23
     expect(buildRoad(US_422, read('osm-ways.json'), read('candidates.json'), suspendedRows('us-422', filled.rows), US_422_BUILT.built, undefined, filled.geocodes).road).toEqual(US_422_BUILT);
-    expect(US_422_BUILT.stops.filter((s) => s.checkFrom).map((s) => [s.breweryId, s.checkFrom]).sort()).toEqual([[2322, 'i-71'], [62, 'i-71']]);
+    expect(US_422_BUILT.stops.filter((s) => s.checkFrom).map((s) => [s.breweryId, s.checkFrom]).sort()).toEqual([[2322, 'i-71'], [235, 'i-71'], [62, 'i-71']]);
     expect(US_422_BUILT.stops.some((s) => s.breweryId === 229)).toBe(false);   // ruled off both roads: the I-71 row for it is not listable once its decision is applied
     for (const r of filled.rows.filter((x) => x.taken_from)) verified.splice(verified.findIndex((x) => x.id === r.id), 1, r);
     const evidenced = new Set(verified.filter((r) => r.status === 'OPEN' && r.operating_evidence?.excerpt && r.operating_evidence?.url).map((r) => r.id));
@@ -614,7 +614,7 @@ describe('the real road data (src/data/roads)', () => {
   it('only pages a person read in a browser carry a browser check', () => {
     // 82 Crooked Pecker, 261 Pompatus and 1082 Hidden River are script-rendered sites read in a real browser on 2026-11-22.
     // Pompatus (261) prints no street address, so under the location-identity rule it cannot be placed and is not a stop.
-    expect(US_422_BUILT.stops.filter((s) => s.browserChecked).map((s) => s.breweryId).sort((a, b) => a! - b!)).toEqual([82, 1082]);
+    expect(US_422_BUILT.stops.filter((s) => s.browserChecked).map((s) => s.breweryId).sort((a, b) => a! - b!)).toEqual([82, 235, 1082]);
     expect(US_422_BUILT.stops.some((s) => s.breweryId === 261)).toBe(false);
   });
 });
@@ -1178,7 +1178,7 @@ describe('location identity on a directory road', () => {
     expect(buildRoad(strict, WAYS, cands, rows, TODAY, TODAY, []).road.stops.map((s) => s.breweryId)).toContain(4);   // without the geocode the placeholder would have passed
   });
   it('nearness accepts nothing: a loose geocoder match is flagged, and used only on a recorded decision', () => {
-    expect(stop(6)).toBeUndefined(); expect(why(6)).toMatch(/matched a different address \(60 FEDERAL PLZ E, FOXTROT, PA, 15005\), 1\.38 miles/);
+    expect(stop(6)).toBeUndefined(); expect(why(6)).toMatch(/Census geocoder matched a different address \(60 FEDERAL PLZ E, FOXTROT, PA, 15005\) from the one it prints/);
     // 7 is 0.07 miles from the directory's point. That used to be enough. It is not.
     expect(stop(7)).toBeUndefined(); expect(why(7)).toMatch(/matched a slightly different address \(70 FATHER FRASCATI DR, GOLF, PA, 15006\); flagged for review, and not used without a recorded decision/);
     expect(b.road.notListed!.find((x) => x.id === 7)).toMatchObject({ why: 'notPlaced' });
@@ -1226,7 +1226,7 @@ describe('location identity on a directory road', () => {
   it('US 422 and I-71 are built by this rule, from the geocodes on file', () => {
     expect(US_422.addressMustMatch).toBe(true); expect(I_71.addressMustMatch).toBe(true);
     for (const id of [261, 26, 259, 60]) expect(US_422_BUILT.stops.some((s) => s.breweryId === id), String(id)).toBe(false);   // no address, no Census match, wrong Census match, a different street line with nothing to tie the two together
-    expect(US_422_BUILT.stops).toHaveLength(32 - suspendedOn('us-422').length);
+    expect(US_422_BUILT.stops).toHaveLength(33 - suspendedOn('us-422').length);
     // Columbus Brewing is placed by an exact match of the address its site prints, not by an exception.
     const cbc = I_71_BUILT.stops.find((s) => s.breweryId === 2338)!;
     expect([cbc.placedBy, cbc.address, cbc.addressSourceUrl, cbc.placedNote]).toEqual(['census', '2555 Harrison Rd. Columbus, OH 43204', 'https://columbusbrewing.com/contact/', undefined]);
@@ -1267,7 +1267,7 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
   });
   it('leaves off the retired, held, script-rendered and misplaced rows', () => {
     const ids = new Set(road.stops.map((s) => s.breweryId));
-    for (const id of [2313, 2345, 2339, 238, 103, 892, 2326, 39, 278, 235, 44, 2464, 75, 338, 327, 234, 66, 939, 2455, 2390]) expect(ids.has(id), String(id)).toBe(false);
+    for (const id of [2313, 2345, 2339, 238, 103, 892, 2326, 39, 278, 44, 2464, 75, 338, 327, 234, 66, 939, 2455, 2390]) expect(ids.has(id), String(id)).toBe(false);
     for (const r of verified.filter((x) => x.status !== 'OPEN')) expect(ids.has(r.id as number), String(r.name)).toBe(false);
     expect(JSON.stringify(read('candidates.json'))).not.toMatch(/second_signal|OPERATIONAL|CLOSED_PERMANENTLY/);   // the internal signal is not in the repo
     expect(main + roadsIndexPage([road])).not.toMatch(/second same-day|second_signal/i);
@@ -1301,7 +1301,7 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
     expect(text.indexOf(`Exits and access. ${INTERSTATE_NOTICE}`)).toBeGreaterThan(text.indexOf('How this list was made'));
     // What stays above the legs is short: the breakdown and the unlisted names are below.
     const top = text.slice(0, text.indexOf('Leg 1:'));
-    expect(top).toContain(cohortLine(road.cohort!, 'on 2026-11-22', true)); expect(top).not.toMatch(/operating status unresolved|not listed, and why|editorial sections/);
+    expect(top).toContain(cohortLine(road.cohort!, 'between 2026-11-22 and 2026-11-23', true)); expect(top).not.toMatch(/operating status unresolved|not listed, and why|editorial sections/);
     expect(DIRECTIONS_NOTE_INTERSTATE).toBe('Its nearest road point is not an exit or an access point. Plan while parked.');
     expect(main.match(/Directions \(opens Google Maps\)<\/a><\/p>\s*<p class="rt-src">Its nearest road point is not an exit or an access point\. Plan while parked\.<\/p>/g)).toHaveLength(road.stops.length);
     expect(main.replace(/<blockquote>.*?<\/blockquote>/gs, '')).not.toMatch(/\bat (the )?(an )?exit\b/i);
@@ -1315,7 +1315,7 @@ describe('Interstate 71 (src/data/roads/i-71)', () => {
     expect(road.legs.reduce((n, l) => n + l.cohort!.total, 0)).toBe(k.total);
     // One candidate's hours text was found but its identity was not established (Nano Brew), so this page says "met our evidence requirements", never "found hours"
     expect(road.rejected.map((x) => x.id)).toEqual([229]);
-    expect(text).toContain(`We checked 157 directory candidates, selected using directory coordinates (within 5 straight-line miles of our mapped line), on 2026-11-22. ${k.withHours} candidates met our visiting-hours evidence requirements; ${k.listed} are listed and ${k.withHours - k.listed} are withheld for placement or distance.`);
+    expect(text).toContain(`We checked 157 directory candidates, selected using directory coordinates (within 5 straight-line miles of our mapped line), between 2026-11-22 and 2026-11-23. ${k.withHours} candidates met our visiting-hours evidence requirements; ${k.listed} are listed and ${k.withHours - k.listed} are withheld for placement or distance.`);
     expect(text).toContain(`${k.unresolved} unresolved: visiting-hours evidence was not accepted or brewery identity was not established`); expect(text).not.toMatch(/We found published visiting hours|could not confirm published visiting hours/);
     expect(text).toContain(`The ${road.notListed.length} candidates with accepted visiting-hours evidence that are not listed, and why`);
     expect(text).toContain('Hours text found but not accepted as evidence, or identity not established (1)'); expect(text).toContain('Nano Brew Cleveland: two checks on the same day read its site differently');
@@ -1422,10 +1422,10 @@ describe('Interstate 75 (src/data/roads/i-75)', () => {
   });
   it('tells coverage by cohort, names the breweries with hours that are not listed, and labels seasonal hours', () => {
     const k = road.cohort!;
-    expect(k.total).toBe(137); expect(k.listed).toBe(road.stops.length); expect(k.held).toBe(3); expect(k.withHours).toBe(k.listed + k.notPlaced + k.outside + k.held!); expect(k.listed + k.notPlaced + k.outside + k.held! + k.unresolved + k.settled).toBe(k.total);
+    expect(k.total).toBe(137); expect(k.listed).toBe(road.stops.length); expect(k.held).toBe(2); expect(k.withHours).toBe(k.listed + k.notPlaced + k.outside + k.held!); expect(k.listed + k.notPlaced + k.outside + k.held! + k.unresolved + k.settled).toBe(k.total);
     // Inside the Five: hours found, but the table reads out of order as text, so both are held and named with that reason
-    expect(road.notListed.filter((x) => x.why === 'held').map((x) => [x.id, x.reason])).toEqual([[97, 'its own pages print two street numbers (3134 W Central Ave. and 3142 W Central Ave., Toledo); held until a first-hand source settles which is the visiting address'], [177, 'its hours table could not be read in order by our script; awaiting a read by a person'], [175, 'its hours table could not be read in order by our script; awaiting a read by a person']]);
-    expect(ids.has(177) || ids.has(175)).toBe(false); expect(text).toContain('3 with accepted visiting-hours evidence, held until a person has read the page or settled which address is the one to visit');
+    expect(road.notListed.filter((x) => x.why === 'held').map((x) => [x.id, x.reason])).toEqual([[97, 'its own pages print two street numbers (3134 W Central Ave. and 3142 W Central Ave., Toledo); held until a first-hand source settles which is the visiting address'], [177, `a person read its hours table on 2026-11-23; the only passage of the page's text that gives a day beside its hours as the table shows them is "FRIDAY 4pm-12am", which is shorter than the minimum we cite`]]);
+    expect(ids.has(177)).toBe(false); expect(road.stops.find((s) => s.breweryId === 175)).toMatchObject({ evidence: 'TUESDAY 11am-10pm' }); expect(road.stops.find((s) => s.breweryId === 175)!.browserChecked).toBeUndefined(); expect(text).toContain('2 with accepted visiting-hours evidence, held for the reason given beside each name below');
     // a sourced note under each stop whose own pages disagree: what differs, both texts quoted, and which one is shown
     expect(road.stops.filter((s) => s.conflict).map((s) => s.breweryId).sort((a, b) => a! - b!)).toEqual([80, 183, 637]);
     const stopText = (id: number) => { const at = main.indexOf(`id="stop-${id}"`); return main.slice(at, main.indexOf('</li>', at)).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&'); };
@@ -1442,7 +1442,7 @@ describe('Interstate 75 (src/data/roads/i-75)', () => {
     for (const x of road.rejected) expect(text).toContain(`${x.name}: ${x.reason}.`);
     expect(text).toContain('Hours text found but not accepted as evidence, or identity not established (4)'); expect(text).toContain('These are editorial decisions about evidence.');
     expect(road.legs.reduce((n, l) => n + l.cohort!.total, 0)).toBe(137);
-    expect(text).toContain(`We checked 137 directory candidates on 2026-11-22. ${k.withHours} candidates met our visiting-hours evidence requirements; ${k.listed} are listed and ${k.withHours - k.listed} are withheld for placement, distance or pending manual review.`);
+    expect(text).toContain(`We checked 137 directory candidates between 2026-11-22 and 2026-11-23. ${k.withHours} candidates met our visiting-hours evidence requirements; ${k.listed} are listed and ${k.withHours - k.listed} are withheld for placement, distance or pending manual review.`);
     expect(text).toContain(`${k.unresolved} unresolved: visiting-hours evidence was not accepted or brewery identity was not established`); expect(text).toContain(`The ${road.notListed.length} candidates with accepted visiting-hours evidence that are not listed, and why`);
     expect(text).not.toMatch(/We found published visiting hours|found published visiting hours for|could not confirm published visiting hours/); expect(roadsIndexPage(allRoads()).replace(/<[^>]+>/g, '')).toContain(`${k.withHours} candidates met our visiting-hours evidence requirements; ${k.listed} are listed`);
     expect(road.notListed.filter((x) => x.why === 'outside').map((x) => x.id).sort()).toEqual([2390, 643]);
@@ -1477,7 +1477,7 @@ describe('roads that list the same brewery agree about it', () => {
   const allowed = (JSON.parse(readFileSync(join(__dirname, '../../data/roads/shared-differences.json'), 'utf8')) as { allow: string; why: string }[]);
   it('the real roads: fifteen shared listings, no difference that is not recorded', () => {
     const off = new Set([...suspendedOn('i-71'), ...suspendedOn('us-422')].map((x) => x.id));
-    expect(sharedStopIds(builts)).toEqual([51, 62, 72, 120, 130, 136, 154, 182, 207, 208, 280, 296, 308, 2322, 2356].filter((id) => !off.has(id)));
+    expect(sharedStopIds(builts)).toEqual([51, 62, 72, 120, 130, 136, 154, 182, 207, 208, 235, 280, 296, 308, 2322, 2356].filter((id) => !off.has(id)));
     // I-75 shares its Cincinnati and northern Kentucky listings with I-71, and none with US 422 or Route 66
     const withI75 = sharedStopIds([I_71_BUILT, I_75_BUILT]);
     expect(withI75).toEqual([22, 76, 121, 123, 132, 150, 203, 212, 269, 293, 304, 902, 908, 921, 946, 2382, 2395, 2460]); expect(sharedStopIds([US_422_BUILT, I_75_BUILT])).toEqual([]);

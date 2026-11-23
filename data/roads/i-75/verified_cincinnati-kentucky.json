@@ -2,13 +2,18 @@
  {
   "id": 134,
   "name": "Gravel Road Brewing Company",
-  "status": "UNCONFIRMED",
+  "status": "OPEN",
   "official_url": "https://gravelroadbrewingco.com/",
-  "address_as_printed": null,
-  "address_source_url": null,
-  "operating_evidence": null,
-  "notes": "script-rendered: the site is a JavaScript app; the HTML has no text. Its bundle (https://gravelroadbrewingco.com/assets/index-B6C3aQSk.js) contains an address ('916 1st Ave, Middletown, OH 45044') and two different hours sets (e.g. Saturday '12-9 PM' in one list and '11 AM - 9 PM' in another), so no reliable printed hours. A person should open https://gravelroadbrewingco.com/ in a browser. Site describes 'a welcoming taproom in downtown Middletown, Ohio'.",
-  "checked": "2026-11-22"
+  "address_as_printed": "916 1st Ave. Middletown, OH 45044",
+  "address_source_url": "https://gravelroadbrewingco.com/",
+  "operating_evidence": {
+   "excerpt": "Taproom hours Monday + Tuesday Closed Wednesday + Thursday 4–9 PM Friday 4–9 PM Saturday 12–9 PM Sunday 12–6 PM",
+   "url": "https://gravelroadbrewingco.com/",
+   "checked": "2026-11-23"
+  },
+  "notes": "script-rendered: the site is a JavaScript app; the HTML has no text. Its bundle (https://gravelroadbrewingco.com/assets/index-B6C3aQSk.js) contains an address ('916 1st Ave, Middletown, OH 45044') and two different hours sets (e.g. Saturday '12-9 PM' in one list and '11 AM - 9 PM' in another), so no reliable printed hours. A person should open https://gravelroadbrewingco.com/ in a browser. Site describes 'a welcoming taproom in downtown Middletown, Ohio'. 2026-11-23: read in a real browser by the coordinator (the page is script-rendered and loads normally for a person): the rendered page prints \"Taproom hours\" and, separately, \"HBYOB Brew Store hours\" (the home-brew shop in the same building); the two hours sets in the bundle are those two. The taproom set is the one cited.",
+  "checked": "2026-11-23",
+  "browser_checked": "2026-11-23"
  },
  {
   "id": 116,

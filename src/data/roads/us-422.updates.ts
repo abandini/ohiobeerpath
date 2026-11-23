@@ -589,5 +589,482 @@ export const US_422_UPDATES: UpdateEvent[] = [
     "is": "Chagrin Falls"
    }
   ]
+ },
+ {
+  "date": "2026-11-23",
+  "what": "A person opened a Cleveland brewery page that loads its hours by script, in a browser, and the stop was added: the page shows a weekly schedule. We also asked the US Census geocoder again about every printed address it had not matched; none matched, so the date beside those names changed and nothing else.",
+  "before": [
+   {
+    "breweryId": 208,
+    "name": "Masthead Brewing Company",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 0.32
+   },
+   {
+    "breweryId": 72,
+    "name": "Collision Bend Brewing Company",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 0.56
+   },
+   {
+    "breweryId": 280,
+    "name": "Saucy Brew Works",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 1.11
+   },
+   {
+    "breweryId": 308,
+    "name": "Terrestrial Brewing Company",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 2.4
+   },
+   {
+    "breweryId": 2322,
+    "name": "BottleHouse Brewery",
+    "town": "Lakewood",
+    "mile": 0,
+    "detourMiles": 4.96
+   },
+   {
+    "breweryId": 62,
+    "name": "Butcher & the Brewer",
+    "town": "Cleveland",
+    "mile": 0.1,
+    "detourMiles": 0.13
+   },
+   {
+    "breweryId": 51,
+    "name": "Brick and Barrel",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 0.68
+   },
+   {
+    "breweryId": 120,
+    "name": "Forest City Brewery",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 1.06
+   },
+   {
+    "breweryId": 207,
+    "name": "Market Garden Brewpub",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 1.06
+   },
+   {
+    "breweryId": 136,
+    "name": "Great Lakes Brewing Company",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 1.08
+   },
+   {
+    "breweryId": 2356,
+    "name": "Hansa Brewery",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 1.17
+   },
+   {
+    "breweryId": 296,
+    "name": "Southern Tier Brewing Co. Cleveland",
+    "town": "Cleveland",
+    "mile": 0.3,
+    "detourMiles": 0.22
+   },
+   {
+    "breweryId": 154,
+    "name": "Hofbräuhaus Cleveland",
+    "town": "Cleveland",
+    "mile": 0.4,
+    "detourMiles": 0.62
+   },
+   {
+    "breweryId": 130,
+    "name": "Goldhorn Brewery",
+    "town": "Cleveland",
+    "mile": 1.6,
+    "detourMiles": 2.35
+   },
+   {
+    "breweryId": 182,
+    "name": "The Jolly Scholar",
+    "town": "Cleveland",
+    "mile": 3.5,
+    "detourMiles": 2.42
+   },
+   {
+    "breweryId": 82,
+    "name": "Crooked Pecker Brewing Company",
+    "town": "Chagrin Falls",
+    "mile": 22.4,
+    "detourMiles": 1.81
+   },
+   {
+    "breweryId": 218,
+    "name": "Modern Methods Brewing Company",
+    "town": "Warren",
+    "mile": 54,
+    "detourMiles": 0.11
+   },
+   {
+    "breweryId": 2394,
+    "name": "Noble Creature Cask House",
+    "town": "Youngstown",
+    "mile": 67.8,
+    "detourMiles": 0.41
+   },
+   {
+    "breweryId": 992,
+    "name": "Brew 32",
+    "town": "Pulaski",
+    "mile": 77.1,
+    "detourMiles": 2.69
+   },
+   {
+    "breweryId": 1030,
+    "name": "Crooked Tongue Brewing",
+    "town": "Edinburg",
+    "mile": 80.6,
+    "detourMiles": 0
+   },
+   {
+    "breweryId": 1184,
+    "name": "Recon Brewing",
+    "town": "Butler",
+    "mile": 115.1,
+    "detourMiles": 1.31
+   },
+   {
+    "breweryId": 1122,
+    "name": "Levity Brewing Co",
+    "town": "Indiana",
+    "mile": 161.9,
+    "detourMiles": 1.03
+   },
+   {
+    "breweryId": 1261,
+    "name": "Troegs Brewing Co",
+    "town": "Hershey",
+    "mile": 2.5,
+    "detourMiles": 0.04
+   },
+   {
+    "breweryId": 1197,
+    "name": "Rotunda Brewing",
+    "town": "Annville",
+    "mile": 10.2,
+    "detourMiles": 0
+   },
+   {
+    "breweryId": 1218,
+    "name": "Snitz Creek Brewery",
+    "town": "Lebanon",
+    "mile": 15.2,
+    "detourMiles": 0.01
+   },
+   {
+    "breweryId": 1082,
+    "name": "Hidden River Brewing Co",
+    "town": "Douglassville",
+    "mile": 57.3,
+    "detourMiles": 0.01
+   },
+   {
+    "breweryId": 1217,
+    "name": "Sly Fox Brewing Co",
+    "town": "Pottstown",
+    "mile": 60.8,
+    "detourMiles": 1.46
+   },
+   {
+    "breweryId": 1216,
+    "name": "Sly Fox Brewhouse and Eatery",
+    "town": "Phoenixville",
+    "mile": 72.2,
+    "detourMiles": 3.73
+   },
+   {
+    "breweryId": 1196,
+    "name": "Root Down Brewing Company",
+    "town": "Phoenixville",
+    "mile": 73.4,
+    "detourMiles": 2.35
+   },
+   {
+    "breweryId": 1228,
+    "name": "Stable 12 Brewing Company",
+    "town": "Phoenixville",
+    "mile": 73.4,
+    "detourMiles": 2.81
+   },
+   {
+    "breweryId": 1115,
+    "name": "La Cabra Brewing",
+    "town": "Berwyn",
+    "mile": 82.4,
+    "detourMiles": 2.94
+   },
+   {
+    "breweryId": 1020,
+    "name": "Conshohocken Brewing - Bridgeport",
+    "town": "Bridgeport",
+    "mile": 82.4,
+    "detourMiles": 3.81
+   }
+  ],
+  "after": [
+   {
+    "breweryId": 208,
+    "name": "Masthead Brewing Company",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 0.32
+   },
+   {
+    "breweryId": 72,
+    "name": "Collision Bend Brewing Company",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 0.56
+   },
+   {
+    "breweryId": 235,
+    "name": "Noble Beast Brewing Co.",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 0.68
+   },
+   {
+    "breweryId": 280,
+    "name": "Saucy Brew Works",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 1.11
+   },
+   {
+    "breweryId": 308,
+    "name": "Terrestrial Brewing Company",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 2.4
+   },
+   {
+    "breweryId": 2322,
+    "name": "BottleHouse Brewery",
+    "town": "Lakewood",
+    "mile": 0,
+    "detourMiles": 4.96
+   },
+   {
+    "breweryId": 62,
+    "name": "Butcher & the Brewer",
+    "town": "Cleveland",
+    "mile": 0.1,
+    "detourMiles": 0.13
+   },
+   {
+    "breweryId": 51,
+    "name": "Brick and Barrel",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 0.68
+   },
+   {
+    "breweryId": 120,
+    "name": "Forest City Brewery",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 1.06
+   },
+   {
+    "breweryId": 207,
+    "name": "Market Garden Brewpub",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 1.06
+   },
+   {
+    "breweryId": 136,
+    "name": "Great Lakes Brewing Company",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 1.08
+   },
+   {
+    "breweryId": 2356,
+    "name": "Hansa Brewery",
+    "town": "Cleveland",
+    "mile": 0.2,
+    "detourMiles": 1.17
+   },
+   {
+    "breweryId": 296,
+    "name": "Southern Tier Brewing Co. Cleveland",
+    "town": "Cleveland",
+    "mile": 0.3,
+    "detourMiles": 0.22
+   },
+   {
+    "breweryId": 154,
+    "name": "Hofbräuhaus Cleveland",
+    "town": "Cleveland",
+    "mile": 0.4,
+    "detourMiles": 0.62
+   },
+   {
+    "breweryId": 130,
+    "name": "Goldhorn Brewery",
+    "town": "Cleveland",
+    "mile": 1.6,
+    "detourMiles": 2.35
+   },
+   {
+    "breweryId": 182,
+    "name": "The Jolly Scholar",
+    "town": "Cleveland",
+    "mile": 3.5,
+    "detourMiles": 2.42
+   },
+   {
+    "breweryId": 82,
+    "name": "Crooked Pecker Brewing Company",
+    "town": "Chagrin Falls",
+    "mile": 22.4,
+    "detourMiles": 1.81
+   },
+   {
+    "breweryId": 218,
+    "name": "Modern Methods Brewing Company",
+    "town": "Warren",
+    "mile": 54,
+    "detourMiles": 0.11
+   },
+   {
+    "breweryId": 2394,
+    "name": "Noble Creature Cask House",
+    "town": "Youngstown",
+    "mile": 67.8,
+    "detourMiles": 0.41
+   },
+   {
+    "breweryId": 992,
+    "name": "Brew 32",
+    "town": "Pulaski",
+    "mile": 77.1,
+    "detourMiles": 2.69
+   },
+   {
+    "breweryId": 1030,
+    "name": "Crooked Tongue Brewing",
+    "town": "Edinburg",
+    "mile": 80.6,
+    "detourMiles": 0
+   },
+   {
+    "breweryId": 1184,
+    "name": "Recon Brewing",
+    "town": "Butler",
+    "mile": 115.1,
+    "detourMiles": 1.31
+   },
+   {
+    "breweryId": 1122,
+    "name": "Levity Brewing Co",
+    "town": "Indiana",
+    "mile": 161.9,
+    "detourMiles": 1.03
+   },
+   {
+    "breweryId": 1261,
+    "name": "Troegs Brewing Co",
+    "town": "Hershey",
+    "mile": 2.5,
+    "detourMiles": 0.04
+   },
+   {
+    "breweryId": 1197,
+    "name": "Rotunda Brewing",
+    "town": "Annville",
+    "mile": 10.2,
+    "detourMiles": 0
+   },
+   {
+    "breweryId": 1218,
+    "name": "Snitz Creek Brewery",
+    "town": "Lebanon",
+    "mile": 15.2,
+    "detourMiles": 0.01
+   },
+   {
+    "breweryId": 1082,
+    "name": "Hidden River Brewing Co",
+    "town": "Douglassville",
+    "mile": 57.3,
+    "detourMiles": 0.01
+   },
+   {
+    "breweryId": 1217,
+    "name": "Sly Fox Brewing Co",
+    "town": "Pottstown",
+    "mile": 60.8,
+    "detourMiles": 1.46
+   },
+   {
+    "breweryId": 1216,
+    "name": "Sly Fox Brewhouse and Eatery",
+    "town": "Phoenixville",
+    "mile": 72.2,
+    "detourMiles": 3.73
+   },
+   {
+    "breweryId": 1196,
+    "name": "Root Down Brewing Company",
+    "town": "Phoenixville",
+    "mile": 73.4,
+    "detourMiles": 2.35
+   },
+   {
+    "breweryId": 1228,
+    "name": "Stable 12 Brewing Company",
+    "town": "Phoenixville",
+    "mile": 73.4,
+    "detourMiles": 2.81
+   },
+   {
+    "breweryId": 1115,
+    "name": "La Cabra Brewing",
+    "town": "Berwyn",
+    "mile": 82.4,
+    "detourMiles": 2.94
+   },
+   {
+    "breweryId": 1020,
+    "name": "Conshohocken Brewing - Bridgeport",
+    "town": "Bridgeport",
+    "mile": 82.4,
+    "detourMiles": 3.81
+   }
+  ],
+  "removed": [],
+  "added": [
+   {
+    "breweryId": 235,
+    "name": "Noble Beast Brewing Co.",
+    "town": "Cleveland",
+    "mile": 0,
+    "detourMiles": 0.68,
+    "laterCheck": true
+   }
+  ],
+  "measured": [],
+  "slight": 0,
+  "towns": []
  }
 ];

@@ -5,21 +5,21 @@ import type { BuiltRoad } from '../../lib/road-trip';
 
 export const I_71_BUILT: BuiltRoad = {
   "slug": "i-71",
-  "built": "2026-11-22",
+  "built": "2026-11-23",
   "legs": [
     {
       "id": "cleveland-columbus",
       "lengthMiles": 140.8,
       "line": [[41.47939,-81.69324],[41.4667,-81.69308],[41.45757,-81.69848],[41.45173,-81.73161],[41.44712,-81.74023],[41.44905,-81.75178],[41.44589,-81.76107],[41.44527,-81.78024],[41.43887,-81.792],[41.43865,-81.80672],[41.42483,-81.82075],[41.3944,-81.8157],[41.36477,-81.82159],[41.32742,-81.81618],[41.305,-81.80891],[41.25567,-81.80396],[41.22519,-81.79424],[41.15854,-81.786],[41.12811,-81.79945],[41.06817,-81.84777],[41.03842,-81.87806],[41.0309,-81.89001],[41.00057,-81.96859],[40.9969,-82.01146],[40.99305,-82.02567],[40.95282,-82.07179],[40.9323,-82.11596],[40.9118,-82.141],[40.90084,-82.17144],[40.87797,-82.20532],[40.86527,-82.24595],[40.84487,-82.27508],[40.80756,-82.37485],[40.79479,-82.40041],[40.76067,-82.43054],[40.72973,-82.47289],[40.70601,-82.49427],[40.68631,-82.52331],[40.63532,-82.55364],[40.61556,-82.57479],[40.57849,-82.60453],[40.55774,-82.64488],[40.50511,-82.70318],[40.43222,-82.81434],[40.41971,-82.82082],[40.37612,-82.82757],[40.31486,-82.91274],[40.30077,-82.92337],[40.20501,-82.93172],[40.15982,-82.96822],[40.11833,-82.97375],[40.09694,-82.98582],[40.07242,-82.98898],[40.06081,-82.99827],[40.01677,-82.99493],[40.00618,-82.9848],[39.9609,-82.9827],[39.95527,-82.98506],[39.9529,-83.00061]],
       "candidates": 81,
-      "decided": 56,
+      "decided": 57,
       "cohort": {
         "total": 81,
-        "withHours": 46,
-        "listed": 43,
+        "withHours": 47,
+        "listed": 44,
         "notPlaced": 3,
         "outside": 0,
-        "unresolved": 22,
+        "unresolved": 21,
         "settled": 13
       },
       "joins": 1,
@@ -336,6 +336,31 @@ export const I_71_BUILT: BuiltRoad = {
       "pastEnd": "start",
       "placedBy": "census",
       "checkFrom": "us-422"
+    },
+    {
+      "key": "235",
+      "breweryId": 235,
+      "name": "Noble Beast Brewing Co.",
+      "town": "Cleveland",
+      "state": "OH",
+      "lat": 41.507683211664,
+      "lon": -81.686979905007,
+      "status": "OPEN",
+      "website": "https://www.noblebeastbeer.com/",
+      "address": "1470 Lakeside Ave E Cleveland, Ohio 44114-1137",
+      "addressSourceUrl": "https://www.noblebeastbeer.com/",
+      "evidence": "Monday Closed Tuesday 11:30 am - 11:00 pm Wednesday 11:30 am - 11:00 pm Thursday 11:30 am - 11:00 pm Friday 11:30 am - 12:00 am Saturday 11:30 am - 12:00 am Sunday 11:30 am - 10:00 pm",
+      "evidenceUrl": "https://www.noblebeastbeer.com/",
+      "evidenceChecked": "2026-11-23",
+      "quote": "",
+      "quoteSourceUrl": "",
+      "checked": "2026-11-23",
+      "legId": "cleveland-columbus",
+      "mile": 0,
+      "detourMiles": 1.98,
+      "pastEnd": "start",
+      "placedBy": "census",
+      "browserChecked": "2026-11-23"
     },
     {
       "key": "308",
@@ -2001,11 +2026,11 @@ export const I_71_BUILT: BuiltRoad = {
   ],
   "cohort": {
     "total": 157,
-    "withHours": 87,
-    "listed": 79,
+    "withHours": 88,
+    "listed": 80,
     "notPlaced": 7,
     "outside": 1,
-    "unresolved": 40,
+    "unresolved": 39,
     "settled": 30
   },
   "notListed": [
@@ -2091,7 +2116,6 @@ export const I_71_BUILT: BuiltRoad = {
     224,
     229,
     234,
-    235,
     238,
     241,
     258,

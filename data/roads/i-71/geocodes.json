@@ -378,6 +378,15 @@
     "checked": "2026-11-22"
   },
   {
+    "id": 235,
+    "address": "1470 Lakeside Ave E Cleveland, Ohio 44114-1137",
+    "lat": 41.507683211664,
+    "lon": -81.686979905007,
+    "matched": "1470 LAKESIDE AVE E, CLEVELAND, OH, 44114",
+    "source": "US Census geocoder",
+    "checked": "2026-11-23"
+  },
+  {
     "id": 244,
     "address": "421 East 2nd Ave, Columbus, OH 43201",
     "lat": 39.981961358725,

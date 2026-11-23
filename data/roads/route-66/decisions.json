@@ -95,5 +95,14 @@
       "url": "https://keggrovebrewing.com/",
       "checked": "2026-11-22"
     }
+  },
+  {
+    "match": "d20b7fb9-43a2-4ee6-bc77-46a26866cbfa",
+    "reason": "editor: the checker's evidence joined the hours block to a dated event line (November 19, 2026) that has since left the page; replaced by the hours block alone, re-read on its own page 2026-11-23",
+    "evidence": {
+      "excerpt": "Hours Monday: 4-9PM Tuesday-Thursday: 4-10pm Friday: 3PM-midnight Saturday: 12pm-midnight Sunday: 12pm-10pm",
+      "url": "https://bennyboybrewing.com/",
+      "checked": "2026-11-23"
+    }
   }
 ]
