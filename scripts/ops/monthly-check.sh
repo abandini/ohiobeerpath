@@ -12,10 +12,14 @@ stop() { echo "monthly check: STOPPED. $1"; echo "Brewery Trip monthly check: ST
 # launchd starts with almost no PATH: after whatever PATH there is, node, npx and git are looked for in the usual places.
 export PATH="${PATH:+$PATH:}/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # Keys. launchd gives the job none, so the named entries it needs, and only those, are read from the machine's vault
-# file when the environment does not already have them. Nothing is printed. Without them checks B and C report
-# "could not observe" and the run exits 2; it is never a pass.
+# file when the environment does not already have them. Nothing is printed. By default that is the status-service key
+# alone: the directory is read through the machine's own wrangler login, and a Cloudflare token in the environment
+# would be used ahead of that login even when it cannot read the database (found on the mini, 2026-11-23). On a
+# machine whose token can read it, set MONTHLY_VAULT_KEYS="GEMINI_API_KEY CLOUDFLARE_API_TOKEN". Without a working
+# key or login, checks B and C report "could not observe" and the run exits 2; it is never a pass.
 VAULT="${MONTHLY_VAULT:-$HOME/.vault/keys.env}"
-for k in GEMINI_API_KEY CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID; do
+for k in ${MONTHLY_VAULT_KEYS:-GEMINI_API_KEY}; do
+  case "$k" in GEMINI_API_KEY|CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID) ;; *) continue ;; esac
   if [ -z "${!k:-}" ] && [ -r "$VAULT" ]; then
     v="$(sed -n "s/^\(export[[:space:]]\{1,\}\)\{0,1\}$k=//p" "$VAULT" | tail -1)"
     v="${v%\"}"; v="${v#\"}"; v="${v%\'}"; v="${v#\'}"
