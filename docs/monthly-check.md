@@ -256,5 +256,7 @@ The drill runs the same checks by the same rules, kept away from production thre
   accepted is used. If none is, check B is "could not observe"; it is never a pass. A run is capped at 2,000
   requests (the free allowance is 5,000 a month; a full run is about 1,150) and will not start if the directory
   would need more.
+- Keys under launchd: the wrapper reads `GEMINI_API_KEY`, `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from
+  `~/.vault/keys.env` (or `MONTHLY_VAULT`) when the environment does not have them, and nothing else from that file.
 - A data directory that survives: `~/brewerytrip-monthly`. It is the job's memory. Include it in the machine's
   backups.
