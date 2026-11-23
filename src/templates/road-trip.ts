@@ -323,6 +323,8 @@ const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 export const longDate = (d: string) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d); return m ? `${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}` : d; };
 /** True when a road's coverage is told by cohort: a directory road built under the location rule. */
 const byCohort = (road: RoadView) => !!road.cohort && road.config.addressMustMatch === true && !road.config.startingList;
+/** How suspended stops are counted on a page: under their own heading, never as closed. */
+export const SUSPENDED_COUNT = (n: number) => `${n} suspended after a monthly re-check, pending review`;
 /** What became of the candidates that are not listed, each counted once, in a fixed order. Empty parts are left out. */
 export function cohortBreakdown(c: Cohort, limit: number, strict = false): string[] {
   const had = strict ? 'with accepted visiting-hours evidence' : 'with published visiting hours';
@@ -332,6 +334,7 @@ export function cohortBreakdown(c: Cohort, limit: number, strict = false): strin
     c.held ? `${c.held} ${had}, held until a person has read the page or settled which address is the one to visit` : '',
     c.outside ? `${c.outside} ${had}, placed by the printed address, but then more than ${limit} straight-line miles from our mapped line` : '',
     c.settled ? `${c.settled} found closed, moved, a duplicate of another listing or not a taproom` : '',
+    c.suspended ? SUSPENDED_COUNT(c.suspended) : '',
   ].filter(Boolean);
 }
 /**
@@ -375,12 +378,13 @@ const checkedWhen = (road: RoadView) => (road.checkedFrom === road.checkedTo ? `
 export function updateSummary(e: UpdateEvent): string {
   const removed = e.removed.length, added = e.added.length, from = e.before.length, to = e.after.length;
   const allPlacement = removed > 0 && e.removed.every((r) => r.why === 'notPlaced'), allLater = added > 0 && e.added.every((x) => x.laterCheck);
-  const took = removed ? (allPlacement ? `we could not establish ${removed === 1 ? 'an address-linked location' : 'address-linked locations'} for ${word(removed)} previously listed ${removed === 1 ? 'brewery' : 'breweries'}` : `${word(removed)} previously listed ${removed === 1 ? 'brewery was' : 'breweries were'} removed`) : '';
+  const allSuspended = removed > 0 && e.removed.every((r) => r.why === 'suspended');
+  const took = removed ? (allSuspended ? `${word(removed)} ${removed === 1 ? 'stop was' : 'stops were'} suspended after a monthly re-check, pending review, because the ${removed === 1 ? 'page we cite for it no longer supports' : 'pages we cite for them no longer support'} the listing` : allPlacement ? `we could not establish ${removed === 1 ? 'an address-linked location' : 'address-linked locations'} for ${word(removed)} previously listed ${removed === 1 ? 'brewery' : 'breweries'}` : `${word(removed)} previously listed ${removed === 1 ? 'brewery was' : 'breweries were'} removed`) : '';
   const notClosed = removed === 1 ? 'this removal is not a finding that the brewery closed' : 'these removals are not findings that the breweries closed';
   const gave = added ? `${word(added)} ${added === 1 ? 'was' : 'were'} added${allLater ? ` after a later check found ${added === 1 ? 'its' : 'their'} published hours` : ''}` : '';
   const parts = [e.what];
   if (removed && added) parts.push(`The list changed from ${from} to ${to} stops: ${took} (${notClosed}), and ${gave}.`);
-  else if (removed) parts.push(allPlacement ? `The list changed from ${from} to ${to} stops because ${took}; ${notClosed}.` : `The list changed from ${from} to ${to} stops: ${took}; ${notClosed}.`);
+  else if (removed) parts.push(allSuspended ? `The list changed from ${from} to ${to} stops: ${took}; ${removed === 1 ? 'this is not a finding that the brewery closed' : 'these are not findings that the breweries closed'}.` : allPlacement ? `The list changed from ${from} to ${to} stops because ${took}; ${notClosed}.` : `The list changed from ${from} to ${to} stops: ${took}; ${notClosed}.`);
   else if (added) parts.push(`The list changed from ${from} to ${to} stops: ${gave}.`);
   const recalculated = e.measured.length + e.slight, towns = e.towns.length;
   if (recalculated || towns) parts.push(`We also ${[recalculated ? `recalculated ${recalculated === 1 ? 'one mile position or straight-line distance' : `${recalculated >= 3 ? 'several' : word(recalculated)} mile positions and straight-line distances`}` : '', towns ? `changed ${word(towns)} town ${towns === 1 ? 'label' : 'labels'} to match ${towns === 1 ? 'the brewery’s printed address' : 'the breweries’ printed addresses'}` : ''].filter(Boolean).join(' and ')}.`);
@@ -543,6 +547,7 @@ export const roadsBlurb = (roads: RoadView[]) =>
 
 export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
   T = termsFor(road); showPlacement = byCohort(road); isInterstate = road.config.interstate === true;
+  const suspended = road.notListed.filter((x) => x.why === 'suspended'), withHours = road.notListed.filter((x) => x.why !== 'suspended');
   const update = newestFirst(road)[0], by = (m: string) => road.stops.filter((s) => s.placedBy === m).length;
   const c = road.config, url = `${SITE}/roads/${c.slug}`, title = roadTitle(road);
   const holes = road.legs.flatMap((l) => l.unmeasured), hasOuter = road.legs.some((l) => l.segments.some((g) => g.outer.length));
@@ -575,7 +580,7 @@ export function roadTripPage(road: RoadView, o: RoadPageOptions = {}): string {
     <div class="rt-wrap">${drivingNote(road)}${update ? `
       <div class="rt-note" role="note"><p><strong>Updated ${h(longDate(update.date))}:</strong> ${h(updateSummary(update))} <a href="#${a(updateAnchor(update))}">What changed, stop by stop</a>.</p></div>` : ''}
       <p>${h(c.about)}</p>
-      <p>${h(byCohort(road) ? cohortLine(road.cohort!, checkedWhen(road), strictWording(road)) : coverageText(road.decided, road.candidates, c.maxDetourMiles, T.anyWay ? `a mapped alignment of ${c.shortName}` : `our mapped line of ${c.shortName}`, c.startingList))}${byCohort(road) ? ' <a href="#how">How this list was made</a>.' : ''}</p>
+      <p>${h(byCohort(road) ? cohortLine(road.cohort!, checkedWhen(road), strictWording(road)) : coverageText(road.decided, road.candidates, c.maxDetourMiles, T.anyWay ? `a mapped alignment of ${c.shortName}` : `our mapped line of ${c.shortName}`, c.startingList))}${byCohort(road) ? ' <a href="#how">How this list was made</a>.' : ''}${road.cohort?.suspended ? ` ${byCohort(road) ? 'Not listed for now' : 'Among those not listed'}: ${h(SUSPENDED_COUNT(road.cohort.suspended))}.` : ''}</p>
       <nav aria-label="Stretches of the road">
         ${c.collapseLegs ? `<p class="rt-sub">${road.legs.every((l) => l.name) ? 'Jump to a state. Each one opens to show its stops.' : 'Jump to a stretch. Its leg opens to show the stops.'}</p>` : ''}<ul class="rt-jump">${jump.join('')}</ul>
       </nav>
@@ -587,12 +592,14 @@ ${updateEntries(road)}
         <ul>
           <li><strong>The road.</strong> ${h(c.geometry.source)} on ${h(c.geometry.downloaded)}. ${OSM_LINK}; the data is available under the Open Database License. Where the road has two carriageways we measure along one. This is our mapped line.${joined.length ? ` Where two mapped ways do not quite meet we join them with a straight line: ${h(joined.map((l) => `${l.name || `${place(l.from)} to ${place(l.to)}`} ${plural(l.joins, 'join')} totalling ${l.joinedMiles.toFixed(2)} miles (widest ${l.widestJoinMiles.toFixed(2)})`).join('; '))}.` : ''}</li>${(c.methodNotes ?? []).map((t) => { const i = t.indexOf('. '); return `
           <li><strong>${h(i > 0 ? t.slice(0, i + 1) : '')}</strong>${h(i > 0 ? t.slice(i + 1) : t)}</li>`; }).join('')}
-${showPlacement ? `
-          <li><strong>Coverage.</strong> ${h(cohortText(road.cohort!, c.maxDetourMiles, checkedWhen(road), strictWording(road)))}${road.notListed.length ? `
+${suspended.length ? `
+          <li><strong>Suspended, pending review.</strong> ${h(SUSPENDED_COUNT(suspended.length))}. Each month we re-read the page every stop cites. A stop is suspended only when two readings at least 48 hours apart both found that the page no longer supports the listing. It is not a finding that the brewery closed.
+            <ul>${suspended.map((x) => `<li><strong>${h(x.name)}</strong>: ${h(x.reason)}.</li>`).join('')}</ul></li>` : ''}${showPlacement ? `
+          <li><strong>Coverage.</strong> ${h(cohortText(road.cohort!, c.maxDetourMiles, checkedWhen(road), strictWording(road)))}${withHours.length ? `
             <details class="rt-notlisted">
-              <summary>${strictWording(road) ? `The ${road.notListed.length} candidates with accepted visiting-hours evidence that are not listed, and why` : `The ${road.notListed.length} with published visiting hours that are not listed, and why`}</summary>
+              <summary>${strictWording(road) ? `The ${withHours.length} candidates with accepted visiting-hours evidence that are not listed, and why` : `The ${withHours.length} with published visiting hours that are not listed, and why`}</summary>
               <p class="rt-src">None of these is a finding that the brewery has closed.</p>
-              <ul>${road.notListed.map((x) => `<li><strong>${h(x.name)}</strong>: ${h(x.reason)}.</li>`).join('')}</ul>
+              <ul>${withHours.map((x) => `<li><strong>${h(x.name)}</strong>: ${h(x.reason)}.</li>`).join('')}</ul>
             </details>` : ''}${road.rejected.length ? `
             <details class="rt-notlisted">
               <summary>Hours text found but not accepted as evidence, or identity not established (${road.rejected.length})</summary>
