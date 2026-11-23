@@ -1,4 +1,4 @@
--- I-75 road check follow-up (leads from 2026-11-22; reviewed 2026-11-23). PREPARED, NOT APPLIED.
+-- I-75 road check follow-up (leads from 2026-11-22; reviewed 2026-11-23). Applied to D1 on 2026-11-23 after outside review (GO on all eight statements).
 -- Every source below was re-fetched on 2026-11-23 with a plain curl, User-Agent "BreweryTripBot/1.0 (+https://brewerytrip.com/about)",
 -- and the quoted words were found in the fetched page text. Exact commands are in docs/status/0036-evidence.md.
 -- Rule (as 0032/0033/0035): a different owner or brand is a different listing, never a rename; the old listing is retired only
@@ -30,8 +30,7 @@ UPDATE breweries SET closed_at = '2026-11-23' WHERE id = 633 AND name = 'Roak Br
 -- 397 Big Rock Chop House & Brewery (245 S Eton St, Birmingham MI):
 --   https://www.downtownpublications.com/single-post/big-rock-chophouse-closing-december-18 (Downtown Newsmagazine, 10 Dec 2021)
 --   "the owners of Birmingham's Big Rock Chophouse now stated the restaurant will be closing its doors for the last time on Saturday, December 18."  [re-fetched: yes, words found]
---   (same page: "Big Rock Chophouse is located at 245 S. Eton Street"). The building later reopened as Big Rock Italian Chophouse
---   under new operators (search results only, not cited); a different business, not a brewery.
+--   (same page: "Big Rock Chophouse is located at 245 S. Eton Street").
 UPDATE breweries SET closed_at = '2026-11-23' WHERE id = 397 AND name = 'Big Rock Chop House & Brewery' AND closed_at IS NULL;
 -- 564 Lumber Barons Brewery (804 E Midland St, Bay City MI). The blog lead was replaced by two news sources:
 --   https://www.wnem.com/2024/06/13/businesses-breathing-life-into-bay-citys-midland-street/ (WNEM, 13 Jun 2024)
