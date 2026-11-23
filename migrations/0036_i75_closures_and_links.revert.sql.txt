@@ -1,0 +1,11 @@
+-- Revert of 0036 (run by hand; not a migration; same convention as 0025_modern_methods_visit.revert.sql.txt).
+-- Puts the seven retired listings back to closed_at NULL and restores the one removed link. Purge the KV cache afterwards.
+-- Previous values: closed_at NULL for 2377, 483, 633, 397, 564, 2436, 2323; website_url 'http://www.bigrockchophouse.com' for 397.
+UPDATE breweries SET closed_at = NULL WHERE id = 2377 AND name = 'Lock 27 Brewing' AND closed_at = '2026-11-23';
+UPDATE breweries SET closed_at = NULL WHERE id = 483 AND name = 'Founders Brewing Co' AND closed_at = '2026-11-23';
+UPDATE breweries SET closed_at = NULL WHERE id = 633 AND name = 'Roak Brewing Co.' AND closed_at = '2026-11-23';
+UPDATE breweries SET closed_at = NULL WHERE id = 397 AND name = 'Big Rock Chop House & Brewery' AND closed_at = '2026-11-23';
+UPDATE breweries SET closed_at = NULL WHERE id = 564 AND name = 'Lumber Barons Brewery' AND closed_at = '2026-11-23';
+UPDATE breweries SET closed_at = NULL WHERE id = 2436 AND name = 'Star City Brewing Company' AND closed_at = '2026-11-23';
+UPDATE breweries SET closed_at = NULL WHERE id = 2323 AND name = 'Bowling Green Beer Works' AND closed_at = '2026-11-23';
+UPDATE breweries SET website_url = 'http://www.bigrockchophouse.com' WHERE id = 397 AND name = 'Big Rock Chop House & Brewery' AND website_url IS NULL;
