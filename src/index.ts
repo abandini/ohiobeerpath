@@ -112,6 +112,26 @@ app.use('*', async (c, next) => {
 // Security headers on every response, and no ad loader on screens without publisher content (AdSense policy):
 // error pages, legal pages and account screens.
 const NO_AD_PATHS = /^\/(privacy|terms|login|signup|account|admin)(\/|$)/;
+// Content security policy for HTML pages. The Google hosts are the set the sister network sites already serve
+// ads and analytics with; the rest are what these templates load (Bootstrap and icons from jsDelivr, Leaflet from
+// unpkg, Google Fonts, OpenStreetMap tiles, embed and search). Inline scripts and handlers are still allowed
+// ('unsafe-inline'): the templates use them, so this limits where code, frames, forms and plugins may come from
+// rather than stopping injected inline script. Images may come from any https host (listing photos).
+// CSP_HEADER is 'Content-Security-Policy-Report-Only' while the policy is being observed on the live site.
+export const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://*.google.com",
+  "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fundingchoicesmessages.google.com",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com",
+  "connect-src 'self' https://nominatim.openstreetmap.org https://cloudflareinsights.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com",
+  "frame-src 'self' https://www.openstreetmap.org https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google",
+  "form-action 'self'",
+  "frame-ancestors 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+].join('; ');
+export const CSP_HEADER = 'Content-Security-Policy-Report-Only';
 app.use('*', async (c, next) => {
   await next();
   c.res.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
@@ -121,6 +141,7 @@ app.use('*', async (c, next) => {
   c.res.headers.set('Permissions-Policy', 'camera=(), microphone=(), payment=()');
   const ct = c.res.headers.get('content-type') || '';
   if (!ct.includes('text/html')) return;
+  c.res.headers.set(CSP_HEADER, CSP);
   if (c.res.status === 200 && !NO_AD_PATHS.test(new URL(c.req.url).pathname)) return;
   c.res = new HTMLRewriter().on('script[src*="adsbygoogle.js"]', { element(e) { e.remove(); } }).transform(c.res);
 });
