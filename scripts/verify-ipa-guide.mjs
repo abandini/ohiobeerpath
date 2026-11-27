@@ -15,7 +15,7 @@ const cache = new Map(); let bad = 0;
 for (const { quote, url } of pairs) {
   if (!cache.has(url)) {
     try {
-      const r = await fetch(url, { headers: { 'user-agent': 'brewerytrip.com source check (bill.burkey@ememetics.com)' }, signal: AbortSignal.timeout(30000) });
+      const r = await fetch(url, { headers: { 'user-agent': 'brewerytrip.com source check (+https://brewerytrip.com/)' }, signal: AbortSignal.timeout(30000) });
       // A redirect to another host (or to a social site) never passes: the quote must be on the page we cite.
       if (bare(r.url) !== bare(url) || SOCIAL.test(bare(r.url))) cache.set(url, `ERROR redirected to ${bare(r.url)}`);
       else cache.set(url, r.ok ? fold(norm(await r.text())) : `HTTP ${r.status}`);

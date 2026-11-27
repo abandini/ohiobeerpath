@@ -14,7 +14,7 @@ const loose = (s) => s.replace(/[’‘]/g, "'").replace(/[“”]/g, '"').repla
 const cache = new Map(), rawCache = new Map(); let bad = 0, unread = 0, viaData = 0;
 for (const r of rows) {
   if (!cache.has(r.url)) {
-    try { const res = await fetch(r.url, { headers: { 'user-agent': 'brewerytrip.com source check (bill.burkey@ememetics.com)' }, signal: AbortSignal.timeout(20000) }); if (res.ok) { const raw = await res.text(); cache.set(r.url, norm(raw)); rawCache.set(r.url, raw.replace(/\\u2019/g, '’').replace(/\\"/g, '"')); } else cache.set(r.url, `HTTP ${res.status}`); }
+    try { const res = await fetch(r.url, { headers: { 'user-agent': 'brewerytrip.com source check (+https://brewerytrip.com/)' }, signal: AbortSignal.timeout(20000) }); if (res.ok) { const raw = await res.text(); cache.set(r.url, norm(raw)); rawCache.set(r.url, raw.replace(/\\u2019/g, '’').replace(/\\"/g, '"')); } else cache.set(r.url, `HTTP ${res.status}`); }
     catch (e) { cache.set(r.url, `ERROR ${e?.name}`); }
   }
   const t = cache.get(r.url), readable = !/^(HTTP|ERROR) /.test(t);

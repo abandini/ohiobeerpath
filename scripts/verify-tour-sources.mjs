@@ -21,7 +21,7 @@ const cache = new Map(); let bad = 0;
 for (const { quote, url } of pairs) {
   if (!cache.has(url)) {
     try {
-      const r = await fetch(url, { headers: { 'user-agent': 'brewerytrip.com source check (bill.burkey@ememetics.com)' }, signal: AbortSignal.timeout(30000) });
+      const r = await fetch(url, { headers: { 'user-agent': 'brewerytrip.com source check (+https://brewerytrip.com/)' }, signal: AbortSignal.timeout(30000) });
       if (!r.ok) cache.set(url, `HTTP ${r.status}`);
       else if (url.endsWith('.pdf')) cache.set(url, pdfText(Buffer.from(await r.arrayBuffer())));
       else cache.set(url, norm(await r.text()));
