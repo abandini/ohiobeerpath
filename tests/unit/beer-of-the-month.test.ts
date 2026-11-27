@@ -51,7 +51,7 @@ describe('beer of the month page', () => {
       expect(c).toContain(escapeAttr(p.beer));
       expect(c).toContain(p.confirmed2026 ? '2026 release confirmed' : '2026 release not confirmed');
       for (const s of sourcesOf(p)) { expect(c).toContain(escapeAttr(s.quote)); expect(c).toContain(escapeAttr(s.url)); }
-      expect(c).toContain('checked October 26, 2026');
+      expect(c).toContain('checked November 27, 2026');
     });
   });
   it('renders event evidence and the tradition quotes', () => {

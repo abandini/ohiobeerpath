@@ -69,7 +69,7 @@ export function beerOfTheMonthPage(subdomain?: SubdomainContext): string {
         <h2 class="h3 mb-4 mt-4"><i class="bi bi-snow" aria-hidden="true"></i> Holiday beers</h2>
         ${ordered.map(pourCard).join('')}
 
-        <h2 class="h3 mb-3 mt-5">Holiday beer events</h2>
+        ${b.events.length ? '<h2 class="h3 mb-3 mt-5">Holiday beer events</h2>' : ''}
         ${b.events.map((ev) => `
           <div class="content-card p-3 mb-3">
             <h3 class="h5 mb-1">${e(ev.name)}</h3>

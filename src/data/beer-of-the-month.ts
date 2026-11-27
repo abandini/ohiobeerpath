@@ -16,7 +16,7 @@ export interface Pour {
   when?: Source;        // the 2026 release or announcement, or the season the brewery lists
   whenLabel?: string;   // how the page introduces `when` (default: Release / Season the brewery lists)
 }
-const C = '2026-10-26';
+const C = '2026-11-27';
 export const BEER_OF_THE_MONTH = {
   slug: 'cleveland-beer-of-the-month',
   title: 'Cleveland Beer of the Month: Christmas Ale Season',
@@ -48,14 +48,10 @@ export const BEER_OF_THE_MONTH = {
       identity: { quote: 'Frosted Frog Christmas Ale | Hoppin’ Frog', url: 'https://hoppinfrog.com/beer/frosted-frog-christmas-ale/', checked: C },
       about: { quote: "Perfectly blended spices compliment Frosted Frog's rich malt flavors, creating the ultimate Christmas experience.", url: 'https://hoppinfrog.com/beer/frosted-frog-christmas-ale/', checked: C } },
     { brewery: 'Collision Bend Brewing Co.', breweryId: 72, town: 'Cleveland', site: 'collisionbendbrewery.com', beer: 'Christmas Staycation', confirmed2026: false,
-      identity: { quote: 'Christmas Staycation | Collision Bend Brewing Company', url: 'https://collisionbendbrewery.com/beer/christmas-staycation-44941', checked: C },
-      about: { quote: 'This Holiday Amber Ale is spiced with a blend of Cinnamon, Fresh Ginger Root and Nutmeg.', url: 'https://collisionbendbrewery.com/beer/christmas-staycation-44941', checked: C } },
-    { brewery: 'Market Garden Brewery', breweryId: 207, town: 'Cleveland', site: 'marketgardenbrewery.com', beer: 'Festivus Holiday Spiced Ale', confirmed2026: false,
-      about: { quote: 'FESTIVUS HOLIDAY SPICED ALE 7.5% ABV Description This smooth, spiced holiday ale is a heartwarming tribute to our favorite holiday.', url: 'https://www.marketgardenbrewery.com/beer', checked: C } },
+      about: { quote: 'Relax, our Christmas Staycation Ale can help you get through it all! This Holiday Amber Ale is spiced with a blend of Cinnamon, Fresh Ginger Root and Nutmeg.', url: 'https://collisionbendbrewery.com/beer/christmas-staycation-44941', checked: C } },
+    { brewery: 'Market Garden Brewery', breweryId: 207, town: 'Cleveland', site: 'marketgardenbrewery.com', beer: 'Festivus', confirmed2026: false,
+      about: { quote: 'Holiday Spiced Ale / 7.5% ABV Festivus Brewed with cinnamon, ginger, allspice, whole vanilla beans, and a touch of brown sugar. An elegant caramelized finish.', url: 'https://www.marketgardenbrewery.com/beer', checked: C } },
   ] as Pour[],
-  events: [
-    { name: 'Cleveland Beer Week Holiday Showcase', where: 'Forest City Brewery', breweryId: 120, date: '2026-11-13',
-      source: { quote: 'Sample an array of holiday beers and know just what to grab during the busy holiday season.', url: 'https://www.forestcitybrewery.com/events/2026/11/13/cleveland-beer-week-holiday-showcase', checked: C },
-      dateSource: { quote: 'Cleveland Beer Week Holiday Showcase Friday, November 13, 2026 6:30 PM 9:30 PM Forest City Brewery', url: 'https://www.forestcitybrewery.com/events/2026/11/13/cleveland-beer-week-holiday-showcase', checked: C } },
-  ],
+  // The Nov 13 Cleveland Beer Week Holiday Showcase at Forest City Brewery has passed; removed 2026-11-27.
+  events: [] as { name: string; where: string; breweryId?: number; date: string; source: Source; dateSource: Source }[],
 };
