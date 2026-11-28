@@ -81,6 +81,16 @@ describe('brewery page: sourced copy only', () => {
   });
 });
 
+describe('brewery page: no dead-end actions', () => {
+  // Rating needs sign-in, and sign-in is not available on the live site. The button comes back with sign-in.
+  it('does not link to the rating page', () => {
+    const html = breweryPage(base);
+    expect(html).not.toContain('/rate"');
+    expect(html).not.toContain('Rate a Beer');
+    expect(html).toContain('Add to Tour');
+  });
+});
+
 describe('provenance validator', () => {
   it('requires quote + http(s) source + real calendar date', () => {
     expect(sourcedQuote({ about_quote: 'x', about_source_url: 'https://a.test/p', about_checked_at: '2026-10-18' })).toEqual({ quote: 'x', sourceUrl: 'https://a.test/p', host: 'a.test', checkedAt: '2026-10-18' });
