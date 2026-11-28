@@ -119,7 +119,7 @@ const NO_AD_PATHS = /^\/(privacy|terms|login|signup|account|admin)(\/|$)/;
 // rather than stopping injected inline script. Images may come from any https host (listing photos).
 // Enforced 2026-11-27 after a report-only crawl of the live page types showed no violations. To observe a change
 // before enforcing it, set CSP_HEADER to 'Content-Security-Policy-Report-Only' first.
-export const CSP = [
+const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://*.google.com",
   "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fundingchoicesmessages.google.com",
@@ -132,7 +132,7 @@ export const CSP = [
   "base-uri 'self'",
   "object-src 'none'",
 ].join('; ');
-export const CSP_HEADER = 'Content-Security-Policy';
+const CSP_HEADER = 'Content-Security-Policy';
 app.use('*', async (c, next) => {
   await next();
   c.res.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');

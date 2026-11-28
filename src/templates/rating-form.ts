@@ -5,6 +5,10 @@
  */
 import type { Brewery, User, BeerStyleSimple } from '../types';
 import { BEER_STYLES_SIMPLE } from '../types';
+import { escapeAttr, escapeHtml } from './utils';
+
+// A value placed inside an inline <script>: a JSON string literal that cannot close the script block.
+const jsValue = (value: string): string => JSON.stringify(value).replace(/</g, '\\u003c');
 
 interface RatingFormProps {
   brewery: Brewery;
@@ -24,7 +28,7 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Rate a Beer at ${brewery.name} | Brewery Trip</title>
+  <title>Rate a Beer at ${escapeHtml(brewery.name)} | Brewery Trip</title>
   <meta name="robots" content="noindex, follow">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="/assets/css/rating-form.css">
@@ -35,8 +39,8 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
       <i class="bi bi-arrow-left"></i>
     </button>
     <div class="brewery-info">
-      <div class="brewery-name">${brewery.name}</div>
-      <div class="brewery-location">${brewery.city}, ${brewery.state || 'OH'}</div>
+      <div class="brewery-name">${escapeHtml(brewery.name)}</div>
+      <div class="brewery-location">${escapeHtml(brewery.city || '')}, ${escapeHtml(brewery.state || 'OH')}</div>
     </div>
   </header>
 
@@ -177,7 +181,7 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
             notes: form.notes.value || null,
             abv: form.abv.value ? parseFloat(form.abv.value) : null,
             is_public: form.is_public.value === '1',
-            itinerary_id: '${itineraryId || ''}'
+            itinerary_id: ${jsValue(itineraryId || '')}
           })
         });
 
@@ -265,7 +269,7 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
       });
 
       // Open Untappd (deep link or web)
-      const breweryName = encodeURIComponent('${brewery.name}');
+      const breweryName = encodeURIComponent(${jsValue(brewery.name)});
       window.open(\`https://untappd.com/search?q=\${breweryName}\`, '_blank');
     }
 
@@ -276,7 +280,7 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
         body: JSON.stringify({ platform: 'ratebeer' })
       });
 
-      const breweryName = encodeURIComponent('${brewery.name}');
+      const breweryName = encodeURIComponent(${jsValue(brewery.name)});
       window.open(\`https://www.ratebeer.com/search?q=\${breweryName}\`, '_blank');
     }
 
@@ -286,7 +290,7 @@ export function renderRatingForm({ brewery, user, itineraryId, baseUrl }: Rating
       if (navigator.share) {
         navigator.share({
           title: 'Check out my beer rating!',
-          text: \`I just rated a beer at ${brewery.name} on Brewery Trip!\`,
+          text: 'I just rated a beer at ' + ${jsValue(brewery.name)} + ' on Brewery Trip!',
           url: shareUrl
         });
       } else {
@@ -343,7 +347,7 @@ function renderRatingFormContent(
 
   <form class="form-section" onsubmit="submitRating(event)">
     <input type="hidden" name="brewery_id" value="${brewery.id}">
-    <input type="hidden" name="itinerary_id" value="${itineraryId || ''}">
+    <input type="hidden" name="itinerary_id" value="${escapeAttr(itineraryId || '')}">
     <input type="hidden" id="starsInput" name="stars" value="0" required>
     <input type="hidden" id="isPublic" name="is_public" value="${user.privacy_default === 'public' ? '1' : '0'}">
 
