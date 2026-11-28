@@ -633,6 +633,8 @@ describe('monthly check: one commit, exactly', () => {
     expect(git('status', '--porcelain').out.trim()).toBe('');
   });
   it('the wrapper stops when the checkout is not on main, or is not clean, and never observes "as it is"', () => {
+    // the clone starts on whatever branch the suite was run from; when that is main, move it off main first
+    if (git('rev-parse', '--abbrev-ref', 'HEAD').out.trim() === 'main') git('checkout', '--quiet', '-b', 'not-main');
     const branch = git('rev-parse', '--abbrev-ref', 'HEAD').out.trim();
     expect(branch).not.toBe('main');
     const off = wrapper();
